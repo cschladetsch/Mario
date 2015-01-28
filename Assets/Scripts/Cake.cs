@@ -25,19 +25,22 @@ public class Cake : MonoBehaviour
 	{
 	}
 
-	void Update()
+	internal void UpdateCake(bool moveRight)
 	{
-		UpdateHang();
+		UpdateHang(moveRight);
 	}
 
-	private void UpdateHang()
+	private void UpdateHang(bool moveRight)
 	{
-		if (_hangTimer > 0)
-		{
-			_hangTimer -= Time.deltaTime;
-			if (_hangTimer < 0)
-				StartDropped();
-		}
+		if (!(_hangTimer > 0))
+			return;
+
+		transform.localRotation = Quaternion.Slerp(transform.localRotation,
+			Quaternion.AngleAxis(moveRight ? -30 : 30, Vector3.forward), Time.deltaTime);
+
+		_hangTimer -= Time.deltaTime;
+		if (_hangTimer < 0)
+			StartDropped();
 	}
 
 	private void StartDropped()
@@ -49,6 +52,13 @@ public class Cake : MonoBehaviour
 	public void StartHanging()
 	{
 		_hangTimer = HangTime;
+	}
+
+	public void Reset()
+	{
+		_hangTimer = 0;
+		Position = 0;
+		transform.localRotation = Quaternion.identity;
 	}
 }
 

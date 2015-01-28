@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class Character : MonoBehaviour
@@ -42,10 +43,10 @@ public class Character : MonoBehaviour
 
 	private void PickupCakes()
 	{
-		var conv = _level.GetConveyor(Height);
-		var next = _level.GetConveyor(Height + 1);
+		var conv = _level.GetConveyor(Height + 1);
+		var next = _level.GetConveyor(Height + 2);
 
-		foreach (var cake in conv.Cakes)
+		foreach (var cake in conv.Cakes.ToList())
 		{
 			if (cake.Hanging)
 			{
@@ -67,20 +68,20 @@ public class Character : MonoBehaviour
 
 	private void MouseInput()
 	{
-		if (Input.GetMouseButtonDown(0))
-		{
-			var pos = Input.mousePosition;
-			if (Side == WhichSide.Left && pos.x > Screen.width*0.4f)
-				return;
-			if (Side == WhichSide.Right && pos.x < Screen.width*0.6f)
-				return;
+		if (!Input.GetMouseButtonDown(0))
+			return;
 
-			var screen = Camera.main.WorldToScreenPoint(transform.position);
-			if (pos.y < screen.y)
-				MoveDown();
-			else
-				MoveUp();
-		}
+		var pos = Input.mousePosition;
+		if (Side == WhichSide.Left && pos.x > Screen.width*0.4f)
+			return;
+		if (Side == WhichSide.Right && pos.x < Screen.width*0.6f)
+			return;
+
+		var screen = Camera.main.WorldToScreenPoint(transform.position);
+		if (pos.y < screen.y)
+			MoveDown();
+		else
+			MoveUp();
 	}
 
 	private void MoveUp()

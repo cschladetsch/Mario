@@ -13,6 +13,7 @@ public class Conveyor : MonoBehaviour
 	readonly List<Cake> _cakes = new List<Cake>();
 
 	private BoxCollider2D _box;
+
 	public IList<Cake> Cakes { get { return _cakes; }}
 
 	void Awake()
@@ -31,6 +32,7 @@ public class Conveyor : MonoBehaviour
 	/// <param name="pos">where to add it, normalised to the length of the conveyor</param>
 	public void AddCake(Cake cake, float pos)
 	{
+		cake.Reset();
 		cake.Position = pos;
 		_cakes.Add(cake);
 	}
@@ -38,6 +40,9 @@ public class Conveyor : MonoBehaviour
 	void Update()
 	{
 		MoveCakes();
+
+		foreach (var cake in _cakes)
+			cake.UpdateCake(MoveRight);
 	}
 
 	private void MoveCakes()

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Player : MonoBehaviour
+public class Player : HasWorld
 {
 	
 	void Awake()
@@ -10,6 +10,14 @@ public class Player : MonoBehaviour
 	}
 
 	void Start()
+	{
+	}
+
+	protected override void Construct()
+	{
+	}
+
+	protected override void Begin()
 	{
 	}
 

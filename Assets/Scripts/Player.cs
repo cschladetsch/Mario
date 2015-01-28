@@ -39,11 +39,11 @@ public class Player : HasWorld
 
 	public void Reset()
 	{
-		Destroy(LeftCharacter);
-		Destroy(RightCharacter);
+		//Destroy(LeftCharacter);
+		//Destroy(RightCharacter);
 
-		LeftCharacter = (GameObject) Instantiate(CharacterLeftPrefab);
-		RightCharacter = (GameObject) Instantiate(CharacterRightPrefab);
+		//LeftCharacter = (GameObject) Instantiate(CharacterLeftPrefab);
+		//RightCharacter = (GameObject) Instantiate(CharacterRightPrefab);
 	}
 }
 

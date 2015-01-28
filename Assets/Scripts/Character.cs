@@ -43,8 +43,12 @@ public class Character : MonoBehaviour
 
 	private void PickupCakes()
 	{
-		var conv = _level.GetConveyor(Height + 1);
+		var right = transform.position.x > 0;
+		var conv = _level.GetConveyor(Height + 1, right);
 		var next = _level.GetConveyor(Height + 2);
+
+		if (!conv)
+			return;
 
 		foreach (var cake in conv.Cakes.ToList())
 		{

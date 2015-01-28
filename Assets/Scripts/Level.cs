@@ -59,6 +59,15 @@ public class Level : HasWorld
 		_conveyors[1].AddCake(cake.GetComponent<Cake>(), 0);
 	}
 
+	public Conveyor GetConveyor(int height, bool right)
+	{
+		var c = GetConveyor(height);
+		if (right && !c.MoveRight)
+			return null;
+
+		return c;
+	}
+
 	public Conveyor GetConveyor(int height)
 	{
 		if (height >= _conveyors.Count)

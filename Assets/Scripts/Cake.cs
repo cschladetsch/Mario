@@ -45,8 +45,8 @@ public class Cake : MonoBehaviour
 
 	private void StartDropped()
 	{
-		Debug.Log("Dropped cake");
-		Destroy(gameObject);
+		//Destroy(gameObject);
+		FindObjectOfType<Player>().DroppedCake();
 	}
 
 	public void StartHanging()

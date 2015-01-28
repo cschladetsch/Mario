@@ -24,6 +24,8 @@ public class Player : HasWorld
 	public TriggerHandler OnTrigger;
 	public PlayerEventHandler OnDied;
 
+	private UiCanvas _canvas;
+
 	void Update()
 	{
 	}
@@ -35,10 +37,34 @@ public class Player : HasWorld
 
 	protected override void Begin()
 	{
+		_canvas = FindObjectOfType<UiCanvas>();
+	}
+
+	private int _lives = 3;
+
+	public bool Dead { get { return _lives > 0; } }
+
+	public void DroppedCake()
+	{
+		Debug.Log("Dropped cake " + _lives);
+
+		if (Dead)
+			return;
+
+		_lives--;
+
+		UpdateUi();
+	}
+
+	private void UpdateUi()
+	{
+		_canvas.LivesRemaining.text = _lives.ToString();
 	}
 
 	public void Reset()
 	{
+		_lives = 3;
+
 		//Destroy(LeftCharacter);
 		//Destroy(RightCharacter);
 

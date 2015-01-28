@@ -12,15 +12,19 @@ public class Character : MonoBehaviour
 
 	public WhichSide Side;
 
-	public int Level;
+	public int Height;
 
 	public float MovementSpeed;
 
 	private Vector3 _moveVel;
+
 	public float LevelHeight = 1.5f;
+
+	private Level _level;
 
 	void Awake()
 	{
+		_level = FindObjectOfType<Level>();
 	}
 
 	void Start()
@@ -32,12 +36,28 @@ public class Character : MonoBehaviour
 		MouseInput();
 
 		Move();
+
+		PickupCakes();
+	}
+
+	private void PickupCakes()
+	{
+		var conv = _level.GetConveyor(Height);
+		var next = _level.GetConveyor(Height + 1);
+
+		foreach (var cake in conv.Cakes)
+		{
+			if (cake.Hanging)
+			{
+				
+			}
+		}
 	}
 
 	private void Move()
 	{
 		var pp = transform.position;
-		var target = new Vector3(pp.x, Level*LevelHeight, 0);
+		var target = new Vector3(pp.x, Height*LevelHeight, 0);
 		transform.position = Vector3.SmoothDamp(transform.position, target, ref _moveVel, MovementSpeed);
 	}
 
@@ -61,23 +81,23 @@ public class Character : MonoBehaviour
 
 	private void MoveUp()
 	{
-		if (Level == 6)
+		if (Height == 5)
 			return;
 
-		Level++;
+		Height++;
 	}
 
 	private void MoveDown()
 	{
-		if (Level == 0)
+		if (Height == 0)
 			return;
 
-		Level--;
+		Height--;
 	}
 
 	public void Reset()
 	{
-		Level = 0;
+		Height = 0;
 	}
 }
 

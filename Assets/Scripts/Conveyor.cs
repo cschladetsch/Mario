@@ -6,12 +6,24 @@ using UnityEngine;
 
 public class Conveyor : MonoBehaviour
 {
+	/// <summary>
+	/// Move speed of the converyor
+	/// </summary>
 	public float Speed = 1;
 
+	/// <summary>
+	/// If false, we are moving from left to right
+	/// </summary>
 	public bool MoveRight;
 
+	/// <summary>
+	/// The cakes on this converyor
+	/// </summary>
 	readonly List<Cake> _cakes = new List<Cake>();
 
+	/// <summary>
+	/// Cached collision box
+	/// </summary>
 	private BoxCollider2D _box;
 
 	public IList<Cake> Cakes { get { return _cakes; } }

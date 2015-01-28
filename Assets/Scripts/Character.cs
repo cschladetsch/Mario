@@ -52,13 +52,13 @@ public class Character : MonoBehaviour
 
 		foreach (var cake in conv.Cakes.ToList())
 		{
-			if (cake.Hanging)
+			if (!cake.Hanging)
+				continue;
+
+			conv.RemoveCake(cake);
+			if (next)
 			{
-				conv.RemoveCake(cake);
-				if (next)
-				{
-					next.AddCake(cake, 0);
-				}
+				next.AddCake(cake, 0);
 			}
 		}
 	}
@@ -78,6 +78,7 @@ public class Character : MonoBehaviour
 		var pos = Input.mousePosition;
 		if (Side == WhichSide.Left && pos.x > Screen.width*0.4f)
 			return;
+
 		if (Side == WhichSide.Right && pos.x < Screen.width*0.6f)
 			return;
 

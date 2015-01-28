@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class Cake : MonoBehaviour
 {
@@ -9,21 +7,22 @@ public class Cake : MonoBehaviour
 	/// </summary>
 	public float Position;
 
+	/// <summary>
+	/// How long to end at end of conveyor before falling
+	/// </summary>
 	public float HangTime = 4;
 
-	private float _hangTimer;
-
+	/// <summary>
+	/// True if currently hanging
+	/// </summary>
 	public bool Hanging { get { return _hangTimer > 0; } }
 
+	/// <summary>
+	/// True if dropped after hanging.
+	/// </summary>
 	public bool Dropped { get { return _hangTimer < 0; } }
 
-	void Awake()
-	{
-	}
-
-	void Start()
-	{
-	}
+	private float _hangTimer;
 
 	internal void UpdateCake(bool moveRight)
 	{
@@ -45,7 +44,7 @@ public class Cake : MonoBehaviour
 
 	private void StartDropped()
 	{
-		//Destroy(gameObject);
+		// TODO
 		FindObjectOfType<Player>().DroppedCake();
 	}
 

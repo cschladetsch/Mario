@@ -16,7 +16,7 @@ public class Cake : MonoBehaviour
 	public bool Hanging { get { return _hangTimer > 0; } }
 
 	public bool Dropped { get { return _hangTimer < 0; } }
-	
+
 	void Awake()
 	{
 	}

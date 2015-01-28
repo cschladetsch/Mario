@@ -5,7 +5,7 @@ using UnityEngine;
 public class World : MonoBehaviour
 {
 	public Level Level;
-	
+
 	void Awake()
 	{
 		Level = FindObjectOfType<Level>();

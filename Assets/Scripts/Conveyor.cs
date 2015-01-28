@@ -14,7 +14,7 @@ public class Conveyor : MonoBehaviour
 
 	private BoxCollider2D _box;
 
-	public IList<Cake> Cakes { get { return _cakes; }}
+	public IList<Cake> Cakes { get { return _cakes; } }
 
 	void Awake()
 	{

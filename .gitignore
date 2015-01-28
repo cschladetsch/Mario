@@ -1,0 +1,9 @@
+Builds/
+Library/
+*.csproj
+obj/
+*.unityproj
+*.DotSettings
+*.suo
+*.sln
+Temp/

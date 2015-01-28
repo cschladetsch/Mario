@@ -62,6 +62,9 @@ public class Level : HasWorld
 	public Conveyor GetConveyor(int height, bool right)
 	{
 		var c = GetConveyor(height);
+		if (!c)
+			return null;
+
 		if (right && !c.MoveRight)
 			return null;
 

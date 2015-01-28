@@ -8,16 +8,9 @@ public class Conveyor : MonoBehaviour
 {
 	public float Speed = 1;
 
-	public enum Direction
-	{
-		Left,
-		Right
-	};
-
-	public Direction Dir;
+	public bool MoveRight;
 
 	readonly List<Cake> _cakes = new List<Cake>();
-	List<Cake> _hanging = new List<Cake>();
 
 	private BoxCollider2D _box;
 	public IList<Cake> Cakes { get { return _cakes; }}
@@ -75,7 +68,14 @@ public class Conveyor : MonoBehaviour
 
 		var dist = cake.Position*_box.bounds.size.x;
 		var loc = _box.bounds.min.x + dist;
+		if (!MoveRight)
+			loc = _box.bounds.max.x - dist;
 		cake.gameObject.transform.position = new Vector3(loc, transform.position.y + 1, 0);
+	}
+
+	public void RemoveCake(Cake cake)
+	{
+		_cakes.Remove(cake);
 	}
 }
 

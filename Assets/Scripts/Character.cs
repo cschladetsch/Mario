@@ -49,7 +49,11 @@ public class Character : MonoBehaviour
 		{
 			if (cake.Hanging)
 			{
-				
+				conv.RemoveCake(cake);
+				if (next)
+				{
+					next.AddCake(cake, 0);
+				}
 			}
 		}
 	}
@@ -81,7 +85,7 @@ public class Character : MonoBehaviour
 
 	private void MoveUp()
 	{
-		if (Height == 5)
+		if (Height == 4)
 			return;
 
 		Height++;

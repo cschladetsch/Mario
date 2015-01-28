@@ -32,17 +32,14 @@ public class Player : HasWorld
 
 	protected override void Construct()
 	{
+		Debug.Log("Player.Construct");
 		Control = GetComponent<Control>();
-	}
-
-	protected override void Begin()
-	{
 		_canvas = FindObjectOfType<UiCanvas>();
 	}
 
 	private int _lives = 3;
 
-	public bool Dead { get { return _lives > 0; } }
+	public bool Dead { get { return _lives == 0; } }
 
 	public void DroppedCake()
 	{

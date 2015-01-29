@@ -36,9 +36,19 @@ public class Character : MonoBehaviour
 	{
 		MouseInput();
 
+		TouchInput();
+
 		Move();
 
 		PickupCakes();
+	}
+
+	private void TouchInput()
+	{
+		if (Input.touchCount == 0)
+			return;
+
+		ProcessTouch(Input.touches[0].position);
 	}
 
 	private void PickupCakes()
@@ -75,7 +85,11 @@ public class Character : MonoBehaviour
 		if (!Input.GetMouseButtonDown(0))
 			return;
 
-		var pos = Input.mousePosition;
+		ProcessTouch(Input.mousePosition);
+	}
+
+	private void ProcessTouch(Vector3 pos)
+	{
 		if (Side == WhichSide.Left && pos.x > Screen.width*0.4f)
 			return;
 

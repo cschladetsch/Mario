@@ -7,6 +7,8 @@ public class Level : HasWorld
 {
 	public GameObject CakePrefab;
 
+	public GameObject CakeSpawnPoint;
+
 	public float MinSpawnTime = 3;
 
 	public float MaxSpawnTime = 6;
@@ -17,9 +19,13 @@ public class Level : HasWorld
 
 	private float _spawnTimer;
 
+	private Transform _cakes;
+
 	public void BeginLevel()
 	{
 		Debug.Log("Level begins");
+
+		_cakes = transform.FindChild("Cakes");
 
 		Reset();
 
@@ -53,10 +59,15 @@ public class Level : HasWorld
 
 		_spawnTimer = OverallSpeed*UnityEngine.Random.Range(MinSpawnTime, MaxSpawnTime);
 
-		var cake = (GameObject) Instantiate(CakePrefab);
+		var cake = NewCake();
+		cake.transform.position = CakeSpawnPoint.transform.position;
+	}
 
-		// TODO: add from first conveyor when everything is layed out properly
-		_conveyors[1].AddCake(cake.GetComponent<Cake>(), 0);
+	private GameObject NewCake()
+	{
+		var cake = (GameObject) Instantiate(CakePrefab);
+		cake.transform.parent = _cakes;
+		return cake;
 	}
 
 	public Conveyor GetConveyor(int height, bool right)

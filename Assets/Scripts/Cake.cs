@@ -20,9 +20,16 @@ public class Cake : MonoBehaviour
 	/// <summary>
 	/// True if dropped after hanging.
 	/// </summary>
-	public bool Dropped { get { return _hangTimer < 0; } }
+	public bool Dropped { get { return _dropped; } }
 
 	private float _hangTimer;
+
+	private bool _dropped;
+
+	void Start()
+	{
+		rigidbody2D.isKinematic = false;
+	}
 
 	internal void UpdateCake(bool moveRight)
 	{
@@ -39,13 +46,18 @@ public class Cake : MonoBehaviour
 
 		_hangTimer -= Time.deltaTime;
 		if (_hangTimer < 0)
-			StartDropped();
+			StartDropped(moveRight);
 	}
 
-	private void StartDropped()
+	private void StartDropped(bool moveRight)
 	{
-		// TODO
 		FindObjectOfType<Player>().DroppedCake();
+		_dropped = true;
+
+		rigidbody2D.isKinematic = false;
+		const float F = 100;
+		var force = new Vector2(moveRight ? F : -F, -20);
+		rigidbody2D.AddForce(force);
 	}
 
 	public void StartHanging()
@@ -57,7 +69,31 @@ public class Cake : MonoBehaviour
 	{
 		_hangTimer = 0;
 		Position = 0;
+		_dropped = false;
 		transform.localRotation = Quaternion.identity;
+	}
+
+	void OnCollisionEnter2D(Collision2D other)
+	{
+		var go = other.gameObject;
+		if (Dropped && go.layer == 8)	// ground
+		{
+			//Debug.Log("Cake hit ground");
+			//Destroy(parent.gameObject);
+			return;
+		}
+
+		if (Dropped)
+			return;
+
+		if (go.layer == 9) // conveyor
+		{
+			// hit first conveyor
+			//Debug.Log("Cake hit conveyor");
+			rigidbody2D.isKinematic = true;
+			FindObjectOfType<Level>().GetConveyor(0).AddCake(this, 0.8f);
+			return;
+		}
 	}
 }
 

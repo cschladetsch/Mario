@@ -16,6 +16,8 @@ public class Player : HasWorld
 
 	public GameObject Effects;
 
+	public bool Dead { get { return _lives == 0; } }
+
 	public delegate void CollisionHandler(Collision2D other);
 	public delegate void TriggerHandler(Collider2D other);
 	public delegate void PlayerEventHandler(Player player);
@@ -26,31 +28,34 @@ public class Player : HasWorld
 
 	private UiCanvas _canvas;
 
+	private int _lives = 3;
+
 	void Update()
 	{
 	}
 
 	protected override void Construct()
 	{
-		Debug.Log("Player.Construct");
+		//Debug.Log("Player.Construct");
 		Control = GetComponent<Control>();
 		_canvas = FindObjectOfType<UiCanvas>();
 	}
 
-	private int _lives = 3;
-
-	public bool Dead { get { return _lives == 0; } }
-
 	public void DroppedCake()
 	{
-		Debug.Log("Dropped cake " + _lives);
+		//Debug.Log("Dropped cake " + _lives);
 
 		if (Dead)
 			return;
 
-		_lives--;
+		if (--_lives == 0)
+			Died();
 
 		UpdateUi();
+	}
+
+	private void Died()
+	{
 	}
 
 	private void UpdateUi()

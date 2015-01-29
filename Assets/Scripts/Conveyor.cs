@@ -51,30 +51,32 @@ public class Conveyor : MonoBehaviour
 
 	void Update()
 	{
-		MoveCakes();
+		UpdateCakes();
 
-		foreach (var cake in _cakes)
+		MoveCakes();
+	}
+
+	private void UpdateCakes()
+	{
+		foreach (var cake in _cakes.ToList())
+		{
 			cake.UpdateCake(MoveRight);
+
+			if (cake.Dropped)
+				RemoveCake(cake);
+		}
 	}
 
 	private void MoveCakes()
 	{
-		foreach (var cake in _cakes.ToList())
+		foreach (var cake in _cakes)
 			MoveCake(cake);
 	}
 
 	private void MoveCake(Cake cake)
 	{
-		if (cake.Dropped)
-		{
-			_cakes.Remove(cake);
-			return;
-		}
-
 		if (cake.Hanging)
-		{
 			return;
-		}
 
 		cake.Position += Speed*Time.deltaTime;
 		if (cake.Position > 1)

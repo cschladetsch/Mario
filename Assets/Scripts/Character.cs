@@ -23,9 +23,20 @@ public class Character : MonoBehaviour
 
 	private Level _level;
 
+	private readonly Transform[] _levels = new Transform[3];
+
 	void Awake()
 	{
 		_level = FindObjectOfType<Level>();
+
+		_levels[0] = transform.FindChild("Level0");
+		_levels[1] = transform.FindChild("Level1");
+		_levels[2] = transform.FindChild("Level2");
+
+		var world = FindObjectOfType<World>();
+
+		for (var n = 0; n < 3; ++n)
+			_levels[n].parent = world.transform;
 	}
 
 	void Start()
@@ -53,9 +64,33 @@ public class Character : MonoBehaviour
 
 	private void PickupCakes()
 	{
-		var right = transform.position.x > 0;
-		var conv = _level.GetConveyor(Height + 1, right);
-		var next = _level.GetConveyor(Height + 2);
+		// 0 -> 0,1
+		// 1 -> 1,2
+		// 2 -> 3,4
+		switch (Height)
+		{
+			case 0:
+				PickupFromConveyors(0);
+				PickupFromConveyors(1);
+				PickupFromConveyors(2);
+				break;
+			case 1:
+				PickupFromConveyors(2);
+				PickupFromConveyors(3);
+				break;
+			case 2:
+				PickupFromConveyors(4);
+				PickupFromConveyors(5);
+				break;
+		}
+
+
+	}
+
+	private void PickupFromConveyors(int level)
+	{
+		var conv = _level.GetConveyor(level);
+		var next = _level.GetConveyor(level + 1);
 
 		if (!conv)
 			return;
@@ -63,6 +98,10 @@ public class Character : MonoBehaviour
 		foreach (var cake in conv.Cakes.ToList())
 		{
 			if (!cake.Hanging)
+				continue;
+
+			var dist = Mathf.Abs(transform.position.x - cake.transform.position.x);
+			if (dist > 4)
 				continue;
 
 			conv.RemoveCake(cake);
@@ -75,8 +114,7 @@ public class Character : MonoBehaviour
 
 	private void Move()
 	{
-		var pp = transform.position;
-		var target = new Vector3(pp.x, Height*LevelHeight, 0);
+		var target = _levels[Height].position;
 		transform.position = Vector3.SmoothDamp(transform.position, target, ref _moveVel, MovementSpeed);
 	}
 
@@ -105,7 +143,7 @@ public class Character : MonoBehaviour
 
 	private void MoveUp()
 	{
-		if (Height == 4)
+		if (Height == 2)
 			return;
 
 		Height++;

@@ -19,7 +19,7 @@ public class MarioCamera : MonoBehaviour
 
 	public void StartTruckAnimation(Truck truck)
 	{
-		
+		// TODO
 	}
 }
 

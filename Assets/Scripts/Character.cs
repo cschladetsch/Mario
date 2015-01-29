@@ -69,7 +69,8 @@ public class Character : MonoBehaviour
 			case 0:
 				PickupFromConveyors(0);
 				PickupFromConveyors(1);
-				PickupFromConveyors(2);
+				if (Side == WhichSide.Left)
+					PickupFromConveyors(2);
 				break;
 			case 1:
 				PickupFromConveyors(2);

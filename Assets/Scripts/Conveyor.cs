@@ -7,7 +7,7 @@ using UnityEngine;
 public class Conveyor : MonoBehaviour
 {
 	/// <summary>
-	/// Move speed of the converyor
+	/// Move speed of the conveyor
 	/// </summary>
 	public float Speed = 1;
 
@@ -17,7 +17,12 @@ public class Conveyor : MonoBehaviour
 	public bool MoveRight;
 
 	/// <summary>
-	/// The cakes on this converyor
+	/// The cakes currently on this conveyor
+	/// </summary>
+	public IList<Cake> Cakes { get { return _cakes; } }
+
+	/// <summary>
+	/// The cakes on this conveyor
 	/// </summary>
 	readonly List<Cake> _cakes = new List<Cake>();
 
@@ -27,8 +32,6 @@ public class Conveyor : MonoBehaviour
 	private BoxCollider2D _box;
 
 	private bool _paused;
-
-	public IList<Cake> Cakes { get { return _cakes; } }
 
 	void Awake()
 	{
@@ -108,5 +111,3 @@ public class Conveyor : MonoBehaviour
 		_paused = pause;
 	}
 }
-
-

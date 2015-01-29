@@ -32,9 +32,7 @@ public class Cake : MonoBehaviour
 	internal Parabola TruckParabola;
 
 	private float _hangTimer;
-
 	private bool _dropped;
-
 	private BoxCollider2D _box;
 
 	void Start()

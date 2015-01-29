@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class Player : HasWorld
 {
@@ -36,15 +34,12 @@ public class Player : HasWorld
 
 	protected override void Construct()
 	{
-		//Debug.Log("Player.Construct");
 		Control = GetComponent<Control>();
 		_canvas = FindObjectOfType<UiCanvas>();
 	}
 
 	public void DroppedCake()
 	{
-		//Debug.Log("Dropped cake " + _lives);
-
 		if (Dead)
 			return;
 
@@ -66,12 +61,6 @@ public class Player : HasWorld
 	public void Reset()
 	{
 		_lives = 3;
-
-		//Destroy(LeftCharacter);
-		//Destroy(RightCharacter);
-
-		//LeftCharacter = (GameObject) Instantiate(CharacterLeftPrefab);
-		//RightCharacter = (GameObject) Instantiate(CharacterRightPrefab);
 	}
 }
 

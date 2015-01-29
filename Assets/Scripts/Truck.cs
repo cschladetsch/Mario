@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
@@ -31,11 +30,8 @@ public class Truck : MonoBehaviour
 	public int NumRows = 3;
 
 	private Transform _pt;
-	
 	private readonly List<Cake> _cakes = new List<Cake>();
-
-	private readonly List<Cake> _pending = new List<Cake>(); 
-
+	private readonly List<Cake> _pending = new List<Cake>();
 	private float _moveTime;
 	private bool _movingLeft;
 	private float _startPos;
@@ -132,7 +128,7 @@ public class Truck : MonoBehaviour
 	private void UpdateDone()
 	{
 		var done = _cakes.Count == NumColumns*NumRows && _cakes.All(c => c.TruckParabola == null);
-		if (!done) 
+		if (!done)
 			return;
 
 		_world.Pause(true);
@@ -148,20 +144,19 @@ public class Truck : MonoBehaviour
 	{
 		foreach (var cake in _cakes)
 		{
-			var p = cake.TruckParabola;
-			if (p == null)	// already landed in truck
+			var para = cake.TruckParabola;
+			if (para == null)	// already landed in truck
 				continue;
 
-			var pt = p.Calc(cake.transform.position.x);
-			cake.transform.position = new Vector3(pt.x, pt.y, 0);
+			cake.transform.position = para.Calc(cake.transform.position.x);
 
-			var arrived = cake.transform.position.x <= p.FinalPos.x;
-			if (arrived)
-			{
-				cake.transform.position = p.FinalPos;
-				cake.transform.parent = transform;
-				cake.TruckParabola = null;
-			}
+			var arrived = cake.transform.position.x <= para.FinalPos.x;
+			if (!arrived)
+				continue;
+
+			cake.transform.parent = transform;
+			cake.transform.position = para.FinalPos;
+			cake.TruckParabola = null;
 		}
 	}
 

@@ -68,7 +68,7 @@ public class Level : HasWorld
 
 	private GameObject NewCake()
 	{
-		var cake = (GameObject) Instantiate(CakePrefab);
+		var cake = (GameObject)Instantiate(CakePrefab);
 		cake.transform.parent = _cakes;
 		return cake;
 	}
@@ -87,10 +87,7 @@ public class Level : HasWorld
 
 	public Conveyor GetConveyor(int height)
 	{
-		if (height >= _conveyors.Count)
-			return null;
-
-		return _conveyors[height];
+		return height >= _conveyors.Count ? null : _conveyors[height];
 	}
 
 	private bool _paused;

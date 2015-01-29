@@ -23,7 +23,7 @@ public class Level : HasWorld
 
 	public void BeginLevel()
 	{
-		Debug.Log("Level begins");
+		//Debug.Log("Level begins");
 
 		_cakes = transform.FindChild("Cakes");
 
@@ -48,6 +48,9 @@ public class Level : HasWorld
 
 	void Update()
 	{
+		if (_paused)
+			return;
+
 		SpawnCake();
 	}
 
@@ -88,5 +91,14 @@ public class Level : HasWorld
 			return null;
 
 		return _conveyors[height];
+	}
+
+	private bool _paused;
+
+	public void Pause(bool pause)
+	{
+		_paused = pause;
+		foreach (var conv in _conveyors)
+			conv.Pause(pause);
 	}
 }

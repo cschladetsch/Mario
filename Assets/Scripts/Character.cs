@@ -17,11 +17,11 @@ public class Character : MonoBehaviour
 
 	public float MovementSpeed;
 
-	private Vector3 _moveVel;
-
 	public float LevelHeight = 1.5f;
 
 	private Level _level;
+
+	private Vector3 _moveVel;
 
 	private readonly Transform[] _levels = new Transform[3];
 
@@ -64,9 +64,6 @@ public class Character : MonoBehaviour
 
 	private void PickupCakes()
 	{
-		// 0 -> 0,1
-		// 1 -> 1,2
-		// 2 -> 3,4
 		switch (Height)
 		{
 			case 0:
@@ -83,8 +80,6 @@ public class Character : MonoBehaviour
 				PickupFromConveyors(5);
 				break;
 		}
-
-
 	}
 
 	private void PickupFromConveyors(int level)
@@ -105,10 +100,11 @@ public class Character : MonoBehaviour
 				continue;
 
 			conv.RemoveCake(cake);
+			//FindObjectOfType<Truck>().AddCake(cake);
 			if (next)
-			{
 				next.AddCake(cake, 0);
-			}
+			else
+				FindObjectOfType<Truck>().AddCake(cake);
 		}
 	}
 

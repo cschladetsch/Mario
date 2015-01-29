@@ -19,6 +19,14 @@ public class World : MonoBehaviour
 	void Update()
 	{
 	}
+
+	public void Pause(bool pause)
+	{
+		foreach (var cake in FindObjectsOfType<Cake>())
+			cake.Pause(pause);
+
+		Level.Pause(pause);
+	}
 }
 
 

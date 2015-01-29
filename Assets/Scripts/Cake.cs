@@ -22,12 +22,24 @@ public class Cake : MonoBehaviour
 	/// </summary>
 	public bool Dropped { get { return _dropped; } }
 
+	public float Width { get { return _box.bounds.extents.x*2; } }
+
+	public float Height { get { return _box.bounds.extents.y*2; } }
+
+	/// <summary>
+	/// Where we will end up in the truck
+	/// </summary>
+	internal Parabola TruckParabola;
+
 	private float _hangTimer;
 
 	private bool _dropped;
 
+	private BoxCollider2D _box;
+
 	void Start()
 	{
+		_box = GetComponent<BoxCollider2D>();
 		rigidbody2D.isKinematic = false;
 	}
 
@@ -78,22 +90,26 @@ public class Cake : MonoBehaviour
 		var go = other.gameObject;
 		if (Dropped && go.layer == 8)	// ground
 		{
-			//Debug.Log("Cake hit ground");
-			//Destroy(parent.gameObject);
+			HitGround();
 			return;
 		}
 
-		if (Dropped)
-			return;
-
-		if (go.layer == 9) // conveyor
+		if (!Dropped && go.layer == 9)	// conveyor
 		{
-			// hit first conveyor
-			//Debug.Log("Cake hit conveyor");
 			rigidbody2D.isKinematic = true;
 			FindObjectOfType<Level>().GetConveyor(0).AddCake(this, 0.8f);
 			return;
 		}
+	}
+
+	private void HitGround()
+	{
+		Destroy(gameObject);
+	}
+
+	public void Pause(bool p)
+	{
+		rigidbody2D.isKinematic = p;
 	}
 }
 

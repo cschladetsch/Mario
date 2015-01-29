@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MarioCamera : MonoBehaviour
+public class Dummy : MonoBehaviour
 {
 	
 	void Awake()
@@ -15,11 +15,6 @@ public class MarioCamera : MonoBehaviour
 
 	void Update()
 	{
-	}
-
-	public void StartTruckAnimation(Truck truck)
-	{
-		
 	}
 }
 

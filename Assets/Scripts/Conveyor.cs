@@ -26,6 +26,8 @@ public class Conveyor : MonoBehaviour
 	/// </summary>
 	private BoxCollider2D _box;
 
+	private bool _paused;
+
 	public IList<Cake> Cakes { get { return _cakes; } }
 
 	void Awake()
@@ -51,6 +53,9 @@ public class Conveyor : MonoBehaviour
 
 	void Update()
 	{
+		if (_paused)
+			return;
+
 		UpdateCakes();
 
 		MoveCakes();
@@ -89,12 +94,18 @@ public class Conveyor : MonoBehaviour
 		var loc = _box.bounds.min.x + dist;
 		if (!MoveRight)
 			loc = _box.bounds.max.x - dist;
+
 		cake.gameObject.transform.position = new Vector3(loc, transform.position.y + 1, 0);
 	}
 
 	public void RemoveCake(Cake cake)
 	{
 		_cakes.Remove(cake);
+	}
+
+	public void Pause(bool pause)
+	{
+		_paused = pause;
 	}
 }
 

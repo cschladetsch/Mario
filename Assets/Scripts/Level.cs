@@ -48,6 +48,14 @@ public class Level : HasWorld
 
 	void Update()
 	{
+		if (Input.GetKeyDown(KeyCode.Return))
+		{
+			var cake = NewCake();
+			cake.transform.position = CakeSpawnPoint.transform.position;
+			var truck = FindObjectOfType<Truck>();
+			truck.AddCake(cake.GetComponent<Cake>());
+		}
+
 		if (_paused)
 			return;
 

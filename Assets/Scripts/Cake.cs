@@ -35,7 +35,7 @@ public class Cake : MonoBehaviour
 	private bool _dropped;
 	private BoxCollider2D _box;
 
-	void Start()
+	void Awake()
 	{
 		_box = GetComponent<BoxCollider2D>();
 		rigidbody2D.isKinematic = false;

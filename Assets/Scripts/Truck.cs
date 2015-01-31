@@ -91,11 +91,21 @@ public class Truck : MonoBehaviour
 
 	private void EmptyCakes()
 	{
+		WriteScore();
+
 		foreach (var cake in _cakes)
 			Destroy(cake.gameObject);
 
 		_cakes.Clear();
 		_movingLeft = false;
+	}
+
+	private void WriteScore()
+	{
+		var ui = FindObjectOfType<UiCanvas>();
+		var score = int.Parse(ui.Score.text);
+		score += _cakes.Count;
+		ui.Score.text = score.ToString();
 	}
 
 	private void EndEmptying()
@@ -122,7 +132,7 @@ public class Truck : MonoBehaviour
 
 		_pending.Clear();
 
-		_world.Pause(false);
+		//_world.Pause(false);
 	}
 
 	private void UpdateDone()
@@ -131,7 +141,7 @@ public class Truck : MonoBehaviour
 		if (!done)
 			return;
 
-		_world.Pause(true);
+		//_world.Pause(true);
 
 		FindObjectOfType<MarioCamera>().StartTruckAnimation(this);
 
@@ -142,11 +152,19 @@ public class Truck : MonoBehaviour
 
 	private void MoveCakes()
 	{
-		foreach (var cake in _cakes)
+
+		foreach (var cake in _cakes.ToList())
 		{
 			var para = cake.TruckParabola;
 			if (para == null)	// already landed in truck
 				continue;
+
+			if (!cake)
+			{
+				Debug.LogWarning("Destroyed cake in truck move list");
+				_cakes.Remove(cake);
+				continue;
+			}
 
 			cake.transform.position = para.Calc(cake.transform.position.x);
 
@@ -167,6 +185,7 @@ public class Truck : MonoBehaviour
 			Debug.LogError("Trying to add a deleted cake to Truck!");
 			return;
 		}
+		cake.rigidbody2D.isKinematic = true;
 
 		cake.transform.rotation = Quaternion.identity;
 

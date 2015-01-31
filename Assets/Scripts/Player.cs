@@ -30,6 +30,11 @@ public class Player : HasWorld
 
 	void Update()
 	{
+		if (Input.GetKeyDown(KeyCode.Space))
+		{
+			FindObjectOfType<World>().TogglePause();
+		}
+
 	}
 
 	protected override void Construct()

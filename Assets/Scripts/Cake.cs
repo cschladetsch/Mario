@@ -15,7 +15,7 @@ public class Cake : MonoBehaviour
 	/// <summary>
 	/// True if currently hanging
 	/// </summary>
-	public bool Hanging { get { return _hangTimer > 0; } }
+	public bool Hanging { get { return _hanging; } }
 
 	/// <summary>
 	/// True if dropped after hanging.
@@ -31,9 +31,10 @@ public class Cake : MonoBehaviour
 	/// </summary>
 	internal Parabola TruckParabola;
 
-	private float _hangTimer;
-	private bool _dropped;
+	public float _hangTimer;
+	public bool _dropped;
 	private BoxCollider2D _box;
+	private bool _hanging;
 
 	void Awake()
 	{
@@ -41,14 +42,43 @@ public class Cake : MonoBehaviour
 		rigidbody2D.isKinematic = false;
 	}
 
+	/// <summary>
+	/// Counts down after drop starts. Mostly for debugging
+	/// </summary>
+	public float _droppedTimer;
+
 	internal void UpdateCake(bool moveRight)
 	{
+		if (UpdateDropped())
+			return;
+
 		UpdateHang(moveRight);
+	}
+
+	private bool UpdateDropped()
+	{
+		if (_droppedTimer > 0)
+			_dropped = true;
+
+		if (!Dropped) 
+			return false;
+
+		_droppedTimer -= Time.time;
+		if (_droppedTimer > 0)
+			return false;
+
+		Debug.LogWarning("Dropped cake not Destroyed!");
+		FindObjectOfType<Player>().DroppedCake();
+		if (Conveyor != null)
+			Conveyor.RemoveCake(this);
+		
+		Destroy(gameObject);
+		return true;
 	}
 
 	private void UpdateHang(bool moveRight)
 	{
-		if (!(_hangTimer > 0))
+		if (!_hanging)
 			return;
 
 		transform.localRotation = Quaternion.Slerp(transform.localRotation,
@@ -61,11 +91,13 @@ public class Cake : MonoBehaviour
 
 	private void StartDropped(bool moveRight)
 	{
+		_droppedTimer = 2;
+		//Debug.Log("Dropped: " + name);
 		FindObjectOfType<Player>().DroppedCake();
 		_dropped = true;
 
 		rigidbody2D.isKinematic = false;
-		const float F = 100;
+		const float F = 120;
 		var force = new Vector2(moveRight ? F : -F, -20);
 		rigidbody2D.AddForce(force);
 	}
@@ -73,15 +105,24 @@ public class Cake : MonoBehaviour
 	public void StartHanging()
 	{
 		_hangTimer = HangTime;
+		_hanging = true;
 	}
+
+	public Conveyor Conveyor;
 
 	public void Reset()
 	{
+		if (Dropped)
+			return;
+
+		//_dropped = false;
 		_hangTimer = 0;
 		Position = 0;
-		_dropped = false;
 		transform.localRotation = Quaternion.identity;
+		_hanging = false;
 	}
+
+	private bool _firstDrop;
 
 	void OnCollisionEnter2D(Collision2D other)
 	{
@@ -92,8 +133,10 @@ public class Cake : MonoBehaviour
 			return;
 		}
 
-		if (!Dropped && go.layer == 9)	// conveyor
+		if (!_firstDrop && !Dropped && go.layer == 9)	// conveyor
 		{
+			_firstDrop = true;
+			//Debug.Log("Start: " + name);
 			rigidbody2D.isKinematic = true;
 			FindObjectOfType<Level>().GetConveyor(0).AddCake(this, 0.8f);
 			return;
@@ -105,9 +148,19 @@ public class Cake : MonoBehaviour
 		Destroy(gameObject);
 	}
 
-	public void Pause(bool p)
+	private bool _kine;
+	public bool Moved;
+
+	public void Pause(bool pause)
 	{
-		rigidbody2D.isKinematic = p;
+		if (pause)
+		{
+			_kine = rigidbody2D.isKinematic;
+			rigidbody2D.isKinematic = true;
+			return;
+		}
+
+		rigidbody2D.isKinematic = _kine;
 	}
 }
 

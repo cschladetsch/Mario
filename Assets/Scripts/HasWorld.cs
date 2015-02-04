@@ -4,6 +4,7 @@ public class HasWorld : MonoBehaviour
 {
 	protected World World;
 	protected Player Player;
+	public bool Paused;
 
 	void Awake()
 	{

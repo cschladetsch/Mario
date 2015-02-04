@@ -2,6 +2,8 @@
 using System.Linq;
 using UnityEngine;
 
+#pragma warning disable 414
+
 public class Truck : MonoBehaviour
 {
 	/// <summary>
@@ -132,7 +134,10 @@ public class Truck : MonoBehaviour
 
 		_pending.Clear();
 
-		//_world.Pause(false);
+		_world.Pause(false);
+
+		foreach (var c in _cakes)
+			c.rigidbody2D.isKinematic = true;
 	}
 
 	private void UpdateDone()
@@ -141,7 +146,7 @@ public class Truck : MonoBehaviour
 		if (!done)
 			return;
 
-		//_world.Pause(true);
+		_world.Pause(true);
 
 		FindObjectOfType<MarioCamera>().StartTruckAnimation(this);
 
@@ -162,8 +167,9 @@ public class Truck : MonoBehaviour
 			if (!cake)
 			{
 				Debug.LogWarning("Destroyed cake in truck move list");
-				_cakes.Remove(cake);
-				continue;
+				//_cakes.Remove(cake);
+				_cakes.Clear();
+				return;
 			}
 
 			cake.transform.position = para.Calc(cake.transform.position.x);
@@ -185,8 +191,8 @@ public class Truck : MonoBehaviour
 			Debug.LogError("Trying to add a deleted cake to Truck!");
 			return;
 		}
-		cake.rigidbody2D.isKinematic = true;
 
+		cake.rigidbody2D.isKinematic = true;
 		cake.transform.rotation = Quaternion.identity;
 
 		if (_full)

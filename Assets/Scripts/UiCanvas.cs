@@ -2,22 +2,26 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class UiCanvas : MonoBehaviour
+public class UiCanvas : HasWorld
 {
 	public UnityEngine.UI.Text LivesRemaining;
 	public UnityEngine.UI.Text Score;
+	public GameObject TapToStart;
 
-	void Awake()
+	protected override void Begin()
 	{
+		base.Begin();
+		TapToStart.SetActive(true);
 	}
 
-	void Start()
+	public void Reset()
 	{
+		TapToStart.gameObject.SetActive(true);
 	}
 
-	void Update()
+	public void Tapped()
 	{
+		TapToStart.gameObject.SetActive(false);
+		World.StartGame();
 	}
 }
-
-

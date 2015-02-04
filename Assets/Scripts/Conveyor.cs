@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using UnityEngine;
 
-public class Conveyor : MonoBehaviour
+public class Conveyor : HasWorld
 {
 	/// <summary>
 	/// Move speed of the conveyor
@@ -24,14 +25,12 @@ public class Conveyor : MonoBehaviour
 	/// <summary>
 	/// The cakes on this conveyor
 	/// </summary>
-	readonly List<Cake> _cakes = new List<Cake>();
+	public List<Cake> _cakes = new List<Cake>();
 
 	/// <summary>
 	/// Cached collision box
 	/// </summary>
 	private BoxCollider2D _box;
-
-	private bool _paused;
 
 	void Awake()
 	{
@@ -49,14 +48,16 @@ public class Conveyor : MonoBehaviour
 	/// <param name="pos">where to add it, normalised to the length of the conveyor</param>
 	public void AddCake(Cake cake, float pos)
 	{
+		//Debug.Log("AddCake " + cake.name);
 		cake.Reset();
 		cake.Position = pos;
+		cake.Conveyor = this;
 		_cakes.Add(cake);
 	}
 
 	void Update()
 	{
-		if (_paused)
+		if (Paused)
 			return;
 
 		UpdateCakes();
@@ -77,20 +78,82 @@ public class Conveyor : MonoBehaviour
 
 	private void MoveCakes()
 	{
+		if (_cakes.Count == 0)
+			return;
+
+		// sort by position in x
+		_cakes.Sort((a,b) => a.transform.position.x.CompareTo(b.transform.position.x));
+		for (int n = 0; n < _cakes.Count - 1; ++n)
+		{
+			var curr = _cakes[n];
+			var next = _cakes[n + 1];
+
+			if (Mathf.Abs(curr.transform.position.x - next.transform.position.x) < 0.01f)
+			{
+				curr.Position -= 0.05f;
+			}
+		}
+
 		foreach (var cake in _cakes)
 			MoveCake(cake);
 	}
 
-	private void MoveCake(Cake cake)
+	public float MinCakeSeparation = 1;
+	
+	private bool MoveCake(Cake cake)
 	{
 		if (cake.Hanging)
-			return;
+		{
+			cake.Moved = true;
+			return false;
+		}
 
-		cake.Position += Speed*Time.deltaTime;
+		//Cake closest;
+		//var sep = float.MaxValue;
+		var mx = cake.transform.position.x;
+		var move = true;
+		foreach (var c in _cakes)
+		{
+			if (c == cake)
+				continue;
+
+			var cx = c.transform.position.x;
+
+			if (Mathf.Abs(cx - mx) < 0.01f)
+				continue;
+
+			if (MoveRight)
+			{
+				if (cx < mx)
+					continue;
+
+				if (cx - mx < MinCakeSeparation)
+				{
+					move = false;
+					break;
+				}
+			}
+			else
+			{
+				if (cx > mx)
+					continue;
+
+				if (mx - cx < MinCakeSeparation)
+				{
+					move = false;
+					break;
+				}
+			}
+		}
+
+		cake.Moved = move;
+		if (move)
+			cake.Position += Speed*Time.deltaTime;
+
 		if (cake.Position > 1)
 		{
 			cake.StartHanging();
-			return;
+			return false;
 		}
 
 		var dist = cake.Position*_box.bounds.size.x;
@@ -99,6 +162,8 @@ public class Conveyor : MonoBehaviour
 			loc = _box.bounds.max.x - dist;
 
 		cake.gameObject.transform.position = new Vector3(loc, transform.position.y + 1, 0);
+
+		return true;
 	}
 
 	public void RemoveCake(Cake cake)
@@ -108,6 +173,6 @@ public class Conveyor : MonoBehaviour
 
 	public void Pause(bool pause)
 	{
-		_paused = pause;
+		Paused = pause;
 	}
 }

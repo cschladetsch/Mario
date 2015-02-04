@@ -13,28 +13,68 @@ public class Level : HasWorld
 
 	public float MaxSpawnTime = 6;
 
-	public float OverallSpeed = 1;
+	/// <summary>
+	/// How long before next speed level increase
+	/// </summary>
+	public float SpeedIncrementTime = 30;
+
+	/// <summary>
+	/// How much to speed up spawn times at each speed level increase
+	/// </summary>
+	public float SpawnIncrementRate = 1.3f;
+
+	/// <summary>
+	/// How much to speed up conveyor belt speed at each speed level increase
+	/// </summary>
+	public float SpeedIncrementRate = 1.2f;
+
+	/// <summary>
+	/// Default conveyor belt speed
+	/// </summary>
+	public float ConveyorSpeed = 0.3f;
+
+	float OverallSpeed = 1;
 
 	List<Conveyor> _conveyors = new List<Conveyor>();
 
 	private float _spawnTimer;
 
-	private Transform _cakes;
+	private Transform _cakesHolder;
+
+	private float _speedLevel;
+
+	Character []_characters;
+
+	protected override void Construct()
+	{
+		base.Construct();
+		_characters = FindObjectsOfType<Character>();
+
+		foreach (var ch in _characters)
+			ch.Pause(true);
+	}
 
 	public void BeginLevel()
 	{
-		//Debug.Log("Level begins");
+		Debug.Log("Level begins");
 
-		_cakes = transform.FindChild("Cakes");
+		_cakesHolder = transform.FindChild("Cakes");
 
 		Reset();
 
 		Player.Reset();
+
+		foreach (var ch in _characters)
+			ch.Pause(false);
 	}
 
 	private void Reset()
 	{
 		GatherConveyors();
+
+		_speedLevel = 1;
+		OverallSpeed = 1;
+		_speedTimer = SpeedIncrementTime;
 	}
 
 	private void GatherConveyors()
@@ -44,10 +84,17 @@ public class Level : HasWorld
 		var root = transform.FindChild("Conveyors");
 		_conveyors = root.GetComponentsInChildren<Conveyor>().ToList();
 		_conveyors.Sort((a, b) => System.String.Compare(a.name, b.name, System.StringComparison.Ordinal));
+
+		foreach (var c in _conveyors)
+			c.Speed = ConveyorSpeed;
 	}
+
+	private float _speedTimer;
 
 	void Update()
 	{
+		UpdateSpeed();
+
 		if (Input.GetKeyDown(KeyCode.Return))
 		{
 			var cake = NewCake();
@@ -56,10 +103,27 @@ public class Level : HasWorld
 			truck.AddCake(cake.GetComponent<Cake>());
 		}
 
-		if (_paused)
+		if (Paused)
 			return;
 
 		SpawnCake();
+	}
+
+	private void UpdateSpeed()
+	{
+		_speedTimer -= Time.deltaTime;
+		if (!(_speedTimer < 0)) 
+			return;
+
+		_speedTimer = SpeedIncrementTime;
+		OverallSpeed *= 1.0f/SpawnIncrementRate;
+
+		foreach (var c in _conveyors)
+			c.Speed *= SpeedIncrementRate;
+
+		//Debug.Log("Speed Up " + _speedLevel);
+
+		_speedLevel++;
 	}
 
 	private void SpawnCake()
@@ -71,13 +135,17 @@ public class Level : HasWorld
 		_spawnTimer = OverallSpeed*UnityEngine.Random.Range(MinSpawnTime, MaxSpawnTime);
 
 		var cake = NewCake();
+		var value = UnityEngine.Random.value;
+		var n = (int) (value*100000);
+		cake.name = n.ToString();
+
 		cake.transform.position = CakeSpawnPoint.transform.position;
 	}
 
 	private GameObject NewCake()
 	{
 		var cake = (GameObject)Instantiate(CakePrefab);
-		cake.transform.parent = _cakes;
+		cake.transform.parent = _cakesHolder;
 		return cake;
 	}
 
@@ -98,11 +166,10 @@ public class Level : HasWorld
 		return height >= _conveyors.Count ? null : _conveyors[height];
 	}
 
-	private bool _paused;
-
 	public void Pause(bool pause)
 	{
-		_paused = pause;
+		Paused = pause;
+
 		foreach (var conv in _conveyors)
 			conv.Pause(pause);
 	}

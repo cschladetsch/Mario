@@ -6,26 +6,25 @@ public class World : MonoBehaviour
 {
 	public Level Level;
 
+	private bool _paused;
+
 	void Awake()
 	{
+		Application.targetFrameRate = 60;
 		Level = FindObjectOfType<Level>();
 	}
 
 	void Start()
 	{
-		Level.BeginLevel();
+		Pause(true);
 	}
 
 	void Update()
 	{
 	}
 
-	private bool _paused;
-
 	public void Pause(bool pause)
 	{
-		Debug.Log("Pause " + pause);
-
 		_paused = pause;
 
 		foreach (var cake in FindObjectsOfType<Cake>())
@@ -37,6 +36,12 @@ public class World : MonoBehaviour
 	public void TogglePause()
 	{
 		Pause(!_paused);
+	}
+
+	public void StartGame()
+	{
+		Pause(false);
+		Level.BeginLevel();
 	}
 }
 

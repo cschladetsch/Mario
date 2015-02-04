@@ -32,13 +32,9 @@ public class Conveyor : HasWorld
 	/// </summary>
 	private BoxCollider2D _box;
 
-	void Awake()
+	protected override void Begin()
 	{
 		_box = GetComponentInChildren<BoxCollider2D>();
-	}
-
-	void Start()
-	{
 	}
 
 	/// <summary>
@@ -55,11 +51,8 @@ public class Conveyor : HasWorld
 		_cakes.Add(cake);
 	}
 
-	void Update()
+	protected override void Tick()
 	{
-		if (Paused)
-			return;
-
 		UpdateCakes();
 
 		MoveCakes();
@@ -148,7 +141,7 @@ public class Conveyor : HasWorld
 
 		cake.Moved = move;
 		if (move)
-			cake.Position += Speed*Time.deltaTime;
+			cake.Position += Speed*DeltaTime;
 
 		if (cake.Position > 1)
 		{

@@ -1,17 +1,47 @@
-﻿using System;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
+/// <summary>
+/// The overall controller for the game
+/// </summary>
 public class World : MonoBehaviour
 {
+	/// <summary>
+	/// The current level
+	/// </summary>
 	public Level Level;
+
+	/// <summary>
+	/// The single world instance
+	/// </summary>
+	public static World Instance;
+
+	/// <summary>
+	/// Current player
+	/// </summary>
+	public static Player Player;
+
+	/// <summary>
+	/// The single truck
+	/// </summary>
+	public static Truck Truck;
 
 	private bool _paused;
 
 	void Awake()
 	{
+		if (Instance != null)
+		{
+			Debug.LogError("Can't have multiple Worlds");
+			return;
+		}
+
 		Application.targetFrameRate = 60;
+
+		Instance = this;
+
 		Level = FindObjectOfType<Level>();
+		Player = FindObjectOfType<Player>();
+		Truck = FindObjectOfType<Truck>();
 	}
 
 	void Start()
@@ -21,8 +51,11 @@ public class World : MonoBehaviour
 
 	public void Reset()
 	{
-		FindObjectOfType<Truck>().Reset();
+		Truck.Reset();
+
 		Level.Reset();
+
+		Player.Reset();
 	}
 
 	void Update()
@@ -31,6 +64,9 @@ public class World : MonoBehaviour
 
 	public void Pause(bool pause)
 	{
+		if (pause == _paused)
+			return;
+
 		_paused = pause;
 
 		foreach (var cake in FindObjectsOfType<Cake>())
@@ -47,9 +83,9 @@ public class World : MonoBehaviour
 	public void StartGame()
 	{
 		Reset();
+
 		Pause(false);
+
 		Level.BeginLevel();
 	}
 }
-
-

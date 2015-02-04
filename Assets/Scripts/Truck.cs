@@ -222,4 +222,16 @@ public class Truck : MonoBehaviour
 			_full = true;
 		}
 	}
+
+	public void Reset()
+	{
+		foreach (var c in _pending)
+			Destroy(c);
+
+		foreach (var c in _cakes)
+			Destroy(c);
+
+		_pending.Clear();
+		_cakes.Clear();
+	}
 }

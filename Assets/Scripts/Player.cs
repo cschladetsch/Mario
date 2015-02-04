@@ -14,7 +14,7 @@ public class Player : HasWorld
 
 	public GameObject Effects;
 
-	public bool Dead { get { return _lives == 0; } }
+	public bool Dead { get { return Lives == 0; } }
 
 	public delegate void CollisionHandler(Collision2D other);
 	public delegate void TriggerHandler(Collider2D other);
@@ -26,7 +26,7 @@ public class Player : HasWorld
 
 	private UiCanvas _canvas;
 
-	private int _lives = 3;
+	public int Lives = 3;
 
 	void Update()
 	{
@@ -34,7 +34,6 @@ public class Player : HasWorld
 		{
 			FindObjectOfType<World>().TogglePause();
 		}
-
 	}
 
 	protected override void Construct()
@@ -48,7 +47,7 @@ public class Player : HasWorld
 		if (Dead)
 			return;
 
-		if (--_lives == 0)
+		if (--Lives == 0)
 			Died();
 
 		UpdateUi();
@@ -56,16 +55,20 @@ public class Player : HasWorld
 
 	private void Died()
 	{
+		World.Pause(true);
+		_canvas.TapToStart.SetActive(true);
 	}
 
 	private void UpdateUi()
 	{
-		_canvas.LivesRemaining.text = _lives.ToString();
+		_canvas.LivesRemaining.text = Lives.ToString();
 	}
 
 	public void Reset()
 	{
-		_lives = 3;
+		Lives = 3;
+
+		UpdateUi();
 	}
 }
 

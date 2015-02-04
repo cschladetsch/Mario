@@ -19,6 +19,12 @@ public class World : MonoBehaviour
 		Pause(true);
 	}
 
+	public void Reset()
+	{
+		FindObjectOfType<Truck>().Reset();
+		Level.Reset();
+	}
+
 	void Update()
 	{
 	}
@@ -40,6 +46,7 @@ public class World : MonoBehaviour
 
 	public void StartGame()
 	{
+		Reset();
 		Pause(false);
 		Level.BeginLevel();
 	}

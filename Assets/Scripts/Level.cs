@@ -45,8 +45,11 @@ public class Level : HasWorld
 
 	Character []_characters;
 
+	private float _initialConveyorSpeed;
+
 	protected override void Construct()
 	{
+		_initialConveyorSpeed = ConveyorSpeed;
 		base.Construct();
 		_characters = FindObjectsOfType<Character>();
 
@@ -58,9 +61,9 @@ public class Level : HasWorld
 	{
 		Debug.Log("Level begins");
 
-		_cakesHolder = transform.FindChild("Cakes");
-
 		Reset();
+
+		_cakesHolder = transform.FindChild("Cakes");
 
 		Player.Reset();
 
@@ -68,13 +71,20 @@ public class Level : HasWorld
 			ch.Pause(false);
 	}
 
-	private void Reset()
+	public void Reset()
 	{
 		GatherConveyors();
 
+		ConveyorSpeed = _initialConveyorSpeed;
+		foreach (var c in _conveyors)
+		{
+			c.Reset();
+			c.Speed = _initialConveyorSpeed;
+		}
+
 		_speedLevel = 1;
-		OverallSpeed = 1;
 		_speedTimer = SpeedIncrementTime;
+		OverallSpeed = 1;
 	}
 
 	private void GatherConveyors()

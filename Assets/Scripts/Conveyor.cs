@@ -175,4 +175,12 @@ public class Conveyor : HasWorld
 	{
 		Paused = pause;
 	}
+
+	public void Reset()
+	{
+		foreach (var c in _cakes)
+			Destroy(c.gameObject);
+
+		_cakes.Clear();
+	}
 }

@@ -45,6 +45,7 @@ public class Truck : MonoBehaviour
 	private bool _emptying;
 	private bool _full;
 	private World _world;
+	public int NumCakes { get { return _cakes.Count + _pending.Count; } }
 
 	void Awake()
 	{

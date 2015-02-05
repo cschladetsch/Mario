@@ -50,9 +50,9 @@ public class Level : MarioObject
 	private Character []_characters;
 	private float _initialConveyorSpeed;
 
-	protected override void Construct()
+	protected override void Begin()
 	{
-		base.Construct();
+		base.Begin();
 
 		_initialConveyorSpeed = ConveyorSpeed;
 		_characters = FindObjectsOfType<Character>();
@@ -60,7 +60,17 @@ public class Level : MarioObject
 
 		PauseCharacters(true);
 
+		Player.OnCakeDropped += CakeDropped;
+
 		Debug.Log("Level created " + name);
+	}
+
+	private void CakeDropped(Player player)
+	{
+		Debug.Log("Level.CakeDropped");
+
+		// spawn another cake
+		--_numCakesSpawned;
 	}
 
 	public void BeginLevel()
@@ -79,19 +89,25 @@ public class Level : MarioObject
 		GatherSpawners();
 	}
 
-	private int _numDelivered;
+	private int _numTrucksDelivered;
 
 	private void DeliveryCompleted(Truck truck)
 	{
-		if (++_numDelivered == NumTruckLoads)
+		if (++_numTrucksDelivered == NumTruckLoads)
 		{
 			EndLevel();
 		}
 	}
 
+	private bool _ended;
+
 	private void EndLevel()
 	{
-		
+		Debug.Log("EndLevel " + name);
+		_ended = true;
+		Canvas.LevelEnded(this);
+		foreach (var c in _conveyors)
+			c.Pause(true);
 	}
 
 	private void GatherSpawners()
@@ -132,7 +148,7 @@ public class Level : MarioObject
 		OverallSpeed = 1;
 
 		_speedTimer = SpeedIncrementTime;
-		_numDelivered = 0;
+		_numTrucksDelivered = 0;
 	}
 
 	private void GatherConveyors()
@@ -151,7 +167,11 @@ public class Level : MarioObject
 
 	override protected void Tick()
 	{
-		UpdateSpawners();
+		if (_ended)
+			return;
+
+		if (_numCakesSpawned < NumTruckLoads*6)
+			UpdateSpawners();
 
 		UpdateSpeed();
 
@@ -165,6 +185,8 @@ public class Level : MarioObject
 		}
 #endif
 	}
+
+	private int _numCakesSpawned;
 
 	private void UpdateSpeed()
 	{
@@ -189,6 +211,7 @@ public class Level : MarioObject
 		if (options.Count == 0)
 			return;
 
+		++_numCakesSpawned;
 		var spawner = SelectRandomWeighted(options);
 		var born  = spawner.Spawn(gameObject);
 		born.transform.position = CakeSpawnPoint.transform.position;
@@ -225,6 +248,7 @@ public class Level : MarioObject
 		var prefab = GetNewPrefab();
 		var cake = (GameObject)Instantiate(prefab);
 		cake.transform.parent = _cakesHolder;
+		++_numCakesSpawned;
 		return cake;
 	}
 

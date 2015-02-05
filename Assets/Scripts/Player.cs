@@ -25,6 +25,7 @@ public class Player : MarioObject
 	public CollisionHandler OnCollision;
 	public TriggerHandler OnTrigger;
 	public PlayerEventHandler OnDied;
+	public PlayerEventHandler OnCakeDropped;
 
 	private UiCanvas _canvas;
 
@@ -46,6 +47,9 @@ public class Player : MarioObject
 
 	public void DroppedCake()
 	{
+		if (!Dead && OnCakeDropped != null)
+			OnCakeDropped(this);
+
 		if (Dead || GodMode)
 			return;
 

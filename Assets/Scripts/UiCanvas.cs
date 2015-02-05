@@ -25,4 +25,8 @@ public class UiCanvas : MarioObject
 		TapToStart.gameObject.SetActive(false);
 		World.StartGame();
 	}
+
+	public void LevelEnded(Level level)
+	{
+	}
 }

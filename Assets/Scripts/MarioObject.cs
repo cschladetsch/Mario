@@ -40,6 +40,7 @@ public class MarioObject : MonoBehaviour
 	void Start()
 	{
 		World = World.Instance;
+		//Debug.Log("Name=" + name + ", World=" + World);
 
 		Begin();
 	}
@@ -48,9 +49,9 @@ public class MarioObject : MonoBehaviour
 	{
 		if (Paused)
 			return;
+
 		var dt = UnityEngine.Time.deltaTime;
 		DeltaTime = dt;
-		Time += dt;
 
 		if (_firstUpate)
 		{
@@ -62,6 +63,8 @@ public class MarioObject : MonoBehaviour
 		}
 
 		Tick();
+
+		Time += dt;
 	}
 
 	protected virtual void BeforeFirstUpdate()

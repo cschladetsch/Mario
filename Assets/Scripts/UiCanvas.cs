@@ -13,6 +13,7 @@ public class UiCanvas : MarioObject
 	{
 		base.Begin();
 		TapToStart.SetActive(true);
+		LevelCompleted.SetActive(false);
 	}
 
 	public void Reset()
@@ -23,10 +24,17 @@ public class UiCanvas : MarioObject
 	public void Tapped()
 	{
 		TapToStart.gameObject.SetActive(false);
-		World.StartGame();
+		World.BeginLevel();
+	}
+
+	public void LevelCompletedTapped()
+	{
+		LevelCompleted.gameObject.SetActive(false);
+		World.NextLevel();
 	}
 
 	public void LevelEnded(Level level)
 	{
+		LevelCompleted.SetActive(true);
 	}
 }

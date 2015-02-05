@@ -50,13 +50,13 @@ public class Level : MarioObject
 	private Character []_characters;
 	private float _initialConveyorSpeed;
 
-	void Init()
+	protected override void BeforeFirstUpdate()
 	{
 		_initialConveyorSpeed = ConveyorSpeed;
 		_characters = FindObjectsOfType<Character>();
 		_cakesHolder = transform.FindChild("Cakes");
 
-		//Debug.Log("Level.Init: " + ConveyorSpeed);
+		Debug.Log("Level.BeforeFirstUpdate: " + _characters.Length);
 
 		PauseCharacters(true);
 
@@ -72,8 +72,6 @@ public class Level : MarioObject
 	public void BeginLevel()
 	{
 		Debug.Log("Level.BeginLevel: " + name);
-
-		Init();
 
 		Truck.DeliveryCompleted -= DeliveryCompleted;
 		Truck.DeliveryCompleted += DeliveryCompleted;
@@ -140,11 +138,7 @@ public class Level : MarioObject
 	{
 		GatherConveyors();
 
-		if (_initialConveyorSpeed > 0)
-			ConveyorSpeed = _initialConveyorSpeed;
-		else
-			_initialConveyorSpeed = ConveyorSpeed;
-
+		ConveyorSpeed = _initialConveyorSpeed;
 		foreach (var c in _conveyors)
 		{
 			c.Reset();
@@ -196,9 +190,6 @@ public class Level : MarioObject
 	/// </summary>
 	void LateUpdate()
 	{
-		if (Paused)
-			return;
-
 		if (_numCakesSpawned < NumTruckLoads*6)
 			UpdateSpawners();
 	}
@@ -301,8 +292,6 @@ public class Level : MarioObject
 
 	public void Pause(bool pause)
 	{
-		//Debug.Log("Level.Pause: " + pause + " " + _conveyors.Count);
-
 		Paused = pause;
 
 		foreach (var conv in _conveyors)

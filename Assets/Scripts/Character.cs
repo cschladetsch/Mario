@@ -19,36 +19,29 @@ public class Character : MarioObject
 
 	public float LevelHeight = 1.5f;
 
-	private Level _level;
-
 	private Vector3 _moveVel;
 
 	private readonly Transform[] _levels = new Transform[3];
 
-	void Awake()
+	protected override void BeforeFirstUpdate()
 	{
-		_level = FindObjectOfType<Level>();
+		base.BeforeFirstUpdate();
 
 		_levels[0] = transform.FindChild("Level0");
 		_levels[1] = transform.FindChild("Level1");
 		_levels[2] = transform.FindChild("Level2");
 
-		var world = FindObjectOfType<World>();
-
 		for (var n = 0; n < 3; ++n)
-			_levels[n].parent = world.transform;
+			_levels[n].parent = World.transform;
 
 		Paused = true;
 	}
 
-	void Start()
+	protected override void Tick()
 	{
-	}
+		base.Tick();
 
-	void Update()
-	{
-		//if (Paused)
-		//	return;
+		//Debug.Log("World=" + World);
 
 #if UNITY_EDITOR
 		MouseInput();
@@ -124,8 +117,8 @@ public class Character : MarioObject
 
 	private void PickupFromConveyors(int level)
 	{
-		var conv = _level.GetConveyor(level);
-		var next = _level.GetConveyor(level + 1);
+		var conv = Level.GetConveyor(level);
+		var next = Level.GetConveyor(level + 1);
 
 		if (!conv)
 			return;

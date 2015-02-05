@@ -8,6 +8,8 @@ public class World : MonoBehaviour
 	/// <summary>
 	/// The current level
 	/// </summary>
+	public GameObject[] Levels;
+
 	public Level Level;
 
 	/// <summary>
@@ -29,6 +31,8 @@ public class World : MonoBehaviour
 
 	private bool _paused;
 
+	private int _levelIndex;
+
 	void Awake()
 	{
 		if (Instance != null)
@@ -41,19 +45,22 @@ public class World : MonoBehaviour
 
 		Instance = this;
 
-		Level = FindObjectOfType<Level>();
-		Player = FindObjectOfType<Player>();
-		Truck = FindObjectOfType<Truck>();
 		Canvas = FindObjectOfType<UiCanvas>();
+
+		_levelIndex = 0;
 	}
 
 	void Start()
 	{
-		Pause(true);
+		//Startlevel();
+		//Pause(true);
 	}
 
 	public void Reset()
 	{
+		if (Level == null)
+			return;
+
 		Truck.Reset();
 
 		Level.Reset();
@@ -64,8 +71,34 @@ public class World : MonoBehaviour
 			Destroy(c.gameObject);
 	}
 
+	private bool _first = true;
+
 	void Update()
 	{
+		if (_beginLevel > 0)
+		{
+			--_beginLevel;
+
+			if (_beginLevel == 0)
+			{
+				BeginLevel();
+
+				// if this is the first level, then we pause else we unpause
+				Pause(_levelIndex == 0);
+			}
+
+			return;
+		}
+
+		if (_first)
+		{
+			_first = false;
+
+			CreateLevel();
+
+			Pause(true);
+		}
+
 	}
 
 	public void Pause(bool pause)
@@ -78,7 +111,8 @@ public class World : MonoBehaviour
 		foreach (var cake in FindObjectsOfType<Cake>())
 			cake.Pause(pause);
 
-		Level.Pause(pause);
+		if (Level)
+			Level.Pause(pause);
 	}
 
 	public void TogglePause()
@@ -86,12 +120,44 @@ public class World : MonoBehaviour
 		Pause(!_paused);
 	}
 
-	public void StartGame()
+	public void CreateLevel()
 	{
+		Debug.Log("World.CreateLevel");
+
+		if (Level)
+			Destroy(Level.gameObject);
+
+		var prefab = Levels[_levelIndex];
+		Level = ((GameObject)Instantiate(prefab)).GetComponent<Level>();
+		Level.transform.position = Vector3.zero;
+
+		Level.Paused = true;
+
+		//Level.gameObject.SetActive(false);
+
+		// actually begin the level next update to allow nested spawners to complete
+		_beginLevel = 5;
+	}
+
+	private int _beginLevel;
+
+	public void BeginLevel()
+	{
+		Player = FindObjectOfType<Player>();
+		Truck = FindObjectOfType<Truck>();
+
 		Reset();
 
 		Pause(false);
 
 		Level.BeginLevel();
+		Level.Pause(false);
+	}
+
+	public void NextLevel()
+	{
+		Debug.Log("Next Level");
+		_levelIndex = (_levelIndex + 1)%Levels.Length;
+		CreateLevel();
 	}
 }

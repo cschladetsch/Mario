@@ -16,6 +16,11 @@ public class Pickup : MonoBehaviour
 	void Update()
 	{
 	}
+
+	public void Create(Transform folder)
+	{
+		
+	}
 }
 
 

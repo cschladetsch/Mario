@@ -6,27 +6,14 @@ using UnityEngine;
 /// <summary>
 /// Controls aspects of the level, like the conveyors, characters, and cakes
 /// </summary>
-public class Level : HasWorld
+public class Level : MarioObject
 {
-	/// <summary>
-	/// How to make a new cake
-	/// </summary>
-	public GameObject CakePrefab;
+	public int NumTruckLoads = 3;
 
 	/// <summary>
 	/// Where to place newly made cake
 	/// </summary>
 	public GameObject CakeSpawnPoint;
-
-	/// <summary>
-	/// The shortest time that a cake may be spawned again
-	/// </summary>
-	public float MinSpawnTime = 3;
-
-	/// <summary>
-	/// The longest time that a cake may be spawned again
-	/// </summary>
-	public float MaxSpawnTime = 6;
 
 	/// <summary>
 	/// How long before next speed level increase
@@ -53,7 +40,12 @@ public class Level : HasWorld
 	public float OverallSpeed = 1;
 
 	private List<Conveyor> _conveyors = new List<Conveyor>();
-	private float _spawnTimer;
+
+	/// <summary>
+	/// How to make new cakes
+	/// </summary>
+	private SpawnInfo[] _spawners;
+
 	private Transform _cakesHolder;
 	private Character []_characters;
 	private float _initialConveyorSpeed;
@@ -67,23 +59,62 @@ public class Level : HasWorld
 		_cakesHolder = transform.FindChild("Cakes");
 
 		PauseCharacters(true);
+
+		Debug.Log("Level created " + name);
 	}
 
 	public void BeginLevel()
 	{
 		Debug.Log("Level begins");
 
+		Truck.DeliveryCompleted -= DeliveryCompleted;
+		Truck.DeliveryCompleted += DeliveryCompleted;
+
 		Reset();
 
 		Player.Reset();
 
 		PauseCharacters(false);
+
+		GatherSpawners();
+	}
+
+	private int _numDelivered;
+
+	private void DeliveryCompleted(Truck truck)
+	{
+		if (++_numDelivered == NumTruckLoads)
+		{
+			EndLevel();
+		}
+	}
+
+	private void EndLevel()
+	{
+		
+	}
+
+	private void GatherSpawners()
+	{
+		_spawners = GetComponents<SpawnInfo>();
 	}
 
 	private void PauseCharacters(bool pause)
 	{
 		foreach (var ch in _characters)
 			ch.Pause(pause);
+	}
+
+	protected override void BeforeFirstUpdate()
+	{
+		base.BeforeFirstUpdate();
+
+		SpawnSomething();
+	}
+
+	private void SpawnSomething()
+	{
+		_spawners[0].Spawn(gameObject);
 	}
 
 	public void Reset()
@@ -98,9 +129,10 @@ public class Level : HasWorld
 		}
 
 		SpeedLevel = 1;
-		_speedTimer = SpeedIncrementTime;
-
 		OverallSpeed = 1;
+
+		_speedTimer = SpeedIncrementTime;
+		_numDelivered = 0;
 	}
 
 	private void GatherConveyors()
@@ -119,6 +151,8 @@ public class Level : HasWorld
 
 	override protected void Tick()
 	{
+		UpdateSpawners();
+
 		UpdateSpeed();
 
 #if !FINAL
@@ -130,8 +164,6 @@ public class Level : HasWorld
 			truck.AddCake(cake.GetComponent<Cake>());
 		}
 #endif
-
-		SpawnCake();
 	}
 
 	private void UpdateSpeed()
@@ -151,27 +183,59 @@ public class Level : HasWorld
 		SpeedLevel++;
 	}
 
-	private void SpawnCake()
+	private void UpdateSpawners()
 	{
-		_spawnTimer -= DeltaTime;
-		if (_spawnTimer > 0)
+		var options = _spawners.Where(sp => sp.CouldSpawn()).ToList();
+		if (options.Count == 0)
 			return;
 
-		_spawnTimer = OverallSpeed*UnityEngine.Random.Range(MinSpawnTime, MaxSpawnTime);
+		var spawner = SelectRandomWeighted(options);
+		var born  = spawner.Spawn(gameObject);
+		born.transform.position = CakeSpawnPoint.transform.position;
+	}
 
-		var cake = NewCake();
-		var value = UnityEngine.Random.value;
-		var n = (int) (value*100000);
-		cake.name = n.ToString();
+	/// <summary>
+	/// Select an option, using weighted random selection system
+	/// </summary>
+	/// <param name="options"></param>
+	/// <returns></returns>
+	private static SpawnInfo SelectRandomWeighted(List<SpawnInfo> options)
+	{
+		var sumOfWeight = options.Sum(t => t.Weight);
+		var rnd = UnityEngine.Random.Range(0, sumOfWeight);
+		options.Sort((a, b) => a.Weight.CompareTo(b.Weight));
 
-		cake.transform.position = CakeSpawnPoint.transform.position;
+		var chosen = 0;
+		for (var n = 0; n < options.Count; n++)
+		{
+			if (rnd < options[n].Weight)
+			{
+				chosen = n;
+				break;
+			}
+
+			rnd -= options[n].Weight;
+		}
+
+		return options[chosen];
 	}
 
 	private GameObject NewCake()
 	{
-		var cake = (GameObject)Instantiate(CakePrefab);
+		var prefab = GetNewPrefab();
+		var cake = (GameObject)Instantiate(prefab);
 		cake.transform.parent = _cakesHolder;
 		return cake;
+	}
+
+	//void LateUpdate()
+	//{
+	//	transform.position = Vector3.zero;
+	//}
+
+	private GameObject GetNewPrefab()
+	{
+		return _spawners[0].Prefab;
 	}
 
 	public Conveyor GetConveyor(int height, bool right)

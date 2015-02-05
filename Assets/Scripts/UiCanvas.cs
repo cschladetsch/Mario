@@ -2,11 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class UiCanvas : HasWorld
+public class UiCanvas : MarioObject
 {
 	public UnityEngine.UI.Text LivesRemaining;
 	public UnityEngine.UI.Text Score;
 	public GameObject TapToStart;
+	public GameObject LevelCompleted;
 
 	protected override void Begin()
 	{

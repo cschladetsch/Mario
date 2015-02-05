@@ -20,6 +20,8 @@ public class World : MonoBehaviour
 	/// </summary>
 	public static Player Player;
 
+	public static UiCanvas Canvas;
+
 	/// <summary>
 	/// The single truck
 	/// </summary>
@@ -42,6 +44,7 @@ public class World : MonoBehaviour
 		Level = FindObjectOfType<Level>();
 		Player = FindObjectOfType<Player>();
 		Truck = FindObjectOfType<Truck>();
+		Canvas = FindObjectOfType<UiCanvas>();
 	}
 
 	void Start()
@@ -56,6 +59,9 @@ public class World : MonoBehaviour
 		Level.Reset();
 
 		Player.Reset();
+
+		foreach (var c in FindObjectsOfType<Cake>())
+			Destroy(c.gameObject);
 	}
 
 	void Update()

@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class Cake : MonoBehaviour
+public class Cake : Pickup
 {
 	/// <summary>
 	/// Parameterised position along conveyor: 0 is at start, 1 at end

@@ -5,7 +5,7 @@ using System.ComponentModel;
 using System.Linq;
 using UnityEngine;
 
-public class Conveyor : HasWorld
+public class Conveyor : MarioObject
 {
 	/// <summary>
 	/// Move speed of the conveyor

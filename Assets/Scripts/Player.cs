@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class Player : HasWorld
+public class Player : MarioObject
 {
 	public GameObject CharacterLeftPrefab;
 
@@ -15,6 +15,8 @@ public class Player : HasWorld
 	public GameObject Effects;
 
 	public bool Dead { get { return Lives == 0; } }
+
+	public bool GodMode = false;
 
 	public delegate void CollisionHandler(Collision2D other);
 	public delegate void TriggerHandler(Collider2D other);
@@ -44,7 +46,7 @@ public class Player : HasWorld
 
 	public void DroppedCake()
 	{
-		if (Dead)
+		if (Dead || GodMode)
 			return;
 
 		if (--Lives == 0)

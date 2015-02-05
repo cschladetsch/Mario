@@ -31,6 +31,11 @@ public class Truck : MonoBehaviour
 	/// </summary>
 	public int NumRows = 3;
 
+	public delegate void DeliveredHandler(Truck truck);
+
+	public event DeliveredHandler DeliveryStarted;
+	public event DeliveredHandler DeliveryCompleted;
+
 	private Transform _pt;
 	private readonly List<Cake> _cakes = new List<Cake>();
 	private readonly List<Cake> _pending = new List<Cake>();
@@ -138,6 +143,9 @@ public class Truck : MonoBehaviour
 
 		foreach (var c in _cakes)
 			c.rigidbody2D.isKinematic = true;
+
+		if (DeliveryCompleted != null)
+			DeliveryCompleted(this);
 	}
 
 	private void UpdateDone()
@@ -146,9 +154,15 @@ public class Truck : MonoBehaviour
 		if (!done)
 			return;
 
+		StartEmptying();
+	}
+
+	private void StartEmptying()
+	{
 		_world.Pause(true);
 
-		FindObjectOfType<MarioCamera>().StartTruckAnimation(this);
+		if (DeliveryStarted != null)
+			DeliveryStarted(this);
 
 		_moveTime = MoveDistance/MoveSpeed;
 		_movingLeft = true;
@@ -157,7 +171,6 @@ public class Truck : MonoBehaviour
 
 	private void MoveCakes()
 	{
-
 		foreach (var cake in _cakes.ToList())
 		{
 			var para = cake.TruckParabola;

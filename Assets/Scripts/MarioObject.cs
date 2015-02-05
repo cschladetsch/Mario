@@ -1,6 +1,9 @@
 ﻿using UnityEngine;
 
-public class HasWorld : MonoBehaviour
+/// <summary>
+/// Base class for all objects in the game.
+/// </summary>
+public class MarioObject : MonoBehaviour
 {
 	/// <summary>
 	/// If false, this game object will not be updated via Update() method
@@ -16,14 +19,18 @@ public class HasWorld : MonoBehaviour
 
 	protected Truck Truck { get { return World.Truck; } }
 
+	protected UiCanvas Canvas { get { return World.Canvas; } }
+
 	/// <summary>
 	/// The current level being played
 	/// </summary>
 	protected Level Level { get { return World.Level; } }
 
-	public float Time;
+	protected float Time;
 
-	public float DeltaTime;
+	protected float DeltaTime;
+
+	private bool _firstUpate = true;
 
 	void Awake()
 	{
@@ -41,12 +48,24 @@ public class HasWorld : MonoBehaviour
 	{
 		if (Paused)
 			return;
-
 		var dt = UnityEngine.Time.deltaTime;
 		DeltaTime = dt;
 		Time += dt;
 
+		if (_firstUpate)
+		{
+			_firstUpate = false;
+
+			BeforeFirstUpdate();
+
+			return;
+		}
+
 		Tick();
+	}
+
+	protected virtual void BeforeFirstUpdate()
+	{
 	}
 
 	protected virtual void Tick()

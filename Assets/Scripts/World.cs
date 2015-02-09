@@ -33,6 +33,10 @@ public class World : MonoBehaviour
 
 	private int _levelIndex;
 
+	private bool _first = true;
+
+	private int _beginLevel;
+
 	void Awake()
 	{
 		if (Instance != null)
@@ -71,10 +75,18 @@ public class World : MonoBehaviour
 			Destroy(c.gameObject);
 	}
 
-	private bool _first = true;
+	public void Restart()
+	{
+		_levelIndex = 0;
+
+		Reset();
+
+		BeginLevel();
+	}
 
 	void Update()
 	{
+		// need to wait a few updates before beginning, because we can have nested SpawnGameObject components...
 		if (_beginLevel > 0)
 		{
 			--_beginLevel;
@@ -98,7 +110,6 @@ public class World : MonoBehaviour
 
 			Pause(true);
 		}
-
 	}
 
 	public void Pause(bool pause)
@@ -139,8 +150,6 @@ public class World : MonoBehaviour
 		_beginLevel = 5;
 	}
 
-	private int _beginLevel;
-
 	public void BeginLevel()
 	{
 		Player = FindObjectOfType<Player>();
@@ -156,7 +165,7 @@ public class World : MonoBehaviour
 
 	public void NextLevel()
 	{
-		Debug.Log("Next Level");
+		//Debug.Log("Next Level");
 		_levelIndex = (_levelIndex + 1)%Levels.Length;
 		CreateLevel();
 	}

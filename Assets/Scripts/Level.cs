@@ -67,6 +67,7 @@ public class Level : MarioObject
 	{
 		// spawn another cake
 		--_numCakesSpawned;
+		Debug.Log("Cake Dropped: " + _numCakesSpawned + ", " + UnityEngine.Time.frameCount);
 	}
 
 	public void BeginLevel()
@@ -134,6 +135,7 @@ public class Level : MarioObject
 		var born = spawnInfo.Spawn(gameObject);
 		born.transform.position = CakeSpawnPoint.transform.position;
 		++_numCakesSpawned;
+		Debug.Log("AddCake " + _numCakesSpawned);
 	}
 
 	public void Reset()
@@ -203,7 +205,7 @@ public class Level : MarioObject
 			UpdateSpawners();
 	}
 
-	private int _numCakesSpawned;
+	public int _numCakesSpawned;
 
 	private void UpdateSpeed()
 	{

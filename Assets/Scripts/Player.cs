@@ -31,6 +31,11 @@ public class Player : MarioObject
 
 	public int Lives = 3;
 
+	protected override void Begin()
+	{
+		// TODO: attach to truck
+	}
+
 	void Update()
 	{
 		if (Input.GetKeyDown(KeyCode.Space))
@@ -63,6 +68,7 @@ public class Player : MarioObject
 	{
 		World.Pause(true);
 		_canvas.TapToStart.SetActive(true);
+		//SaveGame.UpdateHighScore(_score);
 	}
 
 	private void UpdateUi()

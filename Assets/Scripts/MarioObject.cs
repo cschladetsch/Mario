@@ -47,6 +47,12 @@ public class MarioObject : MonoBehaviour
 
 	void Update()
 	{
+		//// WHAT THE FUCK: why is Update() called twice on MarioObjects?
+		//var frameCount = UnityEngine.Time.frameCount;
+		//Debug.Log("MarioObject.Update: " + name + ", " + frameCount + ", " + _updateFrame + ", " + gameObject.GetInstanceID());
+		//if (frameCount == _updateFrame && _updateFrame > 0)
+		//	return;
+
 		if (Paused)
 			return;
 

@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.ComponentModel;
+﻿using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
@@ -16,6 +13,8 @@ public class Conveyor : MarioObject
 	/// If false, we are moving from left to right
 	/// </summary>
 	public bool MoveRight;
+
+	public float MinCakeSeparation = 1;
 
 	/// <summary>
 	/// The cakes currently on this conveyor
@@ -75,7 +74,7 @@ public class Conveyor : MarioObject
 			return;
 
 		// sort by position in x
-		_cakes.Sort((a,b) => a.transform.position.x.CompareTo(b.transform.position.x));
+		_cakes.Sort((a, b) => a.transform.position.x.CompareTo(b.transform.position.x));
 		for (int n = 0; n < _cakes.Count - 1; ++n)
 		{
 			var curr = _cakes[n];
@@ -91,8 +90,6 @@ public class Conveyor : MarioObject
 			MoveCake(cake);
 	}
 
-	public float MinCakeSeparation = 1;
-	
 	private bool MoveCake(Cake cake)
 	{
 		if (cake.Hanging)

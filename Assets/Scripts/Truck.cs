@@ -31,6 +31,8 @@ public class Truck : MonoBehaviour
 	/// </summary>
 	public int NumRows = 3;
 
+	public int NumCakes { get { return _cakes.Count + _pending.Count; } }
+
 	public delegate void DeliveredHandler(Truck truck);
 
 	public event DeliveredHandler DeliveryStarted;
@@ -45,7 +47,6 @@ public class Truck : MonoBehaviour
 	private bool _emptying;
 	private bool _full;
 	private World _world;
-	public int NumCakes { get { return _cakes.Count + _pending.Count; } }
 
 	void Awake()
 	{

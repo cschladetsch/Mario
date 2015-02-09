@@ -17,6 +17,10 @@ public class Cake : Pickup
 	/// </summary>
 	public bool Hanging { get { return _hanging; } }
 
+	public bool Moved;
+
+	public Conveyor Conveyor;
+
 	/// <summary>
 	/// True if dropped after hanging.
 	/// </summary>
@@ -33,8 +37,11 @@ public class Cake : Pickup
 
 	public float _hangTimer;
 	public bool _dropped;
+
 	private BoxCollider2D _box;
 	private bool _hanging;
+	private bool _kine;
+	private bool _firstDrop;
 
 	void Awake()
 	{
@@ -108,8 +115,6 @@ public class Cake : Pickup
 		_hanging = true;
 	}
 
-	public Conveyor Conveyor;
-
 	public void Reset()
 	{
 		if (Dropped)
@@ -121,8 +126,6 @@ public class Cake : Pickup
 		transform.localRotation = Quaternion.identity;
 		_hanging = false;
 	}
-
-	private bool _firstDrop;
 
 	void OnCollisionEnter2D(Collision2D other)
 	{
@@ -148,9 +151,6 @@ public class Cake : Pickup
 		Destroy(gameObject);
 	}
 
-	private bool _kine;
-	public bool Moved;
-
 	public void Pause(bool pause)
 	{
 		if (pause)
@@ -163,5 +163,4 @@ public class Cake : Pickup
 		rigidbody2D.isKinematic = _kine;
 	}
 }
-
 

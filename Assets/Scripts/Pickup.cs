@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class Pickup : MonoBehaviour
 {
-	
 	void Awake()
 	{
 	}
@@ -19,7 +16,6 @@ public class Pickup : MonoBehaviour
 
 	public void Create(Transform folder)
 	{
-		
 	}
 }
 

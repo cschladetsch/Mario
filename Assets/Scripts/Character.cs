@@ -23,6 +23,8 @@ public class Character : MarioObject
 
 	private readonly Transform[] _levels = new Transform[3];
 
+	private bool _touching;
+
 	protected override void BeforeFirstUpdate()
 	{
 		base.BeforeFirstUpdate();
@@ -40,8 +42,6 @@ public class Character : MarioObject
 	protected override void Tick()
 	{
 		base.Tick();
-
-		//Debug.Log("World=" + World);
 
 #if UNITY_EDITOR
 		MouseInput();
@@ -104,10 +104,12 @@ public class Character : MarioObject
 				if (Side == WhichSide.Left)
 					PickupFromConveyors(2);
 				break;
+
 			case 1:
 				PickupFromConveyors(2);
 				PickupFromConveyors(3);
 				break;
+
 			case 2:
 				PickupFromConveyors(4);
 				PickupFromConveyors(5);
@@ -133,7 +135,6 @@ public class Character : MarioObject
 				continue;
 
 			conv.RemoveCake(cake);
-			//FindObjectOfType<Truck>().AddCake(cake);
 			if (next)
 				next.AddCake(cake, 0);
 			else
@@ -154,8 +155,6 @@ public class Character : MarioObject
 
 		ProcessTouch(Input.mousePosition);
 	}
-
-	private bool _touching;
 
 	private void ProcessTouch(Vector3 pos)
 	{
@@ -201,5 +200,3 @@ public class Character : MarioObject
 		Paused = pause;
 	}
 }
-
-

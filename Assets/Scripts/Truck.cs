@@ -182,7 +182,7 @@ public class Truck : MonoBehaviour
 			if (!cake)
 			{
 				Debug.LogWarning("Destroyed cake in truck move list");
-				//_cakes.Remove(cake);
+				//Contents.Remove(cake);
 				_cakes.Clear();
 				return;
 			}

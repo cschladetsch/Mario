@@ -133,8 +133,6 @@ public class World : MonoBehaviour
 
 	public void CreateLevel()
 	{
-		Debug.Log("World.CreateLevel");
-
 		if (Level)
 			Destroy(Level.gameObject);
 
@@ -144,9 +142,9 @@ public class World : MonoBehaviour
 
 		Level.Paused = true;
 
-		//Level.gameObject.SetActive(false);
+		Debug.Log("World.CreateLevel: " + Level.name);
 
-		// actually begin the level next update to allow nested spawners to complete
+		// actually begin the level after a few Updates to allow nested spawners to complete
 		_beginLevel = 5;
 	}
 

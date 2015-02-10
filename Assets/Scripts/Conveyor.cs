@@ -19,12 +19,12 @@ public class Conveyor : MarioObject
 	/// <summary>
 	/// The cakes currently on this conveyor
 	/// </summary>
-	public IList<Cake> Cakes { get { return _cakes; } }
+	public IList<Pickup> Contents { get { return _contents; } }
 
 	/// <summary>
 	/// The cakes on this conveyor
 	/// </summary>
-	public List<Cake> _cakes = new List<Cake>();
+	public List<Pickup> _contents = new List<Pickup>();
 
 	/// <summary>
 	/// Cached collision box
@@ -33,52 +33,56 @@ public class Conveyor : MarioObject
 
 	protected override void Begin()
 	{
+		//Debug.Log("Conveyor created");
 		_box = GetComponentInChildren<BoxCollider2D>();
 	}
 
 	/// <summary>
-	/// Add a cake to the conveyor
+	/// Add a item to the conveyor
 	/// </summary>
-	/// <param name="cake">the cake to add</param>
+	/// <param name="item">the item to add</param>
 	/// <param name="pos">where to add it, normalised to the length of the conveyor</param>
-	public void AddCake(Cake cake, float pos)
+	public void AddItem(Pickup item, float pos)
 	{
-		//Debug.Log("AddCake " + cake.name);
-		cake.Reset();
-		cake.Position = pos;
-		cake.Conveyor = this;
-		_cakes.Add(cake);
+		//Debug.Log("AddItem " + item.name);
+		item.Reset();
+		item.Position = pos;
+		item.Conveyor = this;
+
+		_contents.Add(item);
 	}
 
 	protected override void Tick()
 	{
-		UpdateCakes();
+		//Debug.Log("Conveyor.Tick: " + UnityEngine.Time.frameCount);
 
-		MoveCakes();
+		UpdateContents();
+
+		MoveContents();
 	}
 
-	private void UpdateCakes()
+	private void UpdateContents()
 	{
-		foreach (var cake in _cakes.ToList())
+		foreach (var item in _contents.ToList())
 		{
-			cake.UpdateCake(MoveRight);
+			item.UpdateItem(MoveRight);
 
-			if (cake.Dropped)
-				RemoveCake(cake);
+			if (item.Dropped)
+				RemoveItem(item);
 		}
 	}
 
-	private void MoveCakes()
+	private void MoveContents()
 	{
-		if (_cakes.Count == 0)
+		if (_contents.Count == 0)
 			return;
 
 		// sort by position in x
-		_cakes.Sort((a, b) => a.transform.position.x.CompareTo(b.transform.position.x));
-		for (int n = 0; n < _cakes.Count - 1; ++n)
+		_contents.Sort((a, b) => a.transform.position.x.CompareTo(b.transform.position.x));
+		for (int n = 0; n < _contents.Count - 1; ++n)
 		{
-			var curr = _cakes[n];
-			var next = _cakes[n + 1];
+			var curr = _contents[n];
+			var next = _contents[n + 1];
 
 			if (Mathf.Abs(curr.transform.position.x - next.transform.position.x) < 0.01f)
 			{
@@ -86,25 +90,25 @@ public class Conveyor : MarioObject
 			}
 		}
 
-		foreach (var cake in _cakes)
-			MoveCake(cake);
+		foreach (var item in _contents)
+			MoveItem(item);
 	}
 
-	private bool MoveCake(Cake cake)
+	private bool MoveItem(Pickup item)
 	{
-		if (cake.Hanging)
+		if (item.Hanging)
 		{
-			cake.Moved = true;
+			item.Moved = true;
 			return false;
 		}
 
 		//Cake closest;
 		//var sep = float.MaxValue;
-		var mx = cake.transform.position.x;
+		var mx = item.transform.position.x;
 		var move = true;
-		foreach (var c in _cakes)
+		foreach (var c in _contents)
 		{
-			if (c == cake)
+			if (c == item)
 				continue;
 
 			var cx = c.transform.position.x;
@@ -136,29 +140,29 @@ public class Conveyor : MarioObject
 			}
 		}
 
-		cake.Moved = move;
+		item.Moved = move;
 		if (move)
-			cake.Position += Speed*DeltaTime;
+			item.Position += Speed*DeltaTime;
 
-		if (cake.Position > 1)
+		if (item.Position > 1)
 		{
-			cake.StartHanging();
+			item.StartHanging();
 			return false;
 		}
 
-		var dist = cake.Position*_box.bounds.size.x;
+		var dist = item.Position*_box.bounds.size.x;
 		var loc = _box.bounds.min.x + dist;
 		if (!MoveRight)
 			loc = _box.bounds.max.x - dist;
 
-		cake.gameObject.transform.position = new Vector3(loc, transform.position.y + 1, 0);
+		item.gameObject.transform.position = new Vector3(loc, transform.position.y + 1, 0);
 
 		return true;
 	}
 
-	public void RemoveCake(Cake cake)
+	public void RemoveItem(Pickup item)
 	{
-		_cakes.Remove(cake);
+		_contents.Remove(item);
 	}
 
 	public void Pause(bool pause)
@@ -168,9 +172,9 @@ public class Conveyor : MarioObject
 
 	public void Reset()
 	{
-		foreach (var c in _cakes)
+		foreach (var c in _contents)
 			Destroy(c.gameObject);
 
-		_cakes.Clear();
+		_contents.Clear();
 	}
 }

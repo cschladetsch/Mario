@@ -50,14 +50,22 @@ public class Player : MarioObject
 		_canvas = FindObjectOfType<UiCanvas>();
 	}
 
-	public void DroppedCake()
+	public void DroppedCake(Pickup pickup)
 	{
-		if (!Dead && OnCakeDropped != null)
-			OnCakeDropped(this);
-
 		if (Dead || GodMode)
 			return;
 
+		if (pickup is Cake)
+		{
+			if (OnCakeDropped != null)
+				OnCakeDropped(this);
+
+			LoseLife();
+		}
+	}
+
+	private void LoseLife()
+	{
 		if (--Lives == 0)
 			Died();
 
@@ -67,8 +75,13 @@ public class Player : MarioObject
 	private void Died()
 	{
 		World.Pause(true);
-		_canvas.TapToStart.SetActive(true);
-		//SaveGame.UpdateHighScore(_score);
+
+		var score = int.Parse(_canvas.Score.text);
+
+		if (SaveGame.UpdateHighScore(score))
+			_canvas.ShowHighScore(score);
+		else
+			_canvas.ShowTapToStart();
 	}
 
 	private void UpdateUi()
@@ -82,6 +95,16 @@ public class Player : MarioObject
 
 		UpdateUi();
 	}
+
+	public void BombHit(Bomb bomb)
+	{
+		LoseLife();
+	}
+
+	public void AddLife()
+	{
+		++Lives;
+
+		UpdateUi();
+	}
 }
-
-

@@ -48,4 +48,9 @@ public class UiCanvas : MarioObject
 	{
 		LevelCompleted.SetActive(true);
 	}
+
+	public void ShowTapToStart()
+	{
+		TapToStart.gameObject.SetActive(true);
+	}
 }

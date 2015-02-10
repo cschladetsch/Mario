@@ -54,12 +54,13 @@ public class Level : MarioObject
 	{
 		_initialConveyorSpeed = ConveyorSpeed;
 		_characters = FindObjectsOfType<Character>();
-		_cakesHolder = transform.FindChild("Cakes");
+		_cakesHolder = transform.FindChild("Contents");
 
 		//Debug.Log("Level.Init: " + ConveyorSpeed);
 
 		PauseCharacters(true);
 
+		Player.OnCakeDropped -= CakeDropped;
 		Player.OnCakeDropped += CakeDropped;
 	}
 
@@ -67,12 +68,12 @@ public class Level : MarioObject
 	{
 		// spawn another cake
 		--_numCakesSpawned;
-		Debug.Log("Cake Dropped: " + _numCakesSpawned + ", " + UnityEngine.Time.frameCount);
+		//Debug.Log("Cake Dropped: " + _numCakesSpawned + ", " + UnityEngine.Time.frameCount);
 	}
 
 	public void BeginLevel()
 	{
-		Debug.Log("Level.BeginLevel: " + name);
+		//Debug.Log("Level.BeginLevel: " + name);
 
 		Init();
 
@@ -134,8 +135,10 @@ public class Level : MarioObject
 
 		var born = spawnInfo.Spawn(gameObject);
 		born.transform.position = CakeSpawnPoint.transform.position;
-		++_numCakesSpawned;
-		Debug.Log("AddCake " + _numCakesSpawned);
+
+		var cake = born.GetComponent<Cake>();
+		if (cake != null)
+			++_numCakesSpawned;
 	}
 
 	public void Reset()

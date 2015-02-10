@@ -125,20 +125,16 @@ public class Character : MarioObject
 		if (!conv)
 			return;
 
-		foreach (var cake in conv.Cakes.ToList())
+		foreach (var item in conv.Contents.ToList())
 		{
-			if (!cake.Hanging)
+			if (!item.Hanging)
 				continue;
 
-			var dist = Mathf.Abs(transform.position.x - cake.transform.position.x);
+			var dist = Mathf.Abs(transform.position.x - item.transform.position.x);
 			if (dist > 4)
 				continue;
 
-			conv.RemoveCake(cake);
-			if (next)
-				next.AddCake(cake, 0);
-			else
-				FindObjectOfType<Truck>().AddCake(cake);
+			item.CharacterHit(this, conv, next);
 		}
 	}
 

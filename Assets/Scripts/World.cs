@@ -24,10 +24,6 @@ public class World : MonoBehaviour
 
 	public static UiCanvas Canvas;
 
-	public Character LeftCharacter;
-
-	public Character RightCharacter;
-
 	/// <summary>
 	/// The single truck
 	/// </summary>
@@ -156,9 +152,6 @@ public class World : MonoBehaviour
 	{
 		Player = FindObjectOfType<Player>();
 		Truck = FindObjectOfType<Truck>();
-
-		LeftCharacter = Player.LeftCharacter.GetComponent<Character>();
-		RightCharacter = Player.LeftCharacter.GetComponent<Character>();
 
 		Reset();
 

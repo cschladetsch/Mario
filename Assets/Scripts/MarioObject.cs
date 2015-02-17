@@ -21,9 +21,9 @@ public class MarioObject : MonoBehaviour
 
 	protected UiCanvas Canvas { get { return World.Canvas; } }
 
-	protected Character LeftCharacter { get { return World.LeftCharacter; } }
+	protected internal Character LeftCharacter { get { return World.Player.Left; } }
 
-	protected Character RightCharacter { get { return World.RightCharacter; } }
+	protected internal Character RightCharacter { get { return World.Player.Right; } }
 
 	/// <summary>
 	/// The current level being played

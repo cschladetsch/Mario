@@ -51,11 +51,6 @@ public class StoplightBoss : Boss
 	private float _changeTimer;
 
 	/// <summary>
-	/// The total duration of the current transition
-	/// </summary>
-	private float _transitionTime;
-
-	/// <summary>
 	/// The different orientations in space
 	/// </summary>
 	private Transform _left, _right, _forward, _back;
@@ -81,25 +76,12 @@ public class StoplightBoss : Boss
 
 		GetOrientations();
 
-		//_visual.transform.position = _forward.position;
-		//_visual.transform.rotation = _forward.rotation;
-
 		RandomTurn();
 	}
 
 	private void GetOrientations()
 	{
 		_visual = transform.FindChild("Pivot");
-		//var orientations = transform.FindChild("Orientations");
-		//_left = orientations.FindChild("Left");
-		//_right = orientations.FindChild("Right");
-		//_forward = orientations.FindChild("Forward");
-		//_back = orientations.FindChild("Back");
-
-		//_left.gameObject.SetActive(false);
-		//_right.gameObject.SetActive(false);
-		//_forward.gameObject.SetActive(false);
-		//_back.gameObject.SetActive(false);
 	}
 
 	private void ResetChangeTimer()
@@ -111,32 +93,8 @@ public class StoplightBoss : Boss
 	{
 		base.Tick();
 
-		// move between orientations
-		UpdateTransition();
-
 		// change orientation
 		ChangeDirection();
-	}
-
-	/// <summary>
-	/// Update the transition from one orientation to the next
-	/// </summary>
-	private void UpdateTransition()
-	{
-		// no longer transitioning to new orientation
-		if (Dir != Direction.Transitioning)
-			return;
-
-
-		_transitionTimer -= DeltaTime;
-
-		var t = 1.0f - (_transitionTimer/_transitionTime);		// 0..1
-		_visual.transform.position = _startPos + (_target.position - _startPos)*t;
-		_visual.transform.rotation = Quaternion.Slerp(transform.rotation, _target.rotation, t);
-
-		//_visual.transform.rotation = _target.rotation;
-
-		//Debug.Log("Transitioning: " + t + ", " + transform.rotation);
 	}
 
 	/// <summary>
@@ -167,45 +125,6 @@ public class StoplightBoss : Boss
 		}
 
 		Debug.Log("SpotlightBoss.RandomTurn: " + Dir);
-
-		//Orient();
 	}
-
-	//private void Orient()
-	//{
-	//	Transform tr = null;
-
-	//	switch (Dir)
-	//	{
-	//		case Direction.Left:
-	//			tr = _left;
-	//			break;
-
-	//		case Direction.Right:
-	//			tr = _right;
-	//			break;
-
-	//		case Direction.Forward:
-	//			tr = _back;
-	//			break;
-
-	//		case Direction.Back:
-	//			tr = _forward;
-	//			break;
-
-	//		case Direction.Transitioning:
-	//			Debug.LogError("Can't orient when transitioning");
-	//			break;
-	//	}
-
-	//	_transitionTimer = _transitionTime = UnityEngine.Random.Range(MinTransitionTime, MaxTransitionTime);
-
-	//	_startPos = _visual.transform.position;
-	//	_startRot = _visual.transform.rotation;
-
-	//	_target = tr;
-
-	//	Dir = Direction.Transitioning;
-	//}
 }
 

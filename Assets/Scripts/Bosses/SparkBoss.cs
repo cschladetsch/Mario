@@ -1,9 +1,8 @@
-﻿public class SparkBoss : Boss
+﻿using UnityEngine;
+
+public class SparkBoss : Boss
 {
-	/// <summary>
-	/// How long to stay at a given level
-	/// </summary>
-	public float StayTime = 2;
+	public GameObject SparkPrefab;
 
 	protected override void Construct()
 	{

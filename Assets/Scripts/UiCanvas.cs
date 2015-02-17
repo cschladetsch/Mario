@@ -7,6 +7,7 @@ public class UiCanvas : MarioObject
 	public GameObject TapToStart;
 	public GameObject LevelCompleted;
 	public GameObject HighScore;
+	public GameObject PausedPanel;
 
 	protected override void Begin()
 	{
@@ -14,6 +15,7 @@ public class UiCanvas : MarioObject
 		TapToStart.SetActive(true);
 		LevelCompleted.SetActive(false);
 		HighScore.gameObject.SetActive(false);
+		PausedPanel.gameObject.SetActive(false);
 	}
 
 	public void Reset()
@@ -52,5 +54,10 @@ public class UiCanvas : MarioObject
 	public void ShowTapToStart()
 	{
 		TapToStart.gameObject.SetActive(true);
+	}
+	public void PausedTapped()
+	{
+		PausedPanel.gameObject.SetActive(false);
+		World.Pause(false);
 	}
 }

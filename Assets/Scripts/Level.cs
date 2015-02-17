@@ -117,17 +117,28 @@ public class Level : MarioObject
 		_spawners = GetComponents<SpawnInfo>();
 	}
 
+	/// <summary>
+	/// Pause the characters so they cannot be moved when the game is paused
+	/// </summary>
+	/// <param name="pause"></param>
 	private void PauseCharacters(bool pause)
 	{
 		foreach (var ch in _characters)
 			ch.Pause(pause);
 	}
 
+	/// <summary>
+	/// Spawn something at the start of the level, so there is no initial pause
+	/// </summary>
 	private void SpawnSomething()
 	{
 		AddCake(_spawners[0]);
 	}
 
+	/// <summary>
+	/// Add a new cake to the conveyors
+	/// </summary>
+	/// <param name="spawnInfo"></param>
 	private void AddCake(SpawnInfo spawnInfo)
 	{
 		if (_numCakesSpawned == NumTruckLoads*6)

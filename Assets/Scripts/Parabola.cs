@@ -1,13 +1,22 @@
 ﻿using UnityEngine;
 
+/// <summary>
+/// Describes an arc which can be sampled at any given position
+/// </summary>
 public class Parabola
 {
+	/// <summary>
+	/// Were we end up
+	/// </summary>
+	public Vector3 FinalPos;
+
+	// co-efficients
 	private readonly float _a;
 	private readonly float _b;
 	private readonly float _c;
-	private readonly float _dx;
 
-	public Vector3 FinalPos;
+	// the delta-time to use
+	private readonly float _dx;
 
 	public Parabola(Vector2 p1, Vector2 p2, Vector2 p3, float dx)
 	{

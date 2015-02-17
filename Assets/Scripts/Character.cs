@@ -25,6 +25,15 @@ public class Character : MarioObject
 
 	private bool _touching;
 
+	private StoplightBoss1 _stoplightBoss1;
+
+	protected override void Begin()
+	{
+		base.Begin();
+
+		_stoplightBoss1 = FindObjectOfType<StoplightBoss1>();
+	}
+
 	protected override void BeforeFirstUpdate()
 	{
 		base.BeforeFirstUpdate();
@@ -161,7 +170,18 @@ public class Character : MarioObject
 			return;
 
 		var screen = Camera.main.WorldToScreenPoint(transform.position);
-		if (pos.y < screen.y)
+
+		// account for SpotlightBoss: if it is facing us, reverse controls
+		var moveDown = pos.y < screen.y;
+		if (_stoplightBoss1)
+		{
+			 if (_stoplightBoss1.Dir == StoplightBoss1.Direction.Left && Side == WhichSide.Left)
+				moveDown = !moveDown;
+			 if (_stoplightBoss1.Dir == StoplightBoss1.Direction.Right && Side == WhichSide.Right)
+				moveDown = !moveDown;
+		}
+
+		if (moveDown)
 			MoveDown();
 		else
 			MoveUp();

@@ -103,7 +103,7 @@ public class Pickup : MonoBehaviour
 		if (_droppedTimer > 0)
 			_dropped = true;
 
-		if (!Dropped) 
+		if (!Dropped)
 			return false;
 
 		_droppedTimer -= Time.time;
@@ -114,7 +114,7 @@ public class Pickup : MonoBehaviour
 		FindObjectOfType<Player>().DroppedCake(this);
 		if (Conveyor != null)
 			Conveyor.RemoveItem(this);
-		
+
 		Destroy(gameObject);
 		return true;
 	}

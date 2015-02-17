@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 /// <summary>
 /// A generic timer system
@@ -26,10 +24,6 @@ public class Timer : MonoBehaviour
 	/// The time till next trigger
 	/// </summary>
 	private float _time;
-
-	void Awake()
-	{
-	}
 
 	void Start()
 	{

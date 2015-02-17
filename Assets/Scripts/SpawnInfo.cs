@@ -1,7 +1,13 @@
 ﻿using UnityEngine;
 
+/// <summary>
+/// Used to create new object periodically
+/// </summary>
 public class SpawnInfo : MarioObject
 {
+	/// <summary>
+	/// How to make the object
+	/// </summary>
 	public GameObject Prefab;
 
 	/// <summary>

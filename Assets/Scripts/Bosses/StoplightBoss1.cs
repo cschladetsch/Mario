@@ -151,7 +151,7 @@ public class StoplightBoss1 : Boss
 
 		Dir = Direction.Transitioning;
 		
-		Debug.Log("SpotlightBoss.RandomTurn: " + _targetDir);
+		//Debug.Log("SpotlightBoss.RandomTurn: " + _targetDir);
 
 		Orient();
 	}

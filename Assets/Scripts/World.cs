@@ -5,6 +5,8 @@
 /// </summary>
 public class World : MonoBehaviour
 {
+	public Flow.IKernel Kernel;
+
 	/// <summary>
 	/// The current level
 	/// </summary>
@@ -44,6 +46,8 @@ public class World : MonoBehaviour
 			Debug.LogError("Can't have multiple Worlds");
 			return;
 		}
+
+		Kernel = Flow.Create.NewKernel();
 
 		Application.targetFrameRate = 60;
 
@@ -86,6 +90,8 @@ public class World : MonoBehaviour
 
 	void Update()
 	{
+		Kernel.Step();
+
 		// need to wait a few updates before beginning, because we can have nested SpawnGameObject components...
 		if (_beginLevel > 0)
 		{

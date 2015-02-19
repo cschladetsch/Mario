@@ -66,6 +66,9 @@ public class Player : MarioObject
 	/// </summary>
 	private UiCanvas _canvas;
 
+	/// <summary>
+	/// When a cake is dropped or you hit a bomb, you lose a life. 0 lives = game over
+	/// </summary>
 	public int Lives = 3;
 
 	protected override void Construct()

@@ -49,6 +49,7 @@ public class Level : MarioObject
 	private Transform _cakesHolder;
 	private Character []_characters;
 	private float _initialConveyorSpeed;
+	public IList<Conveyor> Conveyors { get { return _conveyors; } }
 
 	void Init()
 	{
@@ -323,5 +324,10 @@ public class Level : MarioObject
 
 		foreach (var conv in _conveyors)
 			conv.Pause(pause);
+	}
+
+	public Conveyor GetTopConveyor()
+	{
+		return _conveyors[_conveyors.Count - 1];
 	}
 }

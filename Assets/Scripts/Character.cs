@@ -48,9 +48,13 @@ public class Character : MarioObject
 		Paused = true;
 	}
 
+	public bool Spasming { get { return _spasmTimer > 0; } }
+
 	protected override void Tick()
 	{
 		base.Tick();
+
+		_spasmTimer -= DeltaTime;
 
 #if UNITY_EDITOR
 		MouseInput();
@@ -214,5 +218,12 @@ public class Character : MarioObject
 	{
 		//Debug.Log("Character.Pause: " + pause);
 		Paused = pause;
+	}
+
+	private float _spasmTimer;
+
+	public void Spasm(float spasmLength)
+	{
+		_spasmTimer = spasmLength;
 	}
 }

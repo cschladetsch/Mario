@@ -77,11 +77,13 @@ public class Player : MarioObject
 		_canvas = FindObjectOfType<UiCanvas>();
 	}
 
-	protected override void Begin()
+	protected override void BeforeFirstUpdate()
 	{
 		// TODO: attach to truck
 		Left = transform.FindChild("Left").GetComponent<Character>();
 		Right = transform.FindChild("Right").GetComponent<Character>();
+
+		Debug.Log("LeftL " + Left);
 	}
 
 	void Update()

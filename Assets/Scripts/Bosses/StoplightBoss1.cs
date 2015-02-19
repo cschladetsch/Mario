@@ -51,7 +51,7 @@ public class StoplightBoss1 : Boss
 		base.Begin();
 
 		Dir = Direction.Forward;
-		
+
 		_angle = 0;
 
 		_waitTimer = WaitTime;
@@ -144,13 +144,13 @@ public class StoplightBoss1 : Boss
 		// ensure we transition to a new direction
 		while (true)
 		{
-			_targetDir = (Direction) values.GetValue(UnityEngine.Random.Range(0, values.Length - 1));
+			_targetDir = (Direction)values.GetValue(UnityEngine.Random.Range(0, values.Length - 1));
 			if (_targetDir != Dir && _targetDir != Direction.Transitioning)
 				break;
 		}
 
 		Dir = Direction.Transitioning;
-		
+
 		//Debug.Log("SpotlightBoss.RandomTurn: " + _targetDir);
 
 		Orient();

@@ -9,7 +9,7 @@ public class Spark : MarioObject
 	/// </summary>
 	public float MoveTime = 3;
 
-	public float Height;
+	public int Height;
 
 	public float SpasmLength = 1.0f;
 
@@ -17,9 +17,9 @@ public class Spark : MarioObject
 	{
 		base.Tick();
 
-		if (LeftCharacter.LevelHeight == Height)
-		{
-			LeftCharacter.Spasm(SpasmLength);
-		}
+		//if (World.Player.Left.Height == Height)
+		//{
+		//	World.Player.Left.Spasm(SpasmLength);
+		//}
 	}
 }

@@ -1,4 +1,4 @@
-// (C) 2012 Christian Schladetsch. See http://www.schladetsch.net/flow/license.txt for Licensing information.
+//
 
 #pragma warning disable 1685
 

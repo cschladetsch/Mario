@@ -22,12 +22,15 @@ public class SparkBoss : Boss
 
 	IEnumerator SparkMove(IGenerator self)
 	{
+		Debug.Log("SparkMove " + World.Level.Conveyors.Count);
 		_spark = ((GameObject) Instantiate(SparkPrefab)).GetComponent<Spark>();
 
 		for (var n = World.Level.Conveyors.Count - 1; n > 0; --n)
 		{
+			Debug.Log("Spark Move " + n);
 			_spark.Height = n;
 			_spark.transform.SetY(World.Level.Conveyors[n].transform.position.y);
+
 			yield return self.ResumeAfter(TimeSpan.FromSeconds(1));
 		}
 

@@ -224,6 +224,7 @@ public class Character : MarioObject
 
 	public void Spasm(float spasmLength)
 	{
+		Debug.Log("Spasm " + Side);
 		_spasmTimer = spasmLength;
 	}
 }

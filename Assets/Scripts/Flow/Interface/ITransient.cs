@@ -1,6 +1,7 @@
 //
 
 using System;
+using System.Security.Cryptography.X509Certificates;
 
 namespace Flow
 {
@@ -21,6 +22,8 @@ namespace Flow
 	/// </summary>
 	public interface ITransient : INamed
 	{
+		Guid Guid { get; }
+
 		/// <summary>
 		/// Occurs when the Complete method is first called. Successive calls to Complete will do nothing.
 		/// </summary>

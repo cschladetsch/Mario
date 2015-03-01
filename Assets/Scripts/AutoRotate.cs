@@ -17,7 +17,7 @@ public class AutoRotate : MonoBehaviour
 
 	private float _angle;
 
-	void Update()
+	private void Update()
 	{
 		_angle += Time.deltaTime*Speed;
 

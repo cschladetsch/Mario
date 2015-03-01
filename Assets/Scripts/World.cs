@@ -1,12 +1,12 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using Flow;
+using UnityEngine;
 
 /// <summary>
 /// The overall controller for the game
 /// </summary>
 public class World : MonoBehaviour
 {
-	public Flow.IKernel Kernel;
-
 	/// <summary>
 	/// The current level
 	/// </summary>
@@ -39,15 +39,17 @@ public class World : MonoBehaviour
 
 	private int _beginLevel;
 
+	public IKernel Kernel;
+
 	void Awake()
 	{
+		Kernel = FindObjectOfType<Kernel>().Kern;
+
 		if (Instance != null)
 		{
 			Debug.LogError("Can't have multiple Worlds");
 			return;
 		}
-
-		Kernel = Flow.Create.NewKernel();
 
 		Application.targetFrameRate = 60;
 
@@ -62,6 +64,17 @@ public class World : MonoBehaviour
 	{
 		//Startlevel();
 		//Pause(true);
+
+		Kernel.Factory.NewCoroutine(TestCoro);
+	}
+
+	private IEnumerator TestCoro(IGenerator t0)
+	{
+		for (var n = 0; n < 100; ++n)
+		{
+			Debug.Log("TestCoro " + n);
+			yield return 0;
+		}
 	}
 
 	public void Reset()
@@ -90,8 +103,6 @@ public class World : MonoBehaviour
 
 	void Update()
 	{
-		Kernel.Step();
-
 		// need to wait a few updates before beginning, because we can have nested SpawnGameObject components...
 		if (_beginLevel > 0)
 		{

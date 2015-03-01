@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Flow;
+using UnityEngine;
 
 /// <summary>
 /// Base class for all objects in the game.
@@ -14,6 +15,8 @@ public class MarioObject : MonoBehaviour
 	/// The single world object
 	/// </summary>
 	protected World World;
+
+	protected IKernel Kernel;
 
 	protected Player Player { get { return World.Player; } }
 
@@ -38,6 +41,8 @@ public class MarioObject : MonoBehaviour
 
 	void Awake()
 	{
+		Kernel = FindObjectOfType<Kernel>().Kern;
+
 		Construct();
 	}
 

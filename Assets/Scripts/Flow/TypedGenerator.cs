@@ -1,7 +1,3 @@
-//
-
-using System.Text;
-
 namespace Flow
 {
 	/// <inheritdoc />

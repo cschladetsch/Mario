@@ -1,31 +1,38 @@
-﻿using UnityEngine;
+﻿using System;
+using System.Collections.Generic;
+using UnityEngine;
 using UnityEditor;
 
-public class KernelView : EditorWindow
+[CustomEditor(typeof(Kernel))]
+public class KernelView : Editor
 {
-	string myString = "Hello World";
-	bool groupEnabled;
-	bool myBool = true;
-	float myFloat = 1.23f;
+	readonly Dictionary<Guid, bool> _show = new Dictionary<Guid, bool>(); 
 
-	private static KernelView _window;
-
-	// Add menu named "My Window" to the Window menu
-	[MenuItem("PlaySide/Kernel View")]
-	static void Init()
+	public override void OnInspectorGUI()
 	{
-		// Get existing open window or if none, make a new one:
-		_window = (KernelView)EditorWindow.GetWindow(typeof(KernelView));
-	}
+		var k = (Kernel)target;
+		if (k == null)
+			return;
 
-	void OnGUI()
-	{
-		GUILayout.Label("Base Settings", EditorStyles.boldLabel);
-		myString = EditorGUILayout.TextField("Text Field", myString);
+		var kernel = k.Kern;
+		var root = kernel.Root;
 
-		groupEnabled = EditorGUILayout.BeginToggleGroup("Optional Settings", groupEnabled);
-		myBool = EditorGUILayout.Toggle("Toggle", myBool);
-		myFloat = EditorGUILayout.Slider("Slider", myFloat, -3, 3);
-		EditorGUILayout.EndToggleGroup();
+		EditorGUILayout.LabelField("Root", root.Name);
+
+		if (!_show.ContainsKey(root.Guid))
+			_show.Add(root.Guid, true);
+
+		_show[root.Guid] = EditorGUILayout.Foldout(_show[root.Guid], root.Name);
+		if (_show[root.Guid])
+		{
+			foreach (var ch in root.Contents)
+			{
+				_show[ch.Guid] = EditorGUILayout.Foldout(_show[ch.Guid], ch.Name);
+			}
+		}
+
+
 	}
 }
+
+

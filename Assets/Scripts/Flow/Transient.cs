@@ -6,6 +6,8 @@ namespace Flow
 {
 	public class Transient : ITransient
 	{
+		public Guid Guid { get; private set; }
+
 		/// <inheritdoc />
 		public event TransientHandler Completed;
 
@@ -59,9 +61,13 @@ namespace Flow
 			return other == null || !other.Active;
 		}
 
+		private System.Guid _guid;
+
 	    public Transient()
 		{
 			Active = true;
+
+		    _guid = System.Guid.NewGuid();
 		}
 
 		public static bool DebugTrace;

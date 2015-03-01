@@ -17,7 +17,7 @@ public class SparkBoss : Boss
 	{
 		base.Begin();
 
-		World.Kernel.Factory.NewCoroutine(SparkMove);
+		Kernel.Factory.NewCoroutine(SparkMove);
 	}
 
 	IEnumerator SparkMove(IGenerator self)

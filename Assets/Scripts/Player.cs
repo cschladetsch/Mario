@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 /// <summary>
 /// The single player of the game, whom controls both Left and Right characters.
@@ -41,6 +42,21 @@ public class Player : MarioObject
 	/// If true, the player doesn't lose a life if a cake is dropped or hits a bomb
 	/// </summary>
 	public bool GodMode = false;
+
+	/// <summary>
+	/// Total current list of Ingredients that the player has
+	/// </summary>
+	public List<Ingredient> Ingredients = new List<Ingredient>();
+
+	/// <summary>
+	/// The completed products - they may be sold directyl, or used to make better products
+	/// </summary>
+	public List<Product> Products = new List<Product>();
+
+	/// <summary>
+	/// What is currently on sale
+	/// </summary>
+	public List<Product> SellingProducts = new List<Product>(); 
 
 	public delegate void CollisionHandler(Collision2D other);
 	public delegate void TriggerHandler(Collider2D other);
@@ -92,6 +108,11 @@ public class Player : MarioObject
 		{
 			FindObjectOfType<World>().TogglePause();
 		}
+	}
+
+	List<Product> CalcPossibleProducts()
+	{
+		return null;
 	}
 
 	public void DroppedCake(Pickup pickup)

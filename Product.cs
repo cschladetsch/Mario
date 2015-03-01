@@ -1,9 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using System.Collections.Generic;
 
 public class Product : MarioObject
 {
+	public enum Type
+	{
+		PlainMuffin,
+		ChocolateMuffin,
+		CherryMuffin,
+		ChocolateCake,
+		CheeryCake,
+		CheeseCake,
+	}
+
+	public Dictionary<Type, Recipe> Recipies; 
+
 	protected override void Construct()
 	{
 		base.Construct();

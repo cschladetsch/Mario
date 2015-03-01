@@ -15,6 +15,9 @@ public class KernelView : Editor
 			return;
 
 		var kernel = k.Kern;
+		if (kernel == null)
+			return;
+
 		var root = kernel.Root;
 
 		EditorGUILayout.LabelField("Root", root.Name);

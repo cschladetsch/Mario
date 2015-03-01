@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Product : MarioObject
+public class AreaBase : MarioObject
 {
 	protected override void Construct()
 	{

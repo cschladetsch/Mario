@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
 using Flow;
 using UnityEngine;
 
@@ -7,12 +8,20 @@ using UnityEngine;
 /// </summary>
 public class World : MonoBehaviour
 {
+	public int AreaIndex;
+
+	public AreaBase CurrentArea;
+
+	public Level Level;
+
+	public List<Product> AvailableProducts;
+
 	/// <summary>
 	/// The current level
 	/// </summary>
 	public GameObject[] Levels;
 
-	public Level Level;
+	public GameObject[] Areas;
 
 	/// <summary>
 	/// The single world instance
@@ -34,6 +43,8 @@ public class World : MonoBehaviour
 	private bool _paused;
 
 	private int _levelIndex;
+
+	private int _areaIndex;
 
 	private bool _first = true;
 
@@ -58,6 +69,7 @@ public class World : MonoBehaviour
 		Canvas = FindObjectOfType<UiCanvas>();
 
 		_levelIndex = 0;
+		_areaIndex = 1;
 	}
 
 	void Start()
@@ -82,6 +94,44 @@ public class World : MonoBehaviour
 		if (Level == null)
 			return;
 
+		ResetArea(1);
+	}
+
+	void ResetArea(int num)
+	{
+		switch (num)
+		{
+			case 1:
+				MainShop();
+				break;
+			case 2:
+				WaitingForTruck();
+				break;
+			case 3:
+				ConveyorGame();
+				break;
+			case 4:
+				Cooking();
+				break;
+		}
+	}
+
+	private void Cooking()
+	{
+	}
+
+	private void WaitingForTruck()
+	{
+		throw new System.NotImplementedException();
+	}
+
+	private void MainShop()
+	{
+		throw new System.NotImplementedException();
+	}
+
+	private void ConveyorGame()
+	{
 		Truck.Reset();
 
 		Level.Reset();

@@ -2,12 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CookingCanvas : MarioObject
+public class MainGame : MarioObject
 {
-
-	public GameObject BuyCherry;
-	public GameObject BuyMuffin;
-
 	protected override void Construct()
 	{
 		base.Construct();
@@ -26,14 +22,6 @@ public class CookingCanvas : MarioObject
 	protected override void Tick()
 	{
 		base.Tick();
-	}
-
-	public void BuyCherryPressed()
-	{
-	}
-
-	public void BuyMuffinPressed()
-	{
 	}
 }
 

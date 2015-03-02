@@ -74,7 +74,7 @@ public class Level : MarioObject
 
 	public void BeginLevel()
 	{
-		//Debug.Log("Level.BeginLevel: " + name);
+		//Debug.Log("Level.BeginConveyorLevel: " + name);
 
 		Init();
 

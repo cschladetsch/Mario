@@ -1,6 +1,8 @@
 ﻿using System;
 using UnityEngine;
 
+#pragma warning disable 414
+
 /// <summary>
 /// The Stoplight Boss logic.
 /// 

@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Flow;
 using UnityEngine;
 
@@ -21,7 +22,9 @@ public class World : MonoBehaviour
 	/// </summary>
 	public GameObject[] Levels;
 
-	public GameObject[] Areas;
+	public GameObject[] AreaPrefabs;
+
+	public List<AreaBase> Areas = new List<AreaBase>();
 
 	/// <summary>
 	/// The single world instance
@@ -78,13 +81,18 @@ public class World : MonoBehaviour
 		//Pause(true);
 
 		Kernel.Factory.NewCoroutine(TestCoro);
+
+		foreach (var a in AreaPrefabs)
+		{
+			Areas.Add(((GameObject) Instantiate(a)).GetComponent<AreaBase>());
+		}
 	}
 
 	private IEnumerator TestCoro(IGenerator t0)
 	{
 		for (var n = 0; n < 100; ++n)
 		{
-			Debug.Log("TestCoro " + n);
+			//Debug.Log("TestCoro " + n);
 			yield return 0;
 		}
 	}
@@ -94,26 +102,39 @@ public class World : MonoBehaviour
 		if (Level == null)
 			return;
 
-		ResetArea(1);
+		BeginArea(1);
 	}
 
-	void ResetArea(int num)
+	public void BeginArea(int num)
 	{
+		_areaIndex = num;
+
 		switch (num)
 		{
+			case 0:
+				MainShop();			// sending through stock, paying customers, and ordering new ingredients
+				break;
 			case 1:
-				MainShop();
+				WaitingForTruck();	// paying customers, waiting for truck
 				break;
 			case 2:
-				WaitingForTruck();
+				ConveyorGame();		// conveyor game. deliver ingredients and products past boss
 				break;
 			case 3:
-				ConveyorGame();
-				break;
-			case 4:
-				Cooking();
+				Cooking();			// bakery: produce goods for selling in MainShop
 				break;
 		}
+
+		Debug.Log("Using Area " + _areaIndex);
+		CurrentArea = Areas[_areaIndex];
+
+		// don't change camera for different areas
+		//var p = CurrentArea.transform.position;
+		//Camera.main.transform.position = new Vector3(p.x, p.y, -20);
+
+		for (var n = 0; n < Areas.Count; ++n)
+			//Areas[n].Activate(n == _areaIndex);
+			Areas[n].gameObject.SetActive(n == _areaIndex);
 	}
 
 	private void Cooking()
@@ -122,12 +143,12 @@ public class World : MonoBehaviour
 
 	private void WaitingForTruck()
 	{
-		throw new System.NotImplementedException();
+		Debug.Log("WaitingForTruck");
 	}
 
 	private void MainShop()
 	{
-		throw new System.NotImplementedException();
+
 	}
 
 	private void ConveyorGame()
@@ -145,10 +166,11 @@ public class World : MonoBehaviour
 	public void Restart()
 	{
 		_levelIndex = 0;
+		_areaIndex = 0;
 
 		Reset();
 
-		BeginLevel();
+		//BeginConveyorLevel();
 	}
 
 	void Update()
@@ -160,22 +182,22 @@ public class World : MonoBehaviour
 
 			if (_beginLevel == 0)
 			{
-				BeginLevel();
+				BeginConveyorLevel();
 
-				// if this is the first level, then we pause else we unpause
+				// if this is the first level, then we pause else we un-pause
 				Pause(_levelIndex == 0);
 			}
 
 			return;
 		}
-
+		
 		if (_first)
 		{
 			_first = false;
 
-			CreateLevel();
+			BeginArea(0);
 
-			Pause(true);
+			//Pause(true);
 		}
 	}
 
@@ -215,7 +237,7 @@ public class World : MonoBehaviour
 		_beginLevel = 5;
 	}
 
-	public void BeginLevel()
+	public void BeginConveyorLevel()
 	{
 		Player = FindObjectOfType<Player>();
 		Truck = FindObjectOfType<Truck>();
@@ -232,6 +254,14 @@ public class World : MonoBehaviour
 	{
 		//Debug.Log("Next Level");
 		_levelIndex = (_levelIndex + 1)%Levels.Length;
+		_areaIndex = 2;
 		CreateLevel();
+	}
+
+	public void NextArea()
+	{
+		Debug.Log("World.Next Area");
+		_areaIndex = (_areaIndex + 1)%4;
+		BeginArea(_areaIndex);
 	}
 }

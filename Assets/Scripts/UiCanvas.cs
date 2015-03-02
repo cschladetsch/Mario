@@ -12,10 +12,12 @@ public class UiCanvas : MarioObject
 	protected override void Begin()
 	{
 		base.Begin();
-		TapToStart.SetActive(true);
+		//TapToStart.SetActive(true);
 		LevelCompleted.SetActive(false);
 		HighScore.gameObject.SetActive(false);
 		PausedPanel.gameObject.SetActive(false);
+
+		World.BeginArea(0);
 	}
 
 	public void Reset()
@@ -26,13 +28,14 @@ public class UiCanvas : MarioObject
 	public void Tapped()
 	{
 		TapToStart.gameObject.SetActive(false);
-		World.BeginLevel();
+		//World.BeginConveyorLevel();
+		World.BeginArea(0);
 	}
 
 	public void LevelCompletedTapped()
 	{
 		LevelCompleted.gameObject.SetActive(false);
-		World.NextLevel();
+		World.BeginArea(0);
 	}
 
 	public void ShowHighScore(int score)

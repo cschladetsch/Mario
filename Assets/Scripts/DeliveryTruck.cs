@@ -42,8 +42,6 @@ public class DeliveryTruck : MarioObject
 			var delta = DeltaTime*_speed;
 			transform.SetX(transform.position.x + delta);
 
-			Debug.Log(transform.position.x);
-
 			Ready = transform.position.x >= _endX;
 			if (Ready)
 				_delivering = false;

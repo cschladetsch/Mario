@@ -16,9 +16,17 @@ public class Ingredient : MonoBehaviour
 
 	public TypeEnum Type;
 
-	public float BaseCost;
+	public int BaseCost;
 
 	public string Name { get { return Type.ToString(); } }
+
+	public UnityEngine.UI.Text CostText;
+
+	public void UpdateCostText()
+	{
+		CostText.text = BaseCost.ToString();
+	}
+
 }
 
 

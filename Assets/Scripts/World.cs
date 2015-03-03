@@ -96,6 +96,7 @@ public class World : MonoBehaviour
 			Areas.Add(area);
 		}
 
+		Player = FindObjectOfType<Player>();
 		BeginArea(0);
 	}
 
@@ -254,7 +255,6 @@ public class World : MonoBehaviour
 
 	public void BeginConveyorLevel()
 	{
-		Player = FindObjectOfType<Player>();
 		Truck = FindObjectOfType<Truck>();
 
 		Reset();

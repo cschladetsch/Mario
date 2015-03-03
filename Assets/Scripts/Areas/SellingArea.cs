@@ -89,7 +89,6 @@ public class SellingArea : AreaBase
 		var go = (GameObject) Instantiate(DeliveryTruckPrefab);
 		var truck = go.GetComponent<DeliveryTruck>();
 		truck.Deliver(StartX, EndX, DeliveryTruckTime, DeliveryTruckHeight, DeliverryCarDepth);
-
 	}
 }
 

@@ -9,6 +9,11 @@ using UnityEngine;
 public class Player : MarioObject
 {
 	/// <summary>
+	/// How much gold (money) the player has
+	/// </summary>
+	public int Gold = 5;
+
+	/// <summary>
 	/// How to make the left character
 	/// </summary>
 	public GameObject CharacterLeftPrefab;

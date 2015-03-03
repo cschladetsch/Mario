@@ -9,6 +9,41 @@ public class SellingAreaCanvas : MarioObject
 {
 	readonly Dictionary<Ingredient.TypeEnum, int> _contents = new Dictionary<Ingredient.TypeEnum, int>();
 
+	public UnityEngine.UI.Text GoldText;
+
+	protected override void BeforeFirstUpdate()
+	{
+		base.BeforeFirstUpdate();
+
+		UpdateGoldDisplay();
+
+		GatherCostTexts();
+
+		UpdateCosts();
+	}
+
+	private void GatherCostTexts()
+	{
+		foreach (var ingredient in GetIngredientPanels())
+		{
+			ingredient.CostText = ingredient.transform.FindChild("Cost").GetComponent<UnityEngine.UI.Text>();
+		}
+	}
+
+	private void UpdateCosts()
+	{
+		foreach (var ingredient in GetIngredientPanels())
+		{
+			ingredient.UpdateCostText();
+		}
+	}
+
+	// ReSharper disable once ReturnTypeCanBeEnumerable.Local
+	private Ingredient[] GetIngredientPanels()
+	{
+		return transform.GetComponentsInChildren<Ingredient>();
+	}
+
 	/// <summary>
 	/// Complete the order, remove the UI, start the truck
 	/// </summary>
@@ -27,17 +62,42 @@ public class SellingAreaCanvas : MarioObject
 	/// <param name="button"></param>
 	public void OrderIngredient(GameObject button)
 	{
-		var ing = button.transform.parent.GetComponent<Ingredient>().Type;
-		var buttonName = button.GetComponent<UnityEngine.UI.Button>().name;
-		var num = int.Parse(buttonName);
-		Debug.Log(ing + " " +  num);
+		var ing = button.transform.parent.GetComponent<Ingredient>();
+		var type = ing.Type;
+		var cost = ing.BaseCost;
+		var amount = int.Parse(button.GetComponent<UnityEngine.UI.Button>().name);
 
-		if (!_contents.ContainsKey(ing))
-			_contents.Add(ing, 0);
+		// can't afford it
+		if (!Player.GodMode && cost > 0 && cost > Player.Gold)
+			return;
 
-		var next = _contents[ing] + num;
-		_contents[ing] = Mathf.Max(0, next);
+		// can't go negative
+		var totalCost = cost*amount;
+		if (totalCost + Player.Gold < 0)
+			return;
+
+		Debug.Log(ing + " " +  amount);
+
+		if (!_contents.ContainsKey(type))
+			_contents.Add(type, 0);
+
+		var stock = _contents[type];
+
+		var nextAmount = stock + amount;
+		if (nextAmount < 0)
+			return;
+
+		_contents[type] = Mathf.Max(0, nextAmount);
+
+		Player.Gold -= totalCost;
+
+		UpdateGoldDisplay();
+	}
+
+	private void UpdateGoldDisplay()
+	{
+		//Debug.Log("Player " + Player);
+		GoldText.text = Player.Gold.ToString();
 	}
 }
-
 

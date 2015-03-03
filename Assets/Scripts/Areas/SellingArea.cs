@@ -100,21 +100,7 @@ public class SellingArea : AreaBase
 		base.Next();
 	}
 
-	public void FinishOrder()
-	{
-		Debug.Log("Finish Order");
-		World.NextArea();
-	}
 
-	public void OrderIngredient(int val)
-	{
-		var p = transform.parent;
-		Debug.Log(p.name);
-		Debug.Log(p.GetComponent<Ingredient>());
-
-		var ing = transform.GetComponentInParent<Ingredient>();
-		Debug.Log(ing.name + " " + val);
-	}
 }
 
 

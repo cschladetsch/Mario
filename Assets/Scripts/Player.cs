@@ -95,7 +95,7 @@ public class Player : MarioObject
 
 	protected override void Construct()
 	{
-		Debug.Log("Player.Construct");
+		//Debug.Log("Player.Construct");
 
 		Control = GetComponent<Control>();
 		_canvas = FindObjectOfType<UiCanvas>();

@@ -51,15 +51,10 @@ public class Level : MarioObject
 	private float _initialConveyorSpeed;
 	public IList<Conveyor> Conveyors { get { return _conveyors; } }
 
-	void Init()
+	public void Init()
 	{
 		_initialConveyorSpeed = ConveyorSpeed;
 		_cakesHolder = transform.FindChild("Contents");
-
-		// WTF
-		Debug.Log("Level.Init: " + ConveyorSpeed);
-		Debug.Log("World: " + World.name);
-
 	}
 
 	private void CakeDropped(Player player)
@@ -71,10 +66,10 @@ public class Level : MarioObject
 
 	public void BeginLevel()
 	{
+		Debug.Log("Level.BeginLevel");
+
 		_characters = FindObjectsOfType<Character>();
 		PauseCharacters(true);
-
-		Debug.Log("BeginLevel: World=" + World.name);
 
 		Player.OnCakeDropped -= CakeDropped;
 		Player.OnCakeDropped += CakeDropped;
@@ -140,7 +135,7 @@ public class Level : MarioObject
 	/// </summary>
 	private void SpawnSomething()
 	{
-		AddCake(_spawners[0]);
+		//AddCake(_spawners[0]);
 	}
 
 	/// <summary>
@@ -149,6 +144,9 @@ public class Level : MarioObject
 	/// <param name="spawnInfo"></param>
 	private void AddCake(SpawnInfo spawnInfo)
 	{
+		if (!spawnInfo.CanSpawn())
+			return;
+
 		if (_numCakesSpawned == NumTruckLoads*6)
 			return;
 
@@ -162,6 +160,8 @@ public class Level : MarioObject
 
 	public void Reset()
 	{
+		Debug.Log("Level.Reset");
+
 		GatherConveyors();
 
 		if (_initialConveyorSpeed > 0)
@@ -193,6 +193,8 @@ public class Level : MarioObject
 
 		foreach (var c in _conveyors)
 			c.Speed = ConveyorSpeed;
+
+		Debug.Log("GatherConveyors: " + _conveyors.Count);
 	}
 
 	private float _speedTimer;
@@ -248,6 +250,8 @@ public class Level : MarioObject
 
 	private void UpdateSpawners()
 	{
+		//Debug.Log("Update Spawners");
+
 		if (_spawners == null)
 			return;
 

@@ -30,7 +30,7 @@ public class WaitingArea : AreaBase
 
 		base.Next();
 
-		World.NextLevel();
+		//World.NextLevel();
 	}
 }
 

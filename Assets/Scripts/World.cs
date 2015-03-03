@@ -1,8 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using Flow;
 using UnityEngine;
+
+// var is not used (right now!)
+#pragma warning disable 649
 
 /// <summary>
 /// The overall controller for the game
@@ -51,7 +53,7 @@ public class World : MonoBehaviour
 
 	private bool _first = true;
 
-	private int _beginLevel;
+	private int _beginLevelAfterThisManyUpdates;
 
 	public IKernel Kernel;
 
@@ -79,7 +81,7 @@ public class World : MonoBehaviour
 		//Startlevel();
 		//Pause(true);
 
-		Debug.Log("World.Start");
+		//Debug.Log("World.Start");
 		Kernel.Factory.NewCoroutine(TestCoro);
 
 		var root = transform.FindChild("Areas");
@@ -138,7 +140,7 @@ public class World : MonoBehaviour
 				break;
 		}
 
-		Debug.Log("Using Area " + _areaIndex + " from " + Areas.Count);
+		//Debug.Log("Using Area " + _areaIndex + " from " + Areas.Count);
 		CurrentArea = Areas[_areaIndex];
 
 		DisableOtherAreas();
@@ -194,18 +196,18 @@ public class World : MonoBehaviour
 	void Update()
 	{
 		// need to wait a few updates before beginning, because we can have nested SpawnGameObject components...
-		if (_beginLevel > 0)
+		if (_beginLevelAfterThisManyUpdates > 0)
 		{
-			--_beginLevel;
+			--_beginLevelAfterThisManyUpdates;
 
-			if (_beginLevel == 0)
+			if (_beginLevelAfterThisManyUpdates == 0)
 			{
+				Debug.Log("BeginConveyorLevel");
+
 				BeginConveyorLevel();
 
 				// if this is the first level, then we pause else we un-pause
-				//Pause(_levelIndex == 0);
-
-				Pause(false);
+				Pause(_levelIndex == 0);
 
 				Level.BeginLevel();
 			}
@@ -248,10 +250,10 @@ public class World : MonoBehaviour
 
 		Level.Paused = true;
 
-		//Debug.Log("World.CreateLevel: " + Level.name);
+		AddSpawners();
 
 		// actually begin the level after a few Updates to allow nested spawners to complete
-		_beginLevel = 5;
+		_beginLevelAfterThisManyUpdates = 5;
 	}
 
 	public void BeginConveyorLevel()
@@ -265,41 +267,46 @@ public class World : MonoBehaviour
 		Level.Pause(false);
 	}
 
-	public void NextLevel()
-	{
-		////Debug.Log("Next Level");
-		//_levelIndex = (_levelIndex + 1)%Levels.Length;
-		//_areaIndex = 2;
-		//CreateLevel();
-	}
+	private Dictionary<Ingredient.TypeEnum, int> _contents;
 
-	//public void NextArea()
-	//{
-	//	Debug.Log("World.Next Area");
-	//	_areaIndex = (_areaIndex + 1)%4;
-	//	BeginArea(_areaIndex);
-	//}
 	public void BeginMainGame(Dictionary<Ingredient.TypeEnum, int> contents)
 	{
-		foreach (var c in contents)
+		_contents = contents;
+
+		_levelIndex = 0;
+
+		CreateLevel();
+
+		BeginArea(2);
+	}
+
+	private void AddSpawners()
+	{
+// create spawners from what was in truck
+		foreach (var c in _contents)
 		{
-			var go = new GameObject("Spawn" + c.Key);
-			var sp = go.AddComponent<SpawnInfo>();
+			if (c.Value == 0)
+				return;
+
+			var sp = Level.gameObject.AddComponent<SpawnInfo>();
 			sp.MinSpawnTime = 2;
 			sp.MaxSpawnTime = 4;
 			sp.Weight = 1;
+			sp.MaxSpawns = c.Value;
 
-			var path = string.Format("Resources/{0}", c.Key);
-			sp.Prefab = (GameObject)Resources.Load(path);
-			if (sp.prefab == null)
+			// load prefabs to make ingredients from resources path
+			var path = string.Format("{0}", c.Key);
+			var ob = Resources.Load(path);
+			//Debug.Log("loaded '" + ob + "' from path " + "'" + path + "'");
+
+			sp.Prefab = (GameObject) Instantiate(ob);
+			if (sp.Prefab == null)
 			{
-				Debug.LogWarning("Can't make a " + c.Key);
+				Debug.LogWarning("Can't make a " + c.Key  + ", using path " + path);
 				continue;
 			}
 
-			Debug.Log("Using " + sp.Prefab.name + " prefab to make " + c.Key);
+			//Debug.Log("Using " + sp.Prefab.name + " prefab to make " + c.Key);
 		}
-
-		BeginArea(2);
 	}
 }

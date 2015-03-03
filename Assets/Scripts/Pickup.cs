@@ -106,7 +106,7 @@ public class Pickup : MonoBehaviour
 		if (!Dropped)
 			return false;
 
-		_droppedTimer -= Time.time;
+		_droppedTimer -= Time.deltaTime;
 		if (_droppedTimer > 0)
 			return false;
 
@@ -134,6 +134,8 @@ public class Pickup : MonoBehaviour
 
 	private void OnCollisionEnter2D(Collision2D other)
 	{
+		var level = FindObjectOfType<Level>();
+
 		var go = other.gameObject;
 		if (Dropped && go.layer == 8)	// ground
 		{
@@ -144,9 +146,11 @@ public class Pickup : MonoBehaviour
 		if (!_firstDrop && !Dropped && go.layer == 9)	// conveyor
 		{
 			_firstDrop = true;
-			//Debug.Log("Start: " + name);
 			rigidbody2D.isKinematic = true;
-			FindObjectOfType<Level>().GetConveyor(0).AddItem(this, 0.8f);
+			var conveyor = level.GetConveyor(0);
+			// HACKS
+			if (conveyor != null)
+				conveyor.AddItem(this, 0.8f);
 			return;
 		}
 	}

@@ -32,7 +32,7 @@ public class SpawnInfo : MarioObject
 
 	private Transform _folder;		// where to place newly spawned objects and their splines, if any
 	private float _spawnTimer;		// when this reaches zero, this spawned is able to spawn
-	private float _spawnsLeft;
+	private int _spawnsLeft;
 
 	protected override void Begin()
 	{
@@ -60,9 +60,12 @@ public class SpawnInfo : MarioObject
 
 	public GameObject Spawn(GameObject parent)
 	{
+		if (--_spawnsLeft <= 0)
+			return null;
+
 		if (Prefab == null)
 		{
-			Debug.LogError("Spawner " + name + " has no Prefab");
+			Debug.LogError("Spawner has no Prefab");
 			return null;
 		}
 
@@ -83,5 +86,10 @@ public class SpawnInfo : MarioObject
 	private float CalcNextSpawnTime()
 	{
 		return _spawnTimer = Random.Range(MinSpawnTime, MaxSpawnTime);
+	}
+
+	public bool CanSpawn()
+	{
+		return _spawnsLeft > 0;
 	}
 }

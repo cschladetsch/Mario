@@ -66,7 +66,7 @@ public class SellingAreaCanvas : MarioObject
 	/// </summary>
 	public void FinishOrder()
 	{
-		Debug.Log("Finish Order");
+		//Debug.Log("Finish Order");
 		var area = World.CurrentArea as BuyingArea;
 		World.CurrentArea.UiCanvas.gameObject.SetActive(false);
 		area.StartDeliveryTruck(_contents);
@@ -102,7 +102,7 @@ public class SellingAreaCanvas : MarioObject
 
 		_contents[type] = nextAmount;
 
-		Debug.Log(string.Format("Currnet {0}, totalCost {1}, new {2}", gold, totalCost, gold - totalCost));
+		//Debug.Log(string.Format("Currnet {0}, totalCost {1}, new {2}", gold, totalCost, gold - totalCost));
 
 		Player.Gold -= totalCost;
 
@@ -126,7 +126,7 @@ public class SellingAreaCanvas : MarioObject
 
 	void OnDisable()
 	{
-		Debug.Log(" " + name + " was disabled");
+		//Debug.Log(" " + name + " was disabled");
 	}
 }
 

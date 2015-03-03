@@ -5,12 +5,12 @@ public class DeliveryTruck : MarioObject
 {
 	public bool Ready;
 
-	private Transform _car;
+	//private Transform _car;
 
 	protected override void Construct()
 	{
 		base.Construct();
-		_car = transform.FindChild("Visual").FindChild("DeliveryCar");
+		//_car = transform.FindChild("Visual").FindChild("DeliveryCar");
 	}
 
 	protected override void Begin()
@@ -37,7 +37,7 @@ public class DeliveryTruck : MarioObject
 		_speed = (_endX - startX)/time;
 		_contents = contents;
 
-		Debug.Log("Delivering truck");
+		//Debug.Log("Delivering truck");
 	}
 
 	/// <summary>
@@ -45,10 +45,10 @@ public class DeliveryTruck : MarioObject
 	/// </summary>
 	void OnGUI()
 	{
-		var point = Camera.main.WorldToScreenPoint(_car.position);
-		var delta = _endX - transform.position.x;
-		var time = delta/_speed;
-		var remaining = string.Format("{0:0.0}s", time);
+		//var point = Camera.main.WorldToScreenPoint(_car.position);
+		//var delta = _endX - transform.position.x;
+		//var time = delta/_speed;
+		//var remaining = string.Format("{0:0.0}s", time);
 		//guiText.text = remaining;
 	}
 

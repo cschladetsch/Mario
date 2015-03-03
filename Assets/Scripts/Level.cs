@@ -91,6 +91,10 @@ public class Level : MarioObject
 		PauseCharacters(false);
 
 		GatherSpawners();
+
+		// HACKS
+		var cam = Camera.main.transform;
+		cam.position = new Vector3(-1.37f, 4.79f, -10);
 	}
 
 	private int _numTrucksDelivered;

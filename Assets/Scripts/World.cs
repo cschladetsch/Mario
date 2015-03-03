@@ -89,6 +89,10 @@ public class World : MonoBehaviour
 			var area = ((GameObject) Instantiate(a)).GetComponent<AreaBase>();
 			var name = area.name.Replace("(Clone)", "") + "UI";
 			var child = Canvas.transform.FindChild(name);
+			if (child == null)
+			{
+				Debug.LogWarning("Couldn't find UI for area " + area.name);
+			}
 			area.UiCanvas = child.gameObject;
 			area.transform.parent = root.transform;
 			Areas.Add(area);
@@ -275,4 +279,27 @@ public class World : MonoBehaviour
 	//	_areaIndex = (_areaIndex + 1)%4;
 	//	BeginArea(_areaIndex);
 	//}
+	public void BeginMainGame(Dictionary<Ingredient.TypeEnum, int> contents)
+	{
+		foreach (var c in contents)
+		{
+			var go = new GameObject("Spawn" + c.Key);
+			var sp = go.AddComponent<SpawnInfo>();
+			sp.MinSpawnTime = 2;
+			sp.MaxSpawnTime = 4;
+			sp.Weight = 1;
+
+			var path = string.Format("Resources/{0}", c.Key);
+			sp.Prefab = (GameObject)Resources.Load(path);
+			if (sp.prefab == null)
+			{
+				Debug.LogWarning("Can't make a " + c.Key);
+				continue;
+			}
+
+			Debug.Log("Using " + sp.Prefab.name + " prefab to make " + c.Key);
+		}
+
+		BeginArea(2);
+	}
 }

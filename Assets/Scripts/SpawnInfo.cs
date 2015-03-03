@@ -25,14 +25,22 @@ public class SpawnInfo : MarioObject
 	/// </summary>
 	public float MaxSpawnTime = 20;
 
+	/// <summary>
+	/// if -1, then always spawn
+	/// </summary>
+	public int MaxSpawns = -1;
+
 	private Transform _folder;		// where to place newly spawned objects and their splines, if any
 	private float _spawnTimer;		// when this reaches zero, this spawned is able to spawn
+	private float _spawnsLeft;
 
 	protected override void Begin()
 	{
 		_folder = transform.FindChild("Spawned");
 
 		CalcNextSpawnTime();
+
+		_spawnsLeft = MaxSpawns;
 	}
 
 	public bool CouldSpawnFromHeight()
@@ -42,7 +50,7 @@ public class SpawnInfo : MarioObject
 
 	public bool CouldSpawn()
 	{
-		return _spawnTimer < 0 && CouldSpawnFromHeight();
+		return _spawnTimer < 0 && CouldSpawnFromHeight() && _spawnsLeft > 0;
 	}
 
 	protected override void Tick()

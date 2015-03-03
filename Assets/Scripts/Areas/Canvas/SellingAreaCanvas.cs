@@ -67,7 +67,7 @@ public class SellingAreaCanvas : MarioObject
 	public void FinishOrder()
 	{
 		Debug.Log("Finish Order");
-		var area = World.CurrentArea as SellingArea;
+		var area = World.CurrentArea as BuyingArea;
 		World.CurrentArea.UiCanvas.gameObject.SetActive(false);
 		area.StartDeliveryTruck(_contents);
 	}

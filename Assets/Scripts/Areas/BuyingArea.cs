@@ -8,7 +8,7 @@ using UnityEngine;
 /// <summary>
 /// Areas where people by things that were made in the bakery
 /// </summary>
-public class SellingArea : AreaBase
+public class BuyingArea : AreaBase
 {
 	public List<Ingredient> Ingredients = new List<Ingredient>();
 
@@ -90,7 +90,7 @@ public class SellingArea : AreaBase
 	{
 		var go = (GameObject) Instantiate(DeliveryTruckPrefab);
 		var truck = go.GetComponent<DeliveryTruck>();
-		truck.Deliver(StartX, EndX, DeliveryTruckTime, DeliveryTruckHeight, DeliverryCarDepth);
+		truck.Deliver(StartX, EndX, DeliveryTruckTime, DeliveryTruckHeight, DeliverryCarDepth, contents);
 	}
 }
 

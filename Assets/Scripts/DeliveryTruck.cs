@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DeliveryCar : MarioObject
+public class DeliveryTruck : MarioObject
 {
 	protected override void Construct()
 	{

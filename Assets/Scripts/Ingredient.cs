@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Reflection;
 using UnityEngine;
 
-public class Ingredient
+public class Ingredient : MonoBehaviour
 {
-	public enum Type
+	public enum TypeEnum
 	{
 		Cherry,
 		Muffin,
@@ -13,6 +13,12 @@ public class Ingredient
 		Raisen,
 		Strawberry,
 	}
+
+	public TypeEnum Type;
+
+	public float BaseCost;
+
+	public string Name { get { return Type.ToString(); } }
 }
 
 

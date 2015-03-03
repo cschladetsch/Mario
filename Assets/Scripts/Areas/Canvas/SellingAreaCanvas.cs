@@ -123,5 +123,10 @@ public class SellingAreaCanvas : MarioObject
 
 		GoldText.text = Player.Gold.ToString();
 	}
+
+	void OnDisable()
+	{
+		Debug.Log(" " + name + " was disabled");
+	}
 }
 

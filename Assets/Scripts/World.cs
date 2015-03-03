@@ -55,7 +55,7 @@ public class World : MonoBehaviour
 
 	public IKernel Kernel;
 
-	void Awake()
+	private void Awake()
 	{
 		Kernel = FindObjectOfType<Kernel>().Kern;
 
@@ -96,7 +96,7 @@ public class World : MonoBehaviour
 
 		Player = FindObjectOfType<Player>();
 
-		BeginArea(2);
+		BeginArea(0);
 	}
 
 	private IEnumerator TestCoro(IGenerator t0)
@@ -112,8 +112,6 @@ public class World : MonoBehaviour
 	{
 		if (Level == null)
 			return;
-
-		//BeginArea(2);
 	}
 
 	public void BeginArea(int num)
@@ -147,8 +145,10 @@ public class World : MonoBehaviour
 		for (var n = 0; n < Areas.Count; ++n)
 		{
 			var act = n == _areaIndex;
-			Areas[n].gameObject.SetActive(act);
-			Areas[n].UiCanvas.SetActive(act);
+			var area = Areas[n];
+
+			area.gameObject.SetActive(act);
+			area.UiCanvas.SetActive(act);
 		}
 	}
 
@@ -181,8 +181,6 @@ public class World : MonoBehaviour
 	public void Restart()
 	{
 		_levelIndex = 0;
-
-		//BeginArea(2);
 
 		Reset();
 

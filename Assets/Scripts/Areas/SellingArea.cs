@@ -52,6 +52,8 @@ public class SellingArea : AreaBase
 	protected override void Begin()
 	{
 		base.Begin();
+
+		UiCanvas.SetActive(true);
 	}
 
 	private IEnumerator TapToContinue(IGenerator t0)

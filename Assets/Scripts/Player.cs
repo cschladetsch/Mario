@@ -151,7 +151,8 @@ public class Player : MarioObject
 
 	private void UpdateUi()
 	{
-		_canvas.LivesRemaining.text = Lives.ToString();
+		// TODO
+		//_canvas.LivesRemaining.text = Lives.ToString();
 	}
 
 	public void Reset()

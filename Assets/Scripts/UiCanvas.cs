@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Runtime.Remoting.Messaging;
+using UnityEngine;
 
 public class UiCanvas : MarioObject
 {
@@ -13,11 +14,16 @@ public class UiCanvas : MarioObject
 	{
 		base.Begin();
 		//TapToStart.SetActive(true);
+		LevelCompleted = new GameObject("LevelCompleted");
+		TapToStart = new GameObject("TapToStart");
+		HighScore = new GameObject("HighScore");
+		PausedPanel = new GameObject("PausedPanel");
+
 		LevelCompleted.SetActive(false);
 		HighScore.gameObject.SetActive(false);
 		PausedPanel.gameObject.SetActive(false);
 
-		World.BeginArea(0);
+		//World.BeginArea(0);
 	}
 
 	public void Reset()
@@ -29,13 +35,13 @@ public class UiCanvas : MarioObject
 	{
 		TapToStart.gameObject.SetActive(false);
 		//World.BeginConveyorLevel();
-		World.BeginArea(0);
+		//World.BeginArea(0);
 	}
 
 	public void LevelCompletedTapped()
 	{
 		LevelCompleted.gameObject.SetActive(false);
-		World.BeginArea(0);
+		//World.BeginArea(0);
 	}
 
 	public void ShowHighScore(int score)

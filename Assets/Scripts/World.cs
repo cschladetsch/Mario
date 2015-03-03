@@ -70,6 +70,7 @@ public class World : MonoBehaviour
 		Instance = this;
 
 		Canvas = FindObjectOfType<UiCanvas>();
+		Debug.Log("Canvas " + Canvas.name);
 
 		_levelIndex = 0;
 		_areaIndex = 1;
@@ -80,12 +81,22 @@ public class World : MonoBehaviour
 		//Startlevel();
 		//Pause(true);
 
+		Debug.Log("World.Start");
 		Kernel.Factory.NewCoroutine(TestCoro);
+
+		var root = transform.FindChild("Areas");
 
 		foreach (var a in AreaPrefabs)
 		{
-			Areas.Add(((GameObject) Instantiate(a)).GetComponent<AreaBase>());
+			var area = ((GameObject) Instantiate(a)).GetComponent<AreaBase>();
+			var name = area.name.Replace("(Clone)", "") + "UI";
+			var child = Canvas.transform.FindChild(name);
+			area.UiCanvas = child.gameObject;
+			area.transform.parent = root.transform;
+			Areas.Add(area);
 		}
+
+		BeginArea(0);
 	}
 
 	private IEnumerator TestCoro(IGenerator t0)
@@ -125,16 +136,20 @@ public class World : MonoBehaviour
 				break;
 		}
 
-		Debug.Log("Using Area " + _areaIndex);
+		//Debug.Log("Using Area " + _areaIndex + " from " + Areas.Count);
 		CurrentArea = Areas[_areaIndex];
 
-		// don't change camera for different areas
-		//var p = CurrentArea.transform.position;
-		//Camera.main.transform.position = new Vector3(p.x, p.y, -20);
+		DisableOtherAreas();
+	}
 
+	private void DisableOtherAreas()
+	{
 		for (var n = 0; n < Areas.Count; ++n)
-			//Areas[n].Activate(n == _areaIndex);
-			Areas[n].gameObject.SetActive(n == _areaIndex);
+		{
+			var act = n == _areaIndex;
+			Areas[n].gameObject.SetActive(act);
+			Areas[n].UiCanvas.SetActive(act);
+		}
 	}
 
 	private void Cooking()

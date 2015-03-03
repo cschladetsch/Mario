@@ -47,42 +47,25 @@ public class SellingArea : AreaBase
 	/// <summary>
 	/// how the delivery truck is as it moves along the scene
 	/// </summary>
-	public float DeliveryTruckHeight = -5;
+	public float DeliveryTruckHeight = -1.6f;
 
 	protected override void Begin()
 	{
 		base.Begin();
-
-		DeliveryTruck = (GameObject) Instantiate(DeliveryTruckPrefab);
-		DeliveryTruck.transform.SetZ(DeliverryCarDepth);
-				
-		var move = Kernel.Factory.NewCoroutine(MoveDeliveryVan, StartX, EndX);
-		Kernel.Factory.NewCoroutine(TapToContinue).ResumeAfter(move);
-	}
-
-	IEnumerator MoveDeliveryVan(IGenerator self, float start, float end)
-	{
-		var speed = (end - start)/DeliveryTruckTime;
-		while (DeliveryTruck.transform.position.x < end)
-		{
-			var delta = DeltaTime*speed;
-			DeliveryTruck.transform.SetX(DeliveryTruck.transform.position.x + delta);
-			yield return 0;
-		}
 	}
 
 	private IEnumerator TapToContinue(IGenerator t0)
 	{
 		Debug.Log("Start tap to continue");
+		World.BeginArea(2);
 		yield break;
 	}
 
-
 	protected override void BeforeFirstUpdate()
 	{
-		base.BeforeFirstUpdate();
-		var truck = Kernel.Factory.NewPeriodicTimer(TimeSpan.FromSeconds(BaseTruckWaitTime));
-		truck.Elapsed += NewTruck;
+		//base.BeforeFirstUpdate();
+		//var truck = Kernel.Factory.NewPeriodicTimer(TimeSpan.FromSeconds(BaseTruckWaitTime));
+		//truck.Elapsed += NewTruck;
 	}
 
 	private void NewTruck(ITransient sender)
@@ -101,6 +84,13 @@ public class SellingArea : AreaBase
 	}
 
 
+	public void StartDeliveryTruck(Dictionary<Ingredient.TypeEnum, int> contents)
+	{
+		var go = (GameObject) Instantiate(DeliveryTruckPrefab);
+		var truck = go.GetComponent<DeliveryTruck>();
+		truck.Deliver(StartX, EndX, DeliveryTruckTime, DeliveryTruckHeight, DeliverryCarDepth);
+
+	}
 }
 
 

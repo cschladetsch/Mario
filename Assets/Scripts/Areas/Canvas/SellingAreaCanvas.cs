@@ -7,6 +7,15 @@ using UnityEngine;
 /// </summary>
 public class SellingAreaCanvas : MarioObject
 {
+	/// <summary>
+	/// The visuals for the current inventory in the canvas
+	/// </summary>
+	public InventoryPanel InventoryPanel;
+
+	/// <summary>
+	/// The current items that will be purchased. these can be bought and sold many times before
+	/// the player presses the 'Done' button and the truck starts its delivery
+	/// </summary>
 	readonly Dictionary<Ingredient.TypeEnum, int> _contents = new Dictionary<Ingredient.TypeEnum, int>();
 
 	public UnityEngine.UI.Text GoldText;
@@ -15,11 +24,19 @@ public class SellingAreaCanvas : MarioObject
 	{
 		base.BeforeFirstUpdate();
 
-		UpdateGoldDisplay();
+		UpdateDisplay();
+
+		GatherIngredients();
 
 		GatherCostTexts();
 
 		UpdateCosts();
+	}
+
+	private void GatherIngredients()
+	{
+		foreach (var e in Enum.GetValues(typeof(Ingredient.TypeEnum)))
+			_contents.Add((Ingredient.TypeEnum)e, 0);	
 	}
 
 	private void GatherCostTexts()
@@ -66,20 +83,16 @@ public class SellingAreaCanvas : MarioObject
 		var type = ing.Type;
 		var cost = ing.BaseCost;
 		var amount = int.Parse(button.GetComponent<UnityEngine.UI.Button>().name);
+		var totalCost = cost*amount;
+		var gold = Player.Gold;
 
 		// can't afford it
-		if (!Player.GodMode && cost > 0 && cost > Player.Gold)
+		if (!Player.GodMode && totalCost > gold)
 			return;
 
 		// can't go negative
-		var totalCost = cost*amount;
-		if (totalCost + Player.Gold < 0)
+		if (totalCost > 0 && totalCost + gold < 0)
 			return;
-
-		Debug.Log(ing + " " +  amount);
-
-		if (!_contents.ContainsKey(type))
-			_contents.Add(type, 0);
 
 		var stock = _contents[type];
 
@@ -87,16 +100,27 @@ public class SellingAreaCanvas : MarioObject
 		if (nextAmount < 0)
 			return;
 
-		_contents[type] = Mathf.Max(0, nextAmount);
+		_contents[type] = nextAmount;
+
+		Debug.Log(string.Format("Currnet {0}, totalCost {1}, new {2}", gold, totalCost, gold - totalCost));
 
 		Player.Gold -= totalCost;
 
+		UpdateDisplay();
+	}
+
+	private void UpdateDisplay()
+	{
 		UpdateGoldDisplay();
+		InventoryPanel.UpdateDisplay(_contents);
 	}
 
 	private void UpdateGoldDisplay()
 	{
 		//Debug.Log("Player " + Player);
+		if (!Player)
+			return;
+
 		GoldText.text = Player.Gold.ToString();
 	}
 }

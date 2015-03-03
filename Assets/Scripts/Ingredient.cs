@@ -12,6 +12,7 @@ public class Ingredient : MonoBehaviour
 		Chocolate,
 		Raisen,
 		Strawberry,
+		Cupcake,
 	}
 
 	public TypeEnum Type;

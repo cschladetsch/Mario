@@ -54,15 +54,12 @@ public class Level : MarioObject
 	void Init()
 	{
 		_initialConveyorSpeed = ConveyorSpeed;
-		_characters = FindObjectsOfType<Character>();
 		_cakesHolder = transform.FindChild("Contents");
 
-		//Debug.Log("Level.Init: " + ConveyorSpeed);
+		// WTF
+		Debug.Log("Level.Init: " + ConveyorSpeed);
+		Debug.Log("World: " + World.name);
 
-		PauseCharacters(true);
-
-		Player.OnCakeDropped -= CakeDropped;
-		Player.OnCakeDropped += CakeDropped;
 	}
 
 	private void CakeDropped(Player player)
@@ -74,7 +71,13 @@ public class Level : MarioObject
 
 	public void BeginLevel()
 	{
-		//Debug.Log("Level.BeginConveyorLevel: " + name);
+		_characters = FindObjectsOfType<Character>();
+		PauseCharacters(true);
+
+		Debug.Log("BeginLevel: World=" + World.name);
+
+		Player.OnCakeDropped -= CakeDropped;
+		Player.OnCakeDropped += CakeDropped;
 
 		Init();
 
@@ -318,7 +321,7 @@ public class Level : MarioObject
 
 	public void Pause(bool pause)
 	{
-		//Debug.Log("Level.Pause: " + pause + " " + _conveyors.Count);
+		Debug.Log("Level.Pause: " + pause + " " + _conveyors.Count);
 
 		Paused = pause;
 

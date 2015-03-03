@@ -57,9 +57,9 @@ public class DeliveryTruck : MarioObject
 		if (hit.collider != null)
 		{
 			Debug.Log("Target Position: " + hit.collider.gameObject.transform.position);
+			Destroy(gameObject);
+
 			World.BeginArea(2);
 		}
 	}
 }
-
-

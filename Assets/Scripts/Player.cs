@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
@@ -51,17 +52,17 @@ public class Player : MarioObject
 	/// <summary>
 	/// Total current list of Ingredients that the player has
 	/// </summary>
-	public List<Ingredient> Ingredients = new List<Ingredient>();
+	public Dictionary<Ingredient.TypeEnum, int> Ingredients = new Dictionary<Ingredient.TypeEnum, int>();
 
-	/// <summary>
-	/// The completed products - they may be sold directyl, or used to make better products
-	/// </summary>
-	public List<Product> Products = new List<Product>();
+	///// <summary>
+	///// The completed products - they may be sold directly, or used to make better products
+	///// </summary>
+	//public List<Product> Products = new List<Product>();
 
-	/// <summary>
-	/// What is currently on sale
-	/// </summary>
-	public List<Product> SellingProducts = new List<Product>(); 
+	///// <summary>
+	///// What is currently on sale
+	///// </summary>
+	//public List<Product> SellingProducts = new List<Product>(); 
 
 	public delegate void CollisionHandler(Collision2D other);
 	public delegate void TriggerHandler(Collider2D other);
@@ -94,8 +95,18 @@ public class Player : MarioObject
 
 	protected override void Construct()
 	{
+		Debug.Log("Player.Construct");
+
 		Control = GetComponent<Control>();
 		_canvas = FindObjectOfType<UiCanvas>();
+
+		PrepareEmptyInventory();
+	}
+
+	private void PrepareEmptyInventory()
+	{
+		foreach (var e in Enum.GetValues(typeof (Ingredient.TypeEnum)))
+			Ingredients.Add((Ingredient.TypeEnum) e, 0);
 	}
 
 	protected override void BeforeFirstUpdate()

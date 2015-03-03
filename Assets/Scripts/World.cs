@@ -70,10 +70,8 @@ public class World : MonoBehaviour
 		Instance = this;
 
 		Canvas = FindObjectOfType<UiCanvas>();
-		Debug.Log("Canvas " + Canvas.name);
 
 		_levelIndex = 0;
-		_areaIndex = 1;
 	}
 
 	void Start()
@@ -97,7 +95,8 @@ public class World : MonoBehaviour
 		}
 
 		Player = FindObjectOfType<Player>();
-		BeginArea(0);
+
+		BeginArea(2);
 	}
 
 	private IEnumerator TestCoro(IGenerator t0)
@@ -114,7 +113,7 @@ public class World : MonoBehaviour
 		if (Level == null)
 			return;
 
-		BeginArea(1);
+		//BeginArea(2);
 	}
 
 	public void BeginArea(int num)
@@ -130,14 +129,14 @@ public class World : MonoBehaviour
 				WaitingForTruck();	// paying customers, waiting for truck
 				break;
 			case 2:
-				ConveyorGame();		// conveyor game. deliver ingredients and products past boss
+				CreateLevel();		// conveyor game. deliver ingredients and products past boss
 				break;
 			case 3:
 				Cooking();			// bakery: produce goods for selling in MainShop
 				break;
 		}
 
-		//Debug.Log("Using Area " + _areaIndex + " from " + Areas.Count);
+		Debug.Log("Using Area " + _areaIndex + " from " + Areas.Count);
 		CurrentArea = Areas[_areaIndex];
 
 		DisableOtherAreas();
@@ -159,7 +158,7 @@ public class World : MonoBehaviour
 
 	private void WaitingForTruck()
 	{
-		Debug.Log("WaitingForTruck");
+		//Debug.Log("WaitingForTruck");
 	}
 
 	private void MainShop()
@@ -167,7 +166,7 @@ public class World : MonoBehaviour
 
 	}
 
-	private void ConveyorGame()
+	public void ConveyorGame()
 	{
 		Truck.Reset();
 
@@ -182,11 +181,12 @@ public class World : MonoBehaviour
 	public void Restart()
 	{
 		_levelIndex = 0;
-		_areaIndex = 0;
+
+		//BeginArea(2);
 
 		Reset();
 
-		//BeginConveyorLevel();
+		BeginConveyorLevel();
 	}
 
 	void Update()
@@ -201,7 +201,11 @@ public class World : MonoBehaviour
 				BeginConveyorLevel();
 
 				// if this is the first level, then we pause else we un-pause
-				Pause(_levelIndex == 0);
+				//Pause(_levelIndex == 0);
+
+				Pause(false);
+
+				Level.BeginLevel();
 			}
 
 			return;
@@ -211,24 +215,19 @@ public class World : MonoBehaviour
 		{
 			_first = false;
 
-			BeginArea(0);
-
-			//Pause(true);
+			Pause(true);
 		}
 	}
 
 	public void Pause(bool pause)
 	{
-		if (pause == _paused)
-			return;
+		//_paused = pause;
 
-		_paused = pause;
+		//foreach (var cake in FindObjectsOfType<Cake>())
+		//	cake.Pause(pause);
 
-		foreach (var cake in FindObjectsOfType<Cake>())
-			cake.Pause(pause);
-
-		if (Level)
-			Level.Pause(pause);
+		//if (Level)
+		//	Level.Pause(pause);
 	}
 
 	public void TogglePause()
@@ -247,7 +246,7 @@ public class World : MonoBehaviour
 
 		Level.Paused = true;
 
-		Debug.Log("World.CreateLevel: " + Level.name);
+		//Debug.Log("World.CreateLevel: " + Level.name);
 
 		// actually begin the level after a few Updates to allow nested spawners to complete
 		_beginLevel = 5;
@@ -261,22 +260,21 @@ public class World : MonoBehaviour
 
 		Pause(false);
 
-		Level.BeginLevel();
 		Level.Pause(false);
 	}
 
 	public void NextLevel()
 	{
-		//Debug.Log("Next Level");
-		_levelIndex = (_levelIndex + 1)%Levels.Length;
-		_areaIndex = 2;
-		CreateLevel();
+		////Debug.Log("Next Level");
+		//_levelIndex = (_levelIndex + 1)%Levels.Length;
+		//_areaIndex = 2;
+		//CreateLevel();
 	}
 
-	public void NextArea()
-	{
-		Debug.Log("World.Next Area");
-		_areaIndex = (_areaIndex + 1)%4;
-		BeginArea(_areaIndex);
-	}
+	//public void NextArea()
+	//{
+	//	Debug.Log("World.Next Area");
+	//	_areaIndex = (_areaIndex + 1)%4;
+	//	BeginArea(_areaIndex);
+	//}
 }

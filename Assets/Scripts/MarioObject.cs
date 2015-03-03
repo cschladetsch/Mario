@@ -14,13 +14,13 @@ public class MarioObject : MonoBehaviour
 	/// <summary>
 	/// The single world object
 	/// </summary>
-	protected World World;
+	public World World;
 
-	protected IKernel Kernel;
+	public IKernel Kernel;
 
-	protected Player Player { get { return World.Player; } }
+	public Player Player { get { return World.Player; } }
 
-	protected Truck Truck { get { return World.Truck; } }
+	public Truck Truck { get { return World.Truck; } }
 
 	protected UiCanvas Canvas { get { return World.Canvas; } }
 

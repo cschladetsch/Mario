@@ -67,6 +67,10 @@ public class CookingArea : MarioObject
 				Player.Ingredients[recipe.Item4]--;
 
 			Player.Ingredients[recipe.Result]++;
+
+			// HACK
+			Player.Gold += 5;
+
 		}
 
 		Debug.Log("Done Cooking: " + Player.Ingredients[IngredientType.CupCake]);

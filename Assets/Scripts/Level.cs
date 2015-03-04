@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices.ComTypes;
 using UnityEngine;
 
 /// <summary>
@@ -47,9 +48,20 @@ public class Level : MarioObject
 	private SpawnInfo[] _spawners;
 
 	private Transform _cakesHolder;
-	private Character []_characters;
+
+	private Character[] _characters;
+
 	private float _initialConveyorSpeed;
-	public IList<Conveyor> Conveyors { get { return _conveyors; } }
+
+	public IList<Conveyor> Conveyors
+	{
+		get { return _conveyors; }
+	}
+
+	public bool NoMoreCakes
+	{
+		get { return Inventory.Sum(c => c.Value) == 0; }
+	}
 
 	public void Init()
 	{
@@ -96,10 +108,10 @@ public class Level : MarioObject
 
 	private void DeliveryCompleted(Truck truck)
 	{
-		if (++_numTrucksDelivered == NumTruckLoads)
-		{
-			EndLevel();
-		}
+		//if (++_numTrucksDelivered == NumTruckLoads)
+		//{
+		//	EndLevel();
+		//}
 	}
 
 	private bool _ended;
@@ -144,19 +156,32 @@ public class Level : MarioObject
 	/// <param name="spawnInfo"></param>
 	private void AddCake(SpawnInfo spawnInfo)
 	{
+		if (spawnInfo.Prefab == null)
+			return;
+
+		Debug.Log("AddCake: prefab=" + spawnInfo.Prefab.name + "@" + UnityEngine.Time.frameCount);
 		if (!spawnInfo.CanSpawn())
 			return;
 
-		if (_numCakesSpawned == NumTruckLoads*6)
+		var num = Inventory[spawnInfo.Type];
+		if (num == 0)
 			return;
+
+		Inventory[spawnInfo.Type]--;
+
+		Debug.Log("Cakes Left: " + Inventory.Sum(c => c.Value));
 
 		var born = spawnInfo.Spawn(gameObject);
 		born.transform.position = CakeSpawnPoint.transform.position;
+		born.name = Guid.NewGuid().ToString();
+		Debug.Log("Spawned a " + spawnInfo.Prefab.name + " called " + born.name);
 
 		var cake = born.GetComponent<Cake>();
 		if (cake != null)
 			++_numCakesSpawned;
 	}
+
+	private int _numCakesSpawned;
 
 	public void Reset()
 	{
@@ -199,6 +224,8 @@ public class Level : MarioObject
 
 	private float _speedTimer;
 
+	public Dictionary<Ingredient.TypeEnum, int> Inventory;
+
 	override protected void Tick()
 	{
 		if (_ended)
@@ -229,7 +256,7 @@ public class Level : MarioObject
 			UpdateSpawners();
 	}
 
-	public int _numCakesSpawned;
+	//public int _numCakesSpawned;
 
 	private void UpdateSpeed()
 	{

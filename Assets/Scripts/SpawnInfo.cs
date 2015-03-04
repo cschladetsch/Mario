@@ -10,6 +10,8 @@ public class SpawnInfo : MarioObject
 	/// </summary>
 	public GameObject Prefab;
 
+	public Ingredient.TypeEnum Type;
+
 	/// <summary>
 	/// The relative weight of spawning this pickup
 	/// </summary>
@@ -60,7 +62,7 @@ public class SpawnInfo : MarioObject
 
 	public GameObject Spawn(GameObject parent)
 	{
-		if (--_spawnsLeft <= 0)
+		if (_spawnsLeft-- <= 0)
 			return null;
 
 		if (Prefab == null)

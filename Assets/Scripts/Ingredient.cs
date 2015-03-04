@@ -9,10 +9,14 @@ public class Ingredient : MonoBehaviour
 	{
 		Cherry,
 		Muffin,
+		CupCake,
+
 		Chocolate,
 		Raisen,
 		Strawberry,
-		CupCake,
+
+		None,
+
 	}
 
 	public TypeEnum Type;

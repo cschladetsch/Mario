@@ -53,10 +53,14 @@ public class Truck : MonoBehaviour
 		_pt = transform.FindChild("FlythroughPoint");
 	}
 
+	public int _numCakes;
+
 	void Start()
 	{
 		_startPos = transform.position.x;
 		_world = FindObjectOfType<World>();
+
+		_numCakes = _world.Level.Inventory.Sum(c => c.Value);
 	}
 
 	void Update()
@@ -91,10 +95,12 @@ public class Truck : MonoBehaviour
 			return;
 		}
 
+		// moving right
 		transform.position = new Vector3(p.x + MoveSpeed*Time.deltaTime, p.y, 0);
 		if (_moveTime <= 0)
 		{
 			EndEmptying();
+
 		}
 	}
 
@@ -111,10 +117,10 @@ public class Truck : MonoBehaviour
 
 	private void WriteScore()
 	{
-		var ui = FindObjectOfType<UiCanvas>();
-		var score = int.Parse(ui.Score.text);
-		score += _cakes.Count;
-		ui.Score.text = score.ToString();
+		//var ui = FindObjectOfType<UiCanvas>();
+		//var score = int.Parse(ui.Score.text);
+		//score += _cakes.Count;
+		//ui.Score.text = score.ToString();
 	}
 
 	private void EndEmptying()
@@ -148,11 +154,14 @@ public class Truck : MonoBehaviour
 
 		if (DeliveryCompleted != null)
 			DeliveryCompleted(this);
+
+		Debug.Log("End Conveyor Level");
+		_world.BeginArea(3);
 	}
 
 	private void UpdateDone()
 	{
-		var done = _cakes.Count == NumColumns*NumRows && _cakes.All(c => c.TruckParabola == null);
+		var done = _numCakes == 0 && _cakes.All(c => c.TruckParabola == null);
 		if (!done)
 			return;
 
@@ -196,7 +205,16 @@ public class Truck : MonoBehaviour
 			cake.transform.parent = transform;
 			cake.transform.position = para.FinalPos;
 			cake.TruckParabola = null;
+
+			AddToPlayerIngredients(cake);
+
+			--_numCakes;
 		}
+	}
+
+	private static void AddToPlayerIngredients(Cake cake)
+	{
+		World.Player.Ingredients[cake.Type]++;
 	}
 
 	public void AddCake(Cake cake)
@@ -232,6 +250,7 @@ public class Truck : MonoBehaviour
 
 		cake.Position = 0;
 		_cakes.Add(cake);
+		Debug.Log("Added cake type " + cake.Type + " called " + cake.name);
 		if (_cakes.Count == NumColumns*NumRows)
 		{
 			_full = true;

@@ -160,6 +160,16 @@ public class World : MonoBehaviour
 
 	private void Cooking()
 	{
+		if (Level)
+			Destroy(Level.gameObject);
+		
+		foreach (var c in FindObjectsOfType<Cake>())
+			Destroy(c.gameObject);
+
+		Debug.Log("Start Cooking");
+
+		// HACKS
+		Camera.main.transform.position = new Vector3(0.2f, -0.8f, -20);
 	}
 
 	private void WaitingForTruck()
@@ -280,33 +290,52 @@ public class World : MonoBehaviour
 		BeginArea(2);
 	}
 
+	/// <summary>
+	/// Add spawners for contents of truck. TODO: move to Level.cs
+	/// </summary>
 	private void AddSpawners()
 	{
-// create spawners from what was in truck
+		// create spawners from what was in truck
+		var types = new List<Ingredient.TypeEnum>();
+		
 		foreach (var c in _contents)
 		{
 			if (c.Value == 0)
-				return;
+				continue;
+
+			var type = c.Key;
+
+			if (types.Contains(type))
+				continue;
+
+			types.Add(type);
 
 			var sp = Level.gameObject.AddComponent<SpawnInfo>();
 			sp.MinSpawnTime = 2;
 			sp.MaxSpawnTime = 4;
 			sp.Weight = 1;
 			sp.MaxSpawns = c.Value;
+			sp.Type = type;
 
 			// load prefabs to make ingredients from resources path
-			var path = string.Format("{0}", c.Key);
+			var path = string.Format("{0}", type);
 			var ob = Resources.Load(path);
-			//Debug.Log("loaded '" + ob + "' from path " + "'" + path + "'");
+			if (ob == null)
+			{
+				Debug.LogWarning("No prefab for ingredient " + type);
+				continue;
+			}
 
-			sp.Prefab = (GameObject) Instantiate(ob);
+			sp.Prefab = (GameObject)ob;
 			if (sp.Prefab == null)
 			{
-				Debug.LogWarning("Can't make a " + c.Key  + ", using path " + path);
+				Debug.LogWarning("Can't make a " + type  + ", using path " + path);
 				continue;
 			}
 
 			//Debug.Log("Using " + sp.Prefab.name + " prefab to make " + c.Key);
 		}
+
+		Level.Inventory = _contents;
 	}
 }

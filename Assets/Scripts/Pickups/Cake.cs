@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 public class Cake : Pickup
 {
@@ -7,6 +8,8 @@ public class Cake : Pickup
 	/// </summary>
 	internal Parabola TruckParabola;
 
+	public Ingredient.TypeEnum Type;
+
 	public override void CharacterHit(Character character, Conveyor conv, Conveyor next)
 	{
 		base.CharacterHit(character, conv, next);
@@ -14,9 +17,15 @@ public class Cake : Pickup
 		conv.RemoveItem(this);
 
 		if (next)
+		{
 			next.AddItem(this, 0);
+		}
 		else
-			FindObjectOfType<Truck>().AddCake(this);
+		{
+			var truck = FindObjectOfType<Truck>();
+			Debug.Log("Adding a " + Type + " to truck called " + name);
+			truck.AddCake(this);
+		}
 	}
 
 	protected override void StartDropped(bool moveRight)

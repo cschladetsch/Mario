@@ -80,7 +80,7 @@ public class DeliveryTruck : MarioObject
 			//if (!car)
 			//	return;
 
-			Debug.Log("Hit Delivery Car");
+			//Debug.Log("Hit Delivery Car");
 
 			Destroy(gameObject);
 

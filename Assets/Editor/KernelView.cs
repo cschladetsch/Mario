@@ -33,8 +33,6 @@ public class KernelView : Editor
 				_show[ch.Guid] = EditorGUILayout.Foldout(_show[ch.Guid], ch.Name);
 			}
 		}
-
-
 	}
 }
 

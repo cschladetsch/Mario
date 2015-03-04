@@ -46,14 +46,30 @@ public class CookingArea : MarioObject
 
 	private IEnumerator Cook(IGenerator self, int numCupCakes, Recipe recipe)
 	{
+
+		Debug.Log("Before Cooking: " + Player.Ingredients[IngredientType.CupCake]);
+
 		for (var n = 0; n < numCupCakes; ++n)
 		{
 			Debug.Log("Cooking " + recipe.Result);
 			yield return self.ResumeAfter(TimeSpan.FromSeconds(recipe.CookingTime));
+
+			for (var j = 0; j < recipe.Count1; ++j)
+				Player.Ingredients[recipe.Item1]--;
+
+			for (var j = 0; j < recipe.Count2; ++j)
+				Player.Ingredients[recipe.Item2]--;
+
+			for (var j = 0; j < recipe.Count3; ++j)
+				Player.Ingredients[recipe.Item3]--;
+
+			for (var j = 0; j < recipe.Count4; ++j)
+				Player.Ingredients[recipe.Item4]--;
+
 			Player.Ingredients[recipe.Result]++;
 		}
 
-		Debug.Log("Done Cooking");
+		Debug.Log("Done Cooking: " + Player.Ingredients[IngredientType.CupCake]);
 
 		World.BeginArea(0);
 	}

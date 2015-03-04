@@ -34,7 +34,8 @@ public class InventoryPanel : MarioObject
 
 		CherryCount.text = contents[IngredientType.Cherry].ToString();
 		MuffinCount.text = contents[IngredientType.Muffin].ToString();
-		CupcakeCount.text = contents[IngredientType.CupCake].ToString();
+
+		CupcakeCount.text = Player.Ingredients[IngredientType.CupCake].ToString();
 	}
 }
 

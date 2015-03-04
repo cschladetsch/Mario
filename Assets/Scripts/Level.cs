@@ -78,7 +78,7 @@ public class Level : MarioObject
 
 	public void BeginLevel()
 	{
-		Debug.Log("Level.BeginLevel");
+		//Debug.Log("Level.BeginLevel");
 
 		_characters = FindObjectsOfType<Character>();
 		PauseCharacters(true);
@@ -160,7 +160,7 @@ public class Level : MarioObject
 		if (spawnInfo.Prefab == null)
 			return;
 
-		Debug.Log("AddCake: prefab=" + spawnInfo.Prefab.name + "@" + UnityEngine.Time.frameCount);
+		//Debug.Log("AddCake: prefab=" + spawnInfo.Prefab.name + "@" + UnityEngine.Time.frameCount);
 		if (!spawnInfo.CanSpawn())
 			return;
 
@@ -170,12 +170,12 @@ public class Level : MarioObject
 
 		Inventory[spawnInfo.Type]--;
 
-		Debug.Log("Cakes Left: " + Inventory.Sum(c => c.Value));
+		//Debug.Log("Cakes Left: " + Inventory.Sum(c => c.Value));
 
 		var born = spawnInfo.Spawn(gameObject);
 		born.transform.position = CakeSpawnPoint.transform.position;
 		born.name = Guid.NewGuid().ToString();
-		Debug.Log("Spawned a " + spawnInfo.Prefab.name + " called " + born.name);
+		//Debug.Log("Spawned a " + spawnInfo.Prefab.name + " called " + born.name);
 
 		var cake = born.GetComponent<Cake>();
 		if (cake != null)
@@ -186,7 +186,7 @@ public class Level : MarioObject
 
 	public void Reset()
 	{
-		Debug.Log("Level.Reset");
+		//Debug.Log("Level.Reset");
 
 		GatherConveyors();
 
@@ -220,7 +220,7 @@ public class Level : MarioObject
 		foreach (var c in _conveyors)
 			c.Speed = ConveyorSpeed;
 
-		Debug.Log("GatherConveyors: " + _conveyors.Count);
+		//Debug.Log("GatherConveyors: " + _conveyors.Count);
 	}
 
 	private float _speedTimer;
@@ -357,7 +357,7 @@ public class Level : MarioObject
 
 	public void Pause(bool pause)
 	{
-		Debug.Log("Level.Pause: " + pause + " " + _conveyors.Count);
+		//Debug.Log("Level.Pause: " + pause + " " + _conveyors.Count);
 
 		Paused = pause;
 

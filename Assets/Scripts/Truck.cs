@@ -155,7 +155,7 @@ public class Truck : MonoBehaviour
 		if (DeliveryCompleted != null)
 			DeliveryCompleted(this);
 
-		Debug.Log("End Conveyor Level");
+		//Debug.Log("End Conveyor Level");
 		_world.BeginArea(3);
 	}
 

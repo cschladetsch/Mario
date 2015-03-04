@@ -212,7 +212,7 @@ public class World : MonoBehaviour
 
 			if (_beginLevelAfterThisManyUpdates == 0)
 			{
-				Debug.Log("BeginConveyorLevel");
+				//Debug.Log("BeginConveyorLevel");
 
 				BeginConveyorLevel();
 

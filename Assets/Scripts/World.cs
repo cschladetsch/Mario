@@ -277,9 +277,9 @@ public class World : MonoBehaviour
 		Level.Pause(false);
 	}
 
-	private Dictionary<Ingredient.TypeEnum, int> _contents;
+	private Dictionary<IngredientType, int> _contents;
 
-	public void BeginMainGame(Dictionary<Ingredient.TypeEnum, int> contents)
+	public void BeginMainGame(Dictionary<IngredientType, int> contents)
 	{
 		_contents = contents;
 
@@ -296,7 +296,7 @@ public class World : MonoBehaviour
 	private void AddSpawners()
 	{
 		// create spawners from what was in truck
-		var types = new List<Ingredient.TypeEnum>();
+		var types = new List<IngredientType>();
 		
 		foreach (var c in _contents)
 		{

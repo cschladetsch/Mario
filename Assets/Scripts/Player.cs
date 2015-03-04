@@ -52,7 +52,7 @@ public class Player : MarioObject
 	/// <summary>
 	/// Total current list of Ingredients that the player has
 	/// </summary>
-	public Dictionary<Ingredient.TypeEnum, int> Ingredients = new Dictionary<Ingredient.TypeEnum, int>();
+	public Dictionary<IngredientType, int> Ingredients = new Dictionary<IngredientType, int>();
 
 	///// <summary>
 	///// The completed products - they may be sold directly, or used to make better products
@@ -105,8 +105,8 @@ public class Player : MarioObject
 
 	private void PrepareEmptyInventory()
 	{
-		foreach (var e in Enum.GetValues(typeof (Ingredient.TypeEnum)))
-			Ingredients.Add((Ingredient.TypeEnum) e, 0);
+		foreach (var e in Enum.GetValues(typeof (IngredientType)))
+			Ingredients.Add((IngredientType) e, 0);
 	}
 
 	protected override void BeforeFirstUpdate()

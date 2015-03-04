@@ -27,9 +27,9 @@ public class DeliveryTruck : MarioObject
 
 	private float _endX, _speed;
 
-	private Dictionary<Ingredient.TypeEnum, int> _contents;
+	private Dictionary<IngredientType, int> _contents;
 
-	public void Deliver(float startX, float endX, float time, float height, float depth, Dictionary<Ingredient.TypeEnum, int> contents)
+	public void Deliver(float startX, float endX, float time, float height, float depth, Dictionary<IngredientType, int> contents)
 	{
 		_delivering = true;
 		transform.position = new Vector3(startX, height, depth);

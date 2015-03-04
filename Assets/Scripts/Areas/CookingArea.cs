@@ -28,13 +28,13 @@ public class CookingArea : MarioObject
 			Debug.Log(" " + c.Key + ": " + c.Value);
 		}
 
-		var numCherries = ingredients[Ingredient.TypeEnum.Cherry];
-		var numMuffins = ingredients[Ingredient.TypeEnum.Muffin];
+		var numCherries = ingredients[IngredientType.Cherry];
+		var numMuffins = ingredients[IngredientType.Muffin];
 		var num = Mathf.Min(numCherries, numMuffins);
 		var numCupCakes = num*num;
 		Debug.Log("Can make " + numCupCakes + " cupcakes");
 
-		ingredients[Ingredient.TypeEnum.CupCake] += numCupCakes;
+		ingredients[IngredientType.CupCake] += numCupCakes;
 
 		Player.Gold += 5*numCupCakes;
 
@@ -48,10 +48,14 @@ public class CookingArea : MarioObject
 	{
 		for (var n = 0; n < numCupCakes; ++n)
 		{
-			Debug.Log("Cooking");
+			Debug.Log("Cooking " + recipe.Result);
 			yield return self.ResumeAfter(TimeSpan.FromSeconds(recipe.CookingTime));
 			Player.Ingredients[recipe.Result]++;
 		}
+
+		Debug.Log("Done Cooking");
+
+		World.BeginArea(0);
 	}
 
 	protected override void Tick()

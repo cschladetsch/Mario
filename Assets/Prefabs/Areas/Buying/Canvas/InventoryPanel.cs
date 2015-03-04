@@ -27,14 +27,14 @@ public class InventoryPanel : MarioObject
 		base.Tick();
 	}
 
-	public void UpdateDisplay(Dictionary<Ingredient.TypeEnum, int> contents)
+	public void UpdateDisplay(Dictionary<IngredientType, int> contents)
 	{
 		if (contents.Count == 0)
 			return;
 
-		CherryCount.text = contents[Ingredient.TypeEnum.Cherry].ToString();
-		MuffinCount.text = contents[Ingredient.TypeEnum.Muffin].ToString();
-		CupcakeCount.text = contents[Ingredient.TypeEnum.CupCake].ToString();
+		CherryCount.text = contents[IngredientType.Cherry].ToString();
+		MuffinCount.text = contents[IngredientType.Muffin].ToString();
+		CupcakeCount.text = contents[IngredientType.CupCake].ToString();
 	}
 }
 

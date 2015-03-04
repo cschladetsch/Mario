@@ -8,7 +8,11 @@ public class Cake : Pickup
 	/// </summary>
 	internal Parabola TruckParabola;
 
-	public Ingredient.TypeEnum Type;
+	public IngredientType Type;
+
+	public int BaseCost = 1;
+
+	public UnityEngine.UI.Text CostText;
 
 	public override void CharacterHit(Character character, Conveyor conv, Conveyor next)
 	{
@@ -41,5 +45,10 @@ public class Cake : Pickup
 		const float F = 120;
 		var force = new Vector2(moveRight ? F : -F, -20);
 		rigidbody2D.AddForce(force);
+	}
+
+	public void UpdateCostText()
+	{
+		CostText.text = BaseCost.ToString();
 	}
 }

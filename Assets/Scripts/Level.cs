@@ -102,9 +102,10 @@ public class Level : MarioObject
 		// HACKS
 		var cam = Camera.main.transform;
 		cam.position = new Vector3(-1.37f, 4.79f, -10);
+		Camera.main.orthographicSize = 7.62f;
 	}
 
-	private int _numTrucksDelivered;
+	//private int _numTrucksDelivered;
 
 	private void DeliveryCompleted(Truck truck)
 	{
@@ -204,7 +205,7 @@ public class Level : MarioObject
 		OverallSpeed = 1;
 
 		_speedTimer = SpeedIncrementTime;
-		_numTrucksDelivered = 0;
+		//_numTrucksDelivered = 0;
 		_numCakesSpawned = 0;
 	}
 
@@ -224,7 +225,7 @@ public class Level : MarioObject
 
 	private float _speedTimer;
 
-	public Dictionary<Ingredient.TypeEnum, int> Inventory;
+	public Dictionary<IngredientType, int> Inventory;
 
 	override protected void Tick()
 	{

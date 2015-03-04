@@ -45,7 +45,8 @@ public class Pickup : MonoBehaviour
 	void Awake()
 	{
 		_box = GetComponent<BoxCollider2D>();
-		rigidbody2D.isKinematic = false;
+		if (rigidbody2D)
+			rigidbody2D.isKinematic = false;
 	}
 
 	void Start()

@@ -16,7 +16,7 @@ public class SellingAreaCanvas : MarioObject
 	/// The current items that will be purchased. these can be bought and sold many times before
 	/// the player presses the 'Done' button and the truck starts its delivery
 	/// </summary>
-	readonly Dictionary<Ingredient.TypeEnum, int> _contents = new Dictionary<Ingredient.TypeEnum, int>();
+	readonly Dictionary<IngredientType, int> _contents = new Dictionary<IngredientType, int>();
 
 	public UnityEngine.UI.Text GoldText;
 
@@ -35,8 +35,8 @@ public class SellingAreaCanvas : MarioObject
 
 	private void GatherIngredients()
 	{
-		foreach (var e in Enum.GetValues(typeof(Ingredient.TypeEnum)))
-			_contents.Add((Ingredient.TypeEnum)e, 0);	
+		foreach (var e in Enum.GetValues(typeof(IngredientType)))
+			_contents.Add((IngredientType)e, 0);	
 	}
 
 	private void GatherCostTexts()
@@ -56,9 +56,9 @@ public class SellingAreaCanvas : MarioObject
 	}
 
 	// ReSharper disable once ReturnTypeCanBeEnumerable.Local
-	private Ingredient[] GetIngredientPanels()
+	private Cake[] GetIngredientPanels()
 	{
-		return transform.GetComponentsInChildren<Ingredient>();
+		return transform.GetComponentsInChildren<Cake>();
 	}
 
 	/// <summary>
@@ -79,7 +79,7 @@ public class SellingAreaCanvas : MarioObject
 	/// <param name="button"></param>
 	public void OrderIngredient(GameObject button)
 	{
-		var ing = button.transform.parent.GetComponent<Ingredient>();
+		var ing = button.transform.parent.GetComponent<Cake>();
 		var type = ing.Type;
 		var cost = ing.BaseCost;
 		var amount = int.Parse(button.GetComponent<UnityEngine.UI.Button>().name);

@@ -10,7 +10,7 @@ using UnityEngine;
 /// </summary>
 public class BuyingArea : AreaBase
 {
-	public List<Ingredient> Ingredients = new List<Ingredient>();
+	public List<Cake> Ingredients = new List<Cake>();
 
 	/// <summary>
 	/// Default delivery truck wait time
@@ -86,7 +86,7 @@ public class BuyingArea : AreaBase
 	}
 
 
-	public void StartDeliveryTruck(Dictionary<Ingredient.TypeEnum, int> contents)
+	public void StartDeliveryTruck(Dictionary<IngredientType, int> contents)
 	{
 		var go = (GameObject) Instantiate(DeliveryTruckPrefab);
 		var truck = go.GetComponent<DeliveryTruck>();

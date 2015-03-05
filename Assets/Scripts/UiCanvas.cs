@@ -5,6 +5,7 @@ public class UiCanvas : MarioObject
 {
 	public UnityEngine.UI.Text LivesRemaining;
 	public UnityEngine.UI.Text Score;
+	public UnityEngine.UI.Text CarTimer;
 	public GameObject TapToStart;
 	public GameObject LevelCompleted;
 	public GameObject HighScore;

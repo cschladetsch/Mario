@@ -5,12 +5,14 @@ public class DeliveryTruck : MarioObject
 {
 	public bool Ready;
 
-	//private Transform _car;
+	private Transform _car;
+
+	private UnityEngine.UI.Text _timerText;
 
 	protected override void Construct()
 	{
 		base.Construct();
-		//_car = transform.FindChild("Visual").FindChild("DeliveryCar");
+		_car = transform.FindChild("Visual").FindChild("DeliveryCar");
 	}
 
 	protected override void Begin()
@@ -21,6 +23,7 @@ public class DeliveryTruck : MarioObject
 	protected override void BeforeFirstUpdate()
 	{
 		base.BeforeFirstUpdate();
+
 	}
 
 	private bool _delivering;
@@ -40,21 +43,11 @@ public class DeliveryTruck : MarioObject
 		//Debug.Log("Delivering truck");
 	}
 
-	/// <summary>
-	/// Needless to say, this is just place-holder
-	/// </summary>
-	void OnGUI()
-	{
-		//var point = Camera.main.WorldToScreenPoint(_car.position);
-		//var delta = _endX - transform.position.x;
-		//var time = delta/_speed;
-		//var remaining = string.Format("{0:0.0}s", time);
-		//guiText.text = remaining;
-	}
-
 	protected override void Tick()
 	{
 		base.Tick();
+
+		MoveTimer();
 
 		if (_delivering)
 		{
@@ -86,5 +79,17 @@ public class DeliveryTruck : MarioObject
 
 			World.BeginMainGame(_contents);
 		}
+	}
+
+	private void MoveTimer()
+	{
+		var point = Camera.main.WorldToScreenPoint(_car.position);
+		var delta = _endX - transform.position.x;
+		var time = delta/_speed;
+		var text = string.Format("{0:0.0}s", time);
+
+		_timerText = Canvas.CarTimer;
+		_timerText.text = text;
+		_timerText.gameObject.transform.position = point;
 	}
 }

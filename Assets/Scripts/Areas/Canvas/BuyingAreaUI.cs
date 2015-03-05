@@ -5,7 +5,7 @@ using UnityEngine;
 /// <summary>
 /// The UI for the selling/purchasing area
 /// </summary>
-public class SellingAreaCanvas : MarioObject
+public class BuyingAreaUI : MarioObject
 {
 	/// <summary>
 	/// The visuals for the current inventory in the canvas
@@ -19,7 +19,7 @@ public class SellingAreaCanvas : MarioObject
 	readonly Dictionary<IngredientType, int> _contents = new Dictionary<IngredientType, int>();
 
 	public UnityEngine.UI.Text GoldText;
-
+	
 	protected override void BeforeFirstUpdate()
 	{
 		base.BeforeFirstUpdate();

@@ -10,8 +10,19 @@ public class Cake : Pickup
 
 	public IngredientType Type;
 
-	public int BaseCost = 1;
+	/// <summary>
+	/// How much it takes to buy one
+	/// </summary>
+	public int BaseCost = 2;
 
+	/// <summary>
+	/// How much it takes to sell one
+	/// </summary>
+	public int BasePrice = 1;
+
+	/// <summary>
+	/// The UI label to update with the cost amount
+	/// </summary>
 	public UnityEngine.UI.Text CostText;
 
 	public override void CharacterHit(Character character, Conveyor conv, Conveyor next)
@@ -32,6 +43,10 @@ public class Cake : Pickup
 		}
 	}
 
+	/// <summary>
+	/// The item has started to drop from end of conveyor
+	/// </summary>
+	/// <param name="moveRight"></param>
 	protected override void StartDropped(bool moveRight)
 	{
 		base.StartDropped(moveRight);
@@ -47,6 +62,9 @@ public class Cake : Pickup
 		rigidbody2D.AddForce(force);
 	}
 
+	/// <summary>
+	/// Write the cost to the UI
+	/// </summary>
 	public void UpdateCostText()
 	{
 		CostText.text = BaseCost.ToString();

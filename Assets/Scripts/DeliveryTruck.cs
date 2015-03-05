@@ -7,8 +7,6 @@ public class DeliveryTruck : MarioObject
 
 	private Transform _car;
 
-	private UnityEngine.UI.Text _timerText;
-
 	protected override void Construct()
 	{
 		base.Construct();
@@ -26,6 +24,8 @@ public class DeliveryTruck : MarioObject
 
 	}
 
+	public Collider2D Collider;
+
 	private bool _delivering;
 
 	private float _endX, _speed;
@@ -34,11 +34,13 @@ public class DeliveryTruck : MarioObject
 
 	public void Deliver(float startX, float endX, float time, float height, float depth, Dictionary<IngredientType, int> contents)
 	{
+		Canvas.CarTimerObject.gameObject.SetActive(true);
 		_delivering = true;
 		transform.position = new Vector3(startX, height, depth);
 		_endX = endX;
 		_speed = (_endX - startX)/time;
 		_contents = contents;
+		
 
 		//Debug.Log("Delivering truck");
 	}
@@ -56,7 +58,12 @@ public class DeliveryTruck : MarioObject
 
 			Ready = transform.position.x >= _endX;
 			if (Ready)
+			{
 				_delivering = false;
+				var text = Canvas.CarTimer;
+				text.text = "Ready";
+				text.color = Color.green;
+			}
 		}
 
 		if (!Ready)
@@ -75,9 +82,11 @@ public class DeliveryTruck : MarioObject
 
 			//Debug.Log("Hit Delivery Car");
 
+			Canvas.CarTimerObject.SetActive(false);
 			Destroy(gameObject);
 
 			World.BeginMainGame(_contents);
+			//World.BeginArea(3);
 		}
 	}
 
@@ -88,8 +97,9 @@ public class DeliveryTruck : MarioObject
 		var time = delta/_speed;
 		var text = string.Format("{0:0.0}s", time);
 
-		_timerText = Canvas.CarTimer;
-		_timerText.text = text;
-		_timerText.gameObject.transform.position = point;
+		Canvas.CarTimer.text = text;
+		Canvas.CarTimer.color = Color.black;
+		point.y += Collider.bounds.extents.y*15;
+		Canvas.CarTimerObject.transform.position = point;
 	}
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 /// <summary>
@@ -102,15 +103,21 @@ public class BuyingAreaUI : MarioObject
 
 		_contents[type] = nextAmount;
 
-		//Debug.Log(string.Format("Currnet {0}, totalCost {1}, new {2}", gold, totalCost, gold - totalCost));
-
 		Player.Gold -= totalCost;
+
+		if (totalCost > 0)
+			Player.Ingredients[type]++;
+		else
+			Player.Ingredients[type]--;
 
 		UpdateDisplay();
 	}
 
 	private void UpdateDisplay()
 	{
+		var any = _contents.Sum(c => c.Value) > 0;
+		Canvas.OrderButton.interactable = any;
+
 		UpdateGoldDisplay();
 		InventoryPanel.UpdateDisplay(_contents);
 	}
@@ -122,6 +129,16 @@ public class BuyingAreaUI : MarioObject
 			return;
 
 		GoldText.text = Player.Gold.ToString();
+	}
+
+	/// <summary>
+	/// Start a bake
+	/// </summary>
+	public void BakePressed()
+	{
+		var area = World.CurrentArea as BuyingArea;
+		World.CurrentArea.UiCanvas.gameObject.SetActive(false);
+		World.BeginArea(3);
 	}
 
 	void OnDisable()

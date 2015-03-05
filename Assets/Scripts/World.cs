@@ -102,7 +102,7 @@ public class World : MonoBehaviour
 
 		Player = FindObjectOfType<Player>();
 
-		BeginArea(0);
+		BeginArea(_areaIndex);
 	}
 
 	private IEnumerator TestCoro(IGenerator t0)
@@ -153,8 +153,14 @@ public class World : MonoBehaviour
 			var act = n == _areaIndex;
 			var area = Areas[n];
 
+			if (!act)
+				area.End();
+
 			area.gameObject.SetActive(act);
 			area.UiCanvas.SetActive(act);
+
+			Debug.Log("Area " + area.name + " enabled: " + act);
+			Debug.Log("AreaUI " + area.UiCanvas.name + " enabled: " + act);
 		}
 	}
 
@@ -169,7 +175,7 @@ public class World : MonoBehaviour
 		Debug.Log("Start Cooking");
 
 		// HACKS
-		Camera.main.transform.position = new Vector3(0.2f, -0.8f, -20);
+		//Camera.main.transform.position = new Vector3(0.2f, -0.8f, -20);
 	}
 
 	private void WaitingForTruck()

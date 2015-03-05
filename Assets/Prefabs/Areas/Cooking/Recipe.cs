@@ -1,21 +1,90 @@
-﻿using UnityEngine;
-using System.Collections;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
+/// <summary>
+/// How to make a new product from existing ingredients and other products
+/// </summary>
 public class Recipe : MonoBehaviour
 {
-	public IngredientType Item1;
-	public int Count1;
+	/// <summary>
+	/// What is needed to make the item
+	/// </summary>
+	public List<IngredientType> Ingredients;
 
-	public IngredientType Item2;
-	public int Count2;
+	/// <summary>
+	/// The number of each corresponding ingredient required
+	/// NOTE: there must be a count for each ingredient
+	/// </summary>
+	public List<int> Counts;
 
-	public IngredientType Item3;
-	public int Count3;
-
-	public IngredientType Item4;
-	public int Count4;
-
+	/// <summary>
+	/// How long it takes to cooks this item by default
+	/// </summary>
 	public float CookingTime = 30;
 
+	/// <summary>
+	/// The result of this recipe
+	/// </summary>
 	public IngredientType Result;
+
+	/// <summary>
+	/// Returns true if the given ingredient selection can be used to 
+	/// make this recipe
+	/// </summary>
+	/// <param name="ingredients">the inputs</param>
+	/// <returns>true if possible to make this recipe given the ingredients</returns>
+	public bool Satisfied(Dictionary<IngredientType, int> ingredients)
+	{
+		for (var n = 0; n < Ingredients.Count; ++n)
+		{
+			var type = Ingredients[n];
+			var count = Counts[n];
+
+			if (ingredients[type] < count)
+				return false;
+		}
+
+		return true;
+	}
+
+	/// <summary>
+	/// Removes items required for this Recipe from the given ingredients list
+	/// </summary>
+	/// <param name="ingredients"></param>
+	/// <returns>true if all ingredients were removed</returns>
+	public bool RemoveIngredients(Dictionary<IngredientType, int> ingredients)
+	{
+		if (!Satisfied(ingredients))
+			return false;
+
+		for (var n = 0; n < Ingredients.Count; ++n)
+		{
+			var type = Ingredients[n];
+			var count = Counts[n];
+
+			if (ingredients[type] - count < 0)
+			{
+				Debug.LogWarning("Couldn't remove " + type + " from ingredients list, only has " + ingredients[type]);
+				return false;
+			}
+
+			ingredients[type] -= count;
+		}
+
+		return true;
+	}
+
+	public bool CanAdd(IngredientType item, int current)
+	{
+		for (var n = 0; n < Ingredients.Count; ++n)
+		{
+			if (item != Ingredients[n])
+				continue;
+
+			if (Counts[n] < current)
+				return true;
+		}
+
+		return false;
+	}
 }

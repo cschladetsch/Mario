@@ -91,6 +91,9 @@ public class Truck : MonoBehaviour
 
 				// reset for the return trip
 				_moveTime = MoveDistance/MoveSpeed;
+
+				_world.Level.End();
+				_world.BeginArea(3);
 			}
 			return;
 		}
@@ -155,8 +158,6 @@ public class Truck : MonoBehaviour
 		if (DeliveryCompleted != null)
 			DeliveryCompleted(this);
 
-		//Debug.Log("End Conveyor Level");
-		_world.BeginArea(3);
 	}
 
 	private void UpdateDone()
@@ -250,7 +251,7 @@ public class Truck : MonoBehaviour
 
 		cake.Position = 0;
 		_cakes.Add(cake);
-		Debug.Log("Added cake type " + cake.Type + " called " + cake.name);
+		//Debug.Log("Added cake type " + cake.Type + " called " + cake.name);
 		if (_cakes.Count == NumColumns*NumRows)
 		{
 			_full = true;

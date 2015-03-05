@@ -14,9 +14,9 @@ public class MarioObject : MonoBehaviour
 	/// <summary>
 	/// The single world object
 	/// </summary>
-	public World World;
+	protected World World;
 
-	public IKernel Kernel;
+	protected IKernel Kernel;
 
 	public Player Player { get { return World.Player; } }
 
@@ -52,6 +52,10 @@ public class MarioObject : MonoBehaviour
 		//Debug.Log("Name=" + name + ", World=" + World);
 
 		Begin();
+	}
+
+	public virtual void End()
+	{
 	}
 
 	void Update()

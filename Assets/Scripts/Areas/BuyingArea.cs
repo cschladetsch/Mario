@@ -85,7 +85,6 @@ public class BuyingArea : AreaBase
 		base.Next();
 	}
 
-
 	public void StartDeliveryTruck(Dictionary<IngredientType, int> contents)
 	{
 		var go = (GameObject) Instantiate(DeliveryTruckPrefab);

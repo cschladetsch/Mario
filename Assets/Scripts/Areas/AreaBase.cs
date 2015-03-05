@@ -22,8 +22,16 @@ public class AreaBase : MarioObject
 	{
 		base.Begin();
 		if (UiCanvas)
+			UiCanvas.SetActive(true);
+	}
+
+	public override void End()
+	{
+		base.Begin();
+		if (UiCanvas)
 			UiCanvas.SetActive(false);
 	}
+
 	public void NextPressed()
 	{
 		Debug.Log("AreaBase.NextPressed");

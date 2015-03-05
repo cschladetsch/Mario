@@ -10,8 +10,8 @@ public enum IngredientType
 	CupCake,
 
 	Chocolate,
-	Raisen,
-	Strawberry,
+	Mint,
+	MintIceCream,
 
 	None,
 

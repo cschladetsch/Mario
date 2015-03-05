@@ -100,9 +100,9 @@ public class Level : MarioObject
 		GatherSpawners();
 
 		// HACKS
-		var cam = Camera.main.transform;
-		cam.position = new Vector3(-1.37f, 4.79f, -10);
-		Camera.main.orthographicSize = 7.62f;
+		//var cam = Camera.main.transform;
+		//cam.position = new Vector3(-1.37f, 4.79f, -10);
+		//Camera.main.orthographicSize = 7.62f;
 	}
 
 	//private int _numTrucksDelivered;

@@ -54,7 +54,8 @@ public class CookingAreaUI : MarioObject
 		
 	}
 
-	private Cooker _cakes, _iceCream;
+	private Cooker _cakes;
+	private Cooker _iceCream;
 
 	public void IngredientButtonPressed(GameObject button)
 	{
@@ -62,6 +63,9 @@ public class CookingAreaUI : MarioObject
 		//if (!SelectedCooker)
 		//	return;
 		var item = button.GetComponent<IngredientItem>().Type;
+		if (Player.Ingredients[type] == 0)
+			return;
+
 		//SelectedCooker.IngredientButtonPressed(item);
 
 		// HACKS

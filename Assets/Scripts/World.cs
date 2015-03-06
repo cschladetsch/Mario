@@ -159,8 +159,8 @@ public class World : MonoBehaviour
 			area.gameObject.SetActive(act);
 			area.UiCanvas.SetActive(act);
 
-			Debug.Log("Area " + area.name + " enabled: " + act);
-			Debug.Log("AreaUI " + area.UiCanvas.name + " enabled: " + act);
+			//Debug.Log("Area " + area.name + " enabled: " + act);
+			//Debug.Log("AreaUI " + area.UiCanvas.name + " enabled: " + act);
 		}
 	}
 

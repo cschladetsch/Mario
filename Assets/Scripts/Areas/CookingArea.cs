@@ -62,7 +62,7 @@ public class CookingArea : MarioObject
 	{
 		Debug.Log("Pressed " + button.name);
 		var item = button.GetComponent<IngredientItem>().Type;
-
+		
 	}
 
 	private IEnumerator Cook(IGenerator self, int numCupCakes, Recipe recipe)

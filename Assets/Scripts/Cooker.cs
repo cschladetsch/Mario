@@ -1,9 +1,9 @@
-﻿using System.Collections.Generic;
-using System.ComponentModel;
-using System.Net.Cache;
+﻿using System;
+using System.Collections.Generic;
 using Flow;
 using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
 
 /// <summary>
 /// Something that makes a product given correct ingredients
@@ -27,8 +27,17 @@ public class Cooker : MarioObject
 	private UnityEngine.UI.Image _tint;
 
 	private Dictionary<IngredientType, int> _ingredients;
+	private Dictionary<IngredientType, UnityEngine.UI.Text> _counts;
 
 	public GameObject ProgressBar;
+
+	protected override void Tick()
+	{
+		base.Tick();
+
+		if (Generator == null && CanCook())
+			Cook();
+	}
 
 	public void Select(bool select)
 	{
@@ -44,7 +53,24 @@ public class Cooker : MarioObject
 
 		_tint = transform.FindChild("Tint").gameObject.GetComponent<UnityEngine.UI.Image>();
 
-		Select(false);
+		GatherIngredientButtons();
+		//Select(false);
+	}
+
+	private void GatherIngredientButtons()
+	{
+		_counts = IngredientItem.CreateIngredientDict<UnityEngine.UI.Text>();
+		foreach (Transform tr in transform)
+		{
+			var ing = tr.GetComponent<IngredientItem>();
+			if (ing == null)
+				return;
+
+			var text = tr.FindChild("Count").GetComponent<UnityEngine.UI.Text>();
+			_counts[ing.Type] = text;
+
+			Debug.Log("Found Ingredient button for " + ing.Type + ": " + text.text);
+		}
 	}
 
 	/// <summary>
@@ -59,10 +85,8 @@ public class Cooker : MarioObject
 			if (type != Recipe.Ingredients[n]) 
 				continue;
 
-			if (_ingredients[type] >= Recipe.Counts[n]) 
-				continue;
-
 			_ingredients[type]++;
+			_counts[type].text = _ingredients[type].ToString();
 
 			return true;
 		}
@@ -77,6 +101,9 @@ public class Cooker : MarioObject
 	/// <returns>true if ingredient was removed</returns>
 	public bool Remove(IngredientType type)
 	{
+		if (_ingredients[type] == 0)
+			return false;
+
 		for (var n = 0; n < Recipe.Ingredients.Count; ++n)
 		{
 			if (type != Recipe.Ingredients[n])
@@ -93,13 +120,20 @@ public class Cooker : MarioObject
 		return false;	
 	}
 
+	public IGenerator Generator;
+	public IFuture<bool> Future;
+
+	public delegate void CompletedHandler(IngredientType type);
+
+	public event CompletedHandler Completed;
+
 	public IFuture<bool> Cook()
 	{
 		if (!Recipe.Satisfied(_ingredients))
 			return null;
 
 		var future = Kernel.Factory.NewFuture<bool>();
-		Kernel.Factory.NewCoroutine(Cook, future);
+		Generator = Kernel.Factory.NewCoroutine(Cook, future);
 		return future;
 	}
 
@@ -118,7 +152,22 @@ public class Cooker : MarioObject
 			yield return 0;
 		}
 
+		for (var n = 0; n < Recipe.Ingredients.Count; ++n)
+		{
+			var type = Recipe.Ingredients[n];
+			_ingredients[type] -= Recipe.Counts[n];
+		}
+
 		done.Value = true;
+
+		UpdateDisplay();
+
+		self.Complete();
+
+		Generator = null;
+
+		if (Completed != null)
+			Completed(Recipe.Result);
 	}
 
 	private void UpdateProgressBar(float t)
@@ -129,14 +178,22 @@ public class Cooker : MarioObject
 	public void RemoveIngredient(GameObject go)
 	{
 		var type = go.GetComponent<IngredientItem>().Type;
-		_ingredients[type]--;
+		if (!Remove(type))
+			return;
+
 		Player.Ingredients[type]++;
 		UpdateDisplay();
 	}
 
 	private void UpdateDisplay()
 	{
-		Debug.Log("Update Display");
+		foreach (IngredientType type in Enum.GetValues(typeof (IngredientType)))
+		{
+			if (type == IngredientType.None)
+				continue;
+
+			_counts[type].text = _ingredients[type].ToString();
+		}
 	}
 
 	public void IngredientButtonPressed(IngredientType item)

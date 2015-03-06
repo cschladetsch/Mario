@@ -180,6 +180,8 @@ public class Level : MarioObject
 		var cake = born.GetComponent<Cake>();
 		if (cake != null)
 			++_numCakesSpawned;
+
+		Truck.AddCake(cake);
 	}
 
 	private int _numCakesSpawned;

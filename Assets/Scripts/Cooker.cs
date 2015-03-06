@@ -103,6 +103,11 @@ public class Cooker : MarioObject
 		return future;
 	}
 
+	public bool CanCook()
+	{
+		return Recipe.Satisfied(_ingredients);
+	}
+
 	IEnumerator Cook(IGenerator self, IFuture<bool> done)
 	{
 		var remaining = Recipe.CookingTime;
@@ -118,6 +123,7 @@ public class Cooker : MarioObject
 
 	private void UpdateProgressBar(float t)
 	{
+		Debug.Log("Cooking " + Recipe.Result + " in " + t);
 	}
 
 	public void RemoveIngredient(GameObject go)

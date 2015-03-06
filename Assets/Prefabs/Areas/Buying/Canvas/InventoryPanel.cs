@@ -33,12 +33,17 @@ public class InventoryPanel : MarioObject
 			var c = transform.GetChild(n);
 			var item = c.GetComponent<IngredientItem>();
 			if (item == null)
+			{
+				Debug.Log("child item " + c.name + " has no IngredientItem");
 				continue;
+			}
 
 			var count = item.gameObject.transform.FindChild("Count");
 			if (count != null)
 				Counts[item.Type] = count.GetComponent<UnityEngine.UI.Text>();
 		}
+
+		Counts.Remove(IngredientType.None);
 
 		//foreach (var c in Counts)
 		//{
@@ -51,28 +56,36 @@ public class InventoryPanel : MarioObject
 		base.Tick();
 	}
 
-	public void UpdateDisplay(Dictionary<IngredientType, int> contents)
+	public void UpdateDisplay(Dictionary<IngredientType, int> contents, bool add)
 	{
 		if (Counts == null)
 			CreateDict();
 
-		//Debug.Log("===================================");
-
-		foreach (var ing in Player.Ingredients)
+		foreach (var ing in contents)
 		{
 			// HACK: why do this
 			if (ing.Key == IngredientType.None)
 				return;
 
-			if (Counts.ContainsKey(ing.Key))
-			{
-				//Debug.Log(Counts);
-				//Debug.Log(Counts[ing.Key].name);
-				//Debug.Log(ing.Value);
-				Counts[ing.Key].text = ing.Value.ToString();
+			if (!Counts.ContainsKey(ing.Key))
+				continue;
 
-				//Debug.Log("Updated display for " + ing.Key + " to " + ing.Value);
+			var num = ing.Value;
+			if (add)
+			{
+				num += int.Parse(Counts[ing.Key].text);
 			}
+
+			if (Counts == null)
+				Debug.Log("Counts ull");
+
+			Counts[ing.Key].text = num.ToString();
 		}
+	}
+
+	public void UpdateDisplay(Dictionary<IngredientType, int> ingredients, Dictionary<IngredientType, int> contents)
+	{
+		UpdateDisplay(ingredients, false);
+		UpdateDisplay(ingredients, true);
 	}
 }

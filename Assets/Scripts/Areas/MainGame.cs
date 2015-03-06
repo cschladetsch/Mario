@@ -9,9 +9,29 @@ public class MainGame : MarioObject
 		base.Construct();
 	}
 
+	private float _size;
+	private float _height;
+
 	protected override void Begin()
 	{
 		base.Begin();
+
+		_size = Camera.main.orthographicSize;
+		_height = Camera.main.transform.position.y;
+
+		Camera.main.orthographicSize = 7.6f;
+		Camera.main.transform.SetY(4.8f);
+
+		Player.ShowCharacters(true);
+	}
+
+	public override void End()
+	{
+		base.End();
+		Camera.main.orthographicSize = _size;
+		Camera.main.transform.SetY(_height);
+
+		Player.ShowCharacters(false);
 	}
 
 	protected override void BeforeFirstUpdate()

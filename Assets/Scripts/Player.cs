@@ -93,6 +93,12 @@ public class Player : MarioObject
 	/// </summary>
 	public int Lives = 3;
 
+	public void ShowCharacters(bool show)
+	{
+		Left.gameObject.SetActive(!show);
+		Right.gameObject.SetActive(!show);
+	}
+
 	protected override void Construct()
 	{
 		//Debug.Log("Player.Construct");
@@ -101,6 +107,9 @@ public class Player : MarioObject
 		_canvas = FindObjectOfType<UiCanvas>();
 
 		PrepareEmptyInventory();
+
+		//Ingredients[IngredientType.Cherry] = 5;
+		//Ingredients[IngredientType.Muffin] = 5;
 	}
 
 	private void PrepareEmptyInventory()
@@ -115,7 +124,7 @@ public class Player : MarioObject
 		Left = transform.FindChild("Left").GetComponent<Character>();
 		Right = transform.FindChild("Right").GetComponent<Character>();
 
-		Debug.Log("LeftL " + Left);
+		ShowCharacters(false);
 	}
 
 	void Update()

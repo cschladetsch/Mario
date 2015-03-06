@@ -16,6 +16,8 @@ public class CookingAreaUI : MarioObject
 	public List<Cooker> Cookers;
 
 	public Cooker SelectedCooker;
+
+	public UnityEngine.UI.Button ShopButton;
  
 	protected override void BeforeFirstUpdate()
 	{
@@ -28,9 +30,26 @@ public class CookingAreaUI : MarioObject
 		//	c.(false);
 	}
 
+	public void AddIngredient(GameObject ing)
+	{
+		var cooker = ing.transform.parent.GetComponent<Cooker>();
+		var type = ing.GetComponent<IngredientItem>().Type;
+
+		if (Player.Ingredients[type] > 0)
+		{
+			if (cooker.Add(type))
+			{
+				Player.Ingredients[type]--;
+				if (cooker.CanCook())
+					cooker.Cook();
+				UpdateDisplay();
+			}
+		}
+	}
+
 	private void UpdateDisplay()
 	{
-		InventoryPanel.UpdateDisplay(Player.Ingredients);
+		InventoryPanel.UpdateDisplay(Player.Ingredients, false);
 	}
 
 	private void GatherCookers()
@@ -42,7 +61,7 @@ public class CookingAreaUI : MarioObject
 				continue;
 
 			Cookers.Add(cooker);
-			Debug.Log("Found a cooker for " + cooker.Recipe.name);
+			//Debug.Log("Found a cooker for " + cooker.Recipe.name);
 
 			//  HACKS
 			if (cooker.name == "CupcakeCooker")
@@ -50,8 +69,14 @@ public class CookingAreaUI : MarioObject
 			else
 				_iceCream = cooker;
 		}
+	}
 
-		
+	protected override void Tick()
+	{
+		base.Tick();
+
+		//var cooking = !_cakes.Cooking() && !_iceCream.Cooking();
+		//ShopButton.interactable = !cooking;
 	}
 
 	private Cooker _cakes;
@@ -59,24 +84,24 @@ public class CookingAreaUI : MarioObject
 
 	public void IngredientButtonPressed(GameObject button)
 	{
-		Debug.Log("Pressed " + button.name);
+		//Debug.Log("Pressed " + button.name);
 		//if (!SelectedCooker)
 		//	return;
-		var item = button.GetComponent<IngredientItem>().Type;
+		var type = button.GetComponent<IngredientItem>().Type;
 		if (Player.Ingredients[type] == 0)
 			return;
 
 		//SelectedCooker.IngredientButtonPressed(item);
 
 		// HACKS
-		switch (item)
+		switch (type)
 		{
 			case IngredientType.Cherry:
 			case IngredientType.Muffin:
 			{
-				if (_cakes.Add(item))
+				if (_cakes.Add(type))
 				{
-					RemoveItemFromPlayer(item);
+					RemoveItemFromPlayer(type);
 					if (_cakes.CanCook())
 						_cakes.Cook();
 				}
@@ -86,9 +111,9 @@ public class CookingAreaUI : MarioObject
 			case IngredientType.Chocolate:
 			case IngredientType.Mint:
 			{
-				if (_iceCream.Add(item))
+				if (_iceCream.Add(type))
 				{
-					RemoveItemFromPlayer(item);
+					RemoveItemFromPlayer(type);
 					if (_iceCream.CanCook())
 						_iceCream.Cook();
 				}
@@ -100,7 +125,7 @@ public class CookingAreaUI : MarioObject
 	private void RemoveItemFromPlayer(IngredientType item)
 	{
 		Player.Ingredients[item]--;
-		InventoryPanel.UpdateDisplay(Player.Ingredients);
+		InventoryPanel.UpdateDisplay(Player.Ingredients, false);
 	}
 
 	public void SelectCooker(GameObject go)
@@ -111,12 +136,12 @@ public class CookingAreaUI : MarioObject
 
 	void UpdateCookerAvailability()
 	{
-		foreach (var c in Cookers)
-		{
-			//var canUse = c.Recipe.Satisfied(Player.Ingredients);
-			//if (!canUse)
-			//	c.
-		}
+		//foreach (var c in Cookers)
+		//{
+		//	//var canUse = c.Recipe.Satisfied(Player.Ingredients);
+		//	//if (!canUse)
+		//	//	c.
+		//}
 	}
 
 	public void BackToShop()
@@ -126,7 +151,7 @@ public class CookingAreaUI : MarioObject
 
 	void OnDisable()
 	{
-		Debug.Log("CookingArea enabled: " + gameObject.activeSelf);
+		//Debug.Log("CookingArea enabled: " + gameObject.activeSelf);
 	}
 
 	public void RemoveIngredient(GameObject go)

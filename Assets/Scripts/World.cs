@@ -19,6 +19,8 @@ public class World : MonoBehaviour
 
 	public List<Product> AvailableProducts;
 
+	public Dictionary<IngredientType, IngredientInfo> IngredientInfo = new Dictionary<IngredientType, IngredientInfo>(); 
+
 	/// <summary>
 	/// The current level
 	/// </summary>
@@ -74,6 +76,17 @@ public class World : MonoBehaviour
 		Canvas = FindObjectOfType<UiCanvas>();
 
 		_levelIndex = 0;
+
+		GatherIngredients();
+	}
+	private void GatherIngredients()
+	{
+		var infos = GameObject.Find("IngredientInfos");
+		foreach (Transform tr in infos.transform)
+		{
+			var info = tr.GetComponent<IngredientInfo>();
+			IngredientInfo.Add(info.Type, info);
+		}
 	}
 
 	void Start()
@@ -122,6 +135,9 @@ public class World : MonoBehaviour
 
 	public void BeginArea(int num)
 	{
+		if (CurrentArea)
+			CurrentArea.End();
+
 		_areaIndex = num;
 
 		switch (num)
@@ -158,6 +174,7 @@ public class World : MonoBehaviour
 
 			area.gameObject.SetActive(act);
 			area.UiCanvas.SetActive(act);
+			area.UiCanvas.BroadcastMessage("Reset", SendMessageOptions.DontRequireReceiver);
 
 			//Debug.Log("Area " + area.name + " enabled: " + act);
 			//Debug.Log("AreaUI " + area.UiCanvas.name + " enabled: " + act);
@@ -171,8 +188,6 @@ public class World : MonoBehaviour
 		
 		foreach (var c in FindObjectsOfType<Cake>())
 			Destroy(c.gameObject);
-
-		Debug.Log("Start Cooking");
 
 		// HACKS
 		//Camera.main.transform.position = new Vector3(0.2f, -0.8f, -20);
@@ -317,8 +332,9 @@ public class World : MonoBehaviour
 			types.Add(type);
 
 			var sp = Level.gameObject.AddComponent<SpawnInfo>();
-			sp.MinSpawnTime = 2;
-			sp.MaxSpawnTime = 4;
+			var info = IngredientInfo[type];
+			sp.MinSpawnTime = info.MinSpawnRate;
+			sp.MaxSpawnTime = info.MaxSpawnRate;
 			sp.Weight = 1;
 			sp.MaxSpawns = c.Value;
 			sp.Type = type;

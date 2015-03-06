@@ -67,6 +67,21 @@ public class Level : MarioObject
 	{
 		_initialConveyorSpeed = ConveyorSpeed;
 		_cakesHolder = transform.FindChild("Contents");
+
+		_size = Camera.main.orthographicSize;
+		_height = Camera.main.transform.position.y;
+
+		//Debug.Log("Setting camera");
+		Camera.main.orthographicSize = 7.6f;
+		Camera.main.transform.SetY(4.8f);
+	}
+
+	private float _size;
+	private float _height;
+
+	public override void End()
+	{
+		base.End();
 	}
 
 	private void CakeDropped(Player player)
@@ -117,11 +132,13 @@ public class Level : MarioObject
 
 	private bool _ended;
 
-	private void EndLevel()
+	public void EndLevel()
 	{
 		Debug.Log("EndLevel " + name);
 		_ended = true;
 
+		Camera.main.orthographicSize = _size;
+		Camera.main.transform.SetY(_height);
 		Canvas.LevelEnded(this);
 
 		foreach (var c in _conveyors)
@@ -181,8 +198,12 @@ public class Level : MarioObject
 		if (cake != null)
 			++_numCakesSpawned;
 
-		Truck.AddCake(cake);
+		// FRI
+		if (ToTruck)
+			Truck.AddCake(cake);
 	}
+
+	public bool ToTruck;
 
 	private int _numCakesSpawned;
 

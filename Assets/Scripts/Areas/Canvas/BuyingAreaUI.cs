@@ -17,7 +17,7 @@ public class BuyingAreaUI : MarioObject
 	/// The current items that will be purchased. these can be bought and sold many times before
 	/// the player presses the 'Done' button and the truck starts its delivery
 	/// </summary>
-	readonly Dictionary<IngredientType, int> _contents = new Dictionary<IngredientType, int>();
+	Dictionary<IngredientType, int> _contents = new Dictionary<IngredientType, int>();
 
 	public UnityEngine.UI.Text GoldText;
 	
@@ -25,19 +25,27 @@ public class BuyingAreaUI : MarioObject
 	{
 		base.BeforeFirstUpdate();
 
-		UpdateDisplay();
-
 		GatherIngredients();
 
 		GatherCostTexts();
 
 		UpdateCosts();
+
+		UpdateDisplay();
 	}
 
 	private void GatherIngredients()
 	{
+		_contents = new Dictionary<IngredientType, int>();
 		foreach (var e in Enum.GetValues(typeof(IngredientType)))
 			_contents.Add((IngredientType)e, 0);	
+	}
+
+	protected override void Tick()
+	{
+		base.Tick();
+
+		UpdateDisplay();
 	}
 
 	private void GatherCostTexts()
@@ -59,7 +67,7 @@ public class BuyingAreaUI : MarioObject
 	// ReSharper disable once ReturnTypeCanBeEnumerable.Local
 	private Cake[] GetIngredientPanels()
 	{
-		return transform.GetComponentsInChildren<Cake>();
+		return transform.FindChild("BuyingOptions").GetComponentsInChildren<Cake>();
 	}
 
 	/// <summary>
@@ -82,7 +90,7 @@ public class BuyingAreaUI : MarioObject
 	{
 		var ing = button.transform.parent.GetComponent<Cake>();
 		var type = ing.Type;
-		var cost = ing.BaseCost;
+		var cost = World.IngredientInfo[type].Buy;
 		var amount = int.Parse(button.GetComponent<UnityEngine.UI.Button>().name);
 		var totalCost = cost*amount;
 		var gold = Player.Gold;
@@ -119,7 +127,45 @@ public class BuyingAreaUI : MarioObject
 		Canvas.OrderButton.interactable = any;
 
 		UpdateGoldDisplay();
-		InventoryPanel.UpdateDisplay(_contents);
+
+		InventoryPanel.UpdateDisplay(_contents, false);
+		InventoryPanel.UpdateDisplay(Player.Ingredients, true);
+	}
+
+	public void BuyItem(GameObject go)
+	{
+		if (_contents.Count == 6)
+		{
+			Debug.Log("Currently limited to 6 items max");
+			return;
+		}
+		// TODO: use Ingredient Item not Cake
+		var item = go.GetComponent<Cake>().Type;
+		var info = World.IngredientInfo[item];
+		if (Player.Gold < info.Buy)
+			return;
+
+		_contents[item]++;
+		Player.Gold -= info.Buy;
+		UpdateDisplay();
+	}
+
+	public void SellItem(GameObject go)
+	{
+		var item = go.GetComponent<IngredientItem>().Type;
+		if (_contents[item] == 0 && Player.Ingredients[item] == 0)
+			return;
+
+		var gold = World.IngredientInfo[item].Sell;
+		Player.Gold += gold;
+		//Debug.Log("Sold a " + item + " for " + gold);
+
+		if (Player.Ingredients[item] == 0)
+			_contents[item]--;
+		else
+			Player.Ingredients[item]--;
+
+		UpdateDisplay();
 	}
 
 	private void UpdateGoldDisplay()
@@ -136,7 +182,7 @@ public class BuyingAreaUI : MarioObject
 	/// </summary>
 	public void BakePressed()
 	{
-		var area = World.CurrentArea as BuyingArea;
+		//var area = World.CurrentArea as BuyingArea;
 		World.CurrentArea.UiCanvas.gameObject.SetActive(false);
 		World.BeginArea(3);
 	}
@@ -144,6 +190,11 @@ public class BuyingAreaUI : MarioObject
 	void OnDisable()
 	{
 		//Debug.Log(" " + name + " was disabled");
+	}
+
+	public void Reset()
+	{
+		GatherIngredients();
 	}
 }
 

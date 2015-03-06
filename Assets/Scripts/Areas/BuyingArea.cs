@@ -85,8 +85,24 @@ public class BuyingArea : AreaBase
 		base.Next();
 	}
 
+	public bool Skip;
+
 	public void StartDeliveryTruck(Dictionary<IngredientType, int> contents)
 	{
+		if (Skip)
+		{
+			foreach (var c in contents)
+			{
+				Player.Ingredients[c.Key] += c.Value;
+			}
+			World.BeginArea(3);
+			return;
+		}
+
+		// remove items already owned by player
+		foreach (var i in Player.Ingredients)
+			contents[i.Key] -= i.Value;
+
 		var go = (GameObject) Instantiate(DeliveryTruckPrefab);
 		var truck = go.GetComponent<DeliveryTruck>();
 		truck.Deliver(StartX, EndX, DeliveryTruckTime, DeliveryTruckHeight, DeliverryCarDepth, contents);

@@ -10,15 +10,15 @@ public class Cake : Pickup
 
 	public IngredientType Type;
 
-	/// <summary>
-	/// How much it takes to buy one
-	/// </summary>
-	public int BaseCost = 2;
+	///// <summary>
+	///// How much it takes to buy one
+	///// </summary>
+	//public int BaseCost = 2;
 
-	/// <summary>
-	/// How much it takes to sell one
-	/// </summary>
-	public int BasePrice = 1;
+	///// <summary>
+	///// How much it takes to sell one
+	///// </summary>
+	//public int BasePrice = 1;
 
 	/// <summary>
 	/// The UI label to update with the cost amount
@@ -38,7 +38,7 @@ public class Cake : Pickup
 		else
 		{
 			var truck = FindObjectOfType<Truck>();
-			Debug.Log("Adding a " + Type + " to truck called " + name);
+			//Debug.Log("Adding a " + Type + " to truck called " + name);
 			truck.AddCake(this);
 		}
 	}
@@ -67,6 +67,7 @@ public class Cake : Pickup
 	/// </summary>
 	public void UpdateCostText()
 	{
-		CostText.text = BaseCost.ToString();
+		var world = FindObjectOfType<World>();
+		CostText.text = world.IngredientInfo[Type].Sell.ToString();
 	}
 }

@@ -92,7 +92,14 @@ public class Truck : MonoBehaviour
 				// reset for the return trip
 				_moveTime = MoveDistance/MoveSpeed;
 
-				_world.Level.End();
+				foreach (var c in _pending)
+					Destroy(c.gameObject);
+				foreach (var c in _cakes)
+					Destroy(c.gameObject);
+
+				_pending.Clear();
+				_cakes.Clear();
+				_world.Level.EndLevel();
 				_world.BeginArea(3);
 			}
 			return;
@@ -200,14 +207,15 @@ public class Truck : MonoBehaviour
 			cake.transform.position = para.Calc(cake.transform.position.x);
 
 			var arrived = cake.transform.position.x <= para.FinalPos.x;
+			if (arrived)
+				AddToPlayerIngredients(cake);
+
 			if (!arrived)
 				continue;
 
 			cake.transform.parent = transform;
 			cake.transform.position = para.FinalPos;
 			cake.TruckParabola = null;
-
-			AddToPlayerIngredients(cake);
 
 			--_numCakes;
 		}

@@ -4,13 +4,13 @@ using UnityEngine;
 
 public class MainGame : MarioObject
 {
+	private float _size;
+	private float _height;
+
 	protected override void Construct()
 	{
 		base.Construct();
 	}
-
-	private float _size;
-	private float _height;
 
 	protected override void Begin()
 	{

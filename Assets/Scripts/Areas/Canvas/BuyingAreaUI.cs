@@ -20,7 +20,7 @@ public class BuyingAreaUI : MarioObject
 	Dictionary<IngredientType, int> _contents = new Dictionary<IngredientType, int>();
 
 	public UnityEngine.UI.Text GoldText;
-	
+
 	protected override void BeforeFirstUpdate()
 	{
 		base.BeforeFirstUpdate();
@@ -38,7 +38,7 @@ public class BuyingAreaUI : MarioObject
 	{
 		_contents = new Dictionary<IngredientType, int>();
 		foreach (var e in Enum.GetValues(typeof(IngredientType)))
-			_contents.Add((IngredientType)e, 0);	
+			_contents.Add((IngredientType)e, 0);
 	}
 
 	protected override void Tick()
@@ -79,46 +79,6 @@ public class BuyingAreaUI : MarioObject
 		var area = World.CurrentArea as BuyingArea;
 		World.CurrentArea.UiCanvas.gameObject.SetActive(false);
 		area.StartDeliveryTruck(_contents);
-	}
-
-	/// <summary>
-	/// Order an in ingredient - or remove one. This is awkward because Unity 4.6 doesn't
-	/// seem to allow for multiple arguments to OnCLick events any more
-	/// </summary>
-	/// <param name="button"></param>
-	public void OrderIngredient(GameObject button)
-	{
-		var ing = button.transform.parent.GetComponent<Cake>();
-		var type = ing.Type;
-		var cost = World.IngredientInfo[type].Buy;
-		var amount = int.Parse(button.GetComponent<UnityEngine.UI.Button>().name);
-		var totalCost = cost*amount;
-		var gold = Player.Gold;
-
-		// can't afford it
-		if (!Player.GodMode && totalCost > gold)
-			return;
-
-		// can't go negative
-		if (totalCost > 0 && totalCost + gold < 0)
-			return;
-
-		var stock = _contents[type];
-
-		var nextAmount = stock + amount;
-		if (nextAmount < 0)
-			return;
-
-		_contents[type] = nextAmount;
-
-		Player.Gold -= totalCost;
-
-		if (totalCost > 0)
-			Player.Ingredients[type]++;
-		else
-			Player.Ingredients[type]--;
-
-		UpdateDisplay();
 	}
 
 	private void UpdateDisplay()
@@ -197,4 +157,3 @@ public class BuyingAreaUI : MarioObject
 		GatherIngredients();
 	}
 }
-

@@ -27,6 +27,8 @@ public class Recipe : MonoBehaviour
 	/// </summary>
 	public IngredientType Result;
 
+	public int NumResults;
+
 	/// <summary>
 	/// Returns true if the given ingredient selection can be used to 
 	/// make this recipe

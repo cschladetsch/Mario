@@ -6,11 +6,13 @@ public class UiCanvas : MarioObject
 	public UnityEngine.UI.Text LivesRemaining;
 	public UnityEngine.UI.Text Score;
 	public UnityEngine.UI.Text CarTimer;
+	public UnityEngine.UI.Text PlayerGoldText;
 	public GameObject CarTimerObject;
 	public GameObject TapToStart;
 	public GameObject LevelCompleted;
 	public GameObject HighScore;
 	public GameObject PausedPanel;
+	public GameObject GoalPanel;
 	public UnityEngine.UI.Button OrderButton;
 	public UnityEngine.UI.Button BakeButton;
 
@@ -69,6 +71,11 @@ public class UiCanvas : MarioObject
 	{
 		PausedPanel.gameObject.SetActive(false);
 		World.Pause(false);
+	}
+
+	public void UpdateGoldAmount()
+	{
+		PlayerGoldText.text = Player.Gold.ToString();
 	}
 
 }

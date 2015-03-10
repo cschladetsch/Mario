@@ -86,10 +86,10 @@ public class BuyingAreaUI : MarioObject
 		var any = _contents.Sum(c => c.Value) > 0;
 		Canvas.OrderButton.interactable = any;
 
-		UpdateGoldDisplay();
+		Canvas.UpdateGoldAmount();
 
 		InventoryPanel.UpdateDisplay(_contents, false);
-		InventoryPanel.UpdateDisplay(Player.Ingredients, true);
+		//InventoryPanel.UpdateDisplay(Player.Ingredients, true);
 	}
 
 	public void BuyItem(GameObject go)
@@ -113,28 +113,14 @@ public class BuyingAreaUI : MarioObject
 	public void SellItem(GameObject go)
 	{
 		var item = go.GetComponent<IngredientItem>().Type;
-		if (_contents[item] == 0 && Player.Ingredients[item] == 0)
+		if (_contents[item] == 0)// && Player.Ingredients[item] == 0)
 			return;
 
 		var gold = World.IngredientInfo[item].Sell;
 		Player.Gold += gold;
-		//Debug.Log("Sold a " + item + " for " + gold);
-
-		if (Player.Ingredients[item] == 0)
-			_contents[item]--;
-		else
-			Player.Ingredients[item]--;
+		_contents[item]--;
 
 		UpdateDisplay();
-	}
-
-	private void UpdateGoldDisplay()
-	{
-		//Debug.Log("Player " + Player);
-		if (!Player)
-			return;
-
-		GoldText.text = Player.Gold.ToString();
 	}
 
 	/// <summary>

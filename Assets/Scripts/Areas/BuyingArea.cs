@@ -54,6 +54,8 @@ public class BuyingArea : AreaBase
 		base.Begin();
 
 		UiCanvas.SetActive(true);
+
+		World.Canvas.GoalPanel.GetComponent<GoalPanel>().UpdateUi();
 	}
 
 	private IEnumerator TapToContinue(IGenerator t0)

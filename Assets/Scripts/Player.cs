@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net.Mime;
 using UnityEngine;
 
 /// <summary>
@@ -9,6 +10,8 @@ using UnityEngine;
 /// </summary>
 public class Player : MarioObject
 {
+	public StageGoal CurrentGoal;
+
 	/// <summary>
 	/// How much gold (money) the player has
 	/// </summary>
@@ -133,6 +136,12 @@ public class Player : MarioObject
 		{
 			FindObjectOfType<World>().TogglePause();
 		}
+
+		if (Input.GetKeyDown(KeyCode.C))
+		{
+			CookedItem(IngredientType.CupCake, 1);
+			UpdateUi();
+		}
 	}
 
 	List<Product> CalcPossibleProducts()
@@ -176,6 +185,9 @@ public class Player : MarioObject
 
 	private void UpdateUi()
 	{
+		World.Canvas.UpdateGoldAmount();
+		World.Canvas.GoalPanel.GetComponent<GoalPanel>().UpdateUi();
+
 		// TODO
 		//_canvas.LivesRemaining.text = Lives.ToString();
 	}
@@ -195,6 +207,15 @@ public class Player : MarioObject
 	public void AddLife()
 	{
 		++Lives;
+
+		UpdateUi();
+	}
+
+	public void CookedItem(IngredientType type, int count)
+	{
+		Ingredients[type] += count;
+		var info = World.IngredientInfo[type];
+		Gold += info.Sell*count;
 
 		UpdateUi();
 	}

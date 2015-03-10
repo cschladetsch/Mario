@@ -13,9 +13,12 @@ public class World : MonoBehaviour
 {
 	public int AreaIndex;
 
+	StageGoal []StageGoals;
+
+
 	public AreaBase CurrentArea;
 
-	public Level Level;
+	public Level CurrentLevel;
 
 	public List<Product> AvailableProducts;
 
@@ -129,7 +132,7 @@ public class World : MonoBehaviour
 
 	public void Reset()
 	{
-		if (Level == null)
+		if (CurrentLevel == null)
 			return;
 	}
 
@@ -183,8 +186,8 @@ public class World : MonoBehaviour
 
 	private void Cooking()
 	{
-		if (Level)
-			Destroy(Level.gameObject);
+		if (CurrentLevel)
+			Destroy(CurrentLevel.gameObject);
 		
 		foreach (var c in FindObjectsOfType<Cake>())
 			Destroy(c.gameObject);
@@ -207,7 +210,7 @@ public class World : MonoBehaviour
 	{
 		Truck.Reset();
 
-		Level.Reset();
+		CurrentLevel.Reset();
 
 		Player.Reset();
 
@@ -240,7 +243,7 @@ public class World : MonoBehaviour
 				// if this is the first level, then we pause else we un-pause
 				Pause(_levelIndex == 0);
 
-				Level.BeginLevel();
+				CurrentLevel.BeginLevel();
 			}
 
 			return;
@@ -261,8 +264,8 @@ public class World : MonoBehaviour
 		//foreach (var cake in FindObjectsOfType<Cake>())
 		//	cake.Pause(pause);
 
-		//if (Level)
-		//	Level.Pause(pause);
+		//if (CurrentLevel)
+		//	CurrentLevel.Pause(pause);
 	}
 
 	public void TogglePause()
@@ -272,14 +275,14 @@ public class World : MonoBehaviour
 
 	public void CreateLevel()
 	{
-		if (Level)
-			Destroy(Level.gameObject);
+		if (CurrentLevel)
+			Destroy(CurrentLevel.gameObject);
 
 		var prefab = Levels[_levelIndex];
-		Level = ((GameObject)Instantiate(prefab)).GetComponent<Level>();
-		Level.transform.position = Vector3.zero;
+		CurrentLevel = ((GameObject)Instantiate(prefab)).GetComponent<Level>();
+		CurrentLevel.transform.position = Vector3.zero;
 
-		Level.Paused = true;
+		CurrentLevel.Paused = true;
 
 		AddSpawners();
 
@@ -295,7 +298,7 @@ public class World : MonoBehaviour
 
 		Pause(false);
 
-		Level.Pause(false);
+		CurrentLevel.Pause(false);
 	}
 
 	private Dictionary<IngredientType, int> _contents;
@@ -312,7 +315,7 @@ public class World : MonoBehaviour
 	}
 
 	/// <summary>
-	/// Add spawners for contents of truck. TODO: move to Level.cs
+	/// Add spawners for contents of truck. TODO: move to CurrentLevel.cs
 	/// </summary>
 	private void AddSpawners()
 	{
@@ -331,7 +334,7 @@ public class World : MonoBehaviour
 
 			types.Add(type);
 
-			var sp = Level.gameObject.AddComponent<SpawnInfo>();
+			var sp = CurrentLevel.gameObject.AddComponent<SpawnInfo>();
 			var info = IngredientInfo[type];
 			sp.MinSpawnTime = info.MinSpawnRate;
 			sp.MaxSpawnTime = info.MaxSpawnRate;
@@ -358,6 +361,6 @@ public class World : MonoBehaviour
 			//Debug.Log("Using " + sp.Prefab.name + " prefab to make " + c.Key);
 		}
 
-		Level.Inventory = _contents;
+		CurrentLevel.Inventory = _contents;
 	}
 }

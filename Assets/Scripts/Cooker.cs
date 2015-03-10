@@ -177,9 +177,10 @@ public class Cooker : MarioObject
 		if (Completed != null)
 			Completed(Recipe.Result);
 
-		Debug.Log("Cooked a " + Recipe.Result);
 
-		Player.Ingredients[Recipe.Result]++;
+		var count = Recipe.NumResults;
+		Debug.Log("Cooked " + count + " " + Recipe.Result);
+		Player.CookedItem(Recipe.Result, count);
 
 		UpdateDisplay();
 

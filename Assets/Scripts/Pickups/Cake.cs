@@ -68,6 +68,7 @@ public class Cake : Pickup
 	public void UpdateCostText()
 	{
 		var world = FindObjectOfType<World>();
-		CostText.text = world.IngredientInfo[Type].Sell.ToString();
+		var text = world.IngredientInfo[Type].Sell.ToString();
+		CostText.text = string.Format("{0}$", text);
 	}
 }

@@ -31,7 +31,7 @@ public class MarioObject : MonoBehaviour
 	/// <summary>
 	/// The current level being played
 	/// </summary>
-	protected Level Level { get { return World.Level; } }
+	protected Level CurrentLevel { get { return World.CurrentLevel; } }
 
 	protected float Time;
 

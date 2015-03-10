@@ -132,8 +132,8 @@ public class Character : MarioObject
 
 	private void PickupFromConveyors(int level)
 	{
-		var conv = Level.GetConveyor(level);
-		var next = Level.GetConveyor(level + 1);
+		var conv = CurrentLevel.GetConveyor(level);
+		var next = CurrentLevel.GetConveyor(level + 1);
 
 		if (!conv)
 			return;

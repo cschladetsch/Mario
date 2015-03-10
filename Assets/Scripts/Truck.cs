@@ -60,7 +60,7 @@ public class Truck : MonoBehaviour
 		_startPos = transform.position.x;
 		_world = FindObjectOfType<World>();
 
-		_numCakes = _world.Level.Inventory.Sum(c => c.Value);
+		_numCakes = _world.CurrentLevel.Inventory.Sum(c => c.Value);
 	}
 
 	void Update()
@@ -99,7 +99,7 @@ public class Truck : MonoBehaviour
 
 				_pending.Clear();
 				_cakes.Clear();
-				_world.Level.EndLevel();
+				_world.CurrentLevel.EndLevel();
 				_world.BeginArea(3);
 			}
 			return;

@@ -93,7 +93,7 @@ public class Level : MarioObject
 
 	public void BeginLevel()
 	{
-		//Debug.Log("Level.BeginLevel");
+		//Debug.Log("CurrentLevel.BeginLevel");
 
 		_characters = FindObjectsOfType<Character>();
 		PauseCharacters(true);
@@ -209,7 +209,7 @@ public class Level : MarioObject
 
 	public void Reset()
 	{
-		//Debug.Log("Level.Reset");
+		//Debug.Log("CurrentLevel.Reset");
 
 		GatherConveyors();
 
@@ -380,7 +380,7 @@ public class Level : MarioObject
 
 	public void Pause(bool pause)
 	{
-		//Debug.Log("Level.Pause: " + pause + " " + _conveyors.Count);
+		//Debug.Log("CurrentLevel.Pause: " + pause + " " + _conveyors.Count);
 
 		Paused = pause;
 

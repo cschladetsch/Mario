@@ -43,6 +43,7 @@ MonoBehaviour:
   Counts: 0100000001000000
   CookingTime: 5
   Result: 2
+  NumResults: 5
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1

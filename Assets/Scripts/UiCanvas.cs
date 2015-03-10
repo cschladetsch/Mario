@@ -7,13 +7,16 @@ public class UiCanvas : MarioObject
 	public UnityEngine.UI.Text Score;
 	public UnityEngine.UI.Text CarTimer;
 	public UnityEngine.UI.Text PlayerGoldText;
+
 	public GameObject CarTimerObject;
 	public GameObject TapToStart;
 	public GameObject LevelCompleted;
 	public GameObject HighScore;
 	public GameObject PausedPanel;
-	public GameObject GoalPanel;
+	public GoalPanel GoalPanel;
+	public GameObject TintPanel;
 	public UnityEngine.UI.Button OrderButton;
+
 	public UnityEngine.UI.Button BakeButton;
 
 	protected override void Begin()
@@ -30,6 +33,8 @@ public class UiCanvas : MarioObject
 		HighScore.gameObject.SetActive(false);
 		PausedPanel.gameObject.SetActive(false);
 		CarTimerObject.SetActive(false);
+
+		TintPanel.SetActive(true);
 	}
 
 	public void Reset()

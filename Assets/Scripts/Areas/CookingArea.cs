@@ -3,8 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using Flow;
 using UnityEngine;
+using Object = UnityEngine.Object;
 
-public class CookingArea : MarioObject
+public class CookingArea : AreaBase
 {
 	public List<Recipe> Recipes = new List<Recipe>();
 
@@ -43,5 +44,15 @@ public class CookingArea : MarioObject
 	{
 		base.Tick();
 
+	}
+
+	public override void StartArea()
+	{
+		base.StartArea();
+
+		//Debug.Log("Cooking area begins");
+
+		var ui = FindObjectOfType<CookingAreaUI>();
+		ui.InventoryPanel.UpdateDisplay(Player.Ingredients, false);
 	}
 }

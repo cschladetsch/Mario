@@ -160,7 +160,7 @@ MonoBehaviour:
   _hangTimer: 0
   _dropped: 0
   _droppedTimer: 0
-  Type: 1
+  Type: 5
   CostText: {fileID: 0}
 --- !u!212 &21204316
 SpriteRenderer:

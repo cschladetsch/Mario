@@ -10,6 +10,8 @@ public class GoalPanel : MarioObject
 {
 	public Image Tint;
 
+	public Dictionary<IngredientType, int> Ingredients;
+
 	public Text ButtonText;
 
 	/// <summary>
@@ -42,6 +44,8 @@ public class GoalPanel : MarioObject
 
 	protected override void BeforeFirstUpdate()
 	{
+		Ingredients = IngredientItem.CreateIngredientDict<int>();
+
 		// retain so we can toggle it off and on
 		_tintSprite = Tint.sprite;
 
@@ -52,15 +56,22 @@ public class GoalPanel : MarioObject
 		SetGoal(Player.CurrentGoal);
 	}
 
+	public void Cooked(IngredientType item, int count)
+	{
+		Ingredients[item] += count;
+	}
+
 	private void GatherPrefabsForIngredientDisplay()
 	{
 		_prefabs[IngredientType.CupCake] = (GameObject) Resources.Load("Images/Cupcake");
 		_prefabs[IngredientType.MintIceCream] = (GameObject) Resources.Load("Images/ChockMintIceCream");
+		//_prefabs[IngredientType.Chocolate] = (GameObject) Resources.Load("Images/ChockMintIceCream");
+		//_prefabs[IngredientType.MintIceCream] = (GameObject) Resources.Load("Images/ChockMintIceCream");
 	}
 
 	public void SetGoal(StageGoal goal)
 	{
-		Debug.Log("Setting goal " + goal.Name);
+		//Debug.Log("Setting goal " + goal.Name);
 
 		ButtonText.gameObject.SetActive(true);
 		ButtonText.text = goal.MakeDescription();
@@ -77,7 +88,7 @@ public class GoalPanel : MarioObject
 
 	public void GoalButtonPressed()
 	{
-		Debug.Log("Goal Button Pressed");
+		//Debug.Log("Goal Button Pressed");
 		ButtonText.transform.parent.gameObject.SetActive(false);
 
 		Tint.sprite = null;
@@ -103,7 +114,10 @@ public class GoalPanel : MarioObject
 	{
 		//Debug.Log("Syncing goal panel");
 
-		foreach (var kv in Player.Ingredients)
+		if (Ingredients == null)
+			Ingredients = IngredientItem.CreateIngredientDict<int>();
+
+		foreach (var kv in Ingredients)
 		{
 			var type = kv.Key;
 			var num = kv.Value;

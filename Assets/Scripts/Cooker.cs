@@ -15,6 +15,8 @@ public class Cooker : MarioObject
 	/// </summary>
 	public Recipe Recipe;
 
+	new public IKernel Kernel;
+
 	public Color DeselectedColor;
 
 	public Color UnusableColor;
@@ -24,12 +26,19 @@ public class Cooker : MarioObject
 	/// </summary>
 	public bool Active;
 
-	//private UnityEngine.UI.Image _tint;
+	public IGenerator Generator;
 
-	private Dictionary<IngredientType, int> _ingredients;
-	private Dictionary<IngredientType, UnityEngine.UI.Text> _counts;
+	public IFuture<bool> Future;
+
+	public delegate void CompletedHandler(IngredientType type);
+
+	public event CompletedHandler Completed;
 
 	public UnityEngine.UI.Text TimerText;
+
+	private Dictionary<IngredientType, int> _ingredients;
+
+	private Dictionary<IngredientType, UnityEngine.UI.Text> _counts;
 
 	//public GameObject ProgressBar;
 
@@ -53,20 +62,23 @@ public class Cooker : MarioObject
 
 		_ingredients = IngredientItem.CreateIngredientDict<int>();
 
-		//_tint = transform.FindChild("Tint").gameObject.GetComponent<UnityEngine.UI.Image>();
-
 		GatherIngredientButtons();
-		//Select(false);
+
+		Kernel = FindObjectOfType<Kernel>().Kern;
 	}
 
 	private void GatherIngredientButtons()
 	{
+		//Debug.Log("GatherIngredientButtons: " + name);
 		_counts = IngredientItem.CreateIngredientDict<UnityEngine.UI.Text>();
 		foreach (Transform tr in transform)
 		{
 			var ing = tr.GetComponent<IngredientItem>();
 			if (ing == null)
-				return;
+			{
+				//Debug.Log("No IngredientItem for " + tr.name);
+				continue;
+			}
 
 			var text = tr.FindChild("Count").GetComponent<UnityEngine.UI.Text>();
 			_counts[ing.Type] = text;
@@ -82,6 +94,8 @@ public class Cooker : MarioObject
 	/// <returns>true if was added</returns>
 	public bool Add(IngredientType type)
 	{
+		//Debug.Log("Adding " + type + " to " + name);
+
 		for (var n = 0; n < Recipe.Ingredients.Count; ++n)
 		{
 			if (type != Recipe.Ingredients[n]) 
@@ -109,13 +123,6 @@ public class Cooker : MarioObject
 		return true;
 	}
 
-	public IGenerator Generator;
-	public IFuture<bool> Future;
-
-	public delegate void CompletedHandler(IngredientType type);
-
-	public event CompletedHandler Completed;
-
 	public IFuture<bool> Cook()
 	{
 		if (_cooking)
@@ -124,8 +131,9 @@ public class Cooker : MarioObject
 		if (!Recipe.Satisfied(_ingredients))
 			return null;
 
-		var future = Kernel.Factory.NewFuture<bool>();
-		Generator = Kernel.Factory.NewCoroutine(Cook, future);
+		var k = FindObjectOfType<Kernel>().Kern;
+		var future = k.Factory.NewFuture<bool>();
+		Generator = k.Factory.NewCoroutine(Cook, future);
 		return future;
 	}
 
@@ -146,8 +154,10 @@ public class Cooker : MarioObject
 
 		Debug.Log("Cooking a " + Recipe.Result + " " + UnityEngine.Time.frameCount);
 
+		var bg = TimerText.transform.parent.gameObject.GetComponent<Image>();
+		bg.color = Color.green;
+
 		_cooking = true;
-		//ProgressBar.transform.localScale = new Vector3(0,1,1);
 
 		var remaining = Recipe.CookingTime;
 		while (remaining > 0)
@@ -160,7 +170,7 @@ public class Cooker : MarioObject
 		for (var n = 0; n < Recipe.Ingredients.Count; ++n)
 		{
 			var type = Recipe.Ingredients[n];
-			Debug.Log(string.Format("Removing {0} {1} from {2}", Recipe.Counts[n], type, _ingredients[type]));
+			//Debug.Log(string.Format("Removing {0} {1} from {2} existing", Recipe.Counts[n], type, _ingredients[type]));
 			_ingredients[type] -= Recipe.Counts[n];
 
 			// HACK FRI
@@ -170,6 +180,7 @@ public class Cooker : MarioObject
 
 		done.Value = true;
 
+		bg.color = Color.white;
 		self.Complete();
 
 		Generator = null;

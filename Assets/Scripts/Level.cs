@@ -63,6 +63,7 @@ public class Level : MarioObject
 		get { return Inventory.Sum(c => c.Value) == 0; }
 	}
 
+	
 	public void Init()
 	{
 		_initialConveyorSpeed = ConveyorSpeed;
@@ -258,13 +259,23 @@ public class Level : MarioObject
 		UpdateSpeed();
 
 #if !FINAL
-		if (Input.GetKeyDown(KeyCode.Return))
-		{
-			var cake = NewCake();
-			cake.transform.position = CakeSpawnPoint.transform.position;
-			var truck = FindObjectOfType<Truck>();
-			truck.AddCake(cake.GetComponent<Cake>());
-		}
+		//if (Input.GetKeyDown(KeyCode.Return))
+		//{
+		//	foreach (var c in _conveyors)
+		//	{
+		//		foreach (var p in c.Contents)
+		//		{
+		//			var k = p.GetComponent<Cake>();
+		//			if (k == null)
+		//				continue;
+		//			World.Truck.AddCake(k);
+		//		}
+		//	}
+		//	//var cake = NewCake();
+		//	//cake.transform.position = CakeSpawnPoint.transform.position;
+		//	//var truck = FindObjectOfType<Truck>();
+		//	//truck.AddCake(cake.GetComponent<Cake>());
+		//}
 #endif
 	}
 

@@ -55,7 +55,7 @@ public class World : MonoBehaviour
 
 	private int _areaIndex;
 
-	private int _goalIndex;
+	public int GoalIndex;
 
 	private bool _first = true;
 
@@ -95,10 +95,6 @@ public class World : MonoBehaviour
 
 	void Start()
 	{
-		//Startlevel();
-		//Pause(true);
-
-		//Debug.Log("World.Start");
 		Kernel.Factory.NewCoroutine(TestCoro);
 
 		var root = transform.FindChild("Areas");
@@ -119,8 +115,8 @@ public class World : MonoBehaviour
 
 		Player = FindObjectOfType<Player>();
 
-		_goalIndex = 0;
-		Player.SetGoal(StageGoals[_goalIndex]);
+		GoalIndex = 0;
+		Player.SetGoal(StageGoals[GoalIndex]);
 
 		BeginArea(_areaIndex);
 	}
@@ -167,6 +163,8 @@ public class World : MonoBehaviour
 		CurrentArea = Areas[_areaIndex];
 
 		DisableOtherAreas();
+
+		CurrentArea.StartArea();
 	}
 
 	private void DisableOtherAreas()
@@ -177,7 +175,10 @@ public class World : MonoBehaviour
 			var area = Areas[n];
 
 			if (!act)
+			{
+				area.EndArea();
 				area.End();
+			}
 
 			area.gameObject.SetActive(act);
 			area.UiCanvas.SetActive(act);
@@ -370,7 +371,7 @@ public class World : MonoBehaviour
 
 	public void NextGoal()
 	{
-		_goalIndex = (_goalIndex + 1)%StageGoals.Length;
-		Player.SetGoal(StageGoals[_goalIndex]);
+		GoalIndex = (GoalIndex + 1)%StageGoals.Length;
+		Player.SetGoal(StageGoals[GoalIndex]);
 	}
 }

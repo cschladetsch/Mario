@@ -54,6 +54,16 @@ public class AreaBase : MarioObject
 	{
 		base.Tick();
 	}
+
+	public virtual void StartArea()
+	{
+		//Debug.Log("Area " + name + " begins");
+	}
+
+	public virtual void EndArea()
+	{
+		//Debug.Log("Area " + name + " ends");
+	}
 }
 
 

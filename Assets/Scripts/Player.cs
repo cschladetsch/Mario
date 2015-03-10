@@ -142,13 +142,13 @@ public class Player : MarioObject
 		if (Input.GetKeyDown(KeyCode.C))
 		{
 			CookedItem(IngredientType.CupCake, 1);
-			UpdateUi();
+			if (GoalReached())
+				World.NextGoal();
 		}
 
 		if (Input.GetKeyDown(KeyCode.M))
 		{
 			CookedItem(IngredientType.MintIceCream, 1);
-			UpdateUi();
 		}
 #endif
 	}
@@ -223,27 +223,52 @@ public class Player : MarioObject
 	public void CookedItem(IngredientType type, int count)
 	{
 		Ingredients[type] += count;
+		var reached = GoalReached();
+
 		var info = World.IngredientInfo[type];
 		Gold += info.Sell*count;
 
-		UpdateUi();
+		World.Canvas.GoalPanel.Cooked(type, count);
 
-		if (GoalReached())
+		if (reached)
 			World.NextGoal();
+
+		Ingredients[type] = 0;
+
+		UpdateUi();
 	}
 
 	private bool GoalReached()
 	{
 		var dict = IngredientItem.CreateIngredientDict<int>();
 		foreach (var i in CurrentGoal.Ingredients)
+		{
 			dict[i]++;
+		}
 
-		return Ingredients.All(kv => dict[kv.Key] <= kv.Value);
+		//foreach (var k in dict)
+		//{
+		//	Debug.Log(string.Format("Have {1} {0}s", k.Key, k.Value));
+		//}
+
+		foreach (var kv in Ingredients)
+		{
+			var needed = dict[kv.Key];
+			if (kv.Value < needed && needed > 0)
+			{
+				//Debug.Log("Not enough " + kv.Key + ": need " + needed + ", have " + kv.Value);
+				return false;
+			}
+		}
+
+		return true;
+
 	}
 
 	public void SetGoal(StageGoal goal)
 	{
 		Debug.Log("Player.SetGoal: " + goal.Name);
+
 		CurrentGoal = goal;
 		var goalPanel = Canvas.GoalPanel.GetComponent<GoalPanel>();
 		goalPanel.Refresh();

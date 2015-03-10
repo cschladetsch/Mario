@@ -39,7 +39,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 185838028b027e547875a1524abb376c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Ingredients: 02000000020000000200000003000000030000000500000005000000
+  Ingredients: 0200000002000000020000000500000005000000
   Time: 5
   Name: I scream for ice cream!
 --- !u!1001 &100100000

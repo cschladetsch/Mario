@@ -89,7 +89,7 @@ public class BuyingAreaUI : MarioObject
 		Canvas.UpdateGoldAmount();
 
 		InventoryPanel.UpdateDisplay(_contents, false);
-		//InventoryPanel.UpdateDisplay(Player.Ingredients, true);
+		InventoryPanel.UpdateDisplay(Player.Ingredients, true);
 	}
 
 	public void BuyItem(GameObject go)

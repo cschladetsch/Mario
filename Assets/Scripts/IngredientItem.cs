@@ -10,7 +10,9 @@ public class IngredientItem : MonoBehaviour
 	{
 		var ing = new Dictionary<IngredientType, T>();
 		foreach (var e in Enum.GetValues(typeof (IngredientType)))
+		{
 			ing.Add((IngredientType) e, default(T));
+		}
 		return ing;
 	}
 }

@@ -101,7 +101,7 @@ public class GoalPanel : MarioObject
 
 	public void UpdateUi()
 	{
-		Debug.Log("Syncing goal panel");
+		//Debug.Log("Syncing goal panel");
 
 		foreach (var kv in Player.Ingredients)
 		{
@@ -124,12 +124,14 @@ public class GoalPanel : MarioObject
 
 	private void AddAllItems()
 	{
-		Debug.Log(Player.CurrentGoal.Name);
-		Debug.Log(Player.CurrentGoal.Ingredients);
-		foreach (var kv in Player.CurrentGoal.Ingredients)
-		{
-			Debug.Log(kv);
-		}
+		//Debug.Log(Player.CurrentGoal.Name);
+		//Debug.Log(Player.CurrentGoal.Ingredients);
+		//foreach (var kv in Player.CurrentGoal.Ingredients)
+		//{
+		//	Debug.Log(kv);
+		//}
+		if (_prefabs.Count == 0)
+			GatherPrefabsForIngredientDisplay();
 
 		ClearContents();
 
@@ -138,6 +140,12 @@ public class GoalPanel : MarioObject
 		foreach (var ing in Player.CurrentGoal.Ingredients)
 		{
 			var type = ing;
+			if (!_prefabs.ContainsKey(type))
+			{
+				Debug.LogWarning("GoalPanel.AddAllItems: Couldn't find prefab for " + type);
+				continue;
+			}
+
 			var prefab = _prefabs[type];
 			if (prefab == null)
 				continue;
@@ -161,14 +169,14 @@ public class GoalPanel : MarioObject
 	private void ClearContents()
 	{
 		foreach (var c in _contents)
-			Destroy(c);
+			Destroy(c.gameObject);
+
 		_contents.Clear();
 	}
 
 	public void Refresh()
 	{
-
-		_contents.Clear();
+		ClearContents();
 
 		AddAllItems();
 	}

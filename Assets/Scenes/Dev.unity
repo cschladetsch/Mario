@@ -979,6 +979,49 @@ Prefab:
   m_RootGameObject: {fileID: 1351485317}
   m_IsPrefabParent: 0
   m_IsExploded: 1
+--- !u!1 &162035179
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 111668, guid: a4f2d781738cba841b74f05b98aaf7fd, type: 2}
+  m_PrefabInternal: {fileID: 1969135637}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 162035180}
+  - 114: {fileID: 162035181}
+  m_Layer: 0
+  m_Name: RandomAssortment
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &162035180
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 411668, guid: a4f2d781738cba841b74f05b98aaf7fd, type: 2}
+  m_PrefabInternal: {fileID: 1969135637}
+  m_GameObject: {fileID: 162035179}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1247445595}
+  m_RootOrder: 2
+--- !u!114 &162035181
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 11411668, guid: a4f2d781738cba841b74f05b98aaf7fd,
+    type: 2}
+  m_PrefabInternal: {fileID: 1969135637}
+  m_GameObject: {fileID: 162035179}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 185838028b027e547875a1524abb376c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Ingredients: 02000000020000000200000005000000050000000500000005000000
+  Time: 5
+  Name: I scream for ice cream!
 --- !u!1 &165371020
 GameObject:
   m_ObjectHideFlags: 0
@@ -6470,7 +6513,7 @@ Prefab:
     m_Modifications:
     - target: {fileID: 11400002, guid: 9b2af9083a32e3641a5d9c733b805197, type: 2}
       propertyPath: StageGoals.Array.size
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 400004, guid: 9b2af9083a32e3641a5d9c733b805197, type: 2}
       propertyPath: m_LocalPosition.x
@@ -6513,6 +6556,11 @@ Prefab:
       propertyPath: StageGoals.Array.data[1]
       value: 
       objectReference: {fileID: 11416742, guid: f80dd1ba2b0ec2642bd7a5a7a9d8a58b,
+        type: 2}
+    - target: {fileID: 11400002, guid: 9b2af9083a32e3641a5d9c733b805197, type: 2}
+      propertyPath: StageGoals.Array.data[2]
+      value: 
+      objectReference: {fileID: 11411668, guid: a4f2d781738cba841b74f05b98aaf7fd,
         type: 2}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 9b2af9083a32e3641a5d9c733b805197, type: 2}
@@ -7153,6 +7201,7 @@ MonoBehaviour:
   StageGoals:
   - {fileID: 11481494, guid: 0f15c10cf07047f4398aae0899c4bd72, type: 2}
   - {fileID: 11416742, guid: f80dd1ba2b0ec2642bd7a5a7a9d8a58b, type: 2}
+  - {fileID: 11411668, guid: a4f2d781738cba841b74f05b98aaf7fd, type: 2}
   CurrentArea: {fileID: 0}
   CurrentLevel: {fileID: 0}
   AvailableProducts: []
@@ -9471,6 +9520,7 @@ Transform:
   m_Children:
   - {fileID: 1351485318}
   - {fileID: 382319317}
+  - {fileID: 162035180}
   m_Father: {fileID: 201116277}
   m_RootOrder: 4
 --- !u!1 &1247674597
@@ -15318,6 +15368,58 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: fd43a80e7a2966c4282b645fcecf4a51, type: 2}
   m_RootGameObject: {fileID: 1785915959}
+  m_IsPrefabParent: 0
+  m_IsExploded: 1
+--- !u!1001 &1969135637
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 1247445595}
+    m_Modifications:
+    - target: {fileID: 411668, guid: a4f2d781738cba841b74f05b98aaf7fd, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 411668, guid: a4f2d781738cba841b74f05b98aaf7fd, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 411668, guid: a4f2d781738cba841b74f05b98aaf7fd, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 411668, guid: a4f2d781738cba841b74f05b98aaf7fd, type: 2}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 411668, guid: a4f2d781738cba841b74f05b98aaf7fd, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 411668, guid: a4f2d781738cba841b74f05b98aaf7fd, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 411668, guid: a4f2d781738cba841b74f05b98aaf7fd, type: 2}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 411668, guid: a4f2d781738cba841b74f05b98aaf7fd, type: 2}
+      propertyPath: m_RootOrder
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 11411668, guid: a4f2d781738cba841b74f05b98aaf7fd, type: 2}
+      propertyPath: Ingredients.Array.data[3]
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 11411668, guid: a4f2d781738cba841b74f05b98aaf7fd, type: 2}
+      propertyPath: Ingredients.Array.data[4]
+      value: 5
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 100100000, guid: a4f2d781738cba841b74f05b98aaf7fd, type: 2}
+  m_RootGameObject: {fileID: 162035179}
   m_IsPrefabParent: 0
   m_IsExploded: 1
 --- !u!1 &1973154789

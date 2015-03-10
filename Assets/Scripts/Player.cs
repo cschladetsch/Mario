@@ -133,6 +133,7 @@ public class Player : MarioObject
 
 	void Update()
 	{
+#if !FINAL
 		if (Input.GetKeyDown(KeyCode.Space))
 		{
 			FindObjectOfType<World>().TogglePause();
@@ -143,6 +144,13 @@ public class Player : MarioObject
 			CookedItem(IngredientType.CupCake, 1);
 			UpdateUi();
 		}
+
+		if (Input.GetKeyDown(KeyCode.M))
+		{
+			CookedItem(IngredientType.MintIceCream, 1);
+			UpdateUi();
+		}
+#endif
 	}
 
 	List<Product> CalcPossibleProducts()

@@ -13,8 +13,7 @@ public class World : MonoBehaviour
 {
 	public int AreaIndex;
 
-	StageGoal []StageGoals;
-
+	public StageGoal []StageGoals;
 
 	public AreaBase CurrentArea;
 
@@ -55,6 +54,8 @@ public class World : MonoBehaviour
 	private int _levelIndex;
 
 	private int _areaIndex;
+
+	private int _goalIndex;
 
 	private bool _first = true;
 
@@ -117,6 +118,9 @@ public class World : MonoBehaviour
 		}
 
 		Player = FindObjectOfType<Player>();
+
+		_goalIndex = 0;
+		Player.SetGoal(StageGoals[_goalIndex]);
 
 		BeginArea(_areaIndex);
 	}
@@ -362,5 +366,11 @@ public class World : MonoBehaviour
 		}
 
 		CurrentLevel.Inventory = _contents;
+	}
+
+	public void NextGoal()
+	{
+		_goalIndex = (_goalIndex + 1)%StageGoals.Length;
+		Player.SetGoal(StageGoals[_goalIndex]);
 	}
 }

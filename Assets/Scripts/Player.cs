@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Mime;
 using UnityEngine;
 
@@ -218,5 +219,25 @@ public class Player : MarioObject
 		Gold += info.Sell*count;
 
 		UpdateUi();
+
+		if (GoalReached())
+			World.NextGoal();
+	}
+
+	private bool GoalReached()
+	{
+		var dict = IngredientItem.CreateIngredientDict<int>();
+		foreach (var i in CurrentGoal.Ingredients)
+			dict[i]++;
+
+		return Ingredients.All(kv => dict[kv.Key] <= kv.Value);
+	}
+
+	public void SetGoal(StageGoal goal)
+	{
+		Debug.Log("Player.SetGoal: " + goal.Name);
+		CurrentGoal = goal;
+		var goalPanel = Canvas.GoalPanel.GetComponent<GoalPanel>();
+		goalPanel.Refresh();
 	}
 }

@@ -124,12 +124,14 @@ public class GoalPanel : MarioObject
 
 	private void AddAllItems()
 	{
-		//Debug.Log(Player.CurrentGoal.Name);
-		//Debug.Log(Player.CurrentGoal.Ingredients);
-		//foreach (var kv in Player.CurrentGoal.Ingredients)
-		//{
-		//	Debug.Log(kv);
-		//}
+		Debug.Log(Player.CurrentGoal.Name);
+		Debug.Log(Player.CurrentGoal.Ingredients);
+		foreach (var kv in Player.CurrentGoal.Ingredients)
+		{
+			Debug.Log(kv);
+		}
+
+		ClearContents();
 
 		var start = 180.0f;
 
@@ -154,5 +156,20 @@ public class GoalPanel : MarioObject
 
 			//Debug.Log("Adding a " + view.Type + " to goals");
 		}
+	}
+
+	private void ClearContents()
+	{
+		foreach (var c in _contents)
+			Destroy(c);
+		_contents.Clear();
+	}
+
+	public void Refresh()
+	{
+
+		_contents.Clear();
+
+		AddAllItems();
 	}
 }

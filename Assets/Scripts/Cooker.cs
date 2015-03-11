@@ -216,16 +216,16 @@ public class Cooker : MarioObject
 		////Debug.Log("Cooking " + Recipe.Result + " in " + t);
 	}
 
-	public void RemoveIngredient(GameObject go)
-	{
-		var type = go.GetComponent<IngredientItem>().Type;
-		Debug.Log("Remove " + type);
-		if (!Remove(type))
-			return;
+	//public void RemoveIngredient(GameObject go)
+	//{
+	//	var type = go.GetComponent<IngredientItem>().Type;
+	//	Debug.Log("Remove " + type);
+	//	if (!Remove(type))
+	//		return;
 
-		Player.Ingredients[type]++;
-		UpdateDisplay();
-	}
+	//	Player.Ingredients[type]++;
+	//	UpdateDisplay();
+	//}
 
 	private void UpdateDisplay()
 	{

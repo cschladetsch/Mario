@@ -41,7 +41,6 @@ public class Pickup : MonoBehaviour
 	private bool _kine;
 	private bool _firstDrop;
 
-
 	void Awake()
 	{
 		_box = GetComponent<BoxCollider2D>();
@@ -149,6 +148,7 @@ public class Pickup : MonoBehaviour
 			_firstDrop = true;
 			rigidbody2D.isKinematic = true;
 			var conveyor = level.GetConveyor(0);
+
 			// HACKS
 			if (conveyor != null)
 				conveyor.AddItem(this, 0.8f);

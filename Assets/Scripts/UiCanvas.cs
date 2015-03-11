@@ -32,7 +32,6 @@ public class UiCanvas : MarioObject
 		LevelCompleted.SetActive(false);
 		HighScore.gameObject.SetActive(false);
 		PausedPanel.gameObject.SetActive(false);
-		CarTimerObject.SetActive(false);
 
 		TintPanel.SetActive(true);
 	}

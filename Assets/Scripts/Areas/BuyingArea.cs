@@ -8,46 +8,24 @@ using UnityEngine;
 /// </summary>
 public class BuyingArea : AreaBase
 {
+	/// <summary>
+	/// What is to be delivered
+	/// </summary>
 	public List<Cake> Ingredients = new List<Cake>();
 
 	public bool Skip;
 
-	/// <summary>
-	/// Default delivery truck wait time
-	/// </summary>
-	public float BaseTruckWaitTime = 5;
+	///// <summary>
+	///// Default delivery truck wait time
+	///// </summary>
+	//public float BaseTruckWaitTime = 5;
 
-	/// <summary>
-	/// How to make a delivery car
-	/// </summary>
-	public GameObject DeliveryTruckPrefab;
-
-	/// <summary>
-	/// Distance from XX/y plane of delivery car
-	/// </summary>
-	public float DeliverryCarDepth = 2;
-
-	public GameObject DeliveryTruck;
+	public DeliveryTruck DeliveryTruck;
 
 	/// <summary>
 	/// How long it takes the delivery truck to complete a delivery
 	/// </summary>
 	public float DeliveryTruckTime = 30;
-
-	/// <summary>
-	/// Where the delivery truck starts
-	/// </summary>
-	public float StartX = -15;
-
-	/// <summary>
-	/// Where the delivery truck ends
-	/// </summary>
-	public float EndX = 9;
-
-	/// <summary>
-	/// how the delivery truck is as it moves along the scene
-	/// </summary>
-	public float DeliveryTruckHeight = -1.6f;
 
 	protected override void Begin()
 	{
@@ -91,7 +69,12 @@ public class BuyingArea : AreaBase
 	{
 		base.StartArea();
 
-		World.BuyingAreaUi.Reset();
+		DeliveryTruck = FindObjectOfType<DeliveryTruck>();
+		DeliveryTruck.Reset();
+
+		// TODO: why is thus.World sometimes null???
+		var world = FindObjectOfType<World>();
+		//world.BuyingAreaUi.Reset();
 	}
 
 	public void StartDeliveryTruck(Dictionary<IngredientType, int> contents)
@@ -107,13 +90,14 @@ public class BuyingArea : AreaBase
 			return;
 		}
 
+		DeliveryTruck.Deliver(contents);
 		// remove items already owned by player
-		foreach (var i in Player.Ingredients)
-			contents[i.Key] -= i.Value;
+		//foreach (var i in Player.Ingredients)
+		//	contents[i.Key] -= i.Value;
 
-		var go = (GameObject) Instantiate(DeliveryTruckPrefab);
-		var truck = go.GetComponent<DeliveryTruck>();
-		truck.Deliver(StartX, EndX, DeliveryTruckTime, DeliveryTruckHeight, DeliverryCarDepth, contents);
+		//var go = (GameObject) Instantiate(DeliveryTruckPrefab);
+		//var truck = go.GetComponent<DeliveryTruck>();
+		//truck.Deliver(StartX, EndX, DeliveryTruckTime, DeliveryTruckHeight, DeliverryCarDepth, contents);
 	}
 }
 

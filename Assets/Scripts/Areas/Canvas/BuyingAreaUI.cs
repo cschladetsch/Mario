@@ -53,7 +53,7 @@ public class BuyingAreaUI : MarioObject
 	{
 		base.Tick();
 
-		UpdateDisplay();
+		//UpdateDisplay();
 	}
 
 	private void UpdateCosts()
@@ -65,10 +65,14 @@ public class BuyingAreaUI : MarioObject
 	/// </summary>
 	public void FinishOrder()
 	{
-		//Debug.Log("Finish Order");
-		var area = World.CurrentArea as BuyingArea;
-		World.CurrentArea.UiCanvas.gameObject.SetActive(false);
-		area.StartDeliveryTruck(_contents);
+		var truck = FindObjectOfType<DeliveryTruck>();
+		truck.Deliver(_contents);
+	}
+
+	public void EnterGame()
+	{
+		var truck = FindObjectOfType<DeliveryTruck>();
+		truck.Complete();
 	}
 
 	private void UpdateDisplay()
@@ -78,7 +82,7 @@ public class BuyingAreaUI : MarioObject
 
 		Canvas.UpdateGoldAmount();
 
-		InventoryPanel.UpdateDisplay(_contents, false);
+		//InventoryPanel.UpdateDisplay(_contents, false);
 		InventoryPanel.UpdateDisplay(Player.Ingredients, true);
 
 		foreach (var c in _buttons)
@@ -94,12 +98,12 @@ public class BuyingAreaUI : MarioObject
 		}
 
 		var button = go.GetComponent<IngredientButtton>();
-		button.AddAmount(1);
 		var item = button.Type;
 		var info = World.IngredientInfo[item];
 		if (Player.Gold < info.Buy)
 			return;
 
+		button.AddAmount(1);
 		_contents[item]++;
 		Player.Gold -= info.Buy;
 		UpdateDisplay();

@@ -213,16 +213,19 @@ public class Player : MarioObject
 	{
 		IngredientType[] types = {IngredientType.MintIceCream, IngredientType.CupCake};
 
+		bool sold = false;
 		foreach (var type in types)
 		{
 			if (Ingredients[type] > 0)
 			{
+				sold = true;
 				SellItem(type);
 				break;
 			}
 		}
 
-		UpdateUi();
+		if (sold)
+			UpdateUi();
 	}
 
 	private void SellItem(IngredientType type)
@@ -255,6 +258,7 @@ public class Player : MarioObject
 		World.Canvas.UpdateGoldAmount();
 		World.Canvas.GoalPanel.GetComponent<GoalPanel>().UpdateUi();
 		World.CookingAreaUi.InventoryPanel.UpdateDisplay(Ingredients, false);
+		World.BuyingAreaUi.InventoryPanel.UpdateDisplay(Ingredients, false);
 
 		// TODO
 		//_canvas.LivesRemaining.text = Lives.ToString();
@@ -281,6 +285,7 @@ public class Player : MarioObject
 
 	public void CookedItem(IngredientType type, int count)
 	{
+		Debug.Log("Player.CookedItem: " + type);
 		Ingredients[type] += count;
 
 		World.Canvas.GoalPanel.Cooked(type, count);

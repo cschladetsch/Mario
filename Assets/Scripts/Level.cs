@@ -259,23 +259,19 @@ public class Level : MarioObject
 		UpdateSpeed();
 
 #if !FINAL
-		//if (Input.GetKeyDown(KeyCode.Return))
-		//{
-		//	foreach (var c in _conveyors)
-		//	{
-		//		foreach (var p in c.Contents)
-		//		{
-		//			var k = p.GetComponent<Cake>();
-		//			if (k == null)
-		//				continue;
-		//			World.Truck.AddCake(k);
-		//		}
-		//	}
-		//	//var cake = NewCake();
-		//	//cake.transform.position = CakeSpawnPoint.transform.position;
-		//	//var truck = FindObjectOfType<Truck>();
-		//	//truck.AddCake(cake.GetComponent<Cake>());
-		//}
+		if (Input.GetKeyDown(KeyCode.Return))
+		{
+			//var truck = FindObjectOfType<Truck>();
+			//while (Inventory.Count > 0)
+			//{
+			//	var c = NewCake();
+			//	truck.AddCake(c.GetComponent<Cake>());
+			//}
+			//var cake = NewCake();
+			//cake.transform.position = CakeSpawnPoint.transform.position;
+			//var truck = FindObjectOfType<Truck>();
+			//truck.AddCake(cake.GetComponent<Cake>());
+		}
 #endif
 	}
 
@@ -312,8 +308,6 @@ public class Level : MarioObject
 
 	private void UpdateSpawners()
 	{
-		//Debug.Log("Update Spawners");
-
 		if (_spawners == null)
 			return;
 

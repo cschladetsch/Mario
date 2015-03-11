@@ -166,7 +166,7 @@ public class World : MonoBehaviour
 
 		CurrentArea = Areas[_areaIndex];
 
-		Debug.Log("New Area: " + CurrentArea.name);
+		//Debug.Log("New Area: " + CurrentArea.name);
 
 		DisableOtherAreas();
 

@@ -58,6 +58,8 @@ public class InventoryPanel : MarioObject
 
 	public void UpdateDisplay(Dictionary<IngredientType, int> contents, bool add)
 	{
+		Debug.Log("InventoryPanel.UpdateDisplay");
+
 		if (Counts == null)
 			CreateDict();
 
@@ -76,16 +78,8 @@ public class InventoryPanel : MarioObject
 				num += int.Parse(Counts[ing.Key].text);
 			}
 
-			if (Counts == null)
-				Debug.Log("Counts ull");
-
 			Counts[ing.Key].text = num.ToString();
 		}
 	}
 
-	public void UpdateDisplay(Dictionary<IngredientType, int> ingredients, Dictionary<IngredientType, int> contents)
-	{
-		UpdateDisplay(ingredients, false);
-		UpdateDisplay(ingredients, true);
-	}
 }

@@ -39,10 +39,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d392a60b73864c642934b9bc816eb5ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Ingredients: 030000000400000000000000
-  Counts: 020000000100000001000000
-  CookingTime: 20
+  Ingredients: 0300000004000000
+  Counts: 0200000002000000
+  CookingTime: 1
   Result: 5
+  NumResults: 2
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 /// <summary>
 /// How to make a new product from existing ingredients and other products
@@ -43,7 +44,10 @@ public class Recipe : MonoBehaviour
 			var count = Counts[n];
 
 			if (ingredients[type] < count)
+			{
+				//Debug.Log("Not enough " + type + " for cooker " + Result);
 				return false;
+			}
 		}
 
 		return true;

@@ -59,6 +59,7 @@ public class GoalPanel : MarioObject
 	public void Cooked(IngredientType item, int count)
 	{
 		Ingredients[item] += count;
+		UpdateUi();
 	}
 
 	private void GatherPrefabsForIngredientDisplay()

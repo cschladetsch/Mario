@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
@@ -20,6 +18,7 @@ public class CookingAreaUI : MarioObject
 	public UnityEngine.UI.Button ShopButton;
  
 	public Cooker MintIceCreamCooker;
+
 	public Cooker CupCakeCooker;
 
 	protected override void BeforeFirstUpdate()
@@ -57,8 +56,60 @@ public class CookingAreaUI : MarioObject
 
 	public void ProductClicked(GameObject product)
 	{
+		var cooker = product.transform.parent.GetComponent<Cooker>();
+		var recipe = cooker.Recipe;
+		Debug.Log("Cooking " + recipe.NumResults + " of " + recipe.Result);
 
-		Debug.Log("Cooking a ");
+		var canCook = true;
+		var req = IngredientItem.CreateIngredientDict<int>();
+		for (var n = 0; n < recipe.Ingredients.Count; ++n)
+		{
+			var ty = recipe.Ingredients[n];
+			var num = recipe.Counts[n];
+
+			if (Player.Ingredients[ty] < num)
+			{
+				canCook = false;
+				break;
+			}
+
+			req[ty] += num;
+		}
+
+		if (!canCook)
+			return;
+
+		switch (recipe.Result)
+		{
+			case IngredientType.CupCake:
+				if (CupCakeCooker.CanCook())
+				{
+					RemoveIngredients(req);
+					CupCakeCooker.Cook();
+				}
+				break;
+
+			case IngredientType.MintIceCream:
+				if (MintIceCreamCooker.CanCook())
+				{
+					RemoveIngredients(req);
+					MintIceCreamCooker.Cook();
+				}
+				break;
+
+		}
+
+	}
+
+	private void RemoveIngredients(Dictionary<IngredientType, int> req)
+	{
+		foreach (var kv in req)
+		{
+			//Debug.Log("Removing " + kv.Value + " of " + kv.Key);
+			Player.Ingredients[kv.Key] -= kv.Value;
+		}
+
+		UpdateDisplay();
 	}
 
 	private void UpdateDisplay()
@@ -88,6 +139,9 @@ public class CookingAreaUI : MarioObject
 	protected override void Tick()
 	{
 		base.Tick();
+
+
+		//if (CupCakeCooker.CanCook())
 
 		//var cooking = !_cakes.Cooking() && !_iceCream.Cooking();
 		//ShopButton.interactable = !cooking;

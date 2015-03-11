@@ -180,6 +180,59 @@ public class Player : MarioObject
 		UpdateUi();
 	}
 
+	public float SellingInterval = 3;
+
+	private float _sellingTimer;
+
+	protected override void Tick()
+	{
+		base.Tick();
+
+		Debug.Log("Player.Tick: " + Time);
+
+		UpdateSellItem();
+	}
+
+	private void UpdateSellItem()
+	{
+		Debug.Log("UpdateSellItem: " + _sellingTimer);
+
+		_sellingTimer -= DeltaTime;
+
+		if (_sellingTimer <= 0)
+		{
+			SellItem();
+			_sellingTimer = SellingInterval;
+		}
+	}
+
+	private void SellItem()
+	{
+		IngredientType[] types = {IngredientType.MintIceCream, IngredientType.CupCake};
+
+		foreach (var type in types)
+		{
+			if (Ingredients[type] > 0)
+			{
+				SellItem(type);
+				break;
+			}
+		}
+	}
+
+	private void SellItem(IngredientType type)
+	{
+		if (Ingredients[type] == 0)
+			return;
+
+		var info = World.IngredientInfo[type];
+		Gold += info.Sell;
+		Ingredients[type]--;
+		Debug.LogWarning("Sold a " + type + " for " + info.Sell + "$");
+
+		UpdateUi();
+	}
+
 	private void Died()
 	{
 		World.Pause(true);
@@ -223,17 +276,11 @@ public class Player : MarioObject
 	public void CookedItem(IngredientType type, int count)
 	{
 		Ingredients[type] += count;
-		var reached = GoalReached();
-
-		var info = World.IngredientInfo[type];
-		Gold += info.Sell*count;
 
 		World.Canvas.GoalPanel.Cooked(type, count);
 
-		if (reached)
+		if (GoalReached())
 			World.NextGoal();
-
-		Ingredients[type] = 0;
 
 		UpdateUi();
 	}
@@ -245,11 +292,6 @@ public class Player : MarioObject
 		{
 			dict[i]++;
 		}
-
-		//foreach (var k in dict)
-		//{
-		//	Debug.Log(string.Format("Have {1} {0}s", k.Key, k.Value));
-		//}
 
 		foreach (var kv in Ingredients)
 		{

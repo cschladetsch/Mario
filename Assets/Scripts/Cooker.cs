@@ -36,18 +36,21 @@ public class Cooker : MarioObject
 
 	public UnityEngine.UI.Text TimerText;
 
-	private Dictionary<IngredientType, int> _ingredients;
+	//private Dictionary<IngredientType, int> _ingredients;
 
-	private Dictionary<IngredientType, UnityEngine.UI.Text> _counts;
+	//private Dictionary<IngredientType, UnityEngine.UI.Text> _counts;
 
 	//public GameObject ProgressBar;
+
+	public UnityEngine.UI.Image ProductImage;
 
 	protected override void Tick()
 	{
 		base.Tick();
 
-		if (!_cooking && CanCook())
-			Cook();
+		//Debug.Log(name + " " + CanCook());
+		var c = CanCook() ? 1.0f : 0.5f;
+		ProductImage.color = new Color(c,c,c,c);
 	}
 
 	public void Select(bool select)
@@ -60,7 +63,7 @@ public class Cooker : MarioObject
 	{
 		base.BeforeFirstUpdate();
 
-		_ingredients = IngredientItem.CreateIngredientDict<int>();
+		//_ingredients = IngredientItem.CreateIngredientDict<int>();
 
 		GatherIngredientButtons();
 
@@ -69,22 +72,22 @@ public class Cooker : MarioObject
 
 	private void GatherIngredientButtons()
 	{
-		//Debug.Log("GatherIngredientButtons: " + name);
-		_counts = IngredientItem.CreateIngredientDict<UnityEngine.UI.Text>();
-		foreach (Transform tr in transform)
-		{
-			var ing = tr.GetComponent<IngredientItem>();
-			if (ing == null)
-			{
-				//Debug.Log("No IngredientItem for " + tr.name);
-				continue;
-			}
+		////Debug.Log("GatherIngredientButtons: " + name);
+		//_counts = IngredientItem.CreateIngredientDict<UnityEngine.UI.Text>();
+		//foreach (Transform tr in transform)
+		//{
+		//	var ing = tr.GetComponent<IngredientItem>();
+		//	if (ing == null)
+		//	{
+		//		//Debug.Log("No IngredientItem for " + tr.name);
+		//		continue;
+		//	}
 
-			var text = tr.FindChild("Count").GetComponent<UnityEngine.UI.Text>();
-			_counts[ing.Type] = text;
+		//	var text = tr.FindChild("Count").GetComponent<UnityEngine.UI.Text>();
+		//	_counts[ing.Type] = text;
 
-			//Debug.Log("Found Ingredient button for " + ing.Type + ": " + text.text);
-		}
+		//	//Debug.Log("Found Ingredient button for " + ing.Type + ": " + text.text);
+		//}
 	}
 
 	/// <summary>
@@ -96,16 +99,16 @@ public class Cooker : MarioObject
 	{
 		//Debug.Log("Adding " + type + " to " + name);
 
-		for (var n = 0; n < Recipe.Ingredients.Count; ++n)
-		{
-			if (type != Recipe.Ingredients[n]) 
-				continue;
+		//for (var n = 0; n < Recipe.Ingredients.Count; ++n)
+		//{
+		//	if (type != Recipe.Ingredients[n]) 
+		//		continue;
 
-			_ingredients[type]++;
-			_counts[type].text = _ingredients[type].ToString();
+		//	_ingredients[type]++;
+		//	_counts[type].text = _ingredients[type].ToString();
 
-			return true;
-		}
+		//	return true;
+		//}
 
 		return false;
 	}
@@ -128,8 +131,8 @@ public class Cooker : MarioObject
 		if (_cooking)
 			return null;
 
-		if (!Recipe.Satisfied(_ingredients))
-			return null;
+		//if (!Recipe.Satisfied(_ingredients))
+		//	return null;
 
 		var k = FindObjectOfType<Kernel>().Kern;
 		var future = k.Factory.NewFuture<bool>();
@@ -139,7 +142,9 @@ public class Cooker : MarioObject
 
 	public bool CanCook()
 	{
-		return Recipe.Satisfied(_ingredients) && !_cooking;
+		var satisfied = Recipe.Satisfied(Player.Ingredients);
+		//Debug.Log("satisfied: " + satisfied + ", cooking: " + _cooking);
+		return satisfied && !_cooking;
 	}
 
 	private bool _cooking;
@@ -152,7 +157,7 @@ public class Cooker : MarioObject
 			yield break;
 		}
 
-		Debug.Log("Cooking a " + Recipe.Result);//+ " " + UnityEngine.Time.frameCount);
+		//Debug.Log("Cooking a " + Recipe.Result);//+ " " + UnityEngine.Time.frameCount);
 
 		var bg = TimerText.transform.parent.gameObject.GetComponent<Image>();
 		bg.color = Color.green;
@@ -167,16 +172,16 @@ public class Cooker : MarioObject
 			yield return 0;
 		}
 
-		for (var n = 0; n < Recipe.Ingredients.Count; ++n)
-		{
-			var type = Recipe.Ingredients[n];
-			//Debug.Log(string.Format("Removing {0} {1} from {2} existing", Recipe.Counts[n], type, _ingredients[type]));
-			_ingredients[type] -= Recipe.Counts[n];
+		//for (var n = 0; n < Recipe.Ingredients.Count; ++n)
+		//{
+		//	var type = Recipe.Ingredients[n];
+		//	//Debug.Log(string.Format("Removing {0} {1} from {2} existing", Recipe.Counts[n], type, _ingredients[type]));
+		//	_ingredients[type] -= Recipe.Counts[n];
 
-			// HACK FRI
-			if (_ingredients[type] < 0)
-				_ingredients[type] = 0;
-		}
+		//	// HACK FRI
+		//	if (_ingredients[type] < 0)
+		//		_ingredients[type] = 0;
+		//}
 
 		done.Value = true;
 
@@ -224,16 +229,16 @@ public class Cooker : MarioObject
 
 	private void UpdateDisplay()
 	{
-		foreach (IngredientType type in Enum.GetValues(typeof (IngredientType)))
-		{
-			if (type == IngredientType.None)
-				continue;
+		//foreach (IngredientType type in Enum.GetValues(typeof (IngredientType)))
+		//{
+		//	if (type == IngredientType.None)
+		//		continue;
 
-			if (_counts[type] == null)
-				continue;
+		//	if (_counts[type] == null)
+		//		continue;
 
-			_counts[type].text = _ingredients[type].ToString();
-		}
+		//	_counts[type].text = _ingredients[type].ToString();
+		//}
 
 		var ui = transform.parent.GetComponent<CookingAreaUI>();
 		ui.InventoryPanel.UpdateDisplay(Player.Ingredients, false);

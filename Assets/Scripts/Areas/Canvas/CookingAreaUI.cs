@@ -55,6 +55,12 @@ public class CookingAreaUI : MarioObject
 		}
 	}
 
+	public void ProductClicked(GameObject product)
+	{
+
+		Debug.Log("Cooking a ");
+	}
+
 	private void UpdateDisplay()
 	{
 		InventoryPanel.UpdateDisplay(Player.Ingredients, false);

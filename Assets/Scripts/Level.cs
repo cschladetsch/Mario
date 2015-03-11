@@ -135,7 +135,7 @@ public class Level : MarioObject
 
 	public void EndLevel()
 	{
-		Debug.Log("EndLevel " + name);
+		//Debug.Log("EndLevel " + name);
 		_ended = true;
 
 		Camera.main.orthographicSize = _size;

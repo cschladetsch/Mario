@@ -152,7 +152,7 @@ public class Cooker : MarioObject
 			yield break;
 		}
 
-		Debug.Log("Cooking a " + Recipe.Result + " " + UnityEngine.Time.frameCount);
+		Debug.Log("Cooking a " + Recipe.Result);//+ " " + UnityEngine.Time.frameCount);
 
 		var bg = TimerText.transform.parent.gameObject.GetComponent<Image>();
 		bg.color = Color.green;

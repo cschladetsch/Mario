@@ -54,5 +54,6 @@ public class CookingArea : AreaBase
 
 		var ui = FindObjectOfType<CookingAreaUI>();
 		ui.InventoryPanel.UpdateDisplay(Player.Ingredients, false);
+
 	}
 }

@@ -15,9 +15,6 @@ public class UiCanvas : MarioObject
 	public GameObject PausedPanel;
 	public GoalPanel GoalPanel;
 	public GameObject TintPanel;
-	public UnityEngine.UI.Button OrderButton;
-
-	public UnityEngine.UI.Button BakeButton;
 
 	protected override void Begin()
 	{

@@ -82,7 +82,8 @@ public class GoalPanel : MarioObject
 
 		// move to under tint so we get drawn brightly
 		Tint.gameObject.SetActive(true);
-		transform.parent = Tint.gameObject.transform;
+		//transform.parent = Tint.gameObject.transform;
+		transform.SetParent(Tint.gameObject.transform, true);
 
 		gameObject.SetActive(false);
 	}
@@ -98,7 +99,8 @@ public class GoalPanel : MarioObject
 		// from from under tint
 		gameObject.SetActive(true);
 		Tint.gameObject.SetActive(false);
-		transform.parent = World.Canvas.transform;
+		//transform.parent = World.Canvas.transform;
+		transform.SetParent(World.Canvas.transform, true);
 	}
 
 	private void ChangeOverlayColor(Color color)
@@ -140,8 +142,8 @@ public class GoalPanel : MarioObject
 	private void AddAllItems()
 	{
 		//Debug.Log(Player.CurrentGoal.Name);
-		//Debug.Log(Player.CurrentGoal.Ingredients);
-		//foreach (var kv in Player.CurrentGoal.Ingredients)
+		//Debug.Log(Player.CurrentGoal.Inventory);
+		//foreach (var kv in Player.CurrentGoal.Inventory)
 		//{
 		//	Debug.Log(kv);
 		//}
@@ -150,7 +152,9 @@ public class GoalPanel : MarioObject
 
 		ClearContents();
 
-		var start = 180.0f;
+		//var tr = GetComponent<RectTransform>();
+
+		var start = StartX;
 
 		foreach (var ing in Player.CurrentGoal.Ingredients)
 		{

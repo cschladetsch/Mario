@@ -77,13 +77,13 @@ public class BuyingAreaUI : MarioObject
 
 	private void UpdateDisplay()
 	{
-		var any = _contents.Sum(c => c.Value) > 0;
-		Canvas.OrderButton.interactable = any;
+		// disable factory button if we have no contents
+		//World.Buttons.FactoryButton.interactable = _contents.Sum(c => c.Value) > 0;
 
 		Canvas.UpdateGoldAmount();
 
 		//InventoryPanel.UpdateDisplay(_contents, false);
-		InventoryPanel.UpdateDisplay(Player.Ingredients, true);
+		InventoryPanel.UpdateDisplay(Player.Inventory, true);
 
 		foreach (var c in _buttons)
 			c.UpdateUi();
@@ -112,7 +112,7 @@ public class BuyingAreaUI : MarioObject
 	public void SellItem(GameObject go)
 	{
 		var item = go.GetComponent<IngredientItem>().Type;
-		if (_contents[item] == 0)// && Player.Ingredients[item] == 0)
+		if (_contents[item] == 0)// && Player.Inventory[item] == 0)
 			return;
 
 		var gold = World.IngredientInfo[item].Sell;
@@ -127,9 +127,7 @@ public class BuyingAreaUI : MarioObject
 	/// </summary>
 	public void BakePressed()
 	{
-		//var area = World.CurrentArea as BuyingArea;
-		World.CurrentArea.UiCanvas.gameObject.SetActive(false);
-		World.BeginArea(3);
+		World.BeginArea(AreaType.Bakery);
 	}
 
 	void OnDisable()

@@ -67,7 +67,7 @@ public class Cooker : MarioObject
 
 		GatherIngredientButtons();
 
-		Kernel = FindObjectOfType<Kernel>().Kern;
+		//Kernel = FindObjectOfType<Kernel>().Kern;
 	}
 
 	private void GatherIngredientButtons()
@@ -99,9 +99,9 @@ public class Cooker : MarioObject
 	{
 		//Debug.Log("Adding " + type + " to " + name);
 
-		//for (var n = 0; n < Recipe.Ingredients.Count; ++n)
+		//for (var n = 0; n < Recipe.Inventory.Count; ++n)
 		//{
-		//	if (type != Recipe.Ingredients[n]) 
+		//	if (type != Recipe.Inventory[n]) 
 		//		continue;
 
 		//	_ingredients[type]++;
@@ -134,7 +134,8 @@ public class Cooker : MarioObject
 		//if (!Recipe.Satisfied(_ingredients))
 		//	return null;
 
-		var k = FindObjectOfType<Kernel>().Kern;
+		// TODO: WHY OH WHY IS this.Kernel null?
+		var k = FindObjectOfType<World>().Kernel;
 		var future = k.Factory.NewFuture<bool>();
 		Generator = k.Factory.NewCoroutine(Cook, future);
 		return future;
@@ -142,7 +143,7 @@ public class Cooker : MarioObject
 
 	public bool CanCook()
 	{
-		var satisfied = Recipe.Satisfied(Player.Ingredients);
+		var satisfied = Recipe.Satisfied(Player.Inventory);
 		//Debug.Log("satisfied: " + satisfied + ", cooking: " + _cooking);
 		return satisfied && !_cooking;
 	}
@@ -167,14 +168,14 @@ public class Cooker : MarioObject
 		var remaining = Recipe.CookingTime;
 		while (remaining > 0)
 		{
-			remaining -= (float)Kernel.Time.Delta.TotalSeconds;
+			remaining -= (float) DeltaTime;
 			UpdateProgressBar(remaining/Recipe.CookingTime);
 			yield return 0;
 		}
 
-		//for (var n = 0; n < Recipe.Ingredients.Count; ++n)
+		//for (var n = 0; n < Recipe.Inventory.Count; ++n)
 		//{
-		//	var type = Recipe.Ingredients[n];
+		//	var type = Recipe.Inventory[n];
 		//	//Debug.Log(string.Format("Removing {0} {1} from {2} existing", Recipe.Counts[n], type, _ingredients[type]));
 		//	_ingredients[type] -= Recipe.Counts[n];
 
@@ -223,7 +224,7 @@ public class Cooker : MarioObject
 	//	if (!Remove(type))
 	//		return;
 
-	//	Player.Ingredients[type]++;
+	//	Player.Inventory[type]++;
 	//	UpdateDisplay();
 	//}
 
@@ -241,7 +242,7 @@ public class Cooker : MarioObject
 		//}
 
 		var ui = transform.parent.GetComponent<CookingAreaUI>();
-		ui.InventoryPanel.UpdateDisplay(Player.Ingredients, false);
+		ui.InventoryPanel.UpdateDisplay(Player.Inventory, false);
 	}
 
 	public void IngredientButtonPressed(IngredientType item)

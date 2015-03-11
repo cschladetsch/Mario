@@ -124,7 +124,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4765020bc80d9043b4231117d739801, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Paused: 1
+  Paused: 0
   CurrentGoal: {fileID: 0}
   Gold: 5
   CharacterLeftPrefab: {fileID: 100000, guid: eea6edd4ec45af4439cf304f8b814600, type: 2}
@@ -135,6 +135,7 @@ MonoBehaviour:
   Left: {fileID: 0}
   Right: {fileID: 0}
   Lives: 3
+  SellingInterval: 3
 --- !u!114 &11400006
 MonoBehaviour:
   m_ObjectHideFlags: 1

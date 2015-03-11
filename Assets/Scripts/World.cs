@@ -27,7 +27,6 @@ public class World : MonoBehaviour
 
 	public BuyingAreaUI BuyingAreaUi;
 
-
 	/// <summary>
 	/// The current level
 	/// </summary>
@@ -35,7 +34,7 @@ public class World : MonoBehaviour
 
 	public GameObject[] AreaPrefabs;
 
-	public List<AreaBase> Areas = new List<AreaBase>();
+	public Dictionary<AreaType, AreaBase> Areas = new Dictionary<AreaType, AreaBase>();
 
 	/// <summary>
 	/// The single world instance
@@ -58,7 +57,7 @@ public class World : MonoBehaviour
 
 	private int _levelIndex;
 
-	private int _areaIndex;
+	private AreaType _areaType;
 
 	public int GoalIndex;
 
@@ -68,10 +67,21 @@ public class World : MonoBehaviour
 
 	public IKernel Kernel;
 
-	private void Awake()
+	void Awake()
 	{
-		Kernel = GetComponent<Kernel>().Kern;
+		Awaken();
+	}
 
+	public ButtonsPanel Buttons;
+
+	public void Awaken()
+	{
+		if (Instance != null)
+			return;
+
+		Kernel = Flow.Create.NewKernel();
+
+		Debug.Log("World.Awaken: " + Kernel);
 		if (Instance != null)
 		{
 			Debug.LogError("Can't have multiple Worlds");
@@ -85,12 +95,13 @@ public class World : MonoBehaviour
 		Canvas = FindObjectOfType<UiCanvas>();
 
 		_levelIndex = 0;
+		_areaType = AreaType.Shop;
 
 		GatherIngredients();
 	}
 	private void GatherIngredients()
 	{
-		var infos = GameObject.Find("IngredientInfos");
+		var infos = GameObject.Find("Ingredients");
 		foreach (Transform tr in infos.transform)
 		{
 			var info = tr.GetComponent<IngredientInfo>();
@@ -106,16 +117,26 @@ public class World : MonoBehaviour
 
 		foreach (var a in AreaPrefabs)
 		{
+			//Debug.Log("Creating a " + a.name);
 			var area = ((GameObject) Instantiate(a)).GetComponent<AreaBase>();
+			if (area == null)
+			{
+				Debug.LogError("Area prefab " + a.name + " doesn't have an AreaBase component");
+				continue;
+			}
+
 			var name = area.name.Replace("(Clone)", "") + "UI";
 			var child = Canvas.transform.FindChild(name);
 			if (child == null)
 			{
 				Debug.LogWarning("Couldn't find UI for area " + area.name);
+				continue;
 			}
+
 			area.UiCanvas = child.gameObject;
 			area.transform.parent = root.transform;
-			Areas.Add(area);
+
+			Areas[area.Type] = area;
 		}
 
 		Player = FindObjectOfType<Player>();
@@ -123,7 +144,7 @@ public class World : MonoBehaviour
 		GoalIndex = 0;
 		Player.SetGoal(StageGoals[GoalIndex]);
 
-		BeginArea(_areaIndex);
+		BeginArea(_areaType);
 	}
 
 	private IEnumerator TestCoro(IGenerator t0)
@@ -141,61 +162,58 @@ public class World : MonoBehaviour
 			return;
 	}
 
-	public void BeginArea(int num)
+	public void BeginArea(AreaType area)
 	{
 		if (CurrentArea)
-			CurrentArea.End();
+			CurrentArea.LeaveArea();
 
-		_areaIndex = num;
+		_areaType = area;
 
-		switch (num)
+		switch (area)
 		{
-			case 0:
+			case AreaType.Shop:
 				MainShop();			// sending through stock, paying customers, and ordering new ingredients
 				break;
-			case 1:
-				WaitingForTruck();	// paying customers, waiting for truck
+			case AreaType.Factory:
+				PlayConeyorGame();		// conveyor game. deliver ingredients and products past boss
 				break;
-			case 2:
-				CreateLevel();		// conveyor game. deliver ingredients and products past boss
-				break;
-			case 3:
-				Cooking();			// bakery: produce goods for selling in MainShop
+			case AreaType.Bakery:
+				EnterBakery();			// bakery: produce goods for selling in MainShop
 				break;
 		}
 
-		CurrentArea = Areas[_areaIndex];
+		if (!Areas.ContainsKey(_areaType))
+		{
+			Debug.LogWarning("World doesn't know about area " + _areaType);
+			return;
+		}
 
-		//Debug.Log("New Area: " + CurrentArea.name);
+		CurrentArea = Areas[_areaType];
 
 		DisableOtherAreas();
 
-		CurrentArea.StartArea();
+		CurrentArea.EnterArea();
 	}
 
 	private void DisableOtherAreas()
 	{
-		for (var n = 0; n < Areas.Count; ++n)
+		foreach (var kv in Areas)
 		{
-			var act = n == _areaIndex;
-			var area = Areas[n];
+			var act = kv.Key == _areaType;
+			var area = kv.Value;
+
+			Debug.Log("World.DisableOtherAreas: " + " act=" + act + " area=" + area);
 
 			if (!act)
-			{
-				area.EndArea();
-				area.End();
-			}
+				area.LeaveArea();
 
 			area.gameObject.SetActive(act);
 			area.UiCanvas.SetActive(act);
 			area.UiCanvas.BroadcastMessage("Reset", SendMessageOptions.DontRequireReceiver);
-
-			//Debug.Log("Area " + area.name + " enabled: " + act);
-			//Debug.Log("AreaUI " + area.UiCanvas.name + " enabled: " + act);
 		}
 	}
 
-	private void Cooking()
+	private void EnterBakery()
 	{
 		if (CurrentLevel)
 			Destroy(CurrentLevel.gameObject);
@@ -240,6 +258,8 @@ public class World : MonoBehaviour
 
 	void Update()
 	{
+		Kernel.Step();
+
 		// need to wait a few updates before beginning, because we can have nested SpawnGameObject components...
 		if (_beginLevelAfterThisManyUpdates > 0)
 		{
@@ -284,7 +304,7 @@ public class World : MonoBehaviour
 		Pause(!_paused);
 	}
 
-	public void CreateLevel()
+	public void PlayConeyorGame()
 	{
 		if (CurrentLevel)
 			Destroy(CurrentLevel.gameObject);
@@ -320,9 +340,9 @@ public class World : MonoBehaviour
 
 		_levelIndex = 0;
 
-		CreateLevel();
+		PlayConeyorGame();
 
-		BeginArea(2);
+		BeginArea(AreaType.Factory);
 	}
 
 	/// <summary>
@@ -379,5 +399,11 @@ public class World : MonoBehaviour
 	{
 		GoalIndex = (GoalIndex + 1)%StageGoals.Length;
 		Player.SetGoal(StageGoals[GoalIndex]);
+	}
+
+	public void MoveTo(AreaType area)
+	{
+		Debug.Log("World.MoveTo: " + area);
+		BeginArea(area);
 	}
 }

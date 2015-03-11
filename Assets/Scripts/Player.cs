@@ -54,9 +54,9 @@ public class Player : MarioObject
 	public bool GodMode = false;
 
 	/// <summary>
-	/// Total current list of Ingredients that the player has
+	/// Total current list of Inventory that the player has
 	/// </summary>
-	public Dictionary<IngredientType, int> Ingredients = new Dictionary<IngredientType, int>();
+	public Dictionary<IngredientType, int> Inventory = new Dictionary<IngredientType, int>();
 
 	///// <summary>
 	///// The completed products - they may be sold directly, or used to make better products
@@ -115,14 +115,14 @@ public class Player : MarioObject
 
 		PrepareEmptyInventory();
 
-		//Ingredients[IngredientType.Cherry] = 5;
-		//Ingredients[IngredientType.Muffin] = 5;
+		//Inventory[IngredientType.Cherry] = 5;
+		//Inventory[IngredientType.Muffin] = 5;
 	}
 
 	private void PrepareEmptyInventory()
 	{
 		foreach (var e in Enum.GetValues(typeof (IngredientType)))
-			Ingredients.Add((IngredientType) e, 0);
+			Inventory.Add((IngredientType) e, 0);
 	}
 
 	protected override void BeforeFirstUpdate()
@@ -216,7 +216,7 @@ public class Player : MarioObject
 		bool sold = false;
 		foreach (var type in types)
 		{
-			if (Ingredients[type] > 0)
+			if (Inventory[type] > 0)
 			{
 				sold = true;
 				SellItem(type);
@@ -230,12 +230,12 @@ public class Player : MarioObject
 
 	private void SellItem(IngredientType type)
 	{
-		if (Ingredients[type] == 0)
+		if (Inventory[type] == 0)
 			return;
 
 		var info = World.IngredientInfo[type];
 		Gold += info.Sell;
-		Ingredients[type]--;
+		Inventory[type]--;
 		Debug.LogWarning("Sold a " + type + " for " + info.Sell + "$");
 
 		UpdateUi();
@@ -257,8 +257,8 @@ public class Player : MarioObject
 	{
 		World.Canvas.UpdateGoldAmount();
 		World.Canvas.GoalPanel.GetComponent<GoalPanel>().UpdateUi();
-		World.CookingAreaUi.InventoryPanel.UpdateDisplay(Ingredients, false);
-		World.BuyingAreaUi.InventoryPanel.UpdateDisplay(Ingredients, false);
+		World.CookingAreaUi.InventoryPanel.UpdateDisplay(Inventory, false);
+		World.BuyingAreaUi.InventoryPanel.UpdateDisplay(Inventory, false);
 
 		// TODO
 		//_canvas.LivesRemaining.text = Lives.ToString();
@@ -285,8 +285,8 @@ public class Player : MarioObject
 
 	public void CookedItem(IngredientType type, int count)
 	{
-		Debug.Log("Player.CookedItem: " + type);
-		Ingredients[type] += count;
+		//Debug.Log("Player.CookedItem: " + type);
+		Inventory[type] += count;
 
 		World.Canvas.GoalPanel.Cooked(type, count);
 
@@ -304,7 +304,7 @@ public class Player : MarioObject
 			dict[i]++;
 		}
 
-		foreach (var kv in Ingredients)
+		foreach (var kv in Inventory)
 		{
 			var needed = dict[kv.Key];
 			if (kv.Value < needed && needed > 0)

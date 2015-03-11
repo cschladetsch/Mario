@@ -86,32 +86,35 @@ public class Truck : MonoBehaviour
 		{
 			transform.position = new Vector3(p.x - MoveSpeed*Time.deltaTime, p.y, 0);
 			if (_moveTime <= 0)
-			{
-				EmptyCakes();
+				TransitionToBakery();
 
-				// reset for the return trip
-				_moveTime = MoveDistance/MoveSpeed;
-
-				foreach (var c in _pending)
-					Destroy(c.gameObject);
-				foreach (var c in _cakes)
-					Destroy(c.gameObject);
-
-				_pending.Clear();
-				_cakes.Clear();
-				_world.CurrentLevel.EndLevel();
-				_world.BeginArea(3);
-			}
 			return;
 		}
 
 		// moving right
 		transform.position = new Vector3(p.x + MoveSpeed*Time.deltaTime, p.y, 0);
 		if (_moveTime <= 0)
-		{
 			EndEmptying();
+	}
 
-		}
+	private void TransitionToBakery()
+	{
+		EmptyCakes();
+
+		// reset for the return trip
+		_moveTime = MoveDistance/MoveSpeed;
+
+		foreach (var c in _pending)
+			Destroy(c.gameObject);
+
+		foreach (var c in _cakes)
+			Destroy(c.gameObject);
+
+		_pending.Clear();
+		_cakes.Clear();
+
+		_world.CurrentLevel.EndLevel();
+		_world.BeginArea(AreaType.Bakery);
 	}
 
 	private void EmptyCakes()
@@ -223,7 +226,7 @@ public class Truck : MonoBehaviour
 
 	private static void AddToPlayerIngredients(Cake cake)
 	{
-		World.Player.Ingredients[cake.Type]++;
+		World.Player.Inventory[cake.Type]++;
 	}
 
 	public void AddCake(Cake cake)

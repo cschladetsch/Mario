@@ -18,14 +18,7 @@ public class DeliveryTruck : MarioObject
 	/// </summary>
 	public Collider2D Collider;
 
-	//private Transform _car;
-
 	private float _deliveryTimer;
-
-	protected override void Construct()
-	{
-		base.Construct();
-	}
 
 	private bool _delivering;
 
@@ -42,15 +35,22 @@ public class DeliveryTruck : MarioObject
 		Ready = false;
 	}
 
+	/// <summary>
+	/// For debugging: if the 'Skip' toggle is on in the UI, then when we 'deliver'
+	/// our order, we just add the order directly to player's inventory then
+	/// transition to the Bakery area
+	/// </summary>
+	/// <param name="contents"></param>
+	/// <returns></returns>
 	private bool TestForSkip(Dictionary<IngredientType, int> contents)
 	{
 		if (!World.BuyingAreaUi.SkipToggle || !World.BuyingAreaUi.SkipToggle.isOn) 
 			return false;
 
 		foreach (var c in contents)
-			Player.Ingredients[c.Key] += c.Value;
+			Player.Inventory[c.Key] += c.Value;
 
-		World.BeginArea(3);
+		World.BeginArea(AreaType.Bakery);
 
 		return true;
 	}
@@ -123,10 +123,10 @@ public class DeliveryTruck : MarioObject
 
 	public void Reset()
 	{
-		Debug.Log("DeliveryCar.Reset");
+		//Debug.Log("DeliveryCar.Reset");
 		TurnTimerOn(true);
 		Ready = false;
 		_delivering = false;
-		Canvas.CarTimer.text = DeliveryTime.ToString();
+		Canvas.CarTimer.text = "Deliver";
 	}
 }

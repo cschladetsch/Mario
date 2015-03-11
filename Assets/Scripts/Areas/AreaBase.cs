@@ -1,22 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
+/// <summary>
+/// Common to all areas
+/// </summary>
 public class AreaBase : MarioObject
 {
+	/// <summary>
+	/// The type of area this is
+	/// </summary>
+	public AreaType Type;
+
+	/// <summary>
+	/// The area-specific UI canvas associated with this area
+	/// </summary>
 	public GameObject UiCanvas;
-
-	public GameObject NextButton;
-
-	protected override void Construct()
-	{
-		base.Construct();
-	}
-
-	public virtual void Next()
-	{
-		Debug.Log("Base Next");
-	}
 
 	protected override void Begin()
 	{
@@ -30,12 +27,6 @@ public class AreaBase : MarioObject
 		base.Begin();
 		if (UiCanvas)
 			UiCanvas.SetActive(false);
-	}
-
-	public void NextPressed()
-	{
-		Debug.Log("AreaBase.NextPressed");
-		Next();
 	}
 
 	public void Activate(bool activate)
@@ -55,14 +46,14 @@ public class AreaBase : MarioObject
 		base.Tick();
 	}
 
-	public virtual void StartArea()
+	public virtual void EnterArea()
 	{
-		//Debug.Log("Area " + name + " begins");
+		//Debug.Log("Area " + name + " entered");
 	}
 
-	public virtual void EndArea()
+	public virtual void LeaveArea()
 	{
-		//Debug.Log("Area " + name + " ends");
+		//Debug.Log("Area " + name + " left");
 	}
 }
 

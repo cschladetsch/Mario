@@ -41,14 +41,22 @@ public class MarioObject : MonoBehaviour
 
 	void Awake()
 	{
-		Kernel = FindObjectOfType<Kernel>().Kern;
+		World = World.Instance;
+		if (World == null)
+		{
+			FindObjectOfType<World>().Awaken();
+			World = World.Instance;
+		}
+
+		World.Awaken();
+
+		Kernel = World.Kernel;
 
 		Construct();
 	}
 
 	void Start()
 	{
-		World = World.Instance;
 		//Debug.Log("Name=" + name + ", World=" + World);
 
 		Begin();

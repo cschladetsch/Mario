@@ -41,11 +41,11 @@ public class CookingAreaUI : MarioObject
 			cooker = CupCakeCooker;
 
 
-		if (Player.Ingredients[type] > 0)
+		if (Player.Inventory[type] > 0)
 		{
 			if (cooker.Add(type))
 			{
-				Player.Ingredients[type]--;
+				Player.Inventory[type]--;
 				if (cooker.CanCook())
 					cooker.Cook();
 
@@ -67,7 +67,7 @@ public class CookingAreaUI : MarioObject
 			var ty = recipe.Ingredients[n];
 			var num = recipe.Counts[n];
 
-			if (Player.Ingredients[ty] < num)
+			if (Player.Inventory[ty] < num)
 			{
 				canCook = false;
 				break;
@@ -96,9 +96,7 @@ public class CookingAreaUI : MarioObject
 					MintIceCreamCooker.Cook();
 				}
 				break;
-
 		}
-
 	}
 
 	private void RemoveIngredients(Dictionary<IngredientType, int> req)
@@ -106,7 +104,7 @@ public class CookingAreaUI : MarioObject
 		foreach (var kv in req)
 		{
 			//Debug.Log("Removing " + kv.Value + " of " + kv.Key);
-			Player.Ingredients[kv.Key] -= kv.Value;
+			Player.Inventory[kv.Key] -= kv.Value;
 		}
 
 		UpdateDisplay();
@@ -114,7 +112,7 @@ public class CookingAreaUI : MarioObject
 
 	private void UpdateDisplay()
 	{
-		InventoryPanel.UpdateDisplay(Player.Ingredients, false);
+		InventoryPanel.UpdateDisplay(Player.Inventory, false);
 	}
 
 	private void GatherCookers()
@@ -156,7 +154,7 @@ public class CookingAreaUI : MarioObject
 		//if (!SelectedCooker)
 		//	return;
 		var type = button.GetComponent<IngredientItem>().Type;
-		if (Player.Ingredients[type] == 0)
+		if (Player.Inventory[type] == 0)
 			return;
 
 		//SelectedCooker.IngredientButtonPressed(item);
@@ -192,8 +190,8 @@ public class CookingAreaUI : MarioObject
 
 	private void RemoveItemFromPlayer(IngredientType item)
 	{
-		Player.Ingredients[item]--;
-		InventoryPanel.UpdateDisplay(Player.Ingredients, false);
+		Player.Inventory[item]--;
+		InventoryPanel.UpdateDisplay(Player.Inventory, false);
 	}
 
 	public void SelectCooker(GameObject go)
@@ -206,7 +204,7 @@ public class CookingAreaUI : MarioObject
 	{
 		//foreach (var c in Cookers)
 		//{
-		//	//var canUse = c.Recipe.Satisfied(Player.Ingredients);
+		//	//var canUse = c.Recipe.Satisfied(Player.Inventory);
 		//	//if (!canUse)
 		//	//	c.
 		//}
@@ -219,7 +217,7 @@ public class CookingAreaUI : MarioObject
 
 	void OnDisable()
 	{
-		//Debug.Log("CookingArea enabled: " + gameObject.activeSelf);
+		//Debug.Log("BakeryArea enabled: " + gameObject.activeSelf);
 	}
 
 	public void RemoveIngredient(GameObject go)

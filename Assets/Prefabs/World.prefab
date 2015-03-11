@@ -46,7 +46,6 @@ GameObject:
   - 4: {fileID: 400004}
   - 114: {fileID: 11400002}
   - 114: {fileID: 11400004}
-  - 114: {fileID: 11498656}
   m_Layer: 0
   m_Name: World
   m_TagString: Untagged
@@ -136,10 +135,10 @@ Camera:
     y: 0
     width: 1
     height: 1
-  near clip plane: .300000012
+  near clip plane: 1
   far clip plane: 1000
   field of view: 60
-  orthographic: 1
+  orthographic: 0
   orthographic size: 13
   m_Depth: -1
   m_CullingMask:
@@ -238,11 +237,10 @@ MonoBehaviour:
   - {fileID: 100026, guid: 4a8e85484db1ae948a4840a0be57728a, type: 2}
   AreaPrefabs:
   - {fileID: 100006, guid: fc89b795e9ed3cc4ea4b3e37af91a3ef, type: 2}
-  - {fileID: 100004, guid: 822457d93b866b54fb9c4317e4262023, type: 2}
-  - {fileID: 100000, guid: b9ad7bd47cf8ea34c804cdb8f46811ff, type: 2}
+  - {fileID: 177390, guid: b7740c47d7f18ab47997290cdf058f47, type: 2}
   - {fileID: 100004, guid: 1100c0a9ed160384ca84ebbaf85adbfc, type: 2}
-  Areas: []
   GoalIndex: 0
+  Buttons: {fileID: 0}
 --- !u!114 &11400004
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -261,18 +259,6 @@ MonoBehaviour:
   MinSpawnTime: 3
   MaxSpawnTime: 6
   MaxSpawns: -1
---- !u!114 &11498656
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 100004}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4896f63b7d750e4884313a0a671577c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Paused: 0
 --- !u!124 &12400000
 Behaviour:
   m_ObjectHideFlags: 1

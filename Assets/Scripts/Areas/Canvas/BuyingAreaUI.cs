@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.UI;
 
 /// <summary>
 /// The UI for the selling/purchasing area
@@ -13,6 +14,8 @@ public class BuyingAreaUI : MarioObject
 	/// </summary>
 	public InventoryPanel InventoryPanel;
 
+	public Toggle SkipToggle;
+
 	/// <summary>
 	/// The current items that will be purchased. these can be bought and sold many times before
 	/// the player presses the 'Done' button and the truck starts its delivery
@@ -21,24 +24,29 @@ public class BuyingAreaUI : MarioObject
 
 	public UnityEngine.UI.Text GoldText;
 
+	private List<IngredientButtton> _buttons = new List<IngredientButtton>(); 
+
 	protected override void BeforeFirstUpdate()
 	{
 		base.BeforeFirstUpdate();
 
-		GatherIngredients();
-
-		GatherCostTexts();
+		ResetContents();
 
 		UpdateCosts();
+
+		GatherButtons();
 
 		UpdateDisplay();
 	}
 
-	private void GatherIngredients()
+	private void GatherButtons()
 	{
-		_contents = new Dictionary<IngredientType, int>();
-		foreach (var e in Enum.GetValues(typeof(IngredientType)))
-			_contents.Add((IngredientType)e, 0);
+		_buttons = transform.FindChild("BuyingOptions").GetComponentsInChildren<IngredientButtton>().ToList();
+	}
+
+	private void ResetContents()
+	{
+		_contents = IngredientItem.CreateIngredientDict<int>();
 	}
 
 	protected override void Tick()
@@ -48,26 +56,8 @@ public class BuyingAreaUI : MarioObject
 		UpdateDisplay();
 	}
 
-	private void GatherCostTexts()
-	{
-		foreach (var ingredient in GetIngredientPanels())
-		{
-			ingredient.CostText = ingredient.transform.FindChild("Cost").GetComponent<UnityEngine.UI.Text>();
-		}
-	}
-
 	private void UpdateCosts()
 	{
-		foreach (var ingredient in GetIngredientPanels())
-		{
-			ingredient.UpdateCostText();
-		}
-	}
-
-	// ReSharper disable once ReturnTypeCanBeEnumerable.Local
-	private Cake[] GetIngredientPanels()
-	{
-		return transform.FindChild("BuyingOptions").GetComponentsInChildren<Cake>();
 	}
 
 	/// <summary>
@@ -90,6 +80,9 @@ public class BuyingAreaUI : MarioObject
 
 		InventoryPanel.UpdateDisplay(_contents, false);
 		InventoryPanel.UpdateDisplay(Player.Ingredients, true);
+
+		foreach (var c in _buttons)
+			c.UpdateUi();
 	}
 
 	public void BuyItem(GameObject go)
@@ -99,8 +92,10 @@ public class BuyingAreaUI : MarioObject
 			Debug.Log("Currently limited to 6 items max");
 			return;
 		}
-		// TODO: use Ingredient Item not Cake
-		var item = go.GetComponent<Cake>().Type;
+
+		var button = go.GetComponent<IngredientButtton>();
+		button.AddAmount(1);
+		var item = button.Type;
 		var info = World.IngredientInfo[item];
 		if (Player.Gold < info.Buy)
 			return;
@@ -140,6 +135,12 @@ public class BuyingAreaUI : MarioObject
 
 	public void Reset()
 	{
-		GatherIngredients();
+		ResetContents();
+
+		foreach (var b in _buttons)
+		{
+			b.Amount = 0;
+			b.UpdateUi();
+		}
 	}
 }

@@ -99,8 +99,11 @@ public class Player : MarioObject
 
 	public void ShowCharacters(bool show)
 	{
-		Left.gameObject.SetActive(!show);
-		Right.gameObject.SetActive(!show);
+		if (Left)
+			Left.gameObject.SetActive(!show);
+
+		if (Right)
+			Right.gameObject.SetActive(!show);
 	}
 
 	protected override void Construct()
@@ -131,9 +134,19 @@ public class Player : MarioObject
 		ShowCharacters(false);
 	}
 
-	void Update()
+	protected override void Tick()
 	{
+		base.Tick();
+
 #if !FINAL
+		UpdateDebugKeys();
+#endif
+
+		UpdateSellItem();
+	}
+
+	private void UpdateDebugKeys()
+	{
 		if (Input.GetKeyDown(KeyCode.Space))
 		{
 			FindObjectOfType<World>().TogglePause();
@@ -150,7 +163,6 @@ public class Player : MarioObject
 		{
 			CookedItem(IngredientType.MintIceCream, 1);
 		}
-#endif
 	}
 
 	List<Product> CalcPossibleProducts()
@@ -184,18 +196,9 @@ public class Player : MarioObject
 
 	private float _sellingTimer;
 
-	protected override void Tick()
-	{
-		base.Tick();
-
-		Debug.Log("Player.Tick: " + Time);
-
-		UpdateSellItem();
-	}
-
 	private void UpdateSellItem()
 	{
-		Debug.Log("UpdateSellItem: " + _sellingTimer);
+		//Debug.Log("UpdateSellItem: " + _sellingTimer);
 
 		_sellingTimer -= DeltaTime;
 
@@ -218,6 +221,8 @@ public class Player : MarioObject
 				break;
 			}
 		}
+
+		UpdateUi();
 	}
 
 	private void SellItem(IngredientType type)
@@ -249,6 +254,7 @@ public class Player : MarioObject
 	{
 		World.Canvas.UpdateGoldAmount();
 		World.Canvas.GoalPanel.GetComponent<GoalPanel>().UpdateUi();
+		World.CookingAreaUi.InventoryPanel.UpdateDisplay(Ingredients, false);
 
 		// TODO
 		//_canvas.LivesRemaining.text = Lives.ToString();

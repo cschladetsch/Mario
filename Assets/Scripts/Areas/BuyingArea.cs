@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
-using System.Net.Mail;
 using Flow;
 using UnityEngine;
 
@@ -11,6 +9,8 @@ using UnityEngine;
 public class BuyingArea : AreaBase
 {
 	public List<Cake> Ingredients = new List<Cake>();
+
+	public bool Skip;
 
 	/// <summary>
 	/// Default delivery truck wait time
@@ -87,17 +87,23 @@ public class BuyingArea : AreaBase
 		base.Next();
 	}
 
-	public bool Skip;
+	public override void StartArea()
+	{
+		base.StartArea();
+
+		World.BuyingAreaUi.Reset();
+	}
 
 	public void StartDeliveryTruck(Dictionary<IngredientType, int> contents)
 	{
-		if (Skip)
+		// deliver all items immediately, then go to cooker
+		if (Skip || World.BuyingAreaUi.SkipToggle.isOn)
 		{
 			foreach (var c in contents)
-			{
 				Player.Ingredients[c.Key] += c.Value;
-			}
+
 			World.BeginArea(3);
+
 			return;
 		}
 

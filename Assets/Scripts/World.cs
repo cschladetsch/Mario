@@ -21,7 +21,12 @@ public class World : MonoBehaviour
 
 	public List<Product> AvailableProducts;
 
-	public Dictionary<IngredientType, IngredientInfo> IngredientInfo = new Dictionary<IngredientType, IngredientInfo>(); 
+	public Dictionary<IngredientType, IngredientInfo> IngredientInfo = new Dictionary<IngredientType, IngredientInfo>();
+
+	public CookingAreaUI CookingAreaUi;
+
+	public BuyingAreaUI BuyingAreaUi;
+
 
 	/// <summary>
 	/// The current level
@@ -65,7 +70,7 @@ public class World : MonoBehaviour
 
 	private void Awake()
 	{
-		Kernel = FindObjectOfType<Kernel>().Kern;
+		Kernel = GetComponent<Kernel>().Kern;
 
 		if (Instance != null)
 		{
@@ -159,8 +164,9 @@ public class World : MonoBehaviour
 				break;
 		}
 
-		//Debug.Log("Using Area " + _areaIndex + " from " + Areas.Count);
 		CurrentArea = Areas[_areaIndex];
+
+		Debug.Log("New Area: " + CurrentArea.name);
 
 		DisableOtherAreas();
 

@@ -14,10 +14,10 @@ public class IngredientInfo : MonoBehaviour
 	/// <summary>
 	/// The visual image for it
 	/// </summary>
-	public Texture Image;
+	public Texture2D Image;
 
 	/// <summary>
-	/// Cost to buy. If zero, item cannot be bought
+	/// CostText to buy. If zero, item cannot be bought
 	/// </summary>
 	public int Buy;
 
@@ -29,4 +29,9 @@ public class IngredientInfo : MonoBehaviour
 	public int MinSpawnRate;
 
 	public int MaxSpawnRate;
+
+	///// <summary>
+	///// How long to sell one of these items. NOT USED YET.
+	///// </summary>
+	//public float SellTimer = 3;
 }

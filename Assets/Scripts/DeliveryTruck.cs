@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class DeliveryTruck : MarioObject
 {
@@ -17,6 +18,10 @@ public class DeliveryTruck : MarioObject
 	/// Collider for car
 	/// </summary>
 	public Collider2D Collider;
+
+	public Button Button;
+
+	public Button TimerButtton;
 
 	private float _deliveryTimer;
 
@@ -57,6 +62,11 @@ public class DeliveryTruck : MarioObject
 
 	protected override void Tick()
 	{
+		var canDeliver = World.BuyingAreaUi.HasAnything;
+
+		TimerButtton.interactable = canDeliver;
+		Button.interactable = canDeliver;
+
 		base.Tick();
 
 		UpdateTimer();

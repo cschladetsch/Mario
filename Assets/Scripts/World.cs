@@ -11,6 +11,8 @@ using UnityEngine;
 /// </summary>
 public class World : MonoBehaviour
 {
+	public GameObject IngredientDetails;
+
 	public int AreaIndex;
 
 	public StageGoal []StageGoals;
@@ -99,13 +101,16 @@ public class World : MonoBehaviour
 
 		GatherIngredients();
 	}
+	
 	private void GatherIngredients()
 	{
-		var infos = GameObject.Find("Ingredients");
-		foreach (Transform tr in infos.transform)
+		Debug.Log("World.GatherIngredients");
+
+		foreach (Transform tr in IngredientDetails.transform)
 		{
 			var info = tr.GetComponent<IngredientInfo>();
 			IngredientInfo.Add(info.Type, info);
+			Debug.Log("Adding info about " + info.Type);
 		}
 	}
 
@@ -202,7 +207,7 @@ public class World : MonoBehaviour
 			var act = kv.Key == _areaType;
 			var area = kv.Value;
 
-			Debug.Log("World.DisableOtherAreas: " + " act=" + act + " area=" + area);
+			//Debug.Log("World.DisableOtherAreas: " + " act=" + act + " area=" + area);
 
 			if (!act)
 				area.LeaveArea();
@@ -346,12 +351,16 @@ public class World : MonoBehaviour
 	}
 
 	/// <summary>
-	/// Add spawners for contents of truck. TODO: move to CurrentLevel.cs
+	/// Add spawners for contents of truck. TODO: move to Level.cs
 	/// </summary>
 	private void AddSpawners()
 	{
 		// create spawners from what was in truck
 		var types = new List<IngredientType>();
+
+		// TODO
+		if (_contents == null)
+			return;
 		
 		foreach (var c in _contents)
 		{
@@ -403,7 +412,7 @@ public class World : MonoBehaviour
 
 	public void MoveTo(AreaType area)
 	{
-		Debug.Log("World.MoveTo: " + area);
+		//Debug.Log("World.MoveTo: " + area);
 		BeginArea(area);
 	}
 }

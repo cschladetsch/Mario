@@ -58,7 +58,6 @@ public class CookingAreaUI : MarioObject
 	{
 		var cooker = product.transform.parent.GetComponent<Cooker>();
 		var recipe = cooker.Recipe;
-		Debug.Log("Cooking " + recipe.NumResults + " of " + recipe.Result);
 
 		var canCook = true;
 		var req = IngredientItem.CreateIngredientDict<int>();
@@ -78,6 +77,8 @@ public class CookingAreaUI : MarioObject
 
 		if (!canCook)
 			return;
+
+		Debug.Log("Cooking " + recipe.NumResults + " of " + recipe.Result);
 
 		switch (recipe.Result)
 		{

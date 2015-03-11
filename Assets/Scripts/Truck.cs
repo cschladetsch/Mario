@@ -4,7 +4,7 @@ using UnityEngine;
 
 #pragma warning disable 414
 
-public class Truck : MonoBehaviour
+public class Truck : MarioObject
 {
 	/// <summary>
 	/// How fast to move when emptying
@@ -37,6 +37,7 @@ public class Truck : MonoBehaviour
 
 	public event DeliveredHandler DeliveryStarted;
 	public event DeliveredHandler DeliveryCompleted;
+	public int _numCakes;
 
 	private Transform _pt;
 	private readonly List<Cake> _cakes = new List<Cake>();
@@ -46,25 +47,29 @@ public class Truck : MonoBehaviour
 	private float _startPos;
 	private bool _emptying;
 	private bool _full;
-	private World _world;
 
-	void Awake()
+	protected override void Construct()
 	{
+		base.Construct();
 		_pt = transform.FindChild("FlythroughPoint");
 	}
 
-	public int _numCakes;
-
-	void Start()
+	protected override void Begin()
 	{
-		_startPos = transform.position.x;
-		_world = FindObjectOfType<World>();
+		base.Begin();
 
-		_numCakes = _world.CurrentLevel.Inventory.Sum(c => c.Value);
+		_startPos = transform.position.x;
+
+		if (World.CurrentLevel == null)
+			return;
+
+		_numCakes = World.CurrentLevel.Inventory.Sum(c => c.Value);
 	}
 
-	void Update()
+	protected override void Tick()
 	{
+		base.Tick();
+
 		UpdateEmptying();
 
 		if (_emptying)
@@ -80,11 +85,11 @@ public class Truck : MonoBehaviour
 		if (!_emptying)
 			return;
 
-		_moveTime -= Time.deltaTime;
+		_moveTime -= DeltaTime;
 		var p = transform.position;
 		if (_movingLeft)
 		{
-			transform.position = new Vector3(p.x - MoveSpeed*Time.deltaTime, p.y, 0);
+			transform.position = new Vector3(p.x - MoveSpeed*DeltaTime, p.y, 0.0f);
 			if (_moveTime <= 0)
 				TransitionToBakery();
 
@@ -92,7 +97,7 @@ public class Truck : MonoBehaviour
 		}
 
 		// moving right
-		transform.position = new Vector3(p.x + MoveSpeed*Time.deltaTime, p.y, 0);
+		transform.position = new Vector3(p.x + MoveSpeed*DeltaTime, p.y, 0.0f);
 		if (_moveTime <= 0)
 			EndEmptying();
 	}
@@ -113,8 +118,8 @@ public class Truck : MonoBehaviour
 		_pending.Clear();
 		_cakes.Clear();
 
-		_world.CurrentLevel.EndLevel();
-		_world.BeginArea(AreaType.Bakery);
+		World.CurrentLevel.EndLevel();
+		World.BeginArea(AreaType.Bakery);
 	}
 
 	private void EmptyCakes()
@@ -160,7 +165,7 @@ public class Truck : MonoBehaviour
 
 		_pending.Clear();
 
-		_world.Pause(false);
+		World.Pause(false);
 
 		foreach (var c in _cakes)
 			c.rigidbody2D.isKinematic = true;
@@ -181,7 +186,7 @@ public class Truck : MonoBehaviour
 
 	private void StartEmptying()
 	{
-		_world.Pause(true);
+		World.Pause(true);
 
 		if (DeliveryStarted != null)
 			DeliveryStarted(this);

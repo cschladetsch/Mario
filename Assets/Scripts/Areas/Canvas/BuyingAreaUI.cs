@@ -22,6 +22,8 @@ public class BuyingAreaUI : MarioObject
 	/// </summary>
 	Dictionary<IngredientType, int> _contents = new Dictionary<IngredientType, int>();
 
+	public bool HasAnything { get { return _contents.Sum(c => c.Value) > 0; } }
+
 	public UnityEngine.UI.Text GoldText;
 
 	private List<IngredientButtton> _buttons = new List<IngredientButtton>(); 
@@ -54,6 +56,15 @@ public class BuyingAreaUI : MarioObject
 		base.Tick();
 
 		//UpdateDisplay();
+	}
+
+	public void TimerButttonPressed()
+	{
+		var truck = FindObjectOfType<DeliveryTruck>();
+		if (!truck.Ready)
+			truck.Deliver(_contents);
+		else
+			truck.Complete();
 	}
 
 	private void UpdateCosts()

@@ -100,10 +100,10 @@ public class Player : MarioObject
 	public void ShowCharacters(bool show)
 	{
 		if (Left)
-			Left.gameObject.SetActive(!show);
+			Left.gameObject.SetActive(show);
 
 		if (Right)
-			Right.gameObject.SetActive(!show);
+			Right.gameObject.SetActive(show);
 	}
 
 	protected override void Construct()
@@ -128,14 +128,17 @@ public class Player : MarioObject
 	protected override void BeforeFirstUpdate()
 	{
 		// TODO: attach to truck
-		Left = transform.FindChild("Left").GetComponent<Character>();
-		Right = transform.FindChild("Right").GetComponent<Character>();
-
 		ShowCharacters(false);
 	}
 
 	protected override void Tick()
 	{
+		if (!Left)
+		{
+			Left = transform.FindChild("CharacterLeft").GetComponent<Character>();
+			Right = transform.FindChild("CharacterRight").GetComponent<Character>();
+		}
+
 		base.Tick();
 
 #if !FINAL
@@ -204,11 +207,13 @@ public class Player : MarioObject
 
 		_sellingTimer -= RealDeltaTime;
 
-		if (_sellingTimer <= 0)
+		while (_sellingTimer <= 0)
 		{
 			SellItem();
-			_sellingTimer = SellingInterval;
+			_sellingTimer += SellingInterval;
 		}
+
+		_sellingTimer = SellingInterval;
 	}
 
 	private void SellItem()

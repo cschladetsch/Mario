@@ -188,7 +188,6 @@ public class Level : MarioObject
 
 		Inventory[spawnInfo.Type]--;
 
-
 		//Debug.Log("Cakes Left: " + Inventory.Sum(c => c.Value));
 
 		var born = spawnInfo.Spawn(gameObject);
@@ -329,12 +328,18 @@ public class Level : MarioObject
 		if (_spawners == null)
 			return;
 
+		//// don't spawn anything while truck is emptying
+		//if (Truck.Emptying)
+		//	return;
+
 		if (_numCakesSpawned == NumTruckLoads*6)
 			return;
 
 		var options = _spawners.Where(sp => sp.CouldSpawn()).ToList();
 		if (options.Count == 0)
+		{
 			return;
+		}
 
 		AddCake(SelectRandomWeighted(options));
 	}

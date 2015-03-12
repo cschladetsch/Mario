@@ -45,7 +45,7 @@ public class Truck : MarioObject
 	private float _moveTime;
 	private bool _movingLeft;
 	private float _startPos;
-	private bool _emptying;
+	public bool Emptying;
 	private bool _full;
 
 	protected override void Construct()
@@ -75,7 +75,7 @@ public class Truck : MarioObject
 
 		UpdateEmptying();
 
-		if (_emptying)
+		if (Emptying)
 			return;
 
 		MoveCakes();
@@ -85,7 +85,7 @@ public class Truck : MarioObject
 
 	private void UpdateEmptying()
 	{
-		if (!_emptying)
+		if (!Emptying)
 			return;
 
 		var dt = GameDeltaTime;
@@ -96,8 +96,25 @@ public class Truck : MarioObject
 		{
 			transform.position = new Vector3(p.x - MoveSpeed*dt, p.y, 0.0f);
 			if (_moveTime <= 0)
-				TransitionToBakery();
+			{
+				Debug.Log("Truck done: " + World.CurrentLevel.NoMoreCakes);
 
+				foreach (var kv in World.CurrentLevel.Inventory)
+				{
+					Debug.Log(string.Format("{0} {1}", kv.Key, kv.Value));
+				}
+
+				if (World.CurrentLevel.NoMoreCakes)
+				{
+					if (DeliveryCompleted != null)
+						DeliveryCompleted(this);
+					TransitionToBakery();
+				}
+			}
+			else
+			{
+				_movingLeft = false;
+			}
 			return;
 		}
 
@@ -150,7 +167,7 @@ public class Truck : MarioObject
 	{
 		transform.position = new Vector3(_startPos, transform.position.y, 0);
 
-		_emptying = false;
+		Emptying = false;
 		_full = false;
 
 		foreach (var c in _pending.ToList())
@@ -158,6 +175,7 @@ public class Truck : MarioObject
 			AddCake(c);
 			if (_full)
 				break;
+
 			_pending.Remove(c);
 		}
 
@@ -177,7 +195,6 @@ public class Truck : MarioObject
 
 		if (DeliveryCompleted != null)
 			DeliveryCompleted(this);
-
 	}
 
 	private void UpdateDone()
@@ -198,7 +215,7 @@ public class Truck : MarioObject
 
 		_moveTime = MoveDistance/MoveSpeed;
 		_movingLeft = true;
-		_emptying = true;
+		Emptying = true;
 	}
 
 	private void MoveCakes()
@@ -221,7 +238,12 @@ public class Truck : MarioObject
 
 			var arrived = cake.transform.position.x <= para.FinalPos.x;
 			if (arrived)
+			{
 				AddToPlayerIngredients(cake);
+
+				if (World.CurrentLevel.NoMoreCakes)
+					TransitionToBakery();
+			}
 
 			if (!arrived)
 				continue;

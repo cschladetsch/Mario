@@ -67,6 +67,8 @@ public class ShopArea : AreaBase
 		DeliveryTruck = FindObjectOfType<DeliveryTruck>();
 		DeliveryTruck.Reset();
 
+		Player.ShowCharacters(false);
+
 		// TODO: why is thus.World sometimes null???
 		//var world = FindObjectOfType<World>();
 		//world.BuyingAreaUi.Reset();

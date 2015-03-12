@@ -1,21 +1,18 @@
-﻿using System;
+﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections.Generic;
-using UnityEngine;
 
-public class NewBehaviourScript : MonoBehaviour
+public class NewBehaviourScript : MarioObject
 {
-	
-	void Awake()
+	protected override void Construct()
 	{
 	}
 
-	void Start()
+	protected override void Begin()
 	{
 	}
 
-	void Update()
+	protected override void Tick()
 	{
 	}
 }
-
-

@@ -1,4 +1,5 @@
-﻿using Flow;
+﻿using System;
+using Flow;
 using UnityEngine;
 
 /// <summary>
@@ -58,13 +59,15 @@ public class MarioObject : MonoBehaviour
 	void Start()
 	{
 		//Debug.Log("Name=" + name + ", World=" + World);
-
+		_lastTime = DateTime.Now;
 		Begin();
 	}
 
 	public virtual void End()
 	{
 	}
+
+	private DateTime _lastTime;
 
 	void Update()
 	{
@@ -77,8 +80,11 @@ public class MarioObject : MonoBehaviour
 		if (Paused)
 			return;
 
-		var dt = UnityEngine.Time.deltaTime;
-		DeltaTime = dt;
+		// use real-time
+		var now = DateTime.Now;
+		var delta = now - _lastTime;
+		DeltaTime = (float)delta.TotalSeconds;
+		_lastTime = now;
 
 		if (_firstUpate)
 		{
@@ -91,7 +97,7 @@ public class MarioObject : MonoBehaviour
 
 		Tick();
 
-		Time += dt;
+		Time += DeltaTime;
 	}
 
 	protected virtual void BeforeFirstUpdate()

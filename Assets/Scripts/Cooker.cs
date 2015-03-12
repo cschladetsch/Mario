@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using Flow;
+﻿using Flow;
 using UnityEngine;
-using System.Collections;
 using UnityEngine.UI;
+using System.Collections;
 
 /// <summary>
 /// Something that makes a product given correct ingredients
@@ -168,7 +166,7 @@ public class Cooker : MarioObject
 		var remaining = Recipe.CookingTime;
 		while (remaining > 0)
 		{
-			remaining -= (float) DeltaTime;
+			remaining -= DeltaTime;
 			UpdateProgressBar(remaining/Recipe.CookingTime);
 			yield return 0;
 		}
@@ -206,8 +204,8 @@ public class Cooker : MarioObject
 
 	private void UpdateProgressBar(float t)
 	{
+		t = Mathf.Clamp01(t);
 		TimerText.text = string.Format("{0:0.0}", t);
-		//// 1.25
 
 		//var y = ProgressBar.transform.position.y;
 		//var len = t*1.25f;

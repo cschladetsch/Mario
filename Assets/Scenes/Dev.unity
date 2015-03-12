@@ -2858,7 +2858,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Paused: 0
   Ready: 0
-  DeliveryTime: 3
+  DeliveryTime: 30
   Collider: {fileID: 0}
   Button: {fileID: 458863637}
   TimerButtton: {fileID: 761210511}
@@ -3958,6 +3958,10 @@ Prefab:
     - target: {fileID: 22406314, guid: 6df6710bb4455c04aa5f2ed0272041e6, type: 2}
       propertyPath: m_LocalScale.x
       value: 1.38091302
+      objectReference: {fileID: 0}
+    - target: {fileID: 11406312, guid: 6df6710bb4455c04aa5f2ed0272041e6, type: 2}
+      propertyPath: DeliveryTime
+      value: 30
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 6df6710bb4455c04aa5f2ed0272041e6, type: 2}

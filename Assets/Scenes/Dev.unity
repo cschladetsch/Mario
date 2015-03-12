@@ -216,7 +216,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &18310213
 RectTransform:
   m_ObjectHideFlags: 0
@@ -735,7 +735,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Ingredients: 0000000001000000
   Counts: 0100000001000000
-  CookingTime: 20
+  CookingTime: 1
   Result: 2
   NumResults: 5
 --- !u!1 &124914773
@@ -2733,6 +2733,10 @@ Prefab:
     - target: {fileID: 11406312, guid: 6df6710bb4455c04aa5f2ed0272041e6, type: 2}
       propertyPath: DeliveryTime
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 106288, guid: 6df6710bb4455c04aa5f2ed0272041e6, type: 2}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 6df6710bb4455c04aa5f2ed0272041e6, type: 2}
@@ -6079,7 +6083,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Paused: 0
   CurrentGoal: {fileID: 934029830}
-  Gold: 5
+  Gold: 999
   CharacterLeftPrefab: {fileID: 100000, guid: eea6edd4ec45af4439cf304f8b814600, type: 2}
   CharacterRightPrefab: {fileID: 100000, guid: eea6edd4ec45af4439cf304f8b814600, type: 2}
   Control: {fileID: 0}
@@ -6089,6 +6093,7 @@ MonoBehaviour:
   Right: {fileID: 0}
   Lives: 3
   SellingInterval: 3
+  _sellingTimer: 0
 --- !u!1 &788833721
 GameObject:
   m_ObjectHideFlags: 0
@@ -6414,6 +6419,14 @@ Prefab:
       propertyPath: CurrentGoal
       value: 
       objectReference: {fileID: 934029830}
+    - target: {fileID: 11400004, guid: 52fa16e38a71b9f47bb741e162594937, type: 2}
+      propertyPath: Paused
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400004, guid: 52fa16e38a71b9f47bb741e162594937, type: 2}
+      propertyPath: Gold
+      value: 999
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 52fa16e38a71b9f47bb741e162594937, type: 2}
   m_RootGameObject: {fileID: 766647621}
@@ -7408,6 +7421,7 @@ MonoBehaviour:
   NumColumns: 2
   NumRows: 3
   _numCakes: 0
+  Emptying: 0
 --- !u!23 &1000422785
 Renderer:
   m_ObjectHideFlags: 0
@@ -10001,7 +10015,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 11404168, guid: fa18246be680c21468451a4fb4b3004c, type: 2}
       propertyPath: CookingTime
-      value: 20
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: fa18246be680c21468451a4fb4b3004c, type: 2}

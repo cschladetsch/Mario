@@ -73,6 +73,9 @@ public class Truck : MarioObject
 	{
 		base.Tick();
 
+		if (!World.CurrentLevel.Area.Visual)
+			return;
+
 		UpdateEmptying();
 
 		if (Emptying)
@@ -104,12 +107,12 @@ public class Truck : MarioObject
 					Debug.Log(string.Format("{0} {1}", kv.Key, kv.Value));
 				}
 
-				if (World.CurrentLevel.NoMoreCakes)
-				{
-					if (DeliveryCompleted != null)
-						DeliveryCompleted(this);
-					TransitionToBakery();
-				}
+				//if (World.CurrentLevel.NoMoreCakes)
+				//{
+				//	if (DeliveryCompleted != null)
+				//		DeliveryCompleted(this);
+				//	TransitionToBakery();
+				//}
 			}
 			else
 			{
@@ -165,6 +168,9 @@ public class Truck : MarioObject
 
 	private void EndEmptying()
 	{
+		if (!Emptying)
+			return;
+
 		transform.position = new Vector3(_startPos, transform.position.y, 0);
 
 		Emptying = false;
@@ -215,6 +221,7 @@ public class Truck : MarioObject
 
 		_moveTime = MoveDistance/MoveSpeed;
 		_movingLeft = true;
+
 		Emptying = true;
 	}
 
@@ -241,8 +248,8 @@ public class Truck : MarioObject
 			{
 				AddToPlayerIngredients(cake);
 
-				if (World.CurrentLevel.NoMoreCakes)
-					TransitionToBakery();
+				//if (World.CurrentLevel.NoMoreCakes)
+				//	TransitionToBakery();
 			}
 
 			if (!arrived)

@@ -29,12 +29,15 @@ public class FactoryArea : AreaBase
 
 		Player.ShowCharacters(true);
 
+		//World.CurrentLevel.Truck.Paused = false;
+
 		ToggleVisuals(true);
 	}
 
 	public override void LeaveArea()
 	{
 		base.LeaveArea();
+		//World.CurrentLevel.Truck.Paused = false;
 
 		//Debug.LogWarning("Leaving Factory");
 		Camera.main.orthographicSize = _size;

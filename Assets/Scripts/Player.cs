@@ -133,6 +133,7 @@ public class Player : MarioObject
 
 	protected override void Tick()
 	{
+		//Debug.Log("Player.Tick ");
 		if (!Left)
 		{
 			Left = transform.FindChild("CharacterLeft").GetComponent<Character>();
@@ -199,40 +200,40 @@ public class Player : MarioObject
 
 	public float SellingInterval = 3;
 
-	private float _sellingTimer;
+	public float _sellingTimer;
 
 	private void UpdateSellItem()
 	{
-		//Debug.Log("UpdateSellItem: " + _sellingTimer);
-
 		_sellingTimer -= RealDeltaTime;
 
-		while (_sellingTimer <= 0)
+		var selling = _sellingTimer <= 0;
+		while (selling)
 		{
 			SellItem();
 			_sellingTimer += SellingInterval;
-		}
 
-		_sellingTimer = SellingInterval;
+			if (_sellingTimer > 0)
+			{
+				selling = false;
+				_sellingTimer = SellingInterval;
+			}
+		}
 	}
 
 	private void SellItem()
 	{
 		IngredientType[] types = {IngredientType.MintIceCream, IngredientType.CupCake};
 
-		bool sold = false;
-		foreach (var type in types)
+		for (var n = 0; n < types.Length; ++n)
 		{
-			if (Inventory[type] > 0)
-			{
-				sold = true;
-				SellItem(type);
-				break;
-			}
-		}
+			var index0 = UnityEngine.Random.Range(0, types.Length);
+			var type = types[index0];
 
-		if (sold)
-			UpdateUi();
+			if (Inventory[type] <= 0) 
+				continue;
+
+			SellItem(type);
+		}
 	}
 
 	private void SellItem(IngredientType type)

@@ -60,7 +60,13 @@ public class Level : MarioObject
 
 	public bool NoMoreCakes
 	{
-		get { return Inventory.Sum(c => c.Value) == 0; }
+		get
+		{
+			if (Inventory == null)
+				return true;
+
+			return Inventory.Sum(c => c.Value) == 0;
+		}
 	}
 
 	
@@ -125,7 +131,7 @@ public class Level : MarioObject
 
 	private void DeliveryCompleted(Truck truck)
 	{
-		Debug.Log("DeliveryCompleted: " + NoMoreCakes);
+		//Debug.Log("DeliveryCompleted: " + NoMoreCakes);
 
 		if (NoMoreCakes)
 			World.ChangeArea(AreaType.Bakery);

@@ -78,7 +78,7 @@ public class CookingAreaUI : MarioObject
 		if (!canCook)
 			return;
 
-		Debug.Log("Cooking " + recipe.NumResults + " of " + recipe.Result);
+		//Debug.Log("Cooking " + recipe.NumResults + " of " + recipe.Result);
 
 		switch (recipe.Result)
 		{

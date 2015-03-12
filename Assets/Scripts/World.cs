@@ -170,6 +170,7 @@ public class World : MonoBehaviour
 
 	public void ChangeArea(AreaType area)
 	{
+		Debug.Log("ChangingArea: " + area);
 		_areaType = area;
 
 		CurrentArea = Areas[_areaType];

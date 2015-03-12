@@ -189,7 +189,7 @@ public class Truck : MarioObject
 		StartEmptying();
 	}
 
-	private void StartEmptying()
+	public void StartEmptying()
 	{
 		World.Pause(true);
 

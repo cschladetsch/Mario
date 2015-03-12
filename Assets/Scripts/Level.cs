@@ -125,10 +125,10 @@ public class Level : MarioObject
 
 	private void DeliveryCompleted(Truck truck)
 	{
-		//if (++_numTrucksDelivered == NumTruckLoads)
-		//{
-		//	EndLevel();
-		//}
+		Debug.Log("DeliveryCompleted: " + NoMoreCakes);
+
+		if (NoMoreCakes)
+			World.ChangeArea(AreaType.Bakery);
 	}
 
 	private bool _ended;
@@ -187,6 +187,7 @@ public class Level : MarioObject
 			return;
 
 		Inventory[spawnInfo.Type]--;
+
 
 		//Debug.Log("Cakes Left: " + Inventory.Sum(c => c.Value));
 

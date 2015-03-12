@@ -98,12 +98,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Paused: 0
-  Type: 2
+  Type: 0
   UiCanvas: {fileID: 0}
   Ingredients: []
   Skip: 0
   DeliveryTruck: {fileID: 0}
-  DeliveryTruckTime: 3
+  DeliveryTruckTime: 30
 --- !u!212 &21200000
 SpriteRenderer:
   m_ObjectHideFlags: 1

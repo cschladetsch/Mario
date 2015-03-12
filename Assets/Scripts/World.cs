@@ -123,6 +123,7 @@ public class World : MonoBehaviour
 		foreach (var a in AreaPrefabs)
 		{
 			//Debug.Log("Creating a " + a.name);
+
 			var area = ((GameObject) Instantiate(a)).GetComponent<AreaBase>();
 			if (area == null)
 			{
@@ -149,7 +150,7 @@ public class World : MonoBehaviour
 		GoalIndex = 0;
 		Player.SetGoal(StageGoals[GoalIndex]);
 
-		BeginArea(_areaType);
+		ChangeArea(_areaType);
 	}
 
 	private IEnumerator TestCoro(IGenerator t0)
@@ -167,25 +168,11 @@ public class World : MonoBehaviour
 			return;
 	}
 
-	public void BeginArea(AreaType area)
+	public void ChangeArea(AreaType area)
 	{
-		if (CurrentArea)
-			CurrentArea.LeaveArea();
-
 		_areaType = area;
 
-		switch (area)
-		{
-			case AreaType.Shop:
-				MainShop();			// sending through stock, paying customers, and ordering new ingredients
-				break;
-			case AreaType.Factory:
-				PlayConeyorGame();		// conveyor game. deliver ingredients and products past boss
-				break;
-			case AreaType.Bakery:
-				EnterBakery();			// bakery: produce goods for selling in MainShop
-				break;
-		}
+		CurrentArea = Areas[_areaType];
 
 		if (!Areas.ContainsKey(_areaType))
 		{
@@ -193,7 +180,20 @@ public class World : MonoBehaviour
 			return;
 		}
 
-		CurrentArea = Areas[_areaType];
+		switch (area)
+		{
+			case AreaType.Shop:
+				MainShop();			// sending through stock, paying customers, and ordering new ingredients
+				break;
+
+			case AreaType.Factory:
+				PlayConeyorGame();		// conveyor game. deliver ingredients and products past boss
+				break;
+
+			case AreaType.Bakery:
+				EnterBakery();			// bakery: produce goods for selling in MainShop
+				break;
+		}
 
 		DisableOtherAreas();
 
@@ -220,11 +220,11 @@ public class World : MonoBehaviour
 
 	private void EnterBakery()
 	{
-		if (CurrentLevel)
-			Destroy(CurrentLevel.gameObject);
+		//if (CurrentLevel)
+		//	Destroy(CurrentLevel.gameObject);
 		
-		foreach (var c in FindObjectsOfType<Cake>())
-			Destroy(c.gameObject);
+		//foreach (var c in FindObjectsOfType<Cake>())
+		//	Destroy(c.gameObject);
 
 		// HACKS
 		//Camera.main.transform.position = new Vector3(0.2f, -0.8f, -20);
@@ -238,18 +238,6 @@ public class World : MonoBehaviour
 	private void MainShop()
 	{
 
-	}
-
-	public void ConveyorGame()
-	{
-		Truck.Reset();
-
-		CurrentLevel.Reset();
-
-		Player.Reset();
-
-		foreach (var c in FindObjectsOfType<Cake>())
-			Destroy(c.gameObject);
 	}
 
 	public void Restart()
@@ -311,16 +299,24 @@ public class World : MonoBehaviour
 
 	public void PlayConeyorGame()
 	{
+		//Debug.LogWarning("PlayConeyorGame");
+
 		if (CurrentLevel)
-			Destroy(CurrentLevel.gameObject);
+		{
+			//Debug.Log("PlayConeyorGame: CurrentLevel: " + CurrentLevel);
+			//Debug.Log("PlayConeyorGame: CurrentLevel.Area: " + CurrentLevel.Area);
+			return;
+
+			//Debug.Log("Destroying " + CurrentLevel.name);
+			//Destroy(CurrentLevel.gameObject);
+		}
 
 		var prefab = Levels[_levelIndex];
 		CurrentLevel = ((GameObject)Instantiate(prefab)).GetComponent<Level>();
 		CurrentLevel.transform.position = Vector3.zero;
+		CurrentLevel.Area = CurrentArea as FactoryArea;
 
 		CurrentLevel.Paused = true;
-
-		AddSpawners();
 
 		// actually begin the level after a few Updates to allow nested spawners to complete
 		_beginLevelAfterThisManyUpdates = 5;
@@ -347,62 +343,10 @@ public class World : MonoBehaviour
 
 		PlayConeyorGame();
 
-		BeginArea(AreaType.Factory);
+		ChangeArea(AreaType.Factory);
 	}
 
-	/// <summary>
-	/// Add spawners for contents of truck. TODO: move to Level.cs
-	/// </summary>
-	private void AddSpawners()
-	{
-		// create spawners from what was in truck
-		var types = new List<IngredientType>();
 
-		// TODO
-		if (_contents == null)
-			return;
-		
-		foreach (var c in _contents)
-		{
-			if (c.Value == 0)
-				continue;
-
-			var type = c.Key;
-
-			if (types.Contains(type))
-				continue;
-
-			types.Add(type);
-
-			var sp = CurrentLevel.gameObject.AddComponent<SpawnInfo>();
-			var info = IngredientInfo[type];
-			sp.MinSpawnTime = info.MinSpawnRate;
-			sp.MaxSpawnTime = info.MaxSpawnRate;
-			sp.Weight = 1;
-			sp.MaxSpawns = c.Value;
-			sp.Type = type;
-
-			// load prefabs to make ingredients from resources path
-			var path = string.Format("{0}", type);
-			var ob = Resources.Load(path);
-			if (ob == null)
-			{
-				Debug.LogWarning("No prefab for ingredient " + type);
-				continue;
-			}
-
-			sp.Prefab = (GameObject)ob;
-			if (sp.Prefab == null)
-			{
-				Debug.LogWarning("Can't make a " + type  + ", using path " + path);
-				continue;
-			}
-
-			//Debug.Log("Using " + sp.Prefab.name + " prefab to make " + c.Key);
-		}
-
-		CurrentLevel.Inventory = _contents;
-	}
 
 	public void NextGoal()
 	{
@@ -413,6 +357,6 @@ public class World : MonoBehaviour
 	public void MoveTo(AreaType area)
 	{
 		//Debug.Log("World.MoveTo: " + area);
-		BeginArea(area);
+		ChangeArea(area);
 	}
 }

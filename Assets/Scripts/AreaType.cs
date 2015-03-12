@@ -1,11 +1,12 @@
-﻿using UnityEngine;
-using System.Collections;
-
+﻿/// <summary>
+/// Different areas that the game can be in - think of them as game states
+/// </summary>
 public enum AreaType
 {
-	None,
-	Splash,
 	Shop,
-	Bakery,
 	Factory,
+	Bakery,
+
+	Splash,
+	None,
 }

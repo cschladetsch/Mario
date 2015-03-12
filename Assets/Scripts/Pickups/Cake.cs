@@ -71,4 +71,9 @@ public class Cake : Pickup
 		var text = world.IngredientInfo[Type].Sell.ToString();
 		CostText.text = string.Format("{0}$", text);
 	}
+
+	void OnDestroy()
+	{
+		//Debug.Log("Cake destroyed");
+	}
 }

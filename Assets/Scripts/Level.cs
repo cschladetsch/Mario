@@ -197,7 +197,22 @@ public class Level : MarioObject
 
 		var cake = born.GetComponent<Cake>();
 		if (cake != null)
+		{
+			//if (!Area.Visual)
+				//Debug.Log("Spawned a " + cake.name);
+
 			++_numCakesSpawned;
+		}
+
+		if (Area == null)
+		{
+			Debug.LogError("Level as no Area??");
+		}
+
+		// if we're in another area, we still want
+		// to spawn a cake, but we don't want to show it
+		if (cake && !Area.Visual)
+			AreaBase.ToggleVisuals(cake.gameObject, false);
 
 		// FRI
 		if (ToTruck)
@@ -250,6 +265,8 @@ public class Level : MarioObject
 	private float _speedTimer;
 
 	public Dictionary<IngredientType, int> Inventory;
+
+	public FactoryArea Area;
 
 	override protected void Tick()
 	{
@@ -391,6 +408,60 @@ public class Level : MarioObject
 
 		foreach (var conv in _conveyors)
 			conv.Pause(pause);
+	}
+	/// <summary>
+	/// Add spawners for contents of truck. TODO: move to Level.cs
+	/// </summary>
+	public void AddSpawners(Dictionary<IngredientType, int> contents)
+	{
+		// create spawners from what was in truck
+		var types = new List<IngredientType>();
+
+		// TODO
+		if (contents == null)
+			return;
+
+		Inventory = contents;
+
+		foreach (var c in Inventory)
+		{
+			if (c.Value == 0)
+				continue;
+
+			var type = c.Key;
+
+			if (types.Contains(type))
+				continue;
+
+			types.Add(type);
+
+			var sp = CurrentLevel.gameObject.AddComponent<SpawnInfo>();
+			var info = World.IngredientInfo[type];
+			sp.MinSpawnTime = info.MinSpawnRate;
+			sp.MaxSpawnTime = info.MaxSpawnRate;
+			sp.Weight = 1;
+			sp.MaxSpawns = c.Value;
+			sp.Type = type;
+
+			// load prefabs to make ingredients from resources path
+			var path = string.Format("{0}", type);
+			var ob = Resources.Load(path);
+			if (ob == null)
+			{
+				Debug.LogWarning("No prefab for ingredient " + type);
+				continue;
+			}
+
+			sp.Prefab = (GameObject)ob;
+			if (sp.Prefab == null)
+			{
+				Debug.LogWarning("Can't make a " + type  + ", using path " + path);
+				continue;
+			}
+
+			//Debug.Log("Using " + sp.Prefab.name + " prefab to make " + c.Key);
+		}
+
 	}
 
 	public Conveyor GetTopConveyor()

@@ -213,7 +213,7 @@ public class CookingAreaUI : MarioObject
 
 	public void BackToShop()
 	{
-		World.BeginArea(0);
+		World.ChangeArea(0);
 	}
 
 	void OnDisable()

@@ -172,6 +172,7 @@ public class Conveyor : MarioObject
 
 	public void Reset()
 	{
+		//Debug.Log("Level.Reset: Destroying all _contents");
 		foreach (var c in _contents)
 			Destroy(c.gameObject);
 

@@ -138,7 +138,7 @@ public class BuyingAreaUI : MarioObject
 	/// </summary>
 	public void BakePressed()
 	{
-		World.BeginArea(AreaType.Bakery);
+		World.ChangeArea(AreaType.Bakery);
 	}
 
 	void OnDisable()

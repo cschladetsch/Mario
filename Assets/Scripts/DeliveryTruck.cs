@@ -55,7 +55,7 @@ public class DeliveryTruck : MarioObject
 		foreach (var c in contents)
 			Player.Inventory[c.Key] += c.Value;
 
-		World.BeginArea(AreaType.Bakery);
+		World.ChangeArea(AreaType.Bakery);
 
 		return true;
 	}
@@ -97,7 +97,9 @@ public class DeliveryTruck : MarioObject
 			return;
 
 		TurnTimerOn(false);
-		World.BeginMainGame(_contents);
+
+		World.ChangeArea(AreaType.Factory);
+		World.CurrentLevel.AddSpawners(_contents);
 	}
 
 	private void TurnTimerOn(bool on)

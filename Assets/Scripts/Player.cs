@@ -177,6 +177,8 @@ public class Player : MarioObject
 
 		if (pickup is Cake)
 		{
+			//Debug.Log("Dropped a " + pickup.name);
+
 			if (OnCakeDropped != null)
 				OnCakeDropped(this);
 
@@ -244,6 +246,9 @@ public class Player : MarioObject
 	private void Died()
 	{
 		World.Pause(true);
+
+		if (!_canvas.Score)
+			return;
 
 		var score = int.Parse(_canvas.Score.text);
 

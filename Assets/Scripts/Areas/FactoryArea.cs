@@ -17,8 +17,9 @@ public class FactoryArea : AreaBase
 
 	public override void EnterArea()
 	{
-		base.Begin();
+		base.EnterArea();
 
+		//Debug.Log("Entering Factory");
 		// used as a hack to adjust camera for main game area
 		_size = Camera.main.orthographicSize;
 		_height = Camera.main.transform.position.y;
@@ -27,15 +28,30 @@ public class FactoryArea : AreaBase
 		Camera.main.transform.SetY(4.8f);
 
 		Player.ShowCharacters(true);
+
+		ToggleVisuals(true);
 	}
 
 	public override void LeaveArea()
 	{
-		base.End();
+		base.LeaveArea();
+
+		//Debug.LogWarning("Leaving Factory");
 		Camera.main.orthographicSize = _size;
 		Camera.main.transform.SetY(_height);
 
 		Player.ShowCharacters(false);
+
+		ToggleVisuals(false);
+	}
+
+	public void ToggleVisuals(bool on)
+	{
+		var level = World.CurrentLevel;
+		if (!level)
+			return;
+
+		ToggleVisuals(level.gameObject, on);
 	}
 }
 

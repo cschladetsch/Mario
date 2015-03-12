@@ -124,7 +124,7 @@ public class Truck : MarioObject
 		_cakes.Clear();
 
 		World.CurrentLevel.EndLevel();
-		World.BeginArea(AreaType.Bakery);
+		World.ChangeArea(AreaType.Bakery);
 	}
 
 	private void EmptyCakes()

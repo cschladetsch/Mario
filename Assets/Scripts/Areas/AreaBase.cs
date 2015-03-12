@@ -15,6 +15,12 @@ public class AreaBase : MarioObject
 	/// </summary>
 	public GameObject UiCanvas;
 
+	/// <summary>
+	/// If true, the area may be running (Paused == false),
+	/// but we want to turn off all visual elements
+	/// </summary>
+	public bool Visual;
+
 	protected override void Begin()
 	{
 		base.Begin();
@@ -49,11 +55,31 @@ public class AreaBase : MarioObject
 	public virtual void EnterArea()
 	{
 		//Debug.Log("Area " + name + " entered");
+		UiCanvas.SetActive(true);
+		Visual = true;
 	}
 
 	public virtual void LeaveArea()
 	{
 		//Debug.Log("Area " + name + " left");
+		UiCanvas.SetActive(false);
+		Visual = false;
+	}
+
+	public static void ToggleVisuals(GameObject root, bool on)
+	{
+		foreach (var go in root.GetAllChildren())
+		{
+			//Debug.Log("CHILD: " + go.name);
+
+			var vis = go.name == "ArtContainer" || go.name == "Visual";
+			if (!vis)
+				continue;
+
+			//Debug.Log("Showing " + go.transform.parent.name + ": " + on);
+
+			go.gameObject.SetActive(on);
+		}
 	}
 }
 

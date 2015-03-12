@@ -40,7 +40,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Paused: 0
-  Type: 4
+  Type: 1
   UiCanvas: {fileID: 0}
 --- !u!1001 &100100000
 Prefab:

@@ -39,7 +39,7 @@ public class ShopArea : AreaBase
 	private IEnumerator TapToContinue(IGenerator t0)
 	{
 		Debug.Log("Start tap to continue");
-		World.BeginArea(AreaType.Shop);
+		World.ChangeArea(AreaType.Shop);
 		yield break;
 	}
 
@@ -80,7 +80,7 @@ public class ShopArea : AreaBase
 			foreach (var c in contents)
 				Player.Inventory[c.Key] += c.Value;
 
-			World.BeginArea(AreaType.Bakery);
+			World.ChangeArea(AreaType.Bakery);
 
 			return;
 		}

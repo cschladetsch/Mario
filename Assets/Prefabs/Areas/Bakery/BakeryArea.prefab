@@ -24,7 +24,7 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 400004}
-  - 114: {fileID: 11435400}
+  - 114: {fileID: 11440462}
   m_Layer: 0
   m_Name: BakeryArea
   m_TagString: Untagged
@@ -85,7 +85,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 400004}
   m_RootOrder: 1
---- !u!114 &11435400
+--- !u!114 &11440462
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -97,7 +97,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Paused: 0
-  Type: 3
+  Type: 2
   UiCanvas: {fileID: 0}
   Recipes: []
 --- !u!212 &21200000

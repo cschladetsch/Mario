@@ -4,6 +4,19 @@ using UnityEngine;
 
 public static class TransformExtensions
 {
+	public static IEnumerable<GameObject> GetAllChildren(this GameObject go)
+	{
+		foreach (Transform tr in go.transform)
+		{
+			yield return tr.gameObject;
+
+			foreach (var ch in tr.gameObject.GetAllChildren())
+				yield return ch;
+		}
+
+		yield break;
+	}
+
 	public static void SetX(this Transform tr, float x)
 	{
 		var p = tr.position;

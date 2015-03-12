@@ -63,6 +63,9 @@ public class Truck : MarioObject
 		if (World.CurrentLevel == null)
 			return;
 
+		if (World.CurrentLevel.Inventory == null)
+			return;
+
 		_numCakes = World.CurrentLevel.Inventory.Sum(c => c.Value);
 	}
 

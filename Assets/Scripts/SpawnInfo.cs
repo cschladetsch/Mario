@@ -57,7 +57,7 @@ public class SpawnInfo : MarioObject
 
 	protected override void Tick()
 	{
-		_spawnTimer -= RealDeltaTime;
+		_spawnTimer -= GameDeltaTime;
 	}
 
 	public GameObject Spawn(GameObject parent)

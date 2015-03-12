@@ -1217,7 +1217,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Paused: 0
   Ready: 0
-  DeliveryTime: 3
+  DeliveryTime: 30
   Collider: {fileID: 0}
   Button: {fileID: 11406286}
   TimerButtton: {fileID: 11406328}
@@ -3071,7 +3071,7 @@ RectTransform:
   m_GameObject: {fileID: 106288}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: .99999994, y: .99999994, z: .99999994}
   m_Children:
   - {fileID: 406284}
   - {fileID: 22406360}
@@ -3303,7 +3303,7 @@ RectTransform:
   m_GameObject: {fileID: 106314}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1.38091445, y: 2.00590754, z: 1.38338459}
+  m_LocalScale: {x: 1.38091302, y: 2.00590754, z: 1.38338459}
   m_Children:
   - {fileID: 22406368}
   m_Father: {fileID: 22406286}
@@ -3311,7 +3311,7 @@ RectTransform:
   m_AnchorMin: {x: .5, y: .5}
   m_AnchorMax: {x: .5, y: .5}
   m_AnchoredPosition: {x: -.800000012, y: 47}
-  m_SizeDelta: {x: 62.2999992, y: 22}
+  m_SizeDelta: {x: 62.2999916, y: 22}
   m_Pivot: {x: .5, y: .5}
 --- !u!224 &22406316
 RectTransform:

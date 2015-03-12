@@ -54,7 +54,7 @@ public class Character : MarioObject
 	{
 		base.Tick();
 
-		_spasmTimer -= RealDeltaTime;
+		_spasmTimer -= GameDeltaTime;
 
 #if UNITY_EDITOR
 		MouseInput();

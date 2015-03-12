@@ -104,7 +104,7 @@ public class StoplightBoss : Boss
 	/// </summary>
 	private void ChangeDirection()
 	{
-		_changeTimer -= DeltaTime;
+		_changeTimer -= RealDeltaTime;
 		if (_changeTimer > 0)
 			return;
 

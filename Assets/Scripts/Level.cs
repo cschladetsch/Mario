@@ -291,7 +291,7 @@ public class Level : MarioObject
 
 	private void UpdateSpeed()
 	{
-		_speedTimer -= DeltaTime;
+		_speedTimer -= RealDeltaTime;
 		if (!(_speedTimer < 0)) 
 			return;
 

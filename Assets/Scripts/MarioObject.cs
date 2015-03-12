@@ -34,9 +34,13 @@ public class MarioObject : MonoBehaviour
 	/// </summary>
 	protected Level CurrentLevel { get { return World.CurrentLevel; } }
 
-	protected float Time;
+	protected float GameTime;
 
-	protected float DeltaTime;
+	protected float GameDeltaTime;
+
+	protected float RealTime;
+
+	protected float RealDeltaTime;
 
 	private bool _firstUpate = true;
 
@@ -83,8 +87,10 @@ public class MarioObject : MonoBehaviour
 		// use real-time
 		var now = DateTime.Now;
 		var delta = now - _lastTime;
-		DeltaTime = (float)delta.TotalSeconds;
+		RealDeltaTime = (float)delta.TotalSeconds;
 		_lastTime = now;
+
+		GameDeltaTime = Time.deltaTime;
 
 		if (_firstUpate)
 		{
@@ -97,7 +103,8 @@ public class MarioObject : MonoBehaviour
 
 		Tick();
 
-		Time += DeltaTime;
+		RealTime += RealDeltaTime;
+		GameTime += GameDeltaTime;
 	}
 
 	protected virtual void BeforeFirstUpdate()

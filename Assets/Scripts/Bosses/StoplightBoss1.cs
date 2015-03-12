@@ -64,7 +64,7 @@ public class StoplightBoss1 : Boss
 		// move between orientations
 		UpdateRotation();
 
-		_waitTimer -= DeltaTime;
+		_waitTimer -= RealDeltaTime;
 		if (_waitTimer < 0)
 		{
 			_waitTimer = WaitTime;
@@ -101,7 +101,7 @@ public class StoplightBoss1 : Boss
 				break;
 		}
 
-		_angle += dir*TurnSpeed*DeltaTime;
+		_angle += dir*TurnSpeed*RealDeltaTime;
 		//Debug.Log(_angle);
 
 		switch (_targetDir)

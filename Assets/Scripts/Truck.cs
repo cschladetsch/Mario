@@ -88,11 +88,11 @@ public class Truck : MarioObject
 		if (!_emptying)
 			return;
 
-		_moveTime -= DeltaTime;
+		_moveTime -= RealDeltaTime;
 		var p = transform.position;
 		if (_movingLeft)
 		{
-			transform.position = new Vector3(p.x - MoveSpeed*DeltaTime, p.y, 0.0f);
+			transform.position = new Vector3(p.x - MoveSpeed*RealDeltaTime, p.y, 0.0f);
 			if (_moveTime <= 0)
 				TransitionToBakery();
 
@@ -100,7 +100,7 @@ public class Truck : MarioObject
 		}
 
 		// moving right
-		transform.position = new Vector3(p.x + MoveSpeed*DeltaTime, p.y, 0.0f);
+		transform.position = new Vector3(p.x + MoveSpeed*RealDeltaTime, p.y, 0.0f);
 		if (_moveTime <= 0)
 			EndEmptying();
 	}

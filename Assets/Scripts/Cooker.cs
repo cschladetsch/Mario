@@ -166,7 +166,7 @@ public class Cooker : MarioObject
 		var remaining = Recipe.CookingTime;
 		while (remaining > 0)
 		{
-			remaining -= DeltaTime;
+			remaining -= RealDeltaTime;
 			UpdateProgressBar(remaining/Recipe.CookingTime);
 			yield return 0;
 		}

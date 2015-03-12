@@ -200,7 +200,7 @@ public class Player : MarioObject
 	{
 		//Debug.Log("UpdateSellItem: " + _sellingTimer);
 
-		_sellingTimer -= DeltaTime;
+		_sellingTimer -= RealDeltaTime;
 
 		if (_sellingTimer <= 0)
 		{

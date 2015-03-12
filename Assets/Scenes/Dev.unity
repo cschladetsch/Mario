@@ -3951,6 +3951,14 @@ Prefab:
       propertyPath: GoldText
       value: 
       objectReference: {fileID: 943432778}
+    - target: {fileID: 22406314, guid: 6df6710bb4455c04aa5f2ed0272041e6, type: 2}
+      propertyPath: m_SizeDelta.x
+      value: 62.2999916
+      objectReference: {fileID: 0}
+    - target: {fileID: 22406314, guid: 6df6710bb4455c04aa5f2ed0272041e6, type: 2}
+      propertyPath: m_LocalScale.x
+      value: 1.38091302
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 6df6710bb4455c04aa5f2ed0272041e6, type: 2}
   m_RootGameObject: {fileID: 18310212}
@@ -4649,7 +4657,7 @@ RectTransform:
   m_GameObject: {fileID: 761210509}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1.38091445, y: 2.00590754, z: 1.38338459}
+  m_LocalScale: {x: 1.38091302, y: 2.00590754, z: 1.38338459}
   m_Children:
   - {fileID: 2015641497}
   m_Father: {fileID: 458863636}
@@ -4657,7 +4665,7 @@ RectTransform:
   m_AnchorMin: {x: .5, y: .5}
   m_AnchorMax: {x: .5, y: .5}
   m_AnchoredPosition: {x: -.800000012, y: 47}
-  m_SizeDelta: {x: 62.2999992, y: 22}
+  m_SizeDelta: {x: 62.2999916, y: 22}
   m_Pivot: {x: .5, y: .5}
 --- !u!114 &761210511
 MonoBehaviour:
@@ -11103,7 +11111,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1973154790
 RectTransform:
   m_ObjectHideFlags: 0

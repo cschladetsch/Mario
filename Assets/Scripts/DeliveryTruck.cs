@@ -110,7 +110,7 @@ public class DeliveryTruck : MarioObject
 		if (!_delivering) 
 			return;
 
-		_deliveryTimer -= DeltaTime;
+		_deliveryTimer -= RealDeltaTime;
 		Ready = _deliveryTimer <= 0;
 		if (!Ready) 
 			return;

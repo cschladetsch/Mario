@@ -142,7 +142,7 @@ public class Conveyor : MarioObject
 
 		item.Moved = move;
 		if (move)
-			item.Position += Speed*DeltaTime;
+			item.Position += Speed*RealDeltaTime;
 
 		if (item.Position > 1)
 		{

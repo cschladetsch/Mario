@@ -246,21 +246,25 @@ public class Truck : MarioObject
 			var arrived = cake.transform.position.x <= para.FinalPos.x;
 			if (arrived)
 			{
-				AddToPlayerIngredients(cake);
-
-				//if (World.CurrentLevel.NoMoreCakes)
-				//	TransitionToBakery();
+				CakeArrived(cake);
 			}
 
 			if (!arrived)
 				continue;
 
-			cake.transform.parent = transform;
 			cake.transform.position = para.FinalPos;
 			cake.TruckParabola = null;
 
 			--_numCakes;
 		}
+	}
+
+	private void CakeArrived(Cake cake)
+	{
+		AddToPlayerIngredients(cake);
+
+		if (World.CurrentLevel.NoMoreCakes)
+			TransitionToBakery();
 	}
 
 	private static void AddToPlayerIngredients(Cake cake)
@@ -276,6 +280,7 @@ public class Truck : MarioObject
 			return;
 		}
 
+		cake.transform.parent = transform;
 		cake.rigidbody2D.isKinematic = true;
 		cake.transform.rotation = Quaternion.identity;
 

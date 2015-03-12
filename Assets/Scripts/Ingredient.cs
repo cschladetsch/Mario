@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Reflection;
-using UnityEngine;
-
+﻿/// <summary>
+/// Should rename this to ItemType, but too much hassle with prefabs etc to do under time pressure
+/// </summary>
 public enum IngredientType
 {
 	Cherry,
@@ -13,6 +11,8 @@ public enum IngredientType
 	Mint,
 	MintIceCream,
 
-	None,
+	Bomb,
+	ExtraLife,
 
+	None,
 }

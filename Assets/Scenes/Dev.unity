@@ -216,7 +216,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &18310213
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1081,9 +1081,6 @@ GameObject:
   m_Component:
   - 4: {fileID: 163321357}
   - 114: {fileID: 163321362}
-  - 114: {fileID: 163321361}
-  - 114: {fileID: 163321360}
-  - 114: {fileID: 163321359}
   - 114: {fileID: 163321358}
   m_Layer: 0
   m_Name: Level1
@@ -1129,63 +1126,6 @@ MonoBehaviour:
   Weight: 1
   MinSpawnTime: 20
   MaxSpawnTime: 30
-  MaxSpawns: -1
---- !u!114 &163321359
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 11400022, guid: de87ac457db206345b551fd137bd29fe,
-    type: 2}
-  m_PrefabInternal: {fileID: 1047254793}
-  m_GameObject: {fileID: 163321356}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7fc9a78396fa0104094cd9974547a1f4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Paused: 0
-  Prefab: {fileID: 100004, guid: cc0b154560f02f1499a0cf65082b2586, type: 2}
-  Type: 0
-  Weight: 1
-  MinSpawnTime: 10
-  MaxSpawnTime: 15
-  MaxSpawns: -1
---- !u!114 &163321360
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 11400020, guid: de87ac457db206345b551fd137bd29fe,
-    type: 2}
-  m_PrefabInternal: {fileID: 1047254793}
-  m_GameObject: {fileID: 163321356}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7fc9a78396fa0104094cd9974547a1f4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Paused: 0
-  Prefab: {fileID: 100002, guid: 2f57fe04b3255f14b806e7e24ce2a626, type: 2}
-  Type: 0
-  Weight: 1
-  MinSpawnTime: 6
-  MaxSpawnTime: 12
-  MaxSpawns: -1
---- !u!114 &163321361
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 11400006, guid: de87ac457db206345b551fd137bd29fe,
-    type: 2}
-  m_PrefabInternal: {fileID: 1047254793}
-  m_GameObject: {fileID: 163321356}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7fc9a78396fa0104094cd9974547a1f4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Paused: 0
-  Prefab: {fileID: 100002, guid: 36c409fa8892fa9408d383f139b0ef92, type: 2}
-  Type: 0
-  Weight: 1
-  MinSpawnTime: 3
-  MaxSpawnTime: 6
   MaxSpawns: -1
 --- !u!114 &163321362
 MonoBehaviour:
@@ -2736,7 +2676,23 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 106288, guid: 6df6710bb4455c04aa5f2ed0272041e6, type: 2}
       propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11406346, guid: 6df6710bb4455c04aa5f2ed0272041e6, type: 2}
+      propertyPath: m_Color.r
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 11406346, guid: 6df6710bb4455c04aa5f2ed0272041e6, type: 2}
+      propertyPath: m_Color.g
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 11406346, guid: 6df6710bb4455c04aa5f2ed0272041e6, type: 2}
+      propertyPath: m_Color.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 11406420, guid: 6df6710bb4455c04aa5f2ed0272041e6, type: 2}
+      propertyPath: m_Color.a
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 6df6710bb4455c04aa5f2ed0272041e6, type: 2}
@@ -7720,7 +7676,10 @@ Prefab:
       propertyPath: m_RootOrder
       value: 3
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 11400006, guid: de87ac457db206345b551fd137bd29fe, type: 2}
+    - {fileID: 11400020, guid: de87ac457db206345b551fd137bd29fe, type: 2}
+    - {fileID: 11400022, guid: de87ac457db206345b551fd137bd29fe, type: 2}
   m_ParentPrefab: {fileID: 100100000, guid: de87ac457db206345b551fd137bd29fe, type: 2}
   m_RootGameObject: {fileID: 163321356}
   m_IsPrefabParent: 0
@@ -8360,7 +8319,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: .776470602}
+  m_Color: {r: 0, g: 0, b: 0, a: .776470602}
   m_FontData:
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
     m_FontSize: 14
@@ -14465,7 +14424,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1973154790
 RectTransform:
   m_ObjectHideFlags: 0
@@ -14482,8 +14441,8 @@ RectTransform:
   m_RootOrder: 4
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchoredPosition: {x: -10, y: -7}
+  m_SizeDelta: {x: -21, y: 15}
   m_Pivot: {x: .5, y: .5}
 --- !u!114 &1973154791
 MonoBehaviour:

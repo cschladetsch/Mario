@@ -58,28 +58,30 @@ public class InventoryPanel : MarioObject
 
 	public void UpdateDisplay(Dictionary<IngredientType, int> contents, bool add)
 	{
-		//Debug.Log("InventoryPanel.UpdateDisplay");
-
 		if (Counts == null)
 			CreateDict();
 
 		foreach (var ing in contents)
 		{
-			// HACK: why do this
-			if (ing.Key == IngredientType.None)
-				return;
+			var type = ing.Key;
 
-			if (!Counts.ContainsKey(ing.Key))
+			if (!Counts.ContainsKey(type))
+				continue;
+
+			if (Counts[type] == null)
 				continue;
 
 			var num = ing.Value;
 			if (add)
+				num += int.Parse(Counts[type].text);
+
+			if (Counts[type] == null)
 			{
-				num += int.Parse(Counts[ing.Key].text);
+				Debug.Log("Counts for " + type + " is null");
+				continue;
 			}
 
-			Counts[ing.Key].text = num.ToString();
+			Counts[type].text = num.ToString();
 		}
 	}
-
 }

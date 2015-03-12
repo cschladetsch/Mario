@@ -164,8 +164,6 @@ public class World : MonoBehaviour
 
 	public void Reset()
 	{
-		if (CurrentLevel == null)
-			return;
 	}
 
 	public void ChangeArea(AreaType area)

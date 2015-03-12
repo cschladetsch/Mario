@@ -98,8 +98,13 @@ public class DeliveryTruck : MarioObject
 
 		TurnTimerOn(false);
 
-		World.ChangeArea(AreaType.Factory);
-		World.CurrentLevel.AddSpawners(_contents);
+		if (World.CurrentLevel == null)
+			World.ChangeArea(AreaType.Factory);
+
+		World.CurrentLevel.AddIngredients(_contents);
+		_contents.Clear();
+		_delivering = false;
+		_deliveryTimer = DeliveryTime;
 	}
 
 	private void TurnTimerOn(bool on)

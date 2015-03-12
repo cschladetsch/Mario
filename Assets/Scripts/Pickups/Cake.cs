@@ -74,6 +74,6 @@ public class Cake : Pickup
 
 	void OnDestroy()
 	{
-		//Debug.Log("Cake destroyed");
+		Debug.Log("Cake destroyed");
 	}
 }

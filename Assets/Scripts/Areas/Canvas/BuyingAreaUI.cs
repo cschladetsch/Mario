@@ -20,7 +20,7 @@ public class BuyingAreaUI : MarioObject
 	/// The current items that will be purchased. these can be bought and sold many times before
 	/// the player presses the 'Done' button and the truck starts its delivery
 	/// </summary>
-	Dictionary<IngredientType, int> _contents = new Dictionary<IngredientType, int>();
+	public Dictionary<IngredientType, int> _contents = new Dictionary<IngredientType, int>();
 
 	public bool HasAnything { get { return _contents.Sum(c => c.Value) > 0; } }
 
@@ -102,7 +102,7 @@ public class BuyingAreaUI : MarioObject
 
 	public void BuyItem(GameObject go)
 	{
-		if (_contents.Count == 6)
+		if (_contents.Sum(c => c.Value) == 6)
 		{
 			Debug.Log("Currently limited to 6 items max");
 			return;

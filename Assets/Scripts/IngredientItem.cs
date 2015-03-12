@@ -11,7 +11,9 @@ public class IngredientItem : MonoBehaviour
 		var ing = new Dictionary<IngredientType, T>();
 		foreach (var e in Enum.GetValues(typeof (IngredientType)))
 		{
-			ing.Add((IngredientType) e, default(T));
+			var type = (IngredientType) e;
+			if (type != IngredientType.None)
+				ing.Add(type, default(T));
 		}
 		return ing;
 	}

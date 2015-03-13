@@ -75,10 +75,21 @@ public class Truck : MarioObject
 	{
 		base.Tick();
 
+		UpdateCheckFull();
+
 		UpdateEmptying();
 
 		if (!Emptying)
 			MoveCakes();
+	}
+
+	private void UpdateCheckFull()
+	{
+		if (Emptying)
+			return;
+
+		if (_cakes.Count == 6 && _cakes.All(c => c.Delivered))
+			StartEmptying();
 	}
 
 	/// <summary>

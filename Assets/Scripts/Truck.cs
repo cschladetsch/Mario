@@ -139,7 +139,7 @@ public class Truck : MarioObject
 		Debug.Log("Delivery completed: " + _cakes.Count);
 		foreach (var c in _cakes)
 		{
-			Debug.Log("Delivered a " + c.Type);
+			//Debug.Log("Delivered a " + c.Type);
 			Player.AddCake(c);
 			Destroy(c.gameObject);
 		}
@@ -165,7 +165,7 @@ public class Truck : MarioObject
 		if (!Emptying)
 			return;
 
-		Debug.Log("Ending emptying");
+		//Debug.Log("Ending emptying");
 
 		transform.position = new Vector3(_startPos, transform.position.y, 0);
 
@@ -236,7 +236,7 @@ public class Truck : MarioObject
 	/// <param name="cake">the cake to add to the truck</param>
 	public void AddCake(Cake cake)
 	{
-		Debug.Log("Add cake");
+		//Debug.Log("Add cake");
 
 		if (Emptying)
 		{

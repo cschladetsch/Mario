@@ -215,7 +215,7 @@ public class Level : MarioObject
 		var born = spawnInfo.Spawn(gameObject);
 		born.transform.position = CakeSpawnPoint.transform.position;
 		born.name = Guid.NewGuid().ToString();
-		Debug.Log("Spawned a " + spawnInfo.Prefab.name + " called " + born.name);
+		//Debug.Log("Spawned a " + spawnInfo.Prefab.name + " called " + born.name);
 
 		var cake = born.GetComponent<Cake>();
 
@@ -519,7 +519,7 @@ public class Level : MarioObject
 		foreach (var kv in contents)
 		{
 			if (kv.Value > 0)
-				Debug.Log(string.Format("*** Adding {0} {1}", kv.Key, kv.Value));
+				Debug.Log(string.Format("Adding {0} {1}", kv.Key, kv.Value));
 
 			Inventory[kv.Key] += kv.Value;
 		}

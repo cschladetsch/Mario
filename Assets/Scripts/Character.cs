@@ -188,6 +188,7 @@ public class Character : MarioObject
 		{
 			if (_stoplightBoss1.Dir == StoplightBoss1.Direction.Left && Side == WhichSide.Left)
 				moveDown = !moveDown;
+
 			if (_stoplightBoss1.Dir == StoplightBoss1.Direction.Right && Side == WhichSide.Right)
 				moveDown = !moveDown;
 		}

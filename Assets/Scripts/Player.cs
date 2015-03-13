@@ -338,4 +338,10 @@ public class Player : MarioObject
 		var goalPanel = Canvas.GoalPanel.GetComponent<GoalPanel>();
 		goalPanel.Refresh();
 	}
+
+	public void AddCake(Cake cake)
+	{
+		Inventory[cake.Type]++;
+		UpdateUi();
+	}
 }

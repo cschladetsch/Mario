@@ -83,16 +83,16 @@ public class Level : MarioObject
 		_initialConveyorSpeed = ConveyorSpeed;
 		_cakesHolder = transform.FindChild("Contents");
 
-		_size = Camera.main.orthographicSize;
-		_height = Camera.main.transform.position.y;
+		//_size = Camera.main.orthographicSize;
+		//_height = Camera.main.transform.position.y;
 
 		//Debug.Log("Setting camera");
-		Camera.main.orthographicSize = 7.6f;
-		Camera.main.transform.SetY(4.8f);
+		//Camera.main.orthographicSize = 7.6f;
+		//Camera.main.transform.SetY(4.8f);
 	}
 
-	private float _size;
-	private float _height;
+	//private float _size;
+	//private float _height;
 
 	public override void End()
 	{
@@ -159,8 +159,8 @@ public class Level : MarioObject
 		//Debug.Log("EndLevel " + name);
 		_ended = true;
 
-		Camera.main.orthographicSize = _size;
-		Camera.main.transform.SetY(_height);
+		//Camera.main.orthographicSize = _size;
+		//Camera.main.transform.SetY(_height);
 		Canvas.LevelEnded(this);
 
 		foreach (var c in _conveyors)

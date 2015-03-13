@@ -1,9 +1,13 @@
 ﻿using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using UnityEngine;
 
 #pragma warning disable 414
 
+/// <summary>
+/// The behavior of the truck in the conveyor mini-game
+/// </summary>
 public class Truck : MarioObject
 {
 	/// <summary>
@@ -19,7 +23,7 @@ public class Truck : MarioObject
 	/// <summary>
 	/// How long cakes take to fly into the truck
 	/// </summary>
-	public float FlightTime = 2;
+	public float FlightTime = 2.5f;
 
 	/// <summary>
 	/// Number of columns for the stacked cakes
@@ -31,32 +35,38 @@ public class Truck : MarioObject
 	/// </summary>
 	public int NumRows = 3;
 
-	public int NumCakes { get { return _cakes.Count + _pending.Count; } }
+	/// <summary>
+	/// If true, Truck is currently delivering items to Player
+	/// </summary>
+	public bool Emptying;
+
+	/// <summary>
+	/// The number of cakes in the truck, or moving to the truck
+	/// </summary>
+	public int NumCakes { get { return _cakes.Count; } }
 
 	public delegate void DeliveredHandler(Truck truck);
-
 	public event DeliveredHandler DeliveryStarted;
 	public event DeliveredHandler DeliveryCompleted;
 
-	private Transform _pt;
+	private Transform _flyThroughPoint;
 	private readonly List<Cake> _cakes = new List<Cake>();
 	private readonly List<Cake> _pending = new List<Cake>();
 	private float _moveTime;
 	private bool _movingLeft;
 	private float _startPos;
-	private bool _full;
-
-	public bool Emptying;
 
 	protected override void Construct()
 	{
 		base.Construct();
-		_pt = transform.FindChild("FlythroughPoint");
+
+		_flyThroughPoint = transform.FindChild("FlythroughPoint");
 	}
 
 	protected override void Begin()
 	{
 		base.Begin();
+
 		Emptying = false;
 		_startPos = transform.position.x;
 	}
@@ -65,109 +75,82 @@ public class Truck : MarioObject
 	{
 		base.Tick();
 
-		if (!World.CurrentLevel)
-			return;
-
-		if (!World.CurrentLevel.Area)
-			return;
-
-		if (!World.CurrentLevel.Area.Visual)
-			return;
-
 		UpdateEmptying();
 
-		if (Emptying)
-			return;
-
-		MoveCakes();
-
-		UpdateDone();
+		if (!Emptying)
+			MoveCakes();
 	}
 
+	/// <summary>
+	/// Move the truck left, deliver all items to player's inventory, clear contents, then
+	/// move back to the start position
+	/// </summary>
 	private void UpdateEmptying()
 	{
 		if (!Emptying)
 			return;
 
-		Debug.Log("UpdateEmptying: " + " left=" + _movingLeft + " moveTime=" + _moveTime);
+		//Debug.Log("UpdateEmptying: " + " left=" + _movingLeft + " moveTime=" + _moveTime + " , dt=" + GameDeltaTime);
 
 		var dt = GameDeltaTime;
 
 		_moveTime -= dt;
 		var p = transform.position;
+
 		if (_movingLeft)
 		{
-			transform.position = new Vector3(p.x - MoveSpeed*dt, p.y, 0.0f);
-			if (_moveTime <= 0)
-			{
-				//Debug.Log("Truck done: " + World.CurrentLevel.NoMoreCakes);
-
-				//foreach (var kv in World.CurrentLevel.Inventory)
-				//{
-				//	Debug.Log(string.Format("{0} {1}", kv.Key, kv.Value));
-				//}
-
-				//if (World.CurrentLevel.NoMoreCakes)
-				//{
-				//	if (DeliveryCompleted != null)
-				//		DeliveryCompleted(this);
-				//	TransitionToBakery();
-				//}
-			}
-			else
-			{
-				_movingLeft = false;
-			}
+			MoveLeft(p, dt);
 			return;
 		}
 
-		// moving right
-		transform.position = new Vector3(p.x + MoveSpeed*dt, p.y, 0.0f);
-		if (_moveTime <= 0)
-		{
-			EndEmptying();
-		}
+		MoveRight(p, dt);
 	}
 
-	//private void TransitionToBakery()
-	//{
-	//	EmptyCakes();
-
-	//	// reset for the return trip
-	//	_moveTime = MoveDistance/MoveSpeed;
-
-	//	foreach (var c in _pending)
-	//		Destroy(c.gameObject);
-
-	//	foreach (var c in _cakes)
-	//		Destroy(c.gameObject);
-
-	//	_pending.Clear();
-	//	_cakes.Clear();
-
-	//	World.CurrentLevel.EndLevel();
-	//	World.ChangeArea(AreaType.Bakery);
-	//}
-
-	private void EmptyCakes()
+	private void MoveRight(Vector3 p, float dt)
 	{
-		WriteScore();
+		transform.position = new Vector3(p.x + MoveSpeed*dt, p.y, 0.0f);
+		if (_moveTime <= 0)
+			EndEmptying();
+	}
 
-		foreach (var cake in _cakes)
-			Destroy(cake.gameObject);
+	private void MoveLeft(Vector3 p, float dt)
+	{
+		transform.position = new Vector3(p.x - MoveSpeed*dt, p.y, 0.0f);
+		if (_moveTime > 0)
+			return;
+
+		CompleteDelivery();
+	}
+
+	private void CompleteDelivery()
+	{
+		if (DeliveryCompleted != null)
+			DeliveryCompleted(this);
+
+		Debug.Log("Delivery completed: " + _cakes.Count);
+		foreach (var c in _cakes)
+		{
+			Debug.Log("Delivered a " + c.Type);
+			Player.AddCake(c);
+			Destroy(c.gameObject);
+		}
 
 		_cakes.Clear();
+
+		StartMovingRight();
+	}
+
+	private void StartMovingRight()
+	{
+		_moveTime = CalcMoveTime();
 		_movingLeft = false;
 	}
 
-	private void WriteScore()
-	{
-		//var ui = FindObjectOfType<UiCanvas>();
-		//var score = int.Parse(ui.Score.text);
-		//score += _cakes.Count;
-		//ui.Score.text = score.ToString();
-	}
 
+	/// <summary>
+	/// Truck has moved to the left, delivered all contents to player,
+	/// and has returned to start pos, empty
+	/// </summary>
 	private void EndEmptying()
 	{
 		if (!Emptying)
@@ -178,46 +161,18 @@ public class Truck : MarioObject
 		transform.position = new Vector3(_startPos, transform.position.y, 0);
 
 		Emptying = false;
-		_full = false;
-
-		foreach (var c in _pending.ToList())
-		{
-			AddCake(c);
-			if (_full)
-				break;
-
-			_pending.Remove(c);
-		}
-
-		// if there was more than a truck-load pending, just delete the remainder.
-		// this probably will never happen in a real game, but can happen in debugging modes
-		foreach (var c in _pending)
-		{
-			Destroy(c.gameObject);
-		}
-
-		_pending.Clear();
 
 		World.Pause(false);
-
-		foreach (var c in _cakes)
-			c.rigidbody2D.isKinematic = true;
-
-		if (DeliveryCompleted != null)
-			DeliveryCompleted(this);
-	}
-
-	private void UpdateDone()
-	{
-		var done = _cakes.Count == 6 && _cakes.All(c => c.Delivered);
-		if (!done)
-			return;
-
-		StartEmptying();
 	}
 
 	public void StartEmptying()
 	{
+		if (Emptying)
+		{
+			Debug.LogError("Already Emptying");
+			return;
+		}
+
 		World.Pause(true);
 
 		if (DeliveryStarted != null)
@@ -236,41 +191,38 @@ public class Truck : MarioObject
 
 	private void MoveCakes()
 	{
-		foreach (var cake in _cakes.ToList())
+		foreach (var cake in _cakes.ToList().Where(cake => !cake.Delivered))
 		{
-			var para = cake.TruckParabola;
-			if (para == null)	// already landed in truck
-				continue;
-
 			if (!cake)
 			{
 				Debug.LogWarning("Destroyed cake in truck move list");
-				//Contents.Remove(cake);
+				_cakes.Clear();
+				return;
+			}
+
+			var para = cake.TruckParabola;
+			if (para == null)
+			{
+				Debug.LogWarning("Cake " + cake.Type + " has no parabola?");
+
+				// best attempt to avoid a crash
 				_cakes.Clear();
 				return;
 			}
 
 			cake.transform.position = para.Calc(cake.transform.position.x);
 
-			var arrived = cake.transform.position.x <= para.FinalPos.x;
-			if (arrived)
+			if (cake.transform.position.x <= para.FinalPos.x)
 			{
-				CakeArrived(cake);
+				cake.transform.position = para.FinalPos;
+				cake.TruckParabola = null;
+				cake.Delivered = true;
 			}
-
-			if (!arrived)
-				continue;
-
-			cake.transform.position = para.FinalPos;
-			cake.TruckParabola = null;
-			cake.Delivered = true;
 		}
 	}
 
 	private void CakeArrived(Cake cake)
 	{
-		AddToPlayerIngredients(cake);
-
 		if (World.CurrentLevel.NoMoreCakes)
 		{
 			_movingLeft = true;
@@ -279,12 +231,18 @@ public class Truck : MarioObject
 
 	private static void AddToPlayerIngredients(Cake cake)
 	{
-		World.Player.Inventory[cake.Type]++;
+		World.Player.AddCake(cake);
 	}
 
 	public void AddCake(Cake cake)
 	{
 		Debug.Log("Add cake");
+
+		if (Emptying)
+		{
+			cake.Drop();
+			return;
+		}
 
 		if (!cake)
 		{
@@ -295,13 +253,6 @@ public class Truck : MarioObject
 		cake.transform.parent = transform;
 		cake.rigidbody2D.isKinematic = true;
 		cake.transform.rotation = Quaternion.identity;
-
-		if (_full)
-		{
-			Debug.Log("Full");
-			_pending.Add(cake);
-			return;
-		}
 
 		int row = _cakes.Count/NumColumns;
 		int col = _cakes.Count%NumColumns;
@@ -315,15 +266,10 @@ public class Truck : MarioObject
 
 		float delta = cake.transform.position.x - finalPos.x;
 		float dx = -delta/FlightTime;
-		cake.TruckParabola = new Parabola(cake.transform.position, _pt.position, finalPos, dx);
+		cake.TruckParabola = new Parabola(cake.transform.position, _flyThroughPoint.position, finalPos, dx);
 
 		cake.Position = 0;
 		_cakes.Add(cake);
-		//Debug.Log("Added cake type " + cake.Type + " called " + cake.name);
-		if (_cakes.Count == NumColumns*NumRows)
-		{
-			_full = true;
-		}
 	}
 
 	public void Reset()
@@ -337,4 +283,10 @@ public class Truck : MarioObject
 		_pending.Clear();
 		_cakes.Clear();
 	}
+
+	public void Deliver()
+	{
+		StartEmptying();
+	}
 }
+

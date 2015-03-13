@@ -1,15 +1,12 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class FactoryAreaUI : MonoBehaviour {
-
-	// Use this for initialization
-	void Start () {
-	
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
+public class FactoryAreaUI : MarioObject
+{
+	public void TruckPressed()
+	{
+		var truck = FindObjectOfType<Truck>();
+		Debug.Log("Truck Pressed");
+		truck.Deliver();
 	}
 }

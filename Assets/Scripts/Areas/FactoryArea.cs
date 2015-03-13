@@ -21,12 +21,12 @@ public class FactoryArea : AreaBase
 
 		Debug.LogWarning("Entering Factory" + FrameCount);
 
-		// used as a hack to adjust camera for main game area
-		_size = Camera.main.orthographicSize;
-		_height = Camera.main.transform.position.y;
+		//// used as a hack to adjust camera for main game area
+		//_size = Camera.main.orthographicSize;
+		//_height = Camera.main.transform.position.y;
 
-		Camera.main.orthographicSize = 7.6f;
-		Camera.main.transform.SetY(4.8f);
+		//Camera.main.orthographicSize = 7.6f;
+		//Camera.main.transform.SetY(4.8f);
 
 		Player.ShowCharacters(true);
 
@@ -40,9 +40,9 @@ public class FactoryArea : AreaBase
 		base.LeaveArea();
 		//World.CurrentLevel.Truck.Paused = false;
 
-		Debug.LogWarning("Leaving Factory");
-		Camera.main.orthographicSize = _size;
-		Camera.main.transform.SetY(_height);
+		//Debug.LogWarning("Leaving Factory");
+		//Camera.main.orthographicSize = _size;
+		//Camera.main.transform.SetY(_height);
 
 		Player.ShowCharacters(false);
 

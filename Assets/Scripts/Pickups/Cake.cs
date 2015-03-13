@@ -8,24 +8,25 @@ public class Cake : Pickup
 	/// </summary>
 	internal Parabola TruckParabola;
 
+	/// <summary>
+	/// The related information about this ingredient is in World.Ingredients[Type]
+	/// </summary>
 	public IngredientType Type;
-
-	///// <summary>
-	///// How much it takes to buy one
-	///// </summary>
-	//public int BaseCost = 2;
-
-	///// <summary>
-	///// How much it takes to sell one
-	///// </summary>
-	//public int BasePrice = 1;
 
 	/// <summary>
 	/// The UI label to update with the cost amount
 	/// </summary>
 	public UnityEngine.UI.Text CostText;
 
+	/// <summary>
+	/// If true, this item has been delivered and is resting on the Truck
+	/// </summary>
 	public bool Delivered;
+
+	public void Drop()
+	{
+		StartDropped(false);
+	}
 
 	public override void CharacterHit(Character character, Conveyor conv, Conveyor next)
 	{
@@ -36,13 +37,18 @@ public class Cake : Pickup
 		if (next)
 		{
 			next.AddItem(this, 0);
+			return;
 		}
-		else
+
+		var truck = FindObjectOfType<Truck>();
+		if (truck.Emptying)
 		{
-			var truck = FindObjectOfType<Truck>();
-			//Debug.Log("Adding a " + Type + " to truck called " + name);
-			truck.AddCake(this);
+			Debug.Log("Dropped cake because truck is still emptying");
+			Drop();
+			return;
 		}
+
+		truck.AddCake(this);
 	}
 
 	/// <summary>

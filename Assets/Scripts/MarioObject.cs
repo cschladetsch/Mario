@@ -71,7 +71,15 @@ public class MarioObject : MonoBehaviour
 	{
 	}
 
+	/// <summary>
+	/// The last time a Tick() was executed
+	/// </summary>
 	private DateTime _lastTime;
+
+	/// <summary>
+	/// Only increases when Tick() is called, and object is not Paused
+	/// </summary>
+	protected int FrameCount;
 
 	void Update()
 	{
@@ -83,6 +91,8 @@ public class MarioObject : MonoBehaviour
 
 		if (Paused)
 			return;
+
+		FrameCount++;
 
 		// use real-time
 		var now = DateTime.Now;

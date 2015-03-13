@@ -45,8 +45,9 @@ public class Truck : MarioObject
 	private float _moveTime;
 	private bool _movingLeft;
 	private float _startPos;
-	public bool Emptying;
 	private bool _full;
+
+	public bool Emptying;
 
 	protected override void Construct()
 	{
@@ -72,6 +73,12 @@ public class Truck : MarioObject
 	protected override void Tick()
 	{
 		base.Tick();
+
+		if (!World.CurrentLevel)
+			return;
+
+		if (!World.CurrentLevel.Area)
+			return;
 
 		if (!World.CurrentLevel.Area.Visual)
 			return;
@@ -205,7 +212,7 @@ public class Truck : MarioObject
 
 	private void UpdateDone()
 	{
-		var done = _numCakes == 0 && _cakes.All(c => c.TruckParabola == null);
+		var done = _numCakes == 0 && World.CurrentLevel.NoMoreCakes;
 		if (!done)
 			return;
 

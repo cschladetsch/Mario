@@ -150,6 +150,8 @@ public class World : MonoBehaviour
 		GoalIndex = 0;
 		Player.SetGoal(StageGoals[GoalIndex]);
 
+		CreateConeyorGame();
+
 		ChangeArea(_areaType);
 	}
 
@@ -186,7 +188,7 @@ public class World : MonoBehaviour
 				break;
 
 			case AreaType.Factory:
-				PlayConeyorGame();		// conveyor game. deliver ingredients and products past boss
+				CreateConeyorGame();		// conveyor game. deliver ingredients and products past boss
 				break;
 
 			case AreaType.Bakery:
@@ -296,18 +298,14 @@ public class World : MonoBehaviour
 		Pause(!_paused);
 	}
 
-	public void PlayConeyorGame()
+	public void CreateConeyorGame()
 	{
-		//Debug.LogWarning("PlayConeyorGame");
+		//Debug.LogWarning("CreateConeyorGame");
 
 		if (CurrentLevel)
 		{
-			//Debug.Log("PlayConeyorGame: CurrentLevel: " + CurrentLevel);
-			//Debug.Log("PlayConeyorGame: CurrentLevel.Area: " + CurrentLevel.Area);
+			CurrentLevel.Area = CurrentArea as FactoryArea;
 			return;
-
-			//Debug.Log("Destroying " + CurrentLevel.name);
-			//Destroy(CurrentLevel.gameObject);
 		}
 
 		var prefab = Levels[_levelIndex];
@@ -340,7 +338,7 @@ public class World : MonoBehaviour
 
 		_levelIndex = 0;
 
-		PlayConeyorGame();
+		CreateConeyorGame();
 
 		ChangeArea(AreaType.Factory);
 	}

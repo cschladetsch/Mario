@@ -1125,7 +1125,6 @@ GameObject:
   m_Component:
   - 4: {fileID: 163321357}
   - 114: {fileID: 163321362}
-  - 114: {fileID: 163321358}
   m_Layer: 0
   m_Name: Level1
   m_TagString: Untagged
@@ -1152,25 +1151,6 @@ Transform:
   - {fileID: 2098221713}
   m_Father: {fileID: 201116277}
   m_RootOrder: 3
---- !u!114 &163321358
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 11400024, guid: de87ac457db206345b551fd137bd29fe,
-    type: 2}
-  m_PrefabInternal: {fileID: 1047254793}
-  m_GameObject: {fileID: 163321356}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7fc9a78396fa0104094cd9974547a1f4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Paused: 0
-  Prefab: {fileID: 100004, guid: cf7ac79bc6ebe15449668edd360b55fa, type: 2}
-  Type: 0
-  Weight: 1
-  MinSpawnTime: 20
-  MaxSpawnTime: 30
-  MaxSpawns: -1
 --- !u!114 &163321362
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1192,6 +1172,7 @@ MonoBehaviour:
   ConveyorSpeed: .159999996
   SpeedLevel: 0
   OverallSpeed: 1
+  _spawners: []
   ToTruck: 0
   Area: {fileID: 0}
 --- !u!1 &165371020
@@ -7100,6 +7081,8 @@ MonoBehaviour:
   MinSpawnTime: 3
   MaxSpawnTime: 6
   MaxSpawns: -1
+  _spawnTimer: 0
+  _spawnsLeft: 0
 --- !u!1 &983606105
 GameObject:
   m_ObjectHideFlags: 0
@@ -13894,6 +13877,7 @@ MonoBehaviour:
   ConveyorSpeed: 2
   SpeedLevel: 1
   OverallSpeed: 1
+  _spawners: []
   ToTruck: 1
   Area: {fileID: 0}
 --- !u!1 &1863838659

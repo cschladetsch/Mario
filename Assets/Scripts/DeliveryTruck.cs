@@ -103,7 +103,7 @@ public class DeliveryTruck : MarioObject
 
 		TurnTimerOn(false);
 
-		if (World.CurrentLevel == null)
+		//if (World.CurrentLevel == null)
 			World.ChangeArea(AreaType.Factory);
 
 		World.CurrentLevel.AddIngredients(_contents);

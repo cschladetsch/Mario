@@ -44,9 +44,9 @@ public class Level : MarioObject
 	private List<Conveyor> _conveyors = new List<Conveyor>();
 
 	/// <summary>
-	/// How to make new cakes
+	/// How to make new cakes. TODO: make this a dictioary of type to spawner?
 	/// </summary>
-	private SpawnInfo[] _spawners;
+	public List<SpawnInfo> _spawners = new List<SpawnInfo>();
 
 	private Transform _cakesHolder;
 
@@ -67,7 +67,7 @@ public class Level : MarioObject
 		{
 			if (Inventory == null)
 			{
-				Debug.LogWarning("Level.NoMoreCakes: Null Inventory");
+				//Debug.LogWarning("Level.NoMoreCakes: Null Inventory");
 				return true;
 			}
 
@@ -104,6 +104,13 @@ public class Level : MarioObject
 		// spawn another cake
 		--_numCakesSpawned;
 		//Debug.Log("Cake Dropped: " + _numCakesSpawned + ", " + UnityEngine.Time.frameCount);
+	}
+
+	protected override void BeforeFirstUpdate()
+	{
+		base.BeforeFirstUpdate();
+
+		Inventory = IngredientItem.CreateIngredientDict<int>();
 	}
 
 	public void BeginLevel()
@@ -162,7 +169,7 @@ public class Level : MarioObject
 
 	private void GatherSpawners()
 	{
-		_spawners = GetComponents<SpawnInfo>();
+		_spawners.AddRange(GetComponents<SpawnInfo>());
 	}
 
 	/// <summary>
@@ -195,6 +202,8 @@ public class Level : MarioObject
 			return;
 		}
 
+		//Debug.Log("Adding a " + spawnInfo.Type);
+
 		if (spawnInfo.Prefab == null)
 		{
 			Debug.LogWarning("Level.AddCake: Spawner for " + spawnInfo.Type + " has no prefab");
@@ -203,40 +212,44 @@ public class Level : MarioObject
 
 		//Debug.Log("AddCake: prefab=" + spawnInfo.Prefab.name + "@" + UnityEngine.Time.frameCount);
 		if (!spawnInfo.CanSpawn())
+		{
+			Debug.Log("Spawner " + spawnInfo.Type + " cannot spawn");
 			return;
+		}
 
 		var type = spawnInfo.Type;
 		if (!Inventory.ContainsKey(type))
 		{
-			Debug.Log("Don't need to make a " + type);
+			Debug.Log("Can't make a " + type);
 			return;
 		}
 
 		var num = Inventory[type];
 		if (num == 0)
+		{
+			Debug.Log("Don;t need to make a " + type);
 			return;
+		}
 
 		Inventory[type]--;
 
-		//Debug.Log("Cakes Left: " + Inventory.Sum(c => c.Value));
+		Debug.Log("Cakes Left: " + Inventory.Sum(c => c.Value));
 
 		var born = spawnInfo.Spawn(gameObject);
 		born.transform.position = CakeSpawnPoint.transform.position;
 		born.name = Guid.NewGuid().ToString();
-		//Debug.Log("Spawned a " + spawnInfo.Prefab.name + " called " + born.name);
+		Debug.Log("Spawned a " + spawnInfo.Prefab.name + " called " + born.name);
 
 		var cake = born.GetComponent<Cake>();
 		if (cake != null)
 		{
-			//if (!Area.Visual)
-			//Debug.Log("Spawned a " + cake.name);
-
 			++_numCakesSpawned;
 		}
 
 		if (Area == null)
 		{
 			Debug.LogError("Level as no Area??");
+			return;
 		}
 
 		// if we're in another area, we still want
@@ -300,6 +313,7 @@ public class Level : MarioObject
 
 	override protected void Tick()
 	{
+		//Debug.Log("Level.Tick: Paused=" + Paused + " ended=" + _ended);
 		if (_ended)
 			return;
 
@@ -349,6 +363,8 @@ public class Level : MarioObject
 
 		if (!NoMoreCakes)
 			UpdateSpawners();
+		//else
+		//	Debug.Log("No More Cakes");
 	}
 
 	//public int _numCakesSpawned;
@@ -373,20 +389,30 @@ public class Level : MarioObject
 	private void UpdateSpawners()
 	{
 		if (_spawners == null)
+		{
+			Debug.Log("UpdateSpawners: No spawners");
 			return;
+		}
+
+		if (_spawners.Count == 0)
+		{
+			Debug.Log("UpdateSpawners: No spawners");
+			return;
+		}
+
+		if (NoMoreCakes)
+		{
+			Debug.Log("UpdateSpawners: no more cakes");
+			return;
+		}
 
 		//// don't spawn anything while truck is emptying
 		//if (Truck.Emptying)
 		//	return;
 
-		if (NoMoreCakes)
-			return;
-
-		var options = _spawners.Where(sp => sp.CouldSpawn()).ToList();
+		var options = _spawners.Where(sp => sp.CouldSpawn() && Inventory[sp.Type] > 0).ToList();
 		if (options.Count == 0)
-		{
 			return;
-		}
 
 		AddCake(SelectRandomWeighted(options));
 	}
@@ -479,10 +505,21 @@ public class Level : MarioObject
 			if (c.Value == 0)
 				continue;
 
+			if (c.Key == IngredientType.None)
+				continue;
+
 			var type = c.Key;
+			var curr = _spawners.FirstOrDefault(s => s.Type == type);
+			if (curr)
+			{
+				curr.SpawnMore(c.Value);
+				continue;
+			}
 
 			if (types.Contains(type))
+			{
 				continue;
+			}
 
 			types.Add(type);
 
@@ -510,7 +547,9 @@ public class Level : MarioObject
 				continue;
 			}
 
-			//Debug.Log("Using " + sp.Prefab.name + " prefab to make " + c.Key);
+			Debug.Log("Using " + sp.Prefab.name + " prefab to make " + c.Key);
+
+			_spawners.Add(sp);
 		}
 	}
 

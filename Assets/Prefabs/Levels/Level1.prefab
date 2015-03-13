@@ -200,10 +200,6 @@ GameObject:
   m_Component:
   - 4: {fileID: 400026}
   - 114: {fileID: 11400004}
-  - 114: {fileID: 11400006}
-  - 114: {fileID: 11400020}
-  - 114: {fileID: 11400022}
-  - 114: {fileID: 11400024}
   m_Layer: 0
   m_Name: Level1
   m_TagString: Untagged
@@ -1339,24 +1335,6 @@ MonoBehaviour:
   OverallSpeed: 1
   ToTruck: 0
   Area: {fileID: 0}
---- !u!114 &11400006
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 100026}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7fc9a78396fa0104094cd9974547a1f4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Paused: 0
-  Prefab: {fileID: 100002, guid: 36c409fa8892fa9408d383f139b0ef92, type: 2}
-  Type: 0
-  Weight: 1
-  MinSpawnTime: 3
-  MaxSpawnTime: 6
-  MaxSpawns: -1
 --- !u!114 &11400008
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1434,60 +1412,6 @@ MonoBehaviour:
   MoveRight: 0
   MinCakeSeparation: 2
   _contents: []
---- !u!114 &11400020
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 100026}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7fc9a78396fa0104094cd9974547a1f4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Paused: 0
-  Prefab: {fileID: 100002, guid: 2f57fe04b3255f14b806e7e24ce2a626, type: 2}
-  Type: 0
-  Weight: 1
-  MinSpawnTime: 6
-  MaxSpawnTime: 12
-  MaxSpawns: -1
---- !u!114 &11400022
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 100026}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7fc9a78396fa0104094cd9974547a1f4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Paused: 0
-  Prefab: {fileID: 100004, guid: cc0b154560f02f1499a0cf65082b2586, type: 2}
-  Type: 0
-  Weight: 1
-  MinSpawnTime: 10
-  MaxSpawnTime: 15
-  MaxSpawns: -1
---- !u!114 &11400024
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 100026}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7fc9a78396fa0104094cd9974547a1f4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Paused: 0
-  Prefab: {fileID: 100004, guid: cf7ac79bc6ebe15449668edd360b55fa, type: 2}
-  Type: 0
-  Weight: 1
-  MinSpawnTime: 20
-  MaxSpawnTime: 30
-  MaxSpawns: -1
 --- !u!212 &21200000
 SpriteRenderer:
   m_ObjectHideFlags: 1

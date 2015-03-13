@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using UnityEngine;
-
-public class LoadingArea : MarioObject
+﻿public class LoadingArea : MarioObject
 {
 	protected override void Construct()
 	{

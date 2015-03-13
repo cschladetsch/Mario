@@ -45,6 +45,9 @@ public class ShopArea : AreaBase
 
 	protected override void BeforeFirstUpdate()
 	{
+		DeliveryTruck = FindObjectOfType<DeliveryTruck>();
+		DeliveryTruck.Reset();
+
 		//base.BeforeFirstUpdate();
 		//var truck = Kernel.Factory.NewPeriodicTimer(TimeSpan.FromSeconds(BaseTruckWaitTime));
 		//truck.Elapsed += NewTruck;
@@ -63,9 +66,6 @@ public class ShopArea : AreaBase
 	public override void EnterArea()
 	{
 		base.EnterArea();
-
-		DeliveryTruck = FindObjectOfType<DeliveryTruck>();
-		DeliveryTruck.Reset();
 
 		Player.ShowCharacters(false);
 

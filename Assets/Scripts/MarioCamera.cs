@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class MarioCamera : MonoBehaviour
 {
-	
+
 	void Awake()
 	{
 	}
@@ -22,5 +22,3 @@ public class MarioCamera : MonoBehaviour
 		// TODO
 	}
 }
-
-

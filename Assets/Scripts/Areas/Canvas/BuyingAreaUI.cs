@@ -109,13 +109,19 @@ public class BuyingAreaUI : MarioObject
 		}
 
 		var button = go.GetComponent<IngredientButtton>();
-		var item = button.Type;
-		var info = World.IngredientInfo[item];
+		var type = button.Type;
+		var info = World.IngredientInfo[type];
 		if (Player.Gold < info.Buy)
 			return;
 
 		button.AddAmount(1);
-		_contents[item]++;
+		if (!_contents.ContainsKey(type))
+		{
+			Debug.LogError("Shop doesn't have entry for " + type);
+			return;
+		}
+
+		_contents[type]++;
 		Player.Gold -= info.Buy;
 		UpdateDisplay();
 	}

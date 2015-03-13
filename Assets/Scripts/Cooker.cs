@@ -48,7 +48,7 @@ public class Cooker : MarioObject
 
 		//Debug.Log(name + " " + CanCook());
 		var c = CanCook() ? 1.0f : 0.5f;
-		ProductImage.color = new Color(c,c,c,c);
+		ProductImage.color = new Color(c, c, c, c);
 	}
 
 	public void Select(bool select)

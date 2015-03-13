@@ -121,8 +121,8 @@ public class Player : MarioObject
 
 	private void PrepareEmptyInventory()
 	{
-		foreach (var e in Enum.GetValues(typeof (IngredientType)))
-			Inventory.Add((IngredientType) e, 0);
+		foreach (var e in Enum.GetValues(typeof(IngredientType)))
+			Inventory.Add((IngredientType)e, 0);
 	}
 
 	protected override void BeforeFirstUpdate()
@@ -222,14 +222,14 @@ public class Player : MarioObject
 
 	private void SellItem()
 	{
-		IngredientType[] types = {IngredientType.MintIceCream, IngredientType.CupCake};
+		IngredientType[] types = { IngredientType.MintIceCream, IngredientType.CupCake };
 
 		for (var n = 0; n < types.Length; ++n)
 		{
 			var index0 = UnityEngine.Random.Range(0, types.Length);
 			var type = types[index0];
 
-			if (Inventory[type] <= 0) 
+			if (Inventory[type] <= 0)
 				continue;
 
 			SellItem(type);
@@ -310,13 +310,14 @@ public class Player : MarioObject
 	private bool GoalReached()
 	{
 		var dict = IngredientItem.CreateIngredientDict<int>();
-		foreach (var i in CurrentGoal.Ingredients)
-		{
-			dict[i]++;
-		}
+		foreach (var type in CurrentGoal.Ingredients)
+			dict[type]++;
 
 		foreach (var kv in Inventory)
 		{
+			if (!dict.ContainsKey(kv.Key))
+				continue;
+
 			var needed = dict[kv.Key];
 			if (kv.Value < needed && needed > 0)
 			{

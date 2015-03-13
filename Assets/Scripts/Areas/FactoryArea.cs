@@ -19,7 +19,8 @@ public class FactoryArea : AreaBase
 	{
 		base.EnterArea();
 
-		Debug.Log("Entering Factory");
+		Debug.LogWarning("Entering Factory");
+
 		// used as a hack to adjust camera for main game area
 		_size = Camera.main.orthographicSize;
 		_height = Camera.main.transform.position.y;

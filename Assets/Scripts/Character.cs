@@ -186,9 +186,9 @@ public class Character : MarioObject
 		var moveDown = pos.y < screen.y;
 		if (_stoplightBoss1)
 		{
-			 if (_stoplightBoss1.Dir == StoplightBoss1.Direction.Left && Side == WhichSide.Left)
+			if (_stoplightBoss1.Dir == StoplightBoss1.Direction.Left && Side == WhichSide.Left)
 				moveDown = !moveDown;
-			 if (_stoplightBoss1.Dir == StoplightBoss1.Direction.Right && Side == WhichSide.Right)
+			if (_stoplightBoss1.Dir == StoplightBoss1.Direction.Right && Side == WhichSide.Right)
 				moveDown = !moveDown;
 		}
 

@@ -22,8 +22,6 @@ public class MinMaxTimer : MarioObject
 		_timer -= RealDeltaTime;
 		if (_timer > 0)
 			return;
-
-
 	}
 }
 

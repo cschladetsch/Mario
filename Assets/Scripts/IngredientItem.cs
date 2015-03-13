@@ -9,9 +9,9 @@ public class IngredientItem : MonoBehaviour
 	public static Dictionary<IngredientType, T> CreateIngredientDict<T>()
 	{
 		var ing = new Dictionary<IngredientType, T>();
-		foreach (var e in Enum.GetValues(typeof (IngredientType)))
+		foreach (var e in Enum.GetValues(typeof(IngredientType)))
 		{
-			var type = (IngredientType) e;
+			var type = (IngredientType)e;
 			if (type != IngredientType.None)
 				ing.Add(type, default(T));
 		}

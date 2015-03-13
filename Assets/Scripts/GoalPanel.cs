@@ -64,8 +64,8 @@ public class GoalPanel : MarioObject
 
 	private void GatherPrefabsForIngredientDisplay()
 	{
-		_prefabs[IngredientType.CupCake] = (GameObject) Resources.Load("Images/Cupcake");
-		_prefabs[IngredientType.MintIceCream] = (GameObject) Resources.Load("Images/ChockMintIceCream");
+		_prefabs[IngredientType.CupCake] = (GameObject)Resources.Load("Images/Cupcake");
+		_prefabs[IngredientType.MintIceCream] = (GameObject)Resources.Load("Images/ChockMintIceCream");
 		//_prefabs[IngredientType.Chocolate] = (GameObject) Resources.Load("Images/ChockMintIceCream");
 		//_prefabs[IngredientType.MintIceCream] = (GameObject) Resources.Load("Images/ChockMintIceCream");
 	}
@@ -94,7 +94,7 @@ public class GoalPanel : MarioObject
 		ButtonText.transform.parent.gameObject.SetActive(false);
 
 		Tint.sprite = null;
-		ChangeOverlayColor(new Color(0,0,0,0));
+		ChangeOverlayColor(new Color(0, 0, 0, 0));
 
 		// from from under tint
 		gameObject.SetActive(true);

@@ -222,6 +222,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dd3751d7580de8045be74c8869082085, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  IngredientDetails: {fileID: 0}
   AreaIndex: 0
   StageGoals:
   - {fileID: 11481494, guid: 0f15c10cf07047f4398aae0899c4bd72, type: 2}

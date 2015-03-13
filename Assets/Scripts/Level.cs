@@ -71,10 +71,13 @@ public class Level : MarioObject
 				return true;
 			}
 
+			if (Conveyors.Any(c => c.Contents.Count > 0))
+				return false;
+			
 			return NumCakesRemaining == 0;
 		}
 	}
-	
+
 	public void Init()
 	{
 		_initialConveyorSpeed = ConveyorSpeed;
@@ -226,7 +229,7 @@ public class Level : MarioObject
 		if (cake != null)
 		{
 			//if (!Area.Visual)
-				//Debug.Log("Spawned a " + cake.name);
+			//Debug.Log("Spawned a " + cake.name);
 
 			++_numCakesSpawned;
 		}
@@ -353,7 +356,7 @@ public class Level : MarioObject
 	private void UpdateSpeed()
 	{
 		_speedTimer -= GameDeltaTime;
-		if (!(_speedTimer < 0)) 
+		if (!(_speedTimer < 0))
 			return;
 
 		_speedTimer = SpeedIncrementTime;
@@ -518,6 +521,8 @@ public class Level : MarioObject
 
 	public void AddIngredients(Dictionary<IngredientType, int> contents)
 	{
+		Debug.Log("Level.AddIngredients");
+
 		// because this is called before level has been created due to
 		// SpawnGameObject issues that take many updates to fully expand out
 		// to target objects
@@ -529,8 +534,10 @@ public class Level : MarioObject
 			if (kv.Key == IngredientType.None)
 				continue;
 
+			if (kv.Value > 0)
+				Debug.Log(string.Format("*** Adding {0} {1}", kv.Key, kv.Value));
+
 			Inventory[kv.Key] += kv.Value;
-			//Debug.Log(string.Format("Adding " + kv.Value + " " + kv.Key));
 		}
 
 		AddSpawners(Inventory);

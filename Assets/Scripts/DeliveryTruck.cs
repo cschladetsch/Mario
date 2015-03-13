@@ -31,12 +31,16 @@ public class DeliveryTruck : MarioObject
 
 	public void Deliver(Dictionary<IngredientType, int> contents)
 	{
-		if (TestForSkip(contents)) 
+		if (TestForSkip(contents))
 			return;
 
 		_deliveryTimer = DeliveryTime;
 		_delivering = true;
-		_contents = contents;
+
+		_contents = new Dictionary<IngredientType, int>();
+		foreach (var kv in contents)
+			_contents.Add(kv.Key, kv.Value);
+
 		Ready = false;
 	}
 
@@ -49,7 +53,7 @@ public class DeliveryTruck : MarioObject
 	/// <returns></returns>
 	private bool TestForSkip(Dictionary<IngredientType, int> contents)
 	{
-		if (!World.BuyingAreaUi.SkipToggle || !World.BuyingAreaUi.SkipToggle.isOn) 
+		if (!World.BuyingAreaUi.SkipToggle || !World.BuyingAreaUi.SkipToggle.isOn)
 			return false;
 
 		foreach (var c in contents)
@@ -81,11 +85,11 @@ public class DeliveryTruck : MarioObject
 		if (!Ready)
 			return;
 
-		if (!Input.GetMouseButtonDown(0)) 
+		if (!Input.GetMouseButtonDown(0))
 			return;
 
 		var hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector2.zero);
-		if (hit.collider == null) 
+		if (hit.collider == null)
 			return;
 
 		Complete();
@@ -93,6 +97,7 @@ public class DeliveryTruck : MarioObject
 
 	public void Complete()
 	{
+		Debug.Log("DeliveryTruck.Complete");
 		if (!Ready)
 			return;
 
@@ -102,9 +107,12 @@ public class DeliveryTruck : MarioObject
 			World.ChangeArea(AreaType.Factory);
 
 		World.CurrentLevel.AddIngredients(_contents);
+
 		_contents.Clear();
 		_delivering = false;
 		_deliveryTimer = DeliveryTime;
+
+		Reset();
 	}
 
 	private void TurnTimerOn(bool on)
@@ -114,12 +122,12 @@ public class DeliveryTruck : MarioObject
 
 	private void UpdateDelivering()
 	{
-		if (!_delivering) 
+		if (!_delivering)
 			return;
 
 		_deliveryTimer -= RealDeltaTime;
 		Ready = _deliveryTimer <= 0;
-		if (!Ready) 
+		if (!Ready)
 			return;
 
 		_delivering = false;
@@ -144,6 +152,6 @@ public class DeliveryTruck : MarioObject
 		TurnTimerOn(true);
 		Ready = false;
 		_delivering = false;
-		Canvas.CarTimer.text = "Deliver";
+		Canvas.CarTimer.text = string.Format("{0:0.0}s", DeliveryTime);
 	}
 }

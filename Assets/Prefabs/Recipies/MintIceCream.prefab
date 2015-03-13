@@ -41,7 +41,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Ingredients: 0300000004000000
   Counts: 0200000002000000
-  CookingTime: 1
+  CookingTime: 30
   Result: 5
   NumResults: 3
 --- !u!1001 &100100000

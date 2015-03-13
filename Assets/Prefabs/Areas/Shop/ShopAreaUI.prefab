@@ -1217,7 +1217,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Paused: 0
   Ready: 0
-  DeliveryTime: 30
+  DeliveryTime: 20
   Collider: {fileID: 0}
   Button: {fileID: 11406286}
   TimerButtton: {fileID: 11406328}
@@ -1691,7 +1691,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: .776470602}
+  m_Color: {r: 0, g: 0, b: 0, a: .776470602}
   m_FontData:
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
     m_FontSize: 14

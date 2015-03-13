@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class AlleyOpp : MonoBehaviour
 {
-	
+
 	void Awake()
 	{
 	}

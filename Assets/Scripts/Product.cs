@@ -5,5 +5,3 @@ using UnityEngine;
 public class Product : Cake
 {
 }
-
-

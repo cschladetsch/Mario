@@ -46,7 +46,7 @@ public class ShopArea : AreaBase
 	protected override void BeforeFirstUpdate()
 	{
 		DeliveryTruck = FindObjectOfType<DeliveryTruck>();
-		DeliveryTruck.Reset();
+		//DeliveryTruck.Reset();
 
 		//base.BeforeFirstUpdate();
 		//var truck = Kernel.Factory.NewPeriodicTimer(TimeSpan.FromSeconds(BaseTruckWaitTime));

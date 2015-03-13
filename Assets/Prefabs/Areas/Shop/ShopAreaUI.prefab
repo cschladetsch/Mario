@@ -1217,7 +1217,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Paused: 0
   Ready: 0
-  DeliveryTime: 20
+  DeliveryTime: 10
   Collider: {fileID: 0}
   Button: {fileID: 11406286}
   TimerButtton: {fileID: 11406328}

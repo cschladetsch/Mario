@@ -43,4 +43,10 @@ public class IngredientButtton : MarioObject
 	{
 		AmountText.text = Amount.ToString();
 	}
+
+	public void SetAmount(int i)
+	{
+		Amount = i;
+		AmountText.text = i.ToString();
+	}
 }

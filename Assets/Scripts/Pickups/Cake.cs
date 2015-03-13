@@ -25,6 +25,8 @@ public class Cake : Pickup
 	/// </summary>
 	public UnityEngine.UI.Text CostText;
 
+	public bool Delivered;
+
 	public override void CharacterHit(Character character, Conveyor conv, Conveyor next)
 	{
 		base.CharacterHit(character, conv, next);

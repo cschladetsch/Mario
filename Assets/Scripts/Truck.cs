@@ -37,7 +37,6 @@ public class Truck : MarioObject
 
 	public event DeliveredHandler DeliveryStarted;
 	public event DeliveredHandler DeliveryCompleted;
-	public int _numCakes;
 
 	private Transform _pt;
 	private readonly List<Cake> _cakes = new List<Cake>();
@@ -58,16 +57,8 @@ public class Truck : MarioObject
 	protected override void Begin()
 	{
 		base.Begin();
-
+		Emptying = false;
 		_startPos = transform.position.x;
-
-		if (World.CurrentLevel == null)
-			return;
-
-		if (World.CurrentLevel.Inventory == null)
-			return;
-
-		_numCakes = World.CurrentLevel.Inventory.Sum(c => c.Value);
 	}
 
 	protected override void Tick()
@@ -98,6 +89,8 @@ public class Truck : MarioObject
 		if (!Emptying)
 			return;
 
+		Debug.Log("UpdateEmptying: " + " left=" + _movingLeft + " moveTime=" + _moveTime);
+
 		var dt = GameDeltaTime;
 
 		_moveTime -= dt;
@@ -107,12 +100,12 @@ public class Truck : MarioObject
 			transform.position = new Vector3(p.x - MoveSpeed*dt, p.y, 0.0f);
 			if (_moveTime <= 0)
 			{
-				Debug.Log("Truck done: " + World.CurrentLevel.NoMoreCakes);
+				//Debug.Log("Truck done: " + World.CurrentLevel.NoMoreCakes);
 
-				foreach (var kv in World.CurrentLevel.Inventory)
-				{
-					Debug.Log(string.Format("{0} {1}", kv.Key, kv.Value));
-				}
+				//foreach (var kv in World.CurrentLevel.Inventory)
+				//{
+				//	Debug.Log(string.Format("{0} {1}", kv.Key, kv.Value));
+				//}
 
 				//if (World.CurrentLevel.NoMoreCakes)
 				//{
@@ -131,7 +124,9 @@ public class Truck : MarioObject
 		// moving right
 		transform.position = new Vector3(p.x + MoveSpeed*dt, p.y, 0.0f);
 		if (_moveTime <= 0)
+		{
 			EndEmptying();
+		}
 	}
 
 	//private void TransitionToBakery()
@@ -178,6 +173,8 @@ public class Truck : MarioObject
 		if (!Emptying)
 			return;
 
+		Debug.Log("Ending emptying");
+
 		transform.position = new Vector3(_startPos, transform.position.y, 0);
 
 		Emptying = false;
@@ -212,7 +209,7 @@ public class Truck : MarioObject
 
 	private void UpdateDone()
 	{
-		var done = _numCakes == 0 && World.CurrentLevel.NoMoreCakes;
+		var done = _cakes.Count == 6 && _cakes.All(c => c.Delivered);
 		if (!done)
 			return;
 
@@ -226,10 +223,15 @@ public class Truck : MarioObject
 		if (DeliveryStarted != null)
 			DeliveryStarted(this);
 
-		_moveTime = MoveDistance/MoveSpeed;
+		_moveTime = CalcMoveTime();
 		_movingLeft = true;
 
 		Emptying = true;
+	}
+
+	private float CalcMoveTime()
+	{
+		return MoveDistance/MoveSpeed;
 	}
 
 	private void MoveCakes()
@@ -261,8 +263,7 @@ public class Truck : MarioObject
 
 			cake.transform.position = para.FinalPos;
 			cake.TruckParabola = null;
-
-			--_numCakes;
+			cake.Delivered = true;
 		}
 	}
 

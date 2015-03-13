@@ -148,8 +148,8 @@ public class Level : MarioObject
 	{
 		//Debug.Log("DeliveryCompleted: " + NoMoreCakes);
 
-		if (NoMoreCakes)
-			World.ChangeArea(AreaType.Bakery);
+		//if (NoMoreCakes)
+		//	World.ChangeArea(AreaType.Bakery);
 	}
 
 	private bool _ended;

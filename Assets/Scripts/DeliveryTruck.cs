@@ -44,6 +44,13 @@ public class DeliveryTruck : MarioObject
 		Ready = false;
 	}
 
+	protected override void BeforeFirstUpdate()
+	{
+		base.BeforeFirstUpdate();
+
+		ResetTruck();
+	}
+
 	/// <summary>
 	/// For debugging: if the 'Skip' toggle is on in the UI, then when we 'deliver'
 	/// our order, we just add the order directly to player's inventory then
@@ -66,10 +73,10 @@ public class DeliveryTruck : MarioObject
 
 	protected override void Tick()
 	{
-		var canDeliver = World.BuyingAreaUi.HasAnything;
+		//var canDeliver = World.BuyingAreaUi.HasAnything;
 
-		TimerButtton.interactable = canDeliver;
-		Button.interactable = canDeliver;
+		//TimerButtton.interactable = canDeliver;
+		//Button.interactable = canDeliver;
 
 		base.Tick();
 
@@ -77,18 +84,22 @@ public class DeliveryTruck : MarioObject
 
 		UpdateDelivering();
 
-		UpdatePressed();
+		//UpdatePressed();
 	}
 
 	private void UpdatePressed()
 	{
+		Debug.Log("UpdatePressed: ready=" + Ready);
 		if (!Ready)
 			return;
 
-		if (!Input.GetMouseButtonDown(0))
+		var mouse = Input.GetMouseButtonDown(0);
+		Debug.Log("mouse: " + mouse);
+		if (!mouse)
 			return;
 
 		var hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector2.zero);
+		Debug.Log("collider: " + hit.collider);
 		if (hit.collider == null)
 			return;
 
@@ -109,11 +120,14 @@ public class DeliveryTruck : MarioObject
 
 		World.CurrentLevel.AddIngredients(_contents);
 
+		Ready = false;
 		_contents.Clear();
 		_delivering = false;
 		_deliveryTimer = DeliveryTime;
 
-		Reset();
+		//World.BuyingAreaUi.ClearContents();
+
+		ResetTruck();
 	}
 
 	private void TurnTimerOn(bool on)
@@ -147,9 +161,9 @@ public class DeliveryTruck : MarioObject
 		Canvas.CarTimer.color = Color.black;
 	}
 
-	public void Reset()
+	private void ResetTruck()
 	{
-		//Debug.Log("DeliveryCar.Reset");
+		Debug.Log("DeliveryCar.ResetTruck");
 		TurnTimerOn(true);
 		Ready = false;
 		_delivering = false;

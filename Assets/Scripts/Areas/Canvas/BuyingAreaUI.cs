@@ -48,6 +48,7 @@ public class BuyingAreaUI : MarioObject
 
 	private void ResetContents()
 	{
+		Debug.Log("BuyingAreaUI.ResetContents");
 		_contents = IngredientItem.CreateIngredientDict<int>();
 	}
 
@@ -55,16 +56,35 @@ public class BuyingAreaUI : MarioObject
 	{
 		base.Tick();
 
-		//UpdateDisplay();
+		UpdateDisplay();
 	}
 
 	public void TimerButttonPressed()
 	{
+
 		var truck = FindObjectOfType<DeliveryTruck>();
+		Debug.Log("TimerButtonPressed: ready=" + truck.Ready);
+
 		if (!truck.Ready)
+		{
+			if (_contents.Sum(c => c.Value) == 0)
+			{
+				Debug.Log("Nothing to deliver!");
+				return;
+			}
+
 			truck.Deliver(_contents);
+			ClearButtons();
+			ClearContents();
+		}
 		else
 			truck.Complete();
+	}
+
+	private void ClearButtons()
+	{
+		foreach (var b in _buttons)
+			b.SetAmount(0);
 	}
 
 	private void UpdateCosts()
@@ -152,14 +172,22 @@ public class BuyingAreaUI : MarioObject
 		//Debug.Log(" " + name + " was disabled");
 	}
 
-	public void Reset()
-	{
-		ResetContents();
+	//public void Reset()
+	//{
+	//	//ResetContents();
 
-		foreach (var b in _buttons)
-		{
-			b.Amount = 0;
-			b.UpdateUi();
-		}
+	//	foreach (var b in _buttons)
+	//	{
+	//		b.Amount = 0;
+	//		b.UpdateUi();
+	//	}
+
+	//	InventoryPanel.UpdateDisplay(Player.Inventory, false);
+	//}
+	public void ClearContents()
+	{
+		Debug.Log("BuyingArea.ClearContents");
+		_contents = IngredientItem.CreateIngredientDict<int>();
+		UpdateDisplay();
 	}
 }

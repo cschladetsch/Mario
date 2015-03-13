@@ -1,10 +1,12 @@
-﻿using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
+/// <summary>
+/// The visual representation of a cake in the game.
+/// </summary>
 public class Cake : Pickup
 {
 	/// <summary>
-	/// Where we will end up in the truck
+	/// Where we will end up in the truck, as we are being delivered to it
 	/// </summary>
 	internal Parabola TruckParabola;
 
@@ -23,6 +25,10 @@ public class Cake : Pickup
 	/// </summary>
 	public bool Delivered;
 
+	/// <summary>
+	/// The cake has dropped from edge of top-right conveyor, probably because
+	/// the truck is currently emptying
+	/// </summary>
 	public void Drop()
 	{
 		StartDropped(false);
@@ -40,15 +46,22 @@ public class Cake : Pickup
 			return;
 		}
 
-		var truck = FindObjectOfType<Truck>();
-		if (truck.Emptying)
-		{
-			Debug.Log("Dropped cake because truck is still emptying");
-			Drop();
-			return;
-		}
+		// no next conveyor, add to truck
+		Truck.AddCake(this);
+	}
 
-		truck.AddCake(this);
+	protected override void Tick()
+	{
+		base.Tick();
+
+		if (!Dropped)
+			return;
+
+		_droppedTimer -= GameDeltaTime;
+		if (_droppedTimer < 0)
+		{
+			CurrentLevel.DestroyCake(this);
+		}
 	}
 
 	/// <summary>
@@ -59,14 +72,14 @@ public class Cake : Pickup
 	{
 		base.StartDropped(moveRight);
 
-		FindObjectOfType<Player>().DroppedCake(this);
+		Player.DroppedCake(this);
 
 		_droppedTimer = 2;
 		_dropped = true;
 
 		rigidbody2D.isKinematic = false;
-		const float F = 120;
-		var force = new Vector2(moveRight ? F : -F, -20);
+		const float push = 120;
+		var force = new Vector2(moveRight ? push : -push, -20);
 		rigidbody2D.AddForce(force);
 	}
 
@@ -75,13 +88,14 @@ public class Cake : Pickup
 	/// </summary>
 	public void UpdateCostText()
 	{
-		var world = FindObjectOfType<World>();
-		var text = world.IngredientInfo[Type].Sell.ToString();
+		var text = World.IngredientInfo[Type].Sell.ToString();
 		CostText.text = string.Format("{0}$", text);
 	}
 
+#if DEBUG
 	void OnDestroy()
 	{
 		Debug.Log("Cake destroyed " + Time.frameCount);
 	}
+#endif
 }

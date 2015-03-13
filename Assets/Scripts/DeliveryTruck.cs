@@ -163,7 +163,7 @@ public class DeliveryTruck : MarioObject
 
 	private void ResetTruck()
 	{
-		Debug.Log("DeliveryCar.ResetTruck");
+		//Debug.Log("DeliveryCar.ResetTruck");
 		TurnTimerOn(true);
 		Ready = false;
 		_delivering = false;

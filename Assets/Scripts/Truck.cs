@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 using UnityEngine;
 
@@ -51,7 +50,6 @@ public class Truck : MarioObject
 
 	private Transform _flyThroughPoint;
 	private readonly List<Cake> _cakes = new List<Cake>();
-	private readonly List<Cake> _pending = new List<Cake>();
 	private float _moveTime;
 	private bool _movingLeft;
 	private float _startPos;
@@ -212,15 +210,6 @@ public class Truck : MarioObject
 			}
 
 			var para = cake.TruckParabola;
-			if (para == null)
-			{
-				Debug.LogWarning("Cake " + cake.Type + " has no parabola?");
-
-				// best attempt to avoid a crash
-				_cakes.Clear();
-				return;
-			}
-
 			cake.transform.position = para.Calc(cake.transform.position.x);
 
 			if (cake.transform.position.x <= para.FinalPos.x)
@@ -232,19 +221,19 @@ public class Truck : MarioObject
 		}
 	}
 
-	private void CakeArrived(Cake cake)
-	{
-		if (World.CurrentLevel.NoMoreCakes)
-		{
-			_movingLeft = true;
-		}
-	}
+	//private void CakeArrived(Cake cake)
+	//{
+	//	if (World.CurrentLevel.NoMoreCakes)
+	//	{
+	//		_movingLeft = true;
+	//	}
+	//}
 
-	private static void AddToPlayerIngredients(Cake cake)
-	{
-		World.Player.AddCake(cake);
-	}
-
+	/// <summary>
+	/// Add a cake to the truck. Each new cake starts off moving to the truck,
+	/// only when it arrives is it considered 'on the truck'.
+	/// </summary>
+	/// <param name="cake">the cake to add to the truck</param>
 	public void AddCake(Cake cake)
 	{
 		Debug.Log("Add cake");
@@ -285,19 +274,20 @@ public class Truck : MarioObject
 
 	public void Reset()
 	{
-		foreach (var c in _pending)
-			Destroy(c);
-
 		foreach (var c in _cakes)
-			Destroy(c);
+			Destroy(c.gameObject);
 
-		_pending.Clear();
 		_cakes.Clear();
 	}
 
+	/// <summary>
+	/// Deliver whatever is in the truck, as long as there
+	/// are no cakes in transition to truck
+	/// </summary>
 	public void Deliver()
 	{
-		StartEmptying();
+		if (_cakes.Count > 0 && _cakes.All(c => c.Delivered))
+			StartEmptying();
 	}
 }
 

@@ -61,9 +61,8 @@ public class BuyingAreaUI : MarioObject
 
 	public void TimerButttonPressed()
 	{
-
 		var truck = FindObjectOfType<DeliveryTruck>();
-		Debug.Log("TimerButtonPressed: ready=" + truck.Ready);
+		//Debug.Log("TimerButtonPressed: ready=" + truck.Ready);
 
 		if (!truck.Ready)
 		{
@@ -186,7 +185,7 @@ public class BuyingAreaUI : MarioObject
 	//}
 	public void ClearContents()
 	{
-		Debug.Log("BuyingArea.ClearContents");
+		//Debug.Log("BuyingArea.ClearContents");
 		_contents = IngredientItem.CreateIngredientDict<int>();
 		UpdateDisplay();
 	}

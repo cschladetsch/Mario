@@ -44,7 +44,7 @@ public class Level : MarioObject
 	private List<Conveyor> _conveyors = new List<Conveyor>();
 
 	/// <summary>
-	/// How to make new cakes. TODO: make this a dictioary of type to spawner?
+	/// How to make new cakes. TODO: make this a dictionary of type to spawner?
 	/// </summary>
 	public List<SpawnInfo> _spawners = new List<SpawnInfo>();
 
@@ -82,17 +82,7 @@ public class Level : MarioObject
 	{
 		_initialConveyorSpeed = ConveyorSpeed;
 		_cakesHolder = transform.FindChild("Contents");
-
-		//_size = Camera.main.orthographicSize;
-		//_height = Camera.main.transform.position.y;
-
-		//Debug.Log("Setting camera");
-		//Camera.main.orthographicSize = 7.6f;
-		//Camera.main.transform.SetY(4.8f);
 	}
-
-	//private float _size;
-	//private float _height;
 
 	public override void End()
 	{
@@ -101,9 +91,6 @@ public class Level : MarioObject
 
 	private void CakeDropped(Player player)
 	{
-		// spawn another cake
-		--_numCakesSpawned;
-		//Debug.Log("Cake Dropped: " + _numCakesSpawned + ", " + UnityEngine.Time.frameCount);
 	}
 
 	protected override void BeforeFirstUpdate()
@@ -135,11 +122,6 @@ public class Level : MarioObject
 		PauseCharacters(false);
 
 		GatherSpawners();
-
-		// HACKS
-		//var cam = Camera.main.transform;
-		//cam.position = new Vector3(-1.37f, 4.79f, -10);
-		//Camera.main.orthographicSize = 7.62f;
 	}
 
 	//private int _numTrucksDelivered;
@@ -147,9 +129,6 @@ public class Level : MarioObject
 	private void DeliveryCompleted(Truck truck)
 	{
 		//Debug.Log("DeliveryCompleted: " + NoMoreCakes);
-
-		//if (NoMoreCakes)
-		//	World.ChangeArea(AreaType.Bakery);
 	}
 
 	private bool _ended;
@@ -159,8 +138,6 @@ public class Level : MarioObject
 		//Debug.Log("EndLevel " + name);
 		_ended = true;
 
-		//Camera.main.orthographicSize = _size;
-		//Camera.main.transform.SetY(_height);
 		Canvas.LevelEnded(this);
 
 		foreach (var c in _conveyors)
@@ -241,10 +218,6 @@ public class Level : MarioObject
 		Debug.Log("Spawned a " + spawnInfo.Prefab.name + " called " + born.name);
 
 		var cake = born.GetComponent<Cake>();
-		if (cake != null)
-		{
-			++_numCakesSpawned;
-		}
 
 		if (Area == null)
 		{
@@ -264,8 +237,6 @@ public class Level : MarioObject
 
 	public bool ToTruck;
 
-	private int _numCakesSpawned;
-
 	public void Reset()
 	{
 		//Debug.Log("CurrentLevel.Reset");
@@ -276,19 +247,6 @@ public class Level : MarioObject
 			ConveyorSpeed = _initialConveyorSpeed;
 		else
 			_initialConveyorSpeed = ConveyorSpeed;
-
-		//foreach (var c in _conveyors)
-		//{
-		//	c.Reset();
-		//	c.Speed = _initialConveyorSpeed;
-		//}
-
-		//SpeedLevel = 1;
-		//OverallSpeed = 1;
-
-		//_speedTimer = SpeedIncrementTime;
-		////_numTrucksDelivered = 0;
-		//_numCakesSpawned = 0;
 	}
 
 	private void GatherConveyors()
@@ -301,8 +259,6 @@ public class Level : MarioObject
 
 		foreach (var c in _conveyors)
 			c.Speed = ConveyorSpeed;
-
-		//Debug.Log("GatherConveyors: " + _conveyors.Count);
 	}
 
 	private float _speedTimer;
@@ -363,11 +319,7 @@ public class Level : MarioObject
 
 		if (!NoMoreCakes)
 			UpdateSpawners();
-		//else
-		//	Debug.Log("No More Cakes");
 	}
-
-	//public int _numCakesSpawned;
 
 	private void UpdateSpeed()
 	{
@@ -381,7 +333,7 @@ public class Level : MarioObject
 		foreach (var c in _conveyors)
 			c.Speed *= SpeedIncrementRate;
 
-		//Debug.Log("Speed Up " + _speedLevel);
+		Debug.Log("Speed Up " + SpeedLevel);
 
 		SpeedLevel++;
 	}
@@ -405,10 +357,6 @@ public class Level : MarioObject
 			Debug.Log("UpdateSpawners: no more cakes");
 			return;
 		}
-
-		//// don't spawn anything while truck is emptying
-		//if (Truck.Emptying)
-		//	return;
 
 		var options = _spawners.Where(sp => sp.CouldSpawn() && Inventory[sp.Type] > 0).ToList();
 		if (options.Count == 0)
@@ -448,14 +396,8 @@ public class Level : MarioObject
 		var prefab = GetNewPrefab();
 		var cake = (GameObject)Instantiate(prefab);
 		cake.transform.parent = _cakesHolder;
-		++_numCakesSpawned;
 		return cake;
 	}
-
-	//void LateUpdate()
-	//{
-	//	transform.position = Vector3.zero;
-	//}
 
 	private GameObject GetNewPrefab()
 	{
@@ -489,68 +431,74 @@ public class Level : MarioObject
 			conv.Pause(pause);
 	}
 	/// <summary>
-	/// Add spawners for contents of truck. TODO: move to Level.cs
+	/// Add spawners for contents of truck.
 	/// </summary>
 	public void AddSpawners(Dictionary<IngredientType, int> contents)
 	{
-		// create spawners from what was in truck
-		var types = new List<IngredientType>();
-
-		// TODO
 		if (contents == null)
 			return;
 
-		foreach (var c in contents)
+		foreach (var kv in contents)
 		{
-			if (c.Value == 0)
+			var type = kv.Key;
+			var amount = kv.Value;
+
+			// no amount to add
+			if (amount == 0)
 				continue;
 
-			if (c.Key == IngredientType.None)
+			// don't add nothing
+			if (type == IngredientType.None)
 				continue;
 
-			var type = c.Key;
+			// see if we already have a spawner
 			var curr = _spawners.FirstOrDefault(s => s.Type == type);
 			if (curr)
 			{
-				curr.SpawnMore(c.Value);
+				// make sure we make more of them later
+				curr.SpawnMore(kv.Value);
 				continue;
 			}
 
-			if (types.Contains(type))
-			{
-				continue;
-			}
-
-			types.Add(type);
-
-			var sp = CurrentLevel.gameObject.AddComponent<SpawnInfo>();
-			var info = World.IngredientInfo[type];
-			sp.MinSpawnTime = info.MinSpawnRate;
-			sp.MaxSpawnTime = info.MaxSpawnRate;
-			sp.Weight = 1;
-			sp.MaxSpawns = c.Value;
-			sp.Type = type;
-
-			// load prefabs to make ingredients from resources path
-			var path = string.Format("{0}", type);
-			var ob = Resources.Load(path);
-			if (ob == null)
-			{
-				Debug.LogWarning("No prefab for ingredient " + type);
-				continue;
-			}
-
-			sp.Prefab = (GameObject)ob;
-			if (sp.Prefab == null)
-			{
-				Debug.LogWarning("Can't make a " + type  + ", using path " + path);
-				continue;
-			}
-
-			//Debug.Log("Using " + sp.Prefab.name + " prefab to make " + c.Key);
-
-			_spawners.Add(sp);
+			AddSpawner(kv);
 		}
+	}
+
+	/// <summary>
+	/// Add a spawner for a given ingredient type
+	/// </summary>
+	/// <param name="kv"></param>
+	private void AddSpawner(KeyValuePair<IngredientType, int> kv)
+	{
+		var sp = CurrentLevel.gameObject.AddComponent<SpawnInfo>();
+		var type = kv.Key;
+		var info = World.IngredientInfo[type];
+
+		sp.MinSpawnTime = info.MinSpawnRate;
+		sp.MaxSpawnTime = info.MaxSpawnRate;
+		sp.Weight = 1;
+		sp.MaxSpawns = kv.Value;
+		sp.Type = type;
+
+		// load prefabs to make ingredients from resources path
+		var path = string.Format("{0}", type);
+		var ob = Resources.Load(path);
+		if (ob == null)
+		{
+			Debug.LogWarning("No prefab for ingredient " + type);
+			return;
+		}
+
+		sp.Prefab = (GameObject) ob;
+		if (sp.Prefab == null)
+		{
+			Debug.LogWarning("Can't make a " + type + ", using path " + path);
+			return;
+		}
+
+		//Debug.Log("Using " + sp.Prefab.name + " prefab to make " + c.Key);
+
+		_spawners.Add(sp);
 	}
 
 	public Conveyor GetTopConveyor()
@@ -570,9 +518,6 @@ public class Level : MarioObject
 
 		foreach (var kv in contents)
 		{
-			if (kv.Key == IngredientType.None)
-				continue;
-
 			if (kv.Value > 0)
 				Debug.Log(string.Format("*** Adding {0} {1}", kv.Key, kv.Value));
 
@@ -580,5 +525,24 @@ public class Level : MarioObject
 		}
 
 		AddSpawners(Inventory);
+	}
+
+	/// <summary>
+	/// This is really a hack-work around. If a cake has been 'dropped'
+	/// but hasn't eventually been destroyed, or for any other weird reason,
+	/// then this will safely remove the cake from the system.
+	/// </summary>
+	/// <param name="cake"></param>
+	public void DestroyCake(Cake cake)
+	{
+		// TODO: maybe also remove from truck?
+
+		// remove cake from whatever conveyor it is in
+		foreach (var c in _conveyors.Where(c => c.Contents.Contains(cake)))
+		{
+			c.RemoveItem(cake);
+			Destroy(cake);
+			return;
+		}
 	}
 }

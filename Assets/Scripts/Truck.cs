@@ -134,25 +134,25 @@ public class Truck : MarioObject
 			EndEmptying();
 	}
 
-	private void TransitionToBakery()
-	{
-		EmptyCakes();
+	//private void TransitionToBakery()
+	//{
+	//	EmptyCakes();
 
-		// reset for the return trip
-		_moveTime = MoveDistance/MoveSpeed;
+	//	// reset for the return trip
+	//	_moveTime = MoveDistance/MoveSpeed;
 
-		foreach (var c in _pending)
-			Destroy(c.gameObject);
+	//	foreach (var c in _pending)
+	//		Destroy(c.gameObject);
 
-		foreach (var c in _cakes)
-			Destroy(c.gameObject);
+	//	foreach (var c in _cakes)
+	//		Destroy(c.gameObject);
 
-		_pending.Clear();
-		_cakes.Clear();
+	//	_pending.Clear();
+	//	_cakes.Clear();
 
-		World.CurrentLevel.EndLevel();
-		World.ChangeArea(AreaType.Bakery);
-	}
+	//	World.CurrentLevel.EndLevel();
+	//	World.ChangeArea(AreaType.Bakery);
+	//}
 
 	private void EmptyCakes()
 	{
@@ -271,7 +271,9 @@ public class Truck : MarioObject
 		AddToPlayerIngredients(cake);
 
 		if (World.CurrentLevel.NoMoreCakes)
-			TransitionToBakery();
+		{
+			_movingLeft = true;
+		}
 	}
 
 	private static void AddToPlayerIngredients(Cake cake)
@@ -281,6 +283,8 @@ public class Truck : MarioObject
 
 	public void AddCake(Cake cake)
 	{
+		Debug.Log("Add cake");
+
 		if (!cake)
 		{
 			Debug.LogError("Trying to add a deleted cake to Truck!");
@@ -293,6 +297,7 @@ public class Truck : MarioObject
 
 		if (_full)
 		{
+			Debug.Log("Full");
 			_pending.Add(cake);
 			return;
 		}

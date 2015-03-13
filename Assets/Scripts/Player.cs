@@ -99,11 +99,11 @@ public class Player : MarioObject
 
 	public void ShowCharacters(bool show)
 	{
-		if (Left)
-			Left.gameObject.SetActive(show);
+		if (!Left)
+			return;
 
-		if (Right)
-			Right.gameObject.SetActive(show);
+		AreaBase.ToggleVisuals(Left.gameObject, show);
+		AreaBase.ToggleVisuals(Right.gameObject, show);
 	}
 
 	protected override void Construct()
@@ -181,7 +181,7 @@ public class Player : MarioObject
 
 		if (pickup is Cake)
 		{
-			//Debug.Log("Dropped a " + pickup.name);
+			Debug.Log("Dropped a " + pickup.name);
 
 			if (OnCakeDropped != null)
 				OnCakeDropped(this);

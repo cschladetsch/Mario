@@ -97,7 +97,8 @@ public class DeliveryTruck : MarioObject
 
 	public void Complete()
 	{
-		Debug.Log("DeliveryTruck.Complete");
+		Debug.LogWarning("DeliveryTruck.Complete");
+
 		if (!Ready)
 			return;
 

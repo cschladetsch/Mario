@@ -233,7 +233,7 @@ public class Level : MarioObject
 
 		Inventory[type]--;
 
-		Debug.Log("Cakes Left: " + Inventory.Sum(c => c.Value));
+		//Debug.Log("Cakes Left: " + Inventory.Sum(c => c.Value));
 
 		var born = spawnInfo.Spawn(gameObject);
 		born.transform.position = CakeSpawnPoint.transform.position;
@@ -547,7 +547,7 @@ public class Level : MarioObject
 				continue;
 			}
 
-			Debug.Log("Using " + sp.Prefab.name + " prefab to make " + c.Key);
+			//Debug.Log("Using " + sp.Prefab.name + " prefab to make " + c.Key);
 
 			_spawners.Add(sp);
 		}
@@ -560,7 +560,7 @@ public class Level : MarioObject
 
 	public void AddIngredients(Dictionary<IngredientType, int> contents)
 	{
-		Debug.Log("Level.AddIngredients");
+		//Debug.Log("Level.AddIngredients");
 
 		// because this is called before level has been created due to
 		// SpawnGameObject issues that take many updates to fully expand out

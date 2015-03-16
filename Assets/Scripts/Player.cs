@@ -269,7 +269,7 @@ public class Player : MarioObject
 		World.Canvas.UpdateGoldAmount();
 		World.Canvas.GoalPanel.GetComponent<GoalPanel>().UpdateUi();
 		World.CookingAreaUi.InventoryPanel.UpdateDisplay(Inventory, false);
-		World.BuyingAreaUi.InventoryPanel.UpdateDisplay(Inventory, false);
+		//World.BuyingAreaUi.InventoryPanel.UpdateDisplay(Inventory, false);
 
 		// TODO
 		//_canvas.LivesRemaining.text = Lives.ToString();

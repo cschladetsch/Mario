@@ -3,10 +3,6 @@
 /// </summary>
 public enum AreaType
 {
-	Shop,
 	Factory,
 	Bakery,
-
-	Splash,
-	None,
 }

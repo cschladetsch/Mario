@@ -239,7 +239,9 @@ public class Cooker : MarioObject
 		//	_counts[type].text = _ingredients[type].ToString();
 		//}
 
-		var ui = transform.parent.GetComponent<CookingAreaUI>();
+		var ui = World.CookingAreaUi;
+		Debug.Log(ui.InventoryPanel);
+		Debug.Log(Player.Inventory);
 		ui.InventoryPanel.UpdateDisplay(Player.Inventory, false);
 	}
 

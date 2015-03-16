@@ -20,8 +20,8 @@ public class ButtonsPanel : MarioObject
 		World.MoveTo(AreaType.Factory);
 	}
 
-	public void MoveToShop()
-	{
-		World.MoveTo(AreaType.Shop);
-	}
+	//public void MoveToShop()
+	//{
+	//	World.MoveTo(AreaType.Shop);
+	//}
 }

@@ -13,7 +13,7 @@ public class World : MonoBehaviour
 {
 	public GameObject IngredientDetails;
 
-	public int AreaIndex;
+	public AreaType CurrrentAreaType;
 
 	public StageGoal []StageGoals;
 
@@ -27,7 +27,7 @@ public class World : MonoBehaviour
 
 	public CookingAreaUI CookingAreaUi;
 
-	public BuyingAreaUI BuyingAreaUi;
+	public FactoryAreaUI FactoryAreaUi;
 
 	/// <summary>
 	/// The current level
@@ -97,7 +97,7 @@ public class World : MonoBehaviour
 		Canvas = FindObjectOfType<UiCanvas>();
 
 		_levelIndex = 0;
-		_areaType = AreaType.Shop;
+		_areaType = AreaType.Bakery;
 
 		GatherIngredients();
 	}
@@ -152,6 +152,7 @@ public class World : MonoBehaviour
 
 		CreateConeyorGame();
 
+		_areaType = AreaType.Bakery;
 		ChangeArea(_areaType);
 	}
 
@@ -170,7 +171,7 @@ public class World : MonoBehaviour
 
 	public void ChangeArea(AreaType area)
 	{
-		//Debug.Log("ChangingArea: " + area);
+		Debug.Log("ChangingArea: " + area);
 		_areaType = area;
 
 		CurrentArea = Areas[_areaType];
@@ -183,9 +184,9 @@ public class World : MonoBehaviour
 
 		switch (area)
 		{
-			case AreaType.Shop:
-				MainShop();			// sending through stock, paying customers, and ordering new ingredients
-				break;
+			//case AreaType.Shop:
+			//	MainShop();			// sending through stock, paying customers, and ordering new ingredients
+			//	break;
 
 			case AreaType.Factory:
 				CreateConeyorGame();		// conveyor game. deliver ingredients and products past boss
@@ -208,19 +209,23 @@ public class World : MonoBehaviour
 			var act = kv.Key == _areaType;
 			var area = kv.Value;
 
+			//Debug.Log("World.DisableOtherAreas: " + " key=" + kv.Key + " value=" + kv.Value);
 			//Debug.Log("World.DisableOtherAreas: " + " act=" + act + " area=" + area);
 
 			if (!act)
 				area.LeaveArea();
+			else
+				area.EnterArea();
 
 			area.gameObject.SetActive(act);
 			area.UiCanvas.SetActive(act);
-			area.UiCanvas.BroadcastMessage("Reset", SendMessageOptions.DontRequireReceiver);
+			//area.UiCanvas.BroadcastMessage("Reset", SendMessageOptions.DontRequireReceiver);
 		}
 	}
 
 	private void EnterBakery()
 	{
+		Debug.Log("Enter Bakery");
 		//if (CurrentLevel)
 		//	Destroy(CurrentLevel.gameObject);
 		
@@ -238,7 +243,6 @@ public class World : MonoBehaviour
 
 	private void MainShop()
 	{
-
 	}
 
 	public void Restart()
@@ -334,13 +338,13 @@ public class World : MonoBehaviour
 
 	public void BeginMainGame(Dictionary<IngredientType, int> contents)
 	{
-		_contents = contents;
+		//_contents = contents;
 
-		_levelIndex = 0;
+		//_levelIndex = 0;
 
-		CreateConeyorGame();
+		//CreateConeyorGame();
 
-		ChangeArea(AreaType.Factory);
+		//ChangeArea(AreaType.Factory);
 	}
 
 
@@ -353,7 +357,7 @@ public class World : MonoBehaviour
 
 	public void MoveTo(AreaType area)
 	{
-		//Debug.Log("World.MoveTo: " + area);
+		Debug.Log("World.MoveTo: " + area);
 		ChangeArea(area);
 	}
 }

@@ -76,6 +76,12 @@ public class UiCanvas : MarioObject
 
 	public void UpdateGoldAmount()
 	{
+		if (Player == null)
+		{
+			Debug.LogWarning("UiCanvas.UpdateGoldAmount: player is null");
+			return;
+		}
+
 		PlayerGoldText.text = Player.Gold.ToString();
 	}
 

@@ -87,6 +87,7 @@ public class Truck : MarioObject
 			return;
 
 		if (_cakes.Count == 6 && _cakes.All(c => c.Delivered))
+		//if (_cakes.All(c => c.Delivered) && World.Player.Inventory.Sum(c => c.Value) == 0)
 			StartEmptying();
 	}
 
@@ -128,6 +129,11 @@ public class Truck : MarioObject
 		if (_moveTime > 0)
 			return;
 
+		CompleteDeliveryImmediately();
+	}
+
+	private void CompleteDeliveryImmediately()
+	{
 		CompleteDelivery();
 	}
 
@@ -139,14 +145,14 @@ public class Truck : MarioObject
 		Debug.Log("Delivery completed: " + _cakes.Count);
 		foreach (var c in _cakes)
 		{
-			//Debug.Log("Delivered a " + c.Type);
 			Player.AddCake(c);
 			Destroy(c.gameObject);
 		}
 
 		_cakes.Clear();
 
-		StartMovingRight();
+		EndEmptying();
+		//StartMovingRight();
 	}
 
 	private void StartMovingRight()
@@ -172,6 +178,8 @@ public class Truck : MarioObject
 		Emptying = false;
 
 		World.Pause(false);
+
+		World.ChangeArea(AreaType.Bakery);
 	}
 
 	public void StartEmptying()

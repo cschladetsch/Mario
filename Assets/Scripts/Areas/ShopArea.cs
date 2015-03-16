@@ -39,7 +39,7 @@ public class ShopArea : AreaBase
 	private IEnumerator TapToContinue(IGenerator t0)
 	{
 		Debug.Log("Start tap to continue");
-		World.ChangeArea(AreaType.Shop);
+		//World.ChangeArea(AreaType.Shop);
 		yield break;
 	}
 
@@ -76,18 +76,18 @@ public class ShopArea : AreaBase
 
 	public void StartDeliveryTruck(Dictionary<IngredientType, int> contents)
 	{
-		// deliver all items immediately, then go to cooker
-		if (Skip || World.BuyingAreaUi.SkipToggle.isOn)
-		{
-			foreach (var c in contents)
-				Player.Inventory[c.Key] += c.Value;
+		//// deliver all items immediately, then go to cooker
+		//if (Skip || World.BuyingAreaUi.SkipToggle.isOn)
+		//{
+		//	foreach (var c in contents)
+		//		Player.Inventory[c.Key] += c.Value;
 
-			World.ChangeArea(AreaType.Bakery);
+		//	World.ChangeArea(AreaType.Bakery);
 
-			return;
-		}
+		//	return;
+		//}
 
-		DeliveryTruck.Deliver(contents);
+		//DeliveryTruck.Deliver(contents);
 	}
 }
 

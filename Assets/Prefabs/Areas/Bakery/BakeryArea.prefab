@@ -97,8 +97,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Paused: 0
-  Type: 2
+  Type: 1
   UiCanvas: {fileID: 0}
+  Visual: 0
   Recipes: []
 --- !u!212 &21200000
 SpriteRenderer:

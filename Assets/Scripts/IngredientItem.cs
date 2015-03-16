@@ -1,10 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net.Mime;
 using UnityEngine;
+using UnityEngine.UI;
 
-public class IngredientItem : MonoBehaviour
+public class IngredientItem : MarioObject
 {
 	public IngredientType Type;
+
+	public Text Count;
+
+	public bool IsCookingIngredient;
 
 	public static Dictionary<IngredientType, T> CreateIngredientDict<T>()
 	{
@@ -16,5 +22,22 @@ public class IngredientItem : MonoBehaviour
 				ing.Add(type, default(T));
 		}
 		return ing;
+	}
+
+	protected override void Tick()
+	{
+		base.Tick();
+
+		UpdateUi();
+	}
+
+	public void UpdateUi()
+	{
+		if (!Count || !IsCookingIngredient)
+			return;
+
+		var req = int.Parse(Count.text);
+		var color = req <= Player.Inventory[Type] ? Color.green : Color.red;
+		Count.color = color;
 	}
 }

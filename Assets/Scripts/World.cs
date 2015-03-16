@@ -171,7 +171,7 @@ public class World : MonoBehaviour
 
 	public void ChangeArea(AreaType area)
 	{
-		Debug.Log("ChangingArea: " + area);
+		//Debug.Log("ChangingArea: " + area);
 		_areaType = area;
 
 		CurrentArea = Areas[_areaType];
@@ -225,7 +225,7 @@ public class World : MonoBehaviour
 
 	private void EnterBakery()
 	{
-		Debug.Log("Enter Bakery");
+		//Debug.Log("Enter Bakery");
 		//if (CurrentLevel)
 		//	Destroy(CurrentLevel.gameObject);
 		

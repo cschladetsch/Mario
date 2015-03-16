@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 /// <summary>
 /// Controller for main game transitions
@@ -19,7 +20,7 @@ public class FactoryArea : AreaBase
 	{
 		base.EnterArea();
 
-		Debug.LogWarning("Entering Factory" + FrameCount);
+		//Debug.LogWarning("Entering Factory" + FrameCount);
 
 		//// used as a hack to adjust camera for main game area
 		//_size = Camera.main.orthographicSize;

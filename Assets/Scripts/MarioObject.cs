@@ -100,6 +100,8 @@ public class MarioObject : MonoBehaviour
 		RealDeltaTime = (float)delta.TotalSeconds;
 		_lastTime = now;
 
+		//Debug.Log(RealDeltaTime);
+
 		GameDeltaTime = Time.deltaTime;
 
 		if (_firstUpate)

@@ -84,4 +84,13 @@ public class InventoryPanel : MarioObject
 			Counts[type].text = num.ToString();
 		}
 	}
+
+//#if DEBUG
+	public void ButtonPressed(GameObject button)
+	{
+		var item = button.GetComponent<IngredientItem>();
+		Player.Inventory[item.Type]++;
+		UpdateDisplay(Player.Inventory, false);
+	}
+//#endif
 }

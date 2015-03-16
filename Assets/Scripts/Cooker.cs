@@ -13,6 +13,8 @@ public class Cooker : MarioObject
 	/// </summary>
 	public Recipe Recipe;
 
+	public ProgressBar ProgressBar;
+
 	new public IKernel Kernel;
 
 	public Color DeselectedColor;
@@ -32,7 +34,7 @@ public class Cooker : MarioObject
 
 	public event CompletedHandler Completed;
 
-	public UnityEngine.UI.Text TimerText;
+	//public UnityEngine.UI.Text TimerText;
 
 	//private Dictionary<IngredientType, int> _ingredients;
 
@@ -41,6 +43,14 @@ public class Cooker : MarioObject
 	//public GameObject ProgressBar;
 
 	public UnityEngine.UI.Image ProductImage;
+
+	protected override void Begin()
+	{
+		base.Begin();
+
+		ProgressBar.TotalTime = Recipe.CookingTime;
+		ProgressBar.Reset();
+	}
 
 	protected override void Tick()
 	{
@@ -156,35 +166,31 @@ public class Cooker : MarioObject
 			yield break;
 		}
 
+		Debug.LogWarning("Cooking a " + Recipe.Result);
+
+		ProgressBar.Reset();
+		ProgressBar.Paused = false;
+		ProgressBar.TotalTime = Recipe.CookingTime;
+
+		Debug.Log(string.Format("{0} {1} {2}", ProgressBar.Paused, ProgressBar.TotalTime, RealDeltaTime));
+
 		//Debug.Log("Cooking a " + Recipe.Result);//+ " " + UnityEngine.Time.frameCount);
 
-		var bg = TimerText.transform.parent.gameObject.GetComponent<Image>();
-		bg.color = Color.green;
+		//var bg = TimerText.transform.parent.gameObject.GetComponent<Image>();
+		//bg.color = Color.green;
 
 		_cooking = true;
 
 		var remaining = Recipe.CookingTime;
 		while (remaining > 0)
 		{
-			remaining -= RealDeltaTime;
-			UpdateProgressBar(remaining/Recipe.CookingTime);
+			remaining -= (float)RealDeltaTime;
+			//UpdateProgressBar(remaining/Recipe.CookingTime);
 			yield return 0;
 		}
 
-		//for (var n = 0; n < Recipe.Inventory.Count; ++n)
-		//{
-		//	var type = Recipe.Inventory[n];
-		//	//Debug.Log(string.Format("Removing {0} {1} from {2} existing", Recipe.Counts[n], type, _ingredients[type]));
-		//	_ingredients[type] -= Recipe.Counts[n];
-
-		//	// HACK FRI
-		//	if (_ingredients[type] < 0)
-		//		_ingredients[type] = 0;
-		//}
-
 		done.Value = true;
 
-		bg.color = Color.white;
 		self.Complete();
 
 		Generator = null;
@@ -192,10 +198,11 @@ public class Cooker : MarioObject
 		if (Completed != null)
 			Completed(Recipe.Result);
 
-
 		var count = Recipe.NumResults;
 		Debug.Log("Cooked " + count + " " + Recipe.Result);
 		Player.CookedItem(Recipe.Result, count);
+
+		ProgressBar.Reset();
 
 		UpdateDisplay();
 
@@ -204,8 +211,8 @@ public class Cooker : MarioObject
 
 	private void UpdateProgressBar(float t)
 	{
-		t = Mathf.Clamp01(t);
-		TimerText.text = string.Format("{0:0.0}", t);
+		//t = Mathf.Clamp01(t);
+		//TimerText.text = string.Format("{0:0.0}", t);
 
 		//var y = ProgressBar.transform.position.y;
 		//var len = t*1.25f;
@@ -240,8 +247,6 @@ public class Cooker : MarioObject
 		//}
 
 		var ui = World.CookingAreaUi;
-		Debug.Log(ui.InventoryPanel);
-		Debug.Log(Player.Inventory);
 		ui.InventoryPanel.UpdateDisplay(Player.Inventory, false);
 	}
 

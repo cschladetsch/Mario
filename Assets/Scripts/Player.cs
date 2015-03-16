@@ -46,7 +46,10 @@ public class Player : MarioObject
 	/// <summary>
 	/// If dead, the player cannot play anymore. Fact of life.
 	/// </summary>
-	public bool Dead { get { return Lives == 0; } }
+	public bool Dead
+	{
+		get { return Lives == 0; }
+	}
 
 	/// <summary>
 	/// If true, the player doesn't lose a life if a cake is dropped or hits a bomb
@@ -69,7 +72,9 @@ public class Player : MarioObject
 	//public List<Product> SellingProducts = new List<Product>(); 
 
 	public delegate void CollisionHandler(Collision2D other);
+
 	public delegate void TriggerHandler(Collider2D other);
+
 	public delegate void PlayerEventHandler(Player player);
 
 	public CollisionHandler OnCollision;
@@ -97,6 +102,15 @@ public class Player : MarioObject
 	/// </summary>
 	public int Lives = 3;
 
+	private ProductsPanelScript _products;
+
+	protected override void Begin()
+	{
+		base.Begin();
+
+		_products = FindObjectOfType<ProductsPanelScript>();
+	}
+
 	public void ShowCharacters(bool show)
 	{
 		if (!Left)
@@ -121,8 +135,8 @@ public class Player : MarioObject
 
 	private void PrepareEmptyInventory()
 	{
-		foreach (var e in Enum.GetValues(typeof(IngredientType)))
-			Inventory.Add((IngredientType)e, 0);
+		foreach (var e in Enum.GetValues(typeof (IngredientType)))
+			Inventory.Add((IngredientType) e, 0);
 	}
 
 	protected override void BeforeFirstUpdate()
@@ -131,16 +145,30 @@ public class Player : MarioObject
 		ShowCharacters(false);
 	}
 
+	private bool _lastAny;
+
 	protected override void Tick()
 	{
-		//Debug.Log("Player.Tick ");
+		base.Tick();
+
+		var any = Inventory[IngredientType.CupCake] > 0 || Inventory[IngredientType.MintIceCream] > 0;
+		var bar = _products.SellProgressBar;
+		if (!any && !bar.Paused)
+		{
+			bar.Reset();
+		}
+
+		if (any && bar.Paused)
+		{
+			bar.Paused = false;
+			bar.TotalTime = Player.SellingInterval;
+		}
+
 		if (!Left)
 		{
 			Left = transform.FindChild("CharacterLeft").GetComponent<Character>();
 			Right = transform.FindChild("CharacterRight").GetComponent<Character>();
 		}
-
-		base.Tick();
 
 #if !FINAL
 		UpdateDebugKeys();
@@ -200,22 +228,22 @@ public class Player : MarioObject
 
 	public float SellingInterval = 3;
 
-	public float _sellingTimer;
+	public float SellingTimer;
 
 	private void UpdateSellItem()
 	{
-		_sellingTimer -= RealDeltaTime;
+		SellingTimer -= (float)RealDeltaTime;
 
-		var selling = _sellingTimer <= 0;
+		var selling = SellingTimer <= 0;
 		while (selling)
 		{
 			SellItem();
-			_sellingTimer += SellingInterval;
+			SellingTimer += SellingInterval;
 
-			if (_sellingTimer > 0)
+			if (SellingTimer > 0)
 			{
 				selling = false;
-				_sellingTimer = SellingInterval;
+				SellingTimer = SellingInterval;
 			}
 		}
 	}
@@ -244,8 +272,11 @@ public class Player : MarioObject
 		var info = World.IngredientInfo[type];
 		Gold += info.Sell;
 		Inventory[type]--;
-		Debug.LogWarning("Sold a " + type + " for " + info.Sell + "$");
+		Debug.Log("SOLD a " + type + " for " + info.Sell + "$");
 
+		var p = FindObjectOfType<ProductsPanelScript>();
+		p.SellProgressBar.Reset();
+		
 		UpdateUi();
 	}
 

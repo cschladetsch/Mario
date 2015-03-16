@@ -102,22 +102,22 @@ public class DeliveryTruck : MarioObject
 		BuyingOptions.SetActive(false);
 		PlayButton.SetActive(false);
 
-		_buttons = BuyingOptions.transform.GetComponentsInChildren<IngredientButtton>().ToList();
-		Debug.Log("Found " + _buttons.Count + " ingredients buttons");
-		if (_buttons.Count == 0)
-		{
-			foreach (Transform tr in BuyingOptions.transform)
-			{
-				var component = tr.GetComponent<IngredientButtton>();
-				Debug.Log("BuyingOption " + tr.name + ", comp: " + component);
-				if (component != null)
-					_buttons.Add(component);
-			}
-		}
+		GatherIngredientButtons();
 
 		_contents = IngredientItem.CreateIngredientDict<int>();
 
 		UpdateDisplay();
+	}
+
+	private void GatherIngredientButtons()
+	{
+		foreach (Transform tr in BuyingOptions.transform)
+		{
+			var component = tr.GetComponent<IngredientButtton>();
+			//Debug.Log("BuyingOption " + tr.name + ", comp: " + component);
+			if (component != null)
+				_buttons.Add(component);
+		}
 	}
 
 	public void Deliver(Dictionary<IngredientType, int> contents)
@@ -199,10 +199,12 @@ public class DeliveryTruck : MarioObject
 
 	public void Complete()
 	{
-		Debug.LogWarning("DeliveryTruck.Complete");
+		//Debug.LogWarning("DeliveryTruck.Complete");
 
 		if (!Ready)
 			return;
+
+		PlayButton.SetActive(false);
 
 		TurnTimerOn(false);
 
@@ -231,7 +233,7 @@ public class DeliveryTruck : MarioObject
 		if (!_delivering)
 			return;
 
-		_deliveryTimer -= RealDeltaTime;
+		_deliveryTimer -= (float)RealDeltaTime;
 		Ready = _deliveryTimer <= 0;
 		if (!Ready)
 			return;

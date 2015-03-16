@@ -78,7 +78,7 @@ public class UiCanvas : MarioObject
 	{
 		if (Player == null)
 		{
-			Debug.LogWarning("UiCanvas.UpdateGoldAmount: player is null");
+			//Debug.LogWarning("UiCanvas.UpdateGoldAmount: player is null");
 			return;
 		}
 

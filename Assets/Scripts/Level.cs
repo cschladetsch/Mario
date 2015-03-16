@@ -78,6 +78,10 @@ public class Level : MarioObject
 		}
 	}
 
+	public int SpawnsRemaining { get { return _spawners.Sum(s => s._spawnsLeft); } }
+
+	public bool NothingToSpawn { get { return SpawnsRemaining == 0; } }
+
 	public void Init()
 	{
 		_initialConveyorSpeed = ConveyorSpeed;
@@ -279,14 +283,16 @@ public class Level : MarioObject
 		// throw a cake to truck
 		if (Input.GetKeyDown(KeyCode.Return))
 		{
-			foreach (var c in Conveyors)
+			foreach (var conveyor in Conveyors)
 			{
-				if (c.Contents.Count > 0)
+				if (conveyor.Contents.Count > 0)
 				{
-					var cake = c.Contents[0];
-					c.RemoveItem(cake);
-					Truck.AddCake(cake.GetComponent<Cake>());
+					var go = conveyor.Contents[0];
+					conveyor.RemoveItem(go);
+					var cake = go.GetComponent<Cake>();
+					Truck.AddCake(cake);
 					NewRandomCake();
+					Inventory[cake.Type]--;
 					break;
 				}
 			}

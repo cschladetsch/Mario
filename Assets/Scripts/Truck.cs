@@ -73,6 +73,9 @@ public class Truck : MarioObject
 	{
 		base.Tick();
 
+		if (!World.CurrentLevel)
+			return;
+
 		UpdateCheckFull();
 
 		UpdateEmptying();
@@ -86,9 +89,19 @@ public class Truck : MarioObject
 		if (Emptying)
 			return;
 
-		if (_cakes.Count == 6 && _cakes.All(c => c.Delivered))
-		//if (_cakes.All(c => c.Delivered) && World.Player.Inventory.Sum(c => c.Value) == 0)
-			StartEmptying();
+		if (World.CurrentLevel.NothingToSpawn)
+		{
+			if (World.CurrentLevel.Conveyors.Any(c => c.Contents.Count > 0))
+			{
+				return;
+			}
+		}
+
+		if (_cakes.Count > 0)
+		{
+			if (_cakes.All(c => c.Delivered))
+				StartEmptying();
+		}
 	}
 
 	/// <summary>

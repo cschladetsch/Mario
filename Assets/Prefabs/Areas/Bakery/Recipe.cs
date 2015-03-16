@@ -24,6 +24,11 @@ public class Recipe : MonoBehaviour
 	public float CookingTime = 30;
 
 	/// <summary>
+	/// How long it takes to cooks this item by default
+	/// </summary>
+	public float SellingTime = 50;
+
+	/// <summary>
 	/// The result of this recipe
 	/// </summary>
 	public IngredientType Result;

@@ -220,7 +220,7 @@ public class CookingAreaUI : MarioObject
 
 	void OnDisable()
 	{
-		Debug.Log("BakeryArea enabled: " + gameObject.activeSelf);
+		//Debug.Log("BakeryArea enabled: " + gameObject.activeSelf);
 	}
 
 	public void RemoveIngredient(GameObject go)

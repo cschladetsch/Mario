@@ -1,8 +1,11 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Mime;
+using Flow;
 using UnityEngine;
+using UnityEngine.UI;
 
 /// <summary>
 /// The single player of the game, whom controls both Left and Right characters.
@@ -151,6 +154,28 @@ public class Player : MarioObject
 	{
 		base.Tick();
 
+		UpdateSellingProgressBar();
+
+		GetCharacters();
+
+#if !FINAL
+		UpdateDebugKeys();
+#endif
+
+		UpdateSellItem();
+	}
+
+	private void GetCharacters()
+	{
+		if (Left) 
+			return;
+
+		Left = transform.FindChild("CharacterLeft").GetComponent<Character>();
+		Right = transform.FindChild("CharacterRight").GetComponent<Character>();
+	}
+
+	private void UpdateSellingProgressBar()
+	{
 		var any = Inventory[IngredientType.CupCake] > 0 || Inventory[IngredientType.MintIceCream] > 0;
 		var bar = _products.SellProgressBar;
 		if (!any && !bar.Paused)
@@ -158,23 +183,18 @@ public class Player : MarioObject
 			bar.Reset();
 		}
 
-		if (any && bar.Paused)
+		if (any && bar.Paused || (!_lastAny && any))
 		{
+			bar.Reset();
 			bar.Paused = false;
+
+			SellingTimer = SellingInterval;
+
+			// TODO: Use Recipe.SellingTime
 			bar.TotalTime = Player.SellingInterval;
 		}
 
-		if (!Left)
-		{
-			Left = transform.FindChild("CharacterLeft").GetComponent<Character>();
-			Right = transform.FindChild("CharacterRight").GetComponent<Character>();
-		}
-
-#if !FINAL
-		UpdateDebugKeys();
-#endif
-
-		UpdateSellItem();
+		_lastAny = any;
 	}
 
 	private void UpdateDebugKeys()
@@ -252,7 +272,20 @@ public class Player : MarioObject
 	{
 		IngredientType[] types = { IngredientType.MintIceCream, IngredientType.CupCake };
 
-		for (var n = 0; n < types.Length; ++n)
+		var canSell = false;
+		foreach (var ty in types)
+		{
+			if (Inventory[ty] > 0)
+			{
+				canSell = true;
+				break;
+			}
+		}
+
+		if (!canSell)
+			return;
+		
+		while (true)
 		{
 			var index0 = UnityEngine.Random.Range(0, types.Length);
 			var type = types[index0];
@@ -261,6 +294,8 @@ public class Player : MarioObject
 				continue;
 
 			SellItem(type);
+
+			break;
 		}
 	}
 
@@ -272,13 +307,22 @@ public class Player : MarioObject
 		var info = World.IngredientInfo[type];
 		Gold += info.Sell;
 		Inventory[type]--;
-		Debug.Log("SOLD a " + type + " for " + info.Sell + "$");
+		//Debug.Log("SOLD a " + type + " for " + info.Sell + "$" + UnityEngine.Time.frameCount);
 
 		var p = FindObjectOfType<ProductsPanelScript>();
-		p.SellProgressBar.Reset();
+		if (p)
+			p.SellProgressBar.Reset();
 		
 		UpdateUi();
 	}
+
+	//IEnumerator MoveSoldItem(IGenerator self, IngredientType type)
+	//{
+	//	//var info = World.GetInfo(type);
+	//	//var image = info.Image;
+	//	//var sprite = new UI.Sprite();
+	//	//sprite.
+	//}
 
 	private void Died()
 	{
@@ -364,6 +408,9 @@ public class Player : MarioObject
 	public void SetGoal(StageGoal goal)
 	{
 		Debug.Log("Player.SetGoal: " + goal.Name);
+
+		//if (World.GoalIndex != 0)
+		//	World.GoalIndex++;
 
 		CurrentGoal = goal;
 		var goalPanel = Canvas.GoalPanel.GetComponent<GoalPanel>();

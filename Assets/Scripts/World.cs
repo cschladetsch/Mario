@@ -347,8 +347,6 @@ public class World : MonoBehaviour
 		//ChangeArea(AreaType.Factory);
 	}
 
-
-
 	public void NextGoal()
 	{
 		GoalIndex = (GoalIndex + 1)%StageGoals.Length;
@@ -359,5 +357,10 @@ public class World : MonoBehaviour
 	{
 		Debug.Log("World.MoveTo: " + area);
 		ChangeArea(area);
+	}
+
+	public IngredientInfo GetInfo(IngredientType type)
+	{
+		return IngredientInfo[type];
 	}
 }

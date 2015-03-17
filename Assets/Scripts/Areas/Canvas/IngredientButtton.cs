@@ -1,4 +1,5 @@
 ﻿using System.Net.Mime;
+using System.Runtime.InteropServices;
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
@@ -14,6 +15,24 @@ public class IngredientButtton : MarioObject
 	public Image Image;
 
 	public int Amount;
+
+	private Button _button;
+
+	public int MinGoalIndex;
+
+	protected override void Begin()
+	{
+		base.Begin();
+
+		_button = GetComponent<Button>();
+	}
+
+	protected override void Tick()
+	{
+		base.Tick();
+
+		_button.interactable = World.GoalIndex >= MinGoalIndex;
+	}
 
 	public void Reset()
 	{
@@ -48,5 +67,10 @@ public class IngredientButtton : MarioObject
 	{
 		Amount = i;
 		AmountText.text = i.ToString();
+	}
+
+	public void SetCost(int buy)
+	{
+		CostText.text = buy.ToString();
 	}
 }

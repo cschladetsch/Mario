@@ -166,13 +166,13 @@ public class Cooker : MarioObject
 			yield break;
 		}
 
-		Debug.LogWarning("Cooking a " + Recipe.Result);
+		//Debug.Log("COOKING a " + Recipe.Result + " Recipe");
 
 		ProgressBar.Reset();
-		ProgressBar.Paused = false;
+		//ProgressBar.Paused = false;
 		ProgressBar.TotalTime = Recipe.CookingTime;
 
-		Debug.Log(string.Format("{0} {1} {2}", ProgressBar.Paused, ProgressBar.TotalTime, RealDeltaTime));
+		//Debug.Log(string.Format("{0} {1} {2}", ProgressBar.Paused, ProgressBar.TotalTime, RealDeltaTime));
 
 		//Debug.Log("Cooking a " + Recipe.Result);//+ " " + UnityEngine.Time.frameCount);
 
@@ -185,7 +185,7 @@ public class Cooker : MarioObject
 		while (remaining > 0)
 		{
 			remaining -= (float)RealDeltaTime;
-			//UpdateProgressBar(remaining/Recipe.CookingTime);
+			ProgressBar.SetPercent(remaining/Recipe.CookingTime);
 			yield return 0;
 		}
 
@@ -199,10 +199,10 @@ public class Cooker : MarioObject
 			Completed(Recipe.Result);
 
 		var count = Recipe.NumResults;
-		Debug.Log("Cooked " + count + " " + Recipe.Result);
-		Player.CookedItem(Recipe.Result, count);
-
+		//Debug.Log("Cooked " + count + " " + Recipe.Result);
 		ProgressBar.Reset();
+
+		Player.CookedItem(Recipe.Result, count);
 
 		UpdateDisplay();
 

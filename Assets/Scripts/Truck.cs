@@ -155,7 +155,7 @@ public class Truck : MarioObject
 		if (DeliveryCompleted != null)
 			DeliveryCompleted(this);
 
-		Debug.Log("Delivery completed: " + _cakes.Count);
+		//Debug.Log("Delivery completed: " + _cakes.Count);
 		foreach (var c in _cakes)
 		{
 			Player.AddCake(c);

@@ -10,11 +10,7 @@ public class ProductsPanelScript : MarioObject
 
 	protected override void Construct()
 	{
-		foreach (var go in gameObject.GetComponentsInChildren<ProductItem>())
-		{
-			Debug.Log("Have product " + go.Type);
-			Products.Add(go);
-		}
+		Products.AddRange(gameObject.GetComponentsInChildren<ProductItem>());
 	}
 
 	protected override void Begin()

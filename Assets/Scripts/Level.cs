@@ -524,8 +524,8 @@ public class Level : MarioObject
 
 		foreach (var kv in contents)
 		{
-			if (kv.Value > 0)
-				Debug.Log(string.Format("Adding {0} {1}", kv.Key, kv.Value));
+			//if (kv.Value > 0)
+			//	Debug.Log(string.Format("Adding {0} {1}", kv.Key, kv.Value));
 
 			Inventory[kv.Key] += kv.Value;
 		}

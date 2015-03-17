@@ -12,29 +12,38 @@ public class ProgressBar : MarioObject
 	private Image _image;
 
 	private float _time;
+	public bool Completed { get { return _time >= TotalTime; } }
 
 	protected override void Begin()
 	{
 		base.Begin();
 
 		_image = GetComponent<Image>();
+		if (_image == null)
+		{
+			Debug.Log(transform.parent.name);
+		}
+	}
+
+	public void SetPercent(float percent)
+	{
+		_image.fillAmount = percent;
 	}
 
 	protected override void Tick()
 	{
 		base.Tick();
 
-		_time += RealDeltaTime;
+		_time += GameDeltaTime;
 
-		var delta = _time/TotalTime;
-
-		_image.fillAmount = delta;
+		_image.fillAmount = _time/TotalTime;
 	}
 
 	public void Reset()
 	{
-		Debug.Log("Bar.Reset");
 		_time = 0;
+		if (_image == null)
+			_image = GetComponent<Image>();
 		_image.fillAmount = 0;
 		Paused = true;
 	}

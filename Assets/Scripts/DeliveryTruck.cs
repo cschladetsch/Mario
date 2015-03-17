@@ -3,15 +3,45 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
+/// <summary>
+/// The van that delivers goods to the factory
+/// </summary>
 public class DeliveryTruck : MarioObject
 {
+	/// <summary>
+	/// True if truck has been delivered
+	/// </summary>
+	public bool Ready;
+
+	/// <summary>
+	/// How long it takes to deliver
+	/// </summary>
+	public float DeliveryTime;
+
+	/// <summary>
+	/// Collider for car
+	/// </summary>
+	public Collider2D Collider;
+
+	public Button Button;
+
+	//public Button TimerButtton;
+
 	public GameObject BuyingOptions;
 
 	public GameObject PlayButton;
 
 	public Text PlayButtonText;
 
-	private List<IngredientButtton> _buttons = new List<IngredientButtton>();
+	public ProgressBar ProgressBar;
+
+	private readonly List<IngredientButtton> _buttons = new List<IngredientButtton>();
+
+	public float _deliveryTimer;
+
+	private bool _delivering;
+
+	private Dictionary<IngredientType, int> _contents;
 
 	private void UpdateDisplay()
 	{
@@ -26,33 +56,35 @@ public class DeliveryTruck : MarioObject
 
 	public void VanButtonPressed()
 	{
+		if (Ready)
+			PlayButtonPressed();
+
 		if (_delivering)
 			return;
 
+		GatherIngredientButtons();
 		BuyingOptions.SetActive(true);
 	}
 
 	public void PlayButtonPressed()
 	{
+		//Debug.Log("PlayButtonPressed" + "");
 		Complete();
 	}
 
+	/// <summary>
+	/// Player wishes to start delivering items to factory
+	/// </summary>
 	public void OrderButtonPressed()
 	{
 		BuyingOptions.SetActive(false);
-		PlayButton.SetActive(true);
+		PlayButton.SetActive(false);
+		ProgressBar.gameObject.SetActive(true);
+		ProgressBar.Reset();
+		ProgressBar.TotalTime = DeliveryTime;
+		ProgressBar.Paused = false;
 		Deliver(_contents);
 	}
-
-	/// <summary>
-	/// True if truck has been delivered
-	/// </summary>
-	public bool Ready;
-
-	/// <summary>
-	/// How long it takes to deliver
-	/// </summary>
-	public float DeliveryTime;
 
 	public void BuyItem(GameObject go)
 	{
@@ -64,36 +96,24 @@ public class DeliveryTruck : MarioObject
 
 		var button = go.GetComponent<IngredientButtton>();
 		var type = button.Type;
+		//if (World.GoalIndex == 0 && (type == IngredientType.Mint || type == IngredientType.Chocolate))
+		//	return;
+
 		var info = World.IngredientInfo[type];
 		if (Player.Gold < info.Buy)
 			return;
 
 		button.AddAmount(1);
-		if (!_contents.ContainsKey(type))
-		{
-			Debug.LogError("Shop doesn't have entry for " + type);
-			return;
-		}
+		//if (!_contents.ContainsKey(type))
+		//{
+		//	Debug.LogError("Shop doesn't have entry for " + type);
+		//	return;
+		//}
 
 		_contents[type]++;
 		Player.Gold -= info.Buy;
 		UpdateDisplay();
 	}
-
-	/// <summary>
-	/// Collider for car
-	/// </summary>
-	public Collider2D Collider;
-
-	public Button Button;
-
-	public Button TimerButtton;
-
-	private float _deliveryTimer;
-
-	private bool _delivering;
-
-	private Dictionary<IngredientType, int> _contents;
 
 	protected override void Begin()
 	{
@@ -101,6 +121,7 @@ public class DeliveryTruck : MarioObject
 
 		BuyingOptions.SetActive(false);
 		PlayButton.SetActive(false);
+		ProgressBar.gameObject.SetActive(false);
 
 		GatherIngredientButtons();
 
@@ -109,14 +130,25 @@ public class DeliveryTruck : MarioObject
 		UpdateDisplay();
 	}
 
+	/// <summary>
+	/// Get all ingredients from selling items panel
+	/// </summary>
 	private void GatherIngredientButtons()
 	{
+		Debug.Log("GatherIngredientButtons: Level=" + World.GoalIndex);
+		_buttons.Clear();
 		foreach (Transform tr in BuyingOptions.transform)
 		{
-			var component = tr.GetComponent<IngredientButtton>();
-			//Debug.Log("BuyingOption " + tr.name + ", comp: " + component);
-			if (component != null)
-				_buttons.Add(component);
+			var ing = tr.GetComponent<IngredientButtton>();
+			if (ing != null)
+			{
+				_buttons.Add(ing);
+				ing.SetAmount(0);
+				ing.SetCost(World.IngredientInfo[ing.Type].Buy);
+
+				//if (World.GoalIndex == 0 && (ing.Type == IngredientType.Mint || ing.Type == IngredientType.Chocolate))
+				//	ing.gameObject.GetComponent<Button>().interactable = false;
+			}
 		}
 	}
 
@@ -127,6 +159,8 @@ public class DeliveryTruck : MarioObject
 
 		_deliveryTimer = DeliveryTime;
 		_delivering = true;
+
+		PlayButton.gameObject.SetActive(false);
 
 		_contents = new Dictionary<IngredientType, int>();
 		foreach (var kv in contents)
@@ -178,24 +212,24 @@ public class DeliveryTruck : MarioObject
 		//UpdatePressed();
 	}
 
-	private void UpdatePressed()
-	{
-		Debug.Log("UpdatePressed: ready=" + Ready);
-		if (!Ready)
-			return;
+	//private void UpdatePressed()
+	//{
+	//	Debug.Log("UpdatePressed: ready=" + Ready);
+	//	if (!Ready)
+	//		return;
 
-		var mouse = Input.GetMouseButtonDown(0);
-		Debug.Log("mouse: " + mouse);
-		if (!mouse)
-			return;
+	//	var mouse = Input.GetMouseButtonDown(0);
+	//	Debug.Log("mouse: " + mouse);
+	//	if (!mouse)
+	//		return;
 
-		var hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector2.zero);
-		Debug.Log("collider: " + hit.collider);
-		if (hit.collider == null)
-			return;
+	//	var hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector2.zero);
+	//	Debug.Log("collider: " + hit.collider);
+	//	if (hit.collider == null)
+	//		return;
 
-		Complete();
-	}
+	//	Complete();
+	//}
 
 	public void Complete()
 	{
@@ -204,21 +238,20 @@ public class DeliveryTruck : MarioObject
 		if (!Ready)
 			return;
 
-		PlayButton.SetActive(false);
+		PlayButton.SetActive(true);
+		ProgressBar.gameObject.SetActive(false);
 
 		TurnTimerOn(false);
 
-		//if (World.CurrentLevel == null)
-			World.ChangeArea(AreaType.Factory);
-
+		World.ChangeArea(AreaType.Factory);
 		World.CurrentLevel.AddIngredients(_contents);
 
 		Ready = false;
-		_contents.Clear();
+
+		_contents = IngredientItem.CreateIngredientDict<int>();
+
 		_delivering = false;
 		_deliveryTimer = DeliveryTime;
-
-		//World.BuyingAreaUi.ClearContents();
 
 		ResetTruck();
 	}
@@ -233,14 +266,13 @@ public class DeliveryTruck : MarioObject
 		if (!_delivering)
 			return;
 
-		_deliveryTimer -= (float)RealDeltaTime;
+		_deliveryTimer -= RealDeltaTime;
 		Ready = _deliveryTimer <= 0;
 		if (!Ready)
 			return;
 
-		_delivering = false;
-		PlayButtonText.text = "Ready";
-		PlayButtonText.color = Color.green;
+		ProgressBar.gameObject.SetActive(false);
+		PlayButton.SetActive(true);
 	}
 
 	private void UpdateTimer()
@@ -248,9 +280,9 @@ public class DeliveryTruck : MarioObject
 		if (!_delivering)
 			return;
 
-		var text = string.Format("{0:0.0}s", _deliveryTimer);
-		PlayButtonText.text = text;
-		PlayButtonText.color = Color.black;
+		//var text = string.Format("{0:0.0}s", _deliveryTimer);
+		//PlayButtonText.text = text;
+		//PlayButtonText.color = Color.black;
 	}
 
 	private void ResetTruck()
@@ -259,6 +291,8 @@ public class DeliveryTruck : MarioObject
 		TurnTimerOn(true);
 		Ready = false;
 		_delivering = false;
+		PlayButton.SetActive(false);
+		
 
 		// MON
 		//Canvas.CarTimer.text = string.Format("{0:0.0}s", DeliveryTime);

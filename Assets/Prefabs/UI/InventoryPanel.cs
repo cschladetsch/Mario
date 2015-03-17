@@ -88,6 +88,7 @@ public class InventoryPanel : MarioObject
 //#if DEBUG
 	public void ButtonPressed(GameObject button)
 	{
+		//if (World.FactoryAreaUi.
 		var item = button.GetComponent<IngredientItem>();
 		Player.Inventory[item.Type]++;
 		UpdateDisplay(Player.Inventory, false);

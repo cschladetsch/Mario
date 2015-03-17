@@ -69,6 +69,8 @@ public class World : MonoBehaviour
 
 	public IKernel Kernel;
 
+	public bool GodMode;
+
 	void Awake()
 	{
 		Awaken();
@@ -333,8 +335,6 @@ public class World : MonoBehaviour
 
 		CurrentLevel.Pause(false);
 	}
-
-	private Dictionary<IngredientType, int> _contents;
 
 	public void BeginMainGame(Dictionary<IngredientType, int> contents)
 	{

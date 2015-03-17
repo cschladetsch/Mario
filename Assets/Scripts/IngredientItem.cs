@@ -38,6 +38,9 @@ public class IngredientItem : MarioObject
 
 		var req = int.Parse(Count.text);
 		var color = req <= Player.Inventory[Type] ? Color.green : Color.red;
+		var truck = FindObjectOfType<DeliveryTruck>();
+		if (truck.HasItems(Type, req))
+			color = Color.yellow;
 		Count.color = color;
 	}
 }

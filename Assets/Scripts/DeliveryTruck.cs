@@ -43,11 +43,10 @@ public class DeliveryTruck : MarioObject
 
 	private Dictionary<IngredientType, int> _contents;
 
+	public bool Delivering { get { return _delivering; } }
+
 	private void UpdateDisplay()
 	{
-		// disable factory button if we have no contents
-		//World.Buttons.FactoryButton.interactable = _contents.Sum(c => c.Value) > 0;
-
 		Canvas.UpdateGoldAmount();
 
 		foreach (var c in _buttons)
@@ -135,7 +134,7 @@ public class DeliveryTruck : MarioObject
 	/// </summary>
 	private void GatherIngredientButtons()
 	{
-		Debug.Log("GatherIngredientButtons: Level=" + World.GoalIndex);
+		//Debug.Log("GatherIngredientButtons: Level=" + World.GoalIndex);
 		_buttons.Clear();
 		foreach (Transform tr in BuyingOptions.transform)
 		{
@@ -194,6 +193,26 @@ public class DeliveryTruck : MarioObject
 		World.ChangeArea(AreaType.Bakery);
 
 		return true;
+	}
+
+	public void CancelOrdering()
+	{
+		BuyingOptions.SetActive(false);
+		_contents = IngredientItem.CreateIngredientDict<int>();
+		RefundItems();
+		UpdateDisplay();
+	}
+
+	private void RefundItems()
+	{
+		foreach (var b in _buttons)
+		{
+			if (b.Amount == 0)
+				return;
+			//Debug.Log(World.GetInfo(b.Type).Sell + " " + Time.frameCount);
+			Player.Gold += b.Amount*World.GetInfo(b.Type).Sell;
+			b.SetAmount(0);
+		}
 	}
 
 	protected override void Tick()
@@ -296,5 +315,26 @@ public class DeliveryTruck : MarioObject
 
 		// MON
 		//Canvas.CarTimer.text = string.Format("{0:0.0}s", DeliveryTime);
+	}
+
+	public void ShowBuyingPanel(bool show)
+	{
+		BuyingOptions.SetActive(show);
+	}
+
+	public void BuyItem(IngredientItem item)
+	{
+		foreach (var b in _buttons)
+		{
+			if (b.Type == item.Type)
+			{
+				BuyItem(b.gameObject);
+			}
+		}
+	}
+
+	public bool HasItems(IngredientType type, int num)
+	{
+		return _buttons.Where(b => b.Type == type).Any(b => b.Amount >= num);
 	}
 }

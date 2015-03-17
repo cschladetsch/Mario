@@ -88,10 +88,20 @@ public class InventoryPanel : MarioObject
 //#if DEBUG
 	public void ButtonPressed(GameObject button)
 	{
-		//if (World.FactoryAreaUi.
 		var item = button.GetComponent<IngredientItem>();
-		Player.Inventory[item.Type]++;
-		UpdateDisplay(Player.Inventory, false);
+		if (World.GodMode)
+		{
+			Player.Inventory[item.Type]++;
+			UpdateDisplay(Player.Inventory, false);
+			return;
+		}
+
+		var truck = FindObjectOfType<DeliveryTruck>();
+		if (!truck.Delivering)
+		{
+			truck.ShowBuyingPanel(true);
+			truck.BuyItem(item);
+		}
 	}
 //#endif
 }

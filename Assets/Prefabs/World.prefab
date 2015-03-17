@@ -45,7 +45,6 @@ GameObject:
   m_Component:
   - 4: {fileID: 400004}
   - 114: {fileID: 11400002}
-  - 114: {fileID: 11400004}
   m_Layer: 0
   m_Name: World
   m_TagString: Untagged
@@ -223,7 +222,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   IngredientDetails: {fileID: 0}
-  AreaIndex: 0
+  CurrrentAreaType: 0
   StageGoals:
   - {fileID: 11481494, guid: 0f15c10cf07047f4398aae0899c4bd72, type: 2}
   - {fileID: 11416742, guid: f80dd1ba2b0ec2642bd7a5a7a9d8a58b, type: 2}
@@ -232,34 +231,16 @@ MonoBehaviour:
   CurrentLevel: {fileID: 0}
   AvailableProducts: []
   CookingAreaUi: {fileID: 0}
-  BuyingAreaUi: {fileID: 0}
+  FactoryAreaUi: {fileID: 0}
   Levels:
-  - {fileID: 100026, guid: de87ac457db206345b551fd137bd29fe, type: 2}
+  - {fileID: 158738, guid: de87ac457db206345b551fd137bd29fe, type: 2}
   - {fileID: 100026, guid: 4a8e85484db1ae948a4840a0be57728a, type: 2}
   AreaPrefabs:
-  - {fileID: 100006, guid: fc89b795e9ed3cc4ea4b3e37af91a3ef, type: 2}
-  - {fileID: 177390, guid: b7740c47d7f18ab47997290cdf058f47, type: 2}
   - {fileID: 100004, guid: 1100c0a9ed160384ca84ebbaf85adbfc, type: 2}
+  - {fileID: 177390, guid: b7740c47d7f18ab47997290cdf058f47, type: 2}
   GoalIndex: 0
+  GodMode: 0
   Buttons: {fileID: 0}
---- !u!114 &11400004
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 100004}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7fc9a78396fa0104094cd9974547a1f4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Paused: 0
-  Prefab: {fileID: 100002, guid: 36c409fa8892fa9408d383f139b0ef92, type: 2}
-  Type: 0
-  Weight: 1
-  MinSpawnTime: 3
-  MaxSpawnTime: 6
-  MaxSpawns: -1
 --- !u!124 &12400000
 Behaviour:
   m_ObjectHideFlags: 1

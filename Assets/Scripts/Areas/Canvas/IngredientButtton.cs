@@ -45,8 +45,7 @@ public class IngredientButtton : MarioObject
 		}
 
 		var info = World.IngredientInfo[Type];
-		var tex = info.Image;
-		Image.overrideSprite = Sprite.Create(tex, new Rect(0, 0, tex.width, tex.height), new Vector2(1, 1));
+		Image = info.Image;
 
 		CostText.text = string.Format("{0}$", info.Buy);
 		AmountText.text = "0";

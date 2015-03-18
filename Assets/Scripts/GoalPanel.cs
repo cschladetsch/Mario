@@ -40,14 +40,9 @@ public class GoalPanel : MarioObject
 	/// </summary>
 	readonly Dictionary<IngredientType, GameObject> _prefabs = new Dictionary<IngredientType, GameObject>();
 
-	private Sprite _tintSprite;
-
 	protected override void BeforeFirstUpdate()
 	{
 		Ingredients = IngredientItem.CreateIngredientDict<int>();
-
-		// retain so we can toggle it off and on
-		_tintSprite = Tint.sprite;
 
 		GatherPrefabsForIngredientDisplay();
 

@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 
 /// <summary>
@@ -11,10 +12,7 @@ public class IngredientInfo : MonoBehaviour
 	/// </summary>
 	public IngredientType Type;
 
-	/// <summary>
-	/// The visual image for it
-	/// </summary>
-	public Texture2D Image;
+	public Image Image;
 
 	/// <summary>
 	/// CostText to buy. If zero, item cannot be bought

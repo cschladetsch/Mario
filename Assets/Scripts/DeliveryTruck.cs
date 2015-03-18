@@ -8,6 +8,8 @@ using UnityEngine.UI;
 /// </summary>
 public class DeliveryTruck : MarioObject
 {
+	public Button DeliveryButton;
+
 	/// <summary>
 	/// True if truck has been delivered
 	/// </summary>
@@ -205,50 +207,35 @@ public class DeliveryTruck : MarioObject
 
 	private void RefundItems()
 	{
+		//Debug.Log("RefundItems");
 		foreach (var b in _buttons)
 		{
 			if (b.Amount == 0)
-				return;
-			//Debug.Log(World.GetInfo(b.Type).Sell + " " + Time.frameCount);
-			Player.Gold += b.Amount*World.GetInfo(b.Type).Sell;
+				continue;
+
+			//Debug.Log("Refunding " + b.Type + "x" + b.Amount + " for " + World.GetInfo(b.Type).Buy + " each");
+
+			Player.Gold += b.Amount*World.GetInfo(b.Type).Buy;
+
 			b.SetAmount(0);
 		}
 	}
 
 	protected override void Tick()
 	{
-		//var canDeliver = World.BuyingAreaUi.HasAnything;
-
-		//TimerButtton.interactable = canDeliver;
-		//Button.interactable = canDeliver;
-
 		base.Tick();
+
+		UpdateDeliveryButton();
 
 		UpdateTimer();
 
 		UpdateDelivering();
-
-		//UpdatePressed();
 	}
 
-	//private void UpdatePressed()
-	//{
-	//	Debug.Log("UpdatePressed: ready=" + Ready);
-	//	if (!Ready)
-	//		return;
-
-	//	var mouse = Input.GetMouseButtonDown(0);
-	//	Debug.Log("mouse: " + mouse);
-	//	if (!mouse)
-	//		return;
-
-	//	var hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector2.zero);
-	//	Debug.Log("collider: " + hit.collider);
-	//	if (hit.collider == null)
-	//		return;
-
-	//	Complete();
-	//}
+	private void UpdateDeliveryButton()
+	{
+		DeliveryButton.interactable = _contents.Sum(c => c.Value) > 0;
+	}
 
 	public void Complete()
 	{
@@ -277,7 +264,6 @@ public class DeliveryTruck : MarioObject
 
 	private void TurnTimerOn(bool on)
 	{
-		//Canvas.CarTimer.transform.parent.gameObject.SetActive(on);
 	}
 
 	private void UpdateDelivering()

@@ -376,4 +376,9 @@ public class World : MonoBehaviour
 	{
 		return IngredientInfo[type];
 	}
+
+	public IngredientInfo GetIngredientInfo(IngredientType type)
+	{
+		return GetInfo(type);
+	}
 }

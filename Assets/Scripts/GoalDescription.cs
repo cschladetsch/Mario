@@ -40,8 +40,6 @@ public class GoalDescription : MarioObject
 
 		Objective.text = sb.ToString();
 
-		World.Canvas.GoalPanel.UpdateUi();
+		World.GoalPanel.UpdateUi();
 	}
 }
-
-

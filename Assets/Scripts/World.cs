@@ -15,7 +15,7 @@ public class World : MonoBehaviour
 
 	public GameObject CurrentGoalDisplayPanel;
 
-	public GameObject GoalPanel;
+	public GoalPanel GoalPanel;
 
 	public AreaType CurrrentAreaType;
 
@@ -169,6 +169,7 @@ public class World : MonoBehaviour
 		Player.SetGoal(StageGoals[GoalIndex]);
 		CurrentGoalDisplayPanel.GetComponent<GoalDescription>().ConstructPanel();
 		CurrentGoalDisplayPanel.SetActive(true);
+		GoalPanel.GetComponent<GoalPanel>().Refresh();
 	}
 
 	private IEnumerator TestCoro(IGenerator t0)
@@ -272,6 +273,14 @@ public class World : MonoBehaviour
 	void Update()
 	{
 		Kernel.Step();
+
+#if DEBUG
+		if (Input.GetKeyDown(KeyCode.G))
+		{
+			GodMode = !GodMode;
+			Debug.Log("GodMode active: " + GodMode);
+		}
+#endif
 
 		// need to wait a few updates before beginning, because we can have nested SpawnGameObject components...
 		if (_beginLevelAfterThisManyUpdates > 0)

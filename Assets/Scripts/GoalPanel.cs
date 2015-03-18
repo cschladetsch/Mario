@@ -8,12 +8,6 @@ using UnityEngine.UI;
 /// </summary>
 public class GoalPanel : MarioObject
 {
-	public Image Tint;
-
-	public Dictionary<IngredientType, int> Ingredients;
-
-	public Text ButtonText;
-
 	/// <summary>
 	/// Spacing between items
 	/// </summary>
@@ -32,7 +26,7 @@ public class GoalPanel : MarioObject
 	/// <summary>
 	/// What we have currently collected towards the goal
 	/// </summary>
-	readonly List<GoalngredientView> _contents = new List<GoalngredientView>();
+	readonly List<GoalngredientView> _requirements = new List<GoalngredientView>();
 
 	/// <summary>
 	/// What to use to make the goal images. These should have GoalIngredientView components.
@@ -40,25 +34,15 @@ public class GoalPanel : MarioObject
 	/// </summary>
 	readonly Dictionary<IngredientType, GameObject> _prefabs = new Dictionary<IngredientType, GameObject>();
 
-	private Sprite _tintSprite;
-
 	protected override void BeforeFirstUpdate()
 	{
-		Ingredients = IngredientItem.CreateIngredientDict<int>();
-
-		// retain so we can toggle it off and on
-		_tintSprite = Tint.sprite;
-
 		GatherPrefabsForIngredientDisplay();
 
 		AddAllItems();
-
-		//SetGoal(Player.CurrentGoal);
 	}
 
 	public void Cooked(IngredientType item, int count)
 	{
-		Ingredients[item] += count;
 		UpdateUi();
 	}
 
@@ -66,18 +50,6 @@ public class GoalPanel : MarioObject
 	{
 		_prefabs[IngredientType.CupCake] = (GameObject)Resources.Load("Images/Cupcake");
 		_prefabs[IngredientType.MintIceCream] = (GameObject)Resources.Load("Images/ChockMintIceCream");
-		//_prefabs[IngredientType.Chocolate] = (GameObject) Resources.Load("Images/ChockMintIceCream");
-		//_prefabs[IngredientType.MintIceCream] = (GameObject) Resources.Load("Images/ChockMintIceCream");
-	}
-
-	public void SetGoal(StageGoal goal)
-	{
-		World.GoalPanel.SetActive(true);
-	}
-
-	public void GoalButtonPressed()
-	{
-		World.GoalPanel.SetActive(false);
 	}
 
 	private void ChangeOverlayColor(Color color)
@@ -94,10 +66,10 @@ public class GoalPanel : MarioObject
 	{
 		//Debug.Log("Syncing goal panel");
 
-		if (Ingredients == null)
-			Ingredients = IngredientItem.CreateIngredientDict<int>();
+		if (World.Player == null || World.Player.SoldItems == null)
+			return;
 
-		foreach (var kv in Ingredients)
+		foreach (var kv in World.Player.SoldItems)
 		{
 			var type = kv.Key;
 			var num = kv.Value;
@@ -105,7 +77,7 @@ public class GoalPanel : MarioObject
 			if (num == 0)
 				continue;
 
-			foreach (var c in _contents)
+			foreach (var c in _requirements)
 			{
 				if (c.Type == type)
 					c.HasBeenReached(true);
@@ -116,20 +88,15 @@ public class GoalPanel : MarioObject
 		}
 	}
 
+	/// <summary>
+	/// Add required items to goal panel
+	/// </summary>
 	private void AddAllItems()
 	{
-		//Debug.Log(Player.CurrentGoal.Name);
-		//Debug.Log(Player.CurrentGoal.Inventory);
-		//foreach (var kv in Player.CurrentGoal.Inventory)
-		//{
-		//	Debug.Log(kv);
-		//}
 		if (_prefabs.Count == 0)
 			GatherPrefabsForIngredientDisplay();
 
 		ClearContents();
-
-		//var tr = GetComponent<RectTransform>();
 
 		var start = StartX;
 
@@ -147,11 +114,10 @@ public class GoalPanel : MarioObject
 				continue;
 
 			//Debug.Log("Adding a " + type + " to the goal list");
-
 			var go = (GameObject)Instantiate(prefab);
 			var view = go.GetComponent<GoalngredientView>();
 			view.HasBeenReached(false);
-			_contents.Add(view);
+			_requirements.Add(view);
 
 			//go.transform.parent = Canvas.GoalPanel.transform;
 			go.transform.SetParent(transform, false);
@@ -160,14 +126,18 @@ public class GoalPanel : MarioObject
 
 			//Debug.Log("Adding a " + view.Type + " to goals");
 		}
+
+		UpdateUi();
 	}
 
 	private void ClearContents()
 	{
-		foreach (var c in _contents)
+		foreach (var c in _requirements)
 			Destroy(c.gameObject);
 
-		_contents.Clear();
+		_requirements.Clear();
+
+		UpdateUi();
 	}
 
 	public void Refresh()
@@ -175,5 +145,7 @@ public class GoalPanel : MarioObject
 		ClearContents();
 
 		AddAllItems();
+
+		UpdateUi();
 	}
 }

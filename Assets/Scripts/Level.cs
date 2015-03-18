@@ -77,8 +77,14 @@ public class Level : MarioObject
 		}
 	}
 
+	/// <summary>
+	/// Returns the number of items remaining to spawn
+	/// </summary>
 	public int SpawnsRemaining { get { return _spawners.Sum(s => s._spawnsLeft); } }
 
+	/// <summary>
+	/// Return true if there is nothing left to spawn
+	/// </summary>
 	public bool NothingToSpawn { get { return SpawnsRemaining == 0; } }
 
 	public void Init()
@@ -94,6 +100,7 @@ public class Level : MarioObject
 
 	private void CakeDropped(Player player)
 	{
+		Debug.Log("Player dropped a cake");
 	}
 
 	protected override void BeforeFirstUpdate()

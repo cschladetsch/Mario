@@ -107,14 +107,14 @@ public class Player : MarioObject
 
 	private ProductsPanelScript _products;
 
-	private Dictionary<IngredientType, int> _sold;
+	public Dictionary<IngredientType, int> SoldItems;
 
 	protected override void Begin()
 	{
 		base.Begin();
 
 		_products = FindObjectOfType<ProductsPanelScript>();
-		_sold = IngredientItem.CreateIngredientDict<int>();
+		SoldItems = IngredientItem.CreateIngredientDict<int>();
 	}
 
 	public void ShowCharacters(bool show)
@@ -313,7 +313,7 @@ public class Player : MarioObject
 		Gold += info.Sell;
 		Inventory[type]--;
 		//Debug.Log("SOLD a " + type + " for " + info.Sell + "$" + UnityEngine.Time.frameCount);
-		_sold[type]++;
+		SoldItems[type]++;
 
 		var p = FindObjectOfType<ProductsPanelScript>();
 		if (p)
@@ -351,9 +351,8 @@ public class Player : MarioObject
 	private void UpdateUi()
 	{
 		World.Canvas.UpdateGoldAmount();
-		World.Canvas.GoalPanel.GetComponent<GoalPanel>().UpdateUi();
+		World.GoalPanel.UpdateUi();
 		World.CookingAreaUi.InventoryPanel.UpdateDisplay(Inventory, false);
-		//World.BuyingAreaUi.InventoryPanel.UpdateDisplay(Inventory, false);
 
 		// TODO
 		//_canvas.LivesRemaining.text = Lives.ToString();
@@ -400,7 +399,7 @@ public class Player : MarioObject
 			dict[type]++;
 
 		// check that we sold enough of the things
-		foreach (var kv in _sold)
+		foreach (var kv in SoldItems)
 		{
 			if (!dict.ContainsKey(kv.Key))
 				continue;
@@ -415,7 +414,7 @@ public class Player : MarioObject
 
 		// reset sold for next goal
 		foreach (var kv in dict)
-			_sold[kv.Key] = 0;
+			SoldItems[kv.Key] = 0;
 
 		return true;
 
@@ -425,14 +424,8 @@ public class Player : MarioObject
 	{
 		Debug.Log("Player.SetGoal: " + goal.Name);
 
-		//if (World.GoalIndex != 0)
-		//	World.GoalIndex++;
-
 		CurrentGoal = goal;
-		//var goalPanel = Canvas.GoalPanel.GetComponent<GoalPanel>();
-		//goalPanel.Refresh();
-
-
+		World.GoalPanel.Refresh();
 	}
 
 	public void AddCake(Cake cake)

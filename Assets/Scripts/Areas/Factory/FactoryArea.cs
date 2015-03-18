@@ -6,6 +6,8 @@ using UnityEngine;
 /// </summary>
 public class FactoryArea : AreaBase
 {
+	public RemainingPanel Remaining;
+
 	/// <summary>
 	/// size of camera ortho
 	/// </summary>
@@ -20,6 +22,8 @@ public class FactoryArea : AreaBase
 	{
 		base.EnterArea();
 
+		//World.GoalPanel.gameObject.SetActive(false);
+
 		Player.ShowCharacters(true);
 
 		World.CurrentLevel.ResetSpeed();
@@ -30,6 +34,9 @@ public class FactoryArea : AreaBase
 	public override void LeaveArea()
 	{
 		base.LeaveArea();
+
+		//World.GoalPanel.gameObject.SetActive(true);
+
 		//World.CurrentLevel.Truck.Paused = false;
 
 		//Debug.LogWarning("Leaving Factory");

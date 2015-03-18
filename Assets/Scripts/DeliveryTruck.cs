@@ -321,6 +321,7 @@ public class DeliveryTruck : MarioObject
 
 	public void ShowBuyingPanel(bool show)
 	{
+		Debug.Log("ShowBuyingPanel: " + show);
 		BuyingOptions.SetActive(show);
 	}
 

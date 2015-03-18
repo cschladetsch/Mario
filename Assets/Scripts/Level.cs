@@ -98,9 +98,9 @@ public class Level : MarioObject
 		base.End();
 	}
 
-	private void CakeDropped(Player player)
+	private void CakeDropped(Player player, Pickup pickup)
 	{
-		Debug.Log("Player dropped a cake");
+		Debug.Log("Player dropped a pickup " + pickup.name);
 	}
 
 	protected override void BeforeFirstUpdate()
@@ -331,6 +331,8 @@ public class Level : MarioObject
 
 		if (!NoMoreCakes)
 			UpdateSpawners();
+		else if (!Truck.Emptying)
+			Truck.StartEmptying();
 	}
 
 	private void UpdateSpeed()

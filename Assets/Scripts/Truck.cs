@@ -76,6 +76,9 @@ public class Truck : MarioObject
 		if (!World.CurrentLevel)
 			return;
 
+		if (!World.Areas[AreaType.Factory].Visual)
+			return;
+
 		UpdateCheckFull();
 
 		UpdateEmptying();

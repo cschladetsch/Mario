@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.InteropServices.ComTypes;
 using UnityEngine;
 
 /// <summary>
@@ -550,5 +549,11 @@ public class Level : MarioObject
 			Destroy(cake);
 			return;
 		}
+	}
+
+	public void ResetSpeed()
+	{
+		_speedTimer = SpeedIncrementTime;
+		SpeedLevel = 0;
 	}
 }

@@ -107,11 +107,14 @@ public class Player : MarioObject
 
 	private ProductsPanelScript _products;
 
+	private Dictionary<IngredientType, int> _sold;
+
 	protected override void Begin()
 	{
 		base.Begin();
 
 		_products = FindObjectOfType<ProductsPanelScript>();
+		_sold = IngredientItem.CreateIngredientDict<int>();
 	}
 
 	public void ShowCharacters(bool show)
@@ -199,6 +202,7 @@ public class Player : MarioObject
 
 	private void UpdateDebugKeys()
 	{
+#if DEBUG
 		if (Input.GetKeyDown(KeyCode.Space))
 		{
 			FindObjectOfType<World>().TogglePause();
@@ -215,6 +219,7 @@ public class Player : MarioObject
 		{
 			CookedItem(IngredientType.MintIceCream, 1);
 		}
+#endif
 	}
 
 	List<Product> CalcPossibleProducts()
@@ -308,12 +313,16 @@ public class Player : MarioObject
 		Gold += info.Sell;
 		Inventory[type]--;
 		//Debug.Log("SOLD a " + type + " for " + info.Sell + "$" + UnityEngine.Time.frameCount);
+		_sold[type]++;
 
 		var p = FindObjectOfType<ProductsPanelScript>();
 		if (p)
 			p.SellProgressBar.Reset();
 		
 		UpdateUi();
+
+		if (GoalReached())
+			World.NextGoal();
 	}
 
 	//IEnumerator MoveSoldItem(IGenerator self, IngredientType type)
@@ -376,19 +385,22 @@ public class Player : MarioObject
 
 		World.Canvas.GoalPanel.Cooked(type, count);
 
-		if (GoalReached())
-			World.NextGoal();
-
 		UpdateUi();
 	}
 
+	/// <summary>
+	/// Check if we have reached current goal
+	/// </summary>
+	/// <returns></returns>
 	private bool GoalReached()
 	{
+		// make a dictionary mapping type to number required
 		var dict = IngredientItem.CreateIngredientDict<int>();
 		foreach (var type in CurrentGoal.Ingredients)
 			dict[type]++;
 
-		foreach (var kv in Inventory)
+		// check that we sold enough of the things
+		foreach (var kv in _sold)
 		{
 			if (!dict.ContainsKey(kv.Key))
 				continue;
@@ -400,6 +412,10 @@ public class Player : MarioObject
 				return false;
 			}
 		}
+
+		// reset sold for next goal
+		foreach (var kv in dict)
+			_sold[kv.Key] = 0;
 
 		return true;
 
@@ -413,8 +429,10 @@ public class Player : MarioObject
 		//	World.GoalIndex++;
 
 		CurrentGoal = goal;
-		var goalPanel = Canvas.GoalPanel.GetComponent<GoalPanel>();
-		goalPanel.Refresh();
+		//var goalPanel = Canvas.GoalPanel.GetComponent<GoalPanel>();
+		//goalPanel.Refresh();
+
+
 	}
 
 	public void AddCake(Cake cake)

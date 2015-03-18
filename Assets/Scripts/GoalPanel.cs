@@ -53,7 +53,7 @@ public class GoalPanel : MarioObject
 
 		AddAllItems();
 
-		SetGoal(Player.CurrentGoal);
+		//SetGoal(Player.CurrentGoal);
 	}
 
 	public void Cooked(IngredientType item, int count)
@@ -72,35 +72,12 @@ public class GoalPanel : MarioObject
 
 	public void SetGoal(StageGoal goal)
 	{
-		//Debug.Log("Setting goal " + goal.Name);
-
-		ButtonText.gameObject.SetActive(true);
-		ButtonText.text = goal.MakeDescription();
-
-		Tint.sprite = _tintSprite;
-		ChangeOverlayColor(DimColor);
-
-		// move to under tint so we get drawn brightly
-		Tint.gameObject.SetActive(true);
-		//transform.parent = Tint.gameObject.transform;
-		transform.SetParent(Tint.gameObject.transform, true);
-
-		gameObject.SetActive(false);
+		World.GoalPanel.SetActive(true);
 	}
 
 	public void GoalButtonPressed()
 	{
-		//Debug.Log("Goal Button Pressed");
-		ButtonText.transform.parent.gameObject.SetActive(false);
-
-		Tint.sprite = null;
-		ChangeOverlayColor(new Color(0, 0, 0, 0));
-
-		// from from under tint
-		gameObject.SetActive(true);
-		Tint.gameObject.SetActive(false);
-		//transform.parent = World.Canvas.transform;
-		transform.SetParent(World.Canvas.transform, true);
+		World.GoalPanel.SetActive(false);
 	}
 
 	private void ChangeOverlayColor(Color color)

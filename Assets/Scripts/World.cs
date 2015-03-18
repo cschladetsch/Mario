@@ -13,6 +13,10 @@ public class World : MonoBehaviour
 {
 	public GameObject IngredientDetails;
 
+	public GameObject CurrentGoalDisplayPanel;
+
+	public GameObject GoalPanel;
+
 	public AreaType CurrrentAreaType;
 
 	public StageGoal []StageGoals;
@@ -20,6 +24,8 @@ public class World : MonoBehaviour
 	public AreaBase CurrentArea;
 
 	public Level CurrentLevel;
+
+	public StageGoal CurrentGoal { get { return Player.CurrentGoal; } }
 
 	public List<Product> AvailableProducts;
 
@@ -150,12 +156,19 @@ public class World : MonoBehaviour
 		Player = FindObjectOfType<Player>();
 
 		GoalIndex = 0;
-		Player.SetGoal(StageGoals[GoalIndex]);
+		SetPlayerGoal();
 
 		CreateConeyorGame();
 
 		_areaType = AreaType.Bakery;
 		ChangeArea(_areaType);
+	}
+
+	private void SetPlayerGoal()
+	{
+		Player.SetGoal(StageGoals[GoalIndex]);
+		CurrentGoalDisplayPanel.GetComponent<GoalDescription>().ConstructPanel();
+		CurrentGoalDisplayPanel.SetActive(true);
 	}
 
 	private IEnumerator TestCoro(IGenerator t0)
@@ -350,7 +363,7 @@ public class World : MonoBehaviour
 	public void NextGoal()
 	{
 		GoalIndex = (GoalIndex + 1)%StageGoals.Length;
-		Player.SetGoal(StageGoals[GoalIndex]);
+		SetPlayerGoal();
 	}
 
 	public void MoveTo(AreaType area)

@@ -12,6 +12,15 @@ public class IngredientItem : MarioObject
 
 	public bool IsCookingIngredient;
 
+	private DeliveryTruck _truck;
+
+	protected override void Begin()
+	{
+		base.Begin();
+
+		_truck = FindObjectOfType<DeliveryTruck>();
+	}
+
 	public static Dictionary<IngredientType, T> CreateIngredientDict<T>()
 	{
 		var ing = new Dictionary<IngredientType, T>();
@@ -36,10 +45,11 @@ public class IngredientItem : MarioObject
 		if (!Count || !IsCookingIngredient)
 			return;
 
+
 		var req = int.Parse(Count.text);
-		var color = req <= Player.Inventory[Type] ? Color.green : Color.red;
-		var truck = FindObjectOfType<DeliveryTruck>();
-		if (truck.HasItems(Type, req))
+		var hasEnough = req <= Player.Inventory[Type];
+		var color = hasEnough ? Color.green : Color.red;
+		if (!hasEnough && _truck.HasItems(Type, req))
 			color = Color.yellow;
 		Count.color = color;
 	}

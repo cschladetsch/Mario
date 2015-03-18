@@ -73,7 +73,7 @@ public class Truck : MarioObject
 	{
 		base.Tick();
 
-		if (!World.CurrentLevel)
+		if (!World.CurrentLevel || !World.Areas[AreaType.Factory].Visual)
 			return;
 
 		UpdateCheckFull();

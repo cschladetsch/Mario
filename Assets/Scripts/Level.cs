@@ -139,7 +139,7 @@ public class Level : MarioObject
 	public void EndLevel()
 	{
 		//Debug.Log("EndLevel " + name);
-		_ended = true;
+		//_ended = true;
 
 		Canvas.LevelEnded(this);
 
@@ -272,7 +272,17 @@ public class Level : MarioObject
 
 	override protected void Tick()
 	{
-		//Debug.Log("Level.Tick: Paused=" + Paused + " ended=" + _ended);
+		if (!World.Areas[AreaType.Factory].Visual)
+			return;
+
+		Debug.Log(string.Format("NoMore: {0}, Emptying: {1}", NoMoreCakes, Truck.Emptying));
+		if (NoMoreCakes && !Truck.Emptying)
+		{
+			_ended = true;
+			Truck.StartEmptying();
+			return;
+		}
+
 		if (_ended)
 			return;
 

@@ -16,6 +16,8 @@ public class Player : MarioObject
 {
 	public StageGoal CurrentGoal;
 
+	public Text LivesRemainingText;
+
 	/// <summary>
 	/// How much gold (money) the player has
 	/// </summary>
@@ -353,10 +355,8 @@ public class Player : MarioObject
 		World.Canvas.UpdateGoldAmount();
 		World.Canvas.GoalPanel.GetComponent<GoalPanel>().UpdateUi();
 		World.CookingAreaUi.InventoryPanel.UpdateDisplay(Inventory, false);
-		//World.BuyingAreaUi.InventoryPanel.UpdateDisplay(Inventory, false);
 
-		// TODO
-		//_canvas.LivesRemaining.text = Lives.ToString();
+		LivesRemainingText.text = Lives.ToString();
 	}
 
 	public void Reset()

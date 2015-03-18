@@ -320,8 +320,10 @@ public class Player : MarioObject
 		var p = FindObjectOfType<ProductsPanelScript>();
 		if (p)
 			p.SellProgressBar.Reset();
-		
+
 		UpdateUi();
+
+		World.GoalPanel.AddItem(type);
 
 		if (GoalReached())
 			World.NextGoal();
@@ -383,8 +385,6 @@ public class Player : MarioObject
 		//Debug.Log("Player.CookedItem: " + type);
 		Inventory[type] += count;
 
-		World.Canvas.GoalPanel.Cooked(type, count);
-
 		UpdateUi();
 	}
 
@@ -394,6 +394,7 @@ public class Player : MarioObject
 	/// <returns></returns>
 	private bool GoalReached()
 	{
+		Debug.Log("Player.GoalReached?");
 		// make a dictionary mapping type to number required
 		var dict = IngredientItem.CreateIngredientDict<int>();
 		foreach (var type in CurrentGoal.Ingredients)
@@ -408,7 +409,7 @@ public class Player : MarioObject
 			var needed = dict[kv.Key];
 			if (kv.Value < needed && needed > 0)
 			{
-				//Debug.Log("Not enough " + kv.Key + ": need " + needed + ", have " + kv.Value);
+				Debug.Log("Not enough " + kv.Key + ": need " + needed + ", have " + kv.Value);
 				return false;
 			}
 		}
@@ -423,16 +424,7 @@ public class Player : MarioObject
 
 	public void SetGoal(StageGoal goal)
 	{
-		Debug.Log("Player.SetGoal: " + goal.Name);
-
-		//if (World.GoalIndex != 0)
-		//	World.GoalIndex++;
-
 		CurrentGoal = goal;
-		//var goalPanel = Canvas.GoalPanel.GetComponent<GoalPanel>();
-		//goalPanel.Refresh();
-
-
 	}
 
 	public void AddCake(Cake cake)

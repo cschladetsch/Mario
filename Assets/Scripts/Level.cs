@@ -134,8 +134,6 @@ public class Level : MarioObject
 		//Debug.Log("DeliveryCompleted: " + NoMoreCakes);
 	}
 
-	private bool _ended;
-
 	public void EndLevel()
 	{
 		//Debug.Log("EndLevel " + name);
@@ -282,9 +280,6 @@ public class Level : MarioObject
 		//	Truck.StartEmptying();
 		//	return;
 		//}
-
-		if (_ended)
-			return;
 
 		UpdateSpeed();
 

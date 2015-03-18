@@ -5095,7 +5095,7 @@ RectTransform:
   m_RootOrder: 7
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: .49998188, y: 204.199921}
+  m_AnchoredPosition: {x: -25, y: 199}
   m_SizeDelta: {x: -369.200073, y: -443.499969}
   m_Pivot: {x: .5, y: .5}
 --- !u!114 &618036575
@@ -7411,7 +7411,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   IngredientDetails: {fileID: 400595771}
   CurrentGoalDisplayPanel: {fileID: 1973154789}
-  GoalPanel: {fileID: 618036573}
+  GoalPanel: {fileID: 618036575}
   CurrrentAreaType: 0
   StageGoals:
   - {fileID: 11481494, guid: 0f15c10cf07047f4398aae0899c4bd72, type: 2}
@@ -12608,7 +12608,7 @@ Prefab:
     - target: {fileID: 11400002, guid: 9b2af9083a32e3641a5d9c733b805197, type: 2}
       propertyPath: GoalPanel
       value: 
-      objectReference: {fileID: 618036573}
+      objectReference: {fileID: 618036575}
     - target: {fileID: 11400002, guid: 9b2af9083a32e3641a5d9c733b805197, type: 2}
       propertyPath: CurrentGoalDisplayPanel
       value: 

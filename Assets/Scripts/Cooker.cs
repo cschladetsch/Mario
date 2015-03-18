@@ -166,18 +166,8 @@ public class Cooker : MarioObject
 			yield break;
 		}
 
-		//Debug.Log("COOKING a " + Recipe.Result + " Recipe");
-
 		ProgressBar.Reset();
-		//ProgressBar.Paused = false;
 		ProgressBar.TotalTime = Recipe.CookingTime;
-
-		//Debug.Log(string.Format("{0} {1} {2}", ProgressBar.Paused, ProgressBar.TotalTime, RealDeltaTime));
-
-		//Debug.Log("Cooking a " + Recipe.Result);//+ " " + UnityEngine.Time.frameCount);
-
-		//var bg = TimerText.transform.parent.gameObject.GetComponent<Image>();
-		//bg.color = Color.green;
 
 		_cooking = true;
 

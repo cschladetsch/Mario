@@ -15,7 +15,7 @@ public class World : MonoBehaviour
 
 	public GameObject CurrentGoalDisplayPanel;
 
-	public GameObject GoalPanel;
+	public GoalPanel GoalPanel;
 
 	public AreaType CurrrentAreaType;
 
@@ -91,7 +91,7 @@ public class World : MonoBehaviour
 
 		Kernel = Flow.Create.NewKernel();
 
-		Debug.Log("World.Awaken: " + Kernel);
+		//Debug.Log("World.Awaken: " + Kernel);
 		if (Instance != null)
 		{
 			Debug.LogError("Can't have multiple Worlds");
@@ -169,6 +169,7 @@ public class World : MonoBehaviour
 		Player.SetGoal(StageGoals[GoalIndex]);
 		CurrentGoalDisplayPanel.GetComponent<GoalDescription>().ConstructPanel();
 		CurrentGoalDisplayPanel.SetActive(true);
+		GoalPanel.UpdateUi();
 	}
 
 	private IEnumerator TestCoro(IGenerator t0)
@@ -363,7 +364,12 @@ public class World : MonoBehaviour
 	public void NextGoal()
 	{
 		GoalIndex = (GoalIndex + 1)%StageGoals.Length;
+		var goal = StageGoals[GoalIndex];
+		Debug.Log("World.NextGoal: " + goal.Name);
 		SetPlayerGoal();
+		GoalPanel.SetGoal(goal);
+		GoalPanel.Clear();
+		GoalPanel.UpdateUi();
 	}
 
 	public void MoveTo(AreaType area)

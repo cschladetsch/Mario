@@ -12,6 +12,8 @@ public class GoalPanel : MarioObject
 
 	public Dictionary<IngredientType, int> Ingredients;
 
+	public StageGoal CurrentGoal;
+
 	public Text ButtonText;
 
 	/// <summary>
@@ -51,28 +53,22 @@ public class GoalPanel : MarioObject
 		//SetGoal(Player.CurrentGoal);
 	}
 
-	public void Cooked(IngredientType item, int count)
-	{
-		Ingredients[item] += count;
-		UpdateUi();
-	}
-
 	private void GatherPrefabsForIngredientDisplay()
 	{
 		_prefabs[IngredientType.CupCake] = (GameObject)Resources.Load("Images/Cupcake");
 		_prefabs[IngredientType.MintIceCream] = (GameObject)Resources.Load("Images/ChockMintIceCream");
-		//_prefabs[IngredientType.Chocolate] = (GameObject) Resources.Load("Images/ChockMintIceCream");
-		//_prefabs[IngredientType.MintIceCream] = (GameObject) Resources.Load("Images/ChockMintIceCream");
 	}
 
 	public void SetGoal(StageGoal goal)
 	{
-		World.GoalPanel.SetActive(true);
+		CurrentGoal = goal;
+		Clear();
+		AddAllItems();
 	}
 
 	public void GoalButtonPressed()
 	{
-		World.GoalPanel.SetActive(false);
+		//World.GoalPanel.SetActive(false);
 	}
 
 	private void ChangeOverlayColor(Color color)
@@ -113,18 +109,15 @@ public class GoalPanel : MarioObject
 
 	private void AddAllItems()
 	{
-		//Debug.Log(Player.CurrentGoal.Name);
-		//Debug.Log(Player.CurrentGoal.Inventory);
-		//foreach (var kv in Player.CurrentGoal.Inventory)
-		//{
-		//	Debug.Log(kv);
-		//}
+		Debug.Log("Goal.AddAllItems: " + Player.CurrentGoal.Name);
+		//Debug.Log(Player.CurrentGoal.Ingredients);
+		foreach (var kv in Player.CurrentGoal.Ingredients)
+			Debug.Log(kv);
+
 		if (_prefabs.Count == 0)
 			GatherPrefabsForIngredientDisplay();
 
 		ClearContents();
-
-		//var tr = GetComponent<RectTransform>();
 
 		var start = StartX;
 
@@ -141,7 +134,7 @@ public class GoalPanel : MarioObject
 			if (prefab == null)
 				continue;
 
-			//Debug.Log("Adding a " + type + " to the goal list");
+			Debug.Log("Adding a " + type + " to the goal list");
 
 			var go = (GameObject)Instantiate(prefab);
 			var view = go.GetComponent<GoalngredientView>();
@@ -153,7 +146,7 @@ public class GoalPanel : MarioObject
 			go.transform.SetX(start);
 			start += Spacing;
 
-			//Debug.Log("Adding a " + view.Type + " to goals");
+			Debug.Log("Adding a " + view.Type + " to goals");
 		}
 	}
 
@@ -170,5 +163,17 @@ public class GoalPanel : MarioObject
 		ClearContents();
 
 		AddAllItems();
+	}
+
+	public void AddItem(IngredientType type)
+	{
+		Ingredients[type]++;
+		UpdateUi();
+	}
+
+	public void Clear()
+	{
+		Ingredients = new Dictionary<IngredientType, int>();
+		UpdateUi();
 	}
 }

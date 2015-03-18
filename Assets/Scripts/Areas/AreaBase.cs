@@ -21,6 +21,8 @@ public class AreaBase : MarioObject
 	/// </summary>
 	public bool Visual;
 
+	public bool Active;
+
 	protected override void Begin()
 	{
 		base.Begin();
@@ -49,7 +51,8 @@ public class AreaBase : MarioObject
 
 	protected override void Tick()
 	{
-		base.Tick();
+		if (Active)
+			base.Tick();
 	}
 
 	public virtual void EnterArea()
@@ -57,6 +60,7 @@ public class AreaBase : MarioObject
 		//Debug.Log("Area " + name + " entered");
 		UiCanvas.SetActive(true);
 		Visual = true;
+		Active = true;
 	}
 
 	public virtual void LeaveArea()
@@ -64,6 +68,7 @@ public class AreaBase : MarioObject
 		//Debug.Log("Area " + name + " left");
 		UiCanvas.SetActive(false);
 		Visual = false;
+		Active = false;
 	}
 
 	public static void ToggleVisuals(GameObject root, bool on)

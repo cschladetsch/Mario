@@ -56,5 +56,7 @@ public class BakeryArea : AreaBase
 
 		var ui = FindObjectOfType<CookingAreaUI>();
 		ui.InventoryPanel.UpdateDisplay(Player.Inventory, false);
+
+		FindObjectOfType<DeliveryTruck>().ShowBuyingPanel(false);
 	}
 }

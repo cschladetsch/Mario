@@ -8,6 +8,8 @@ using UnityEngine.UI;
 /// </summary>
 public class DeliveryTruck : MarioObject
 {
+	public Button DeliveryButton;
+
 	/// <summary>
 	/// True if truck has been delivered
 	/// </summary>
@@ -228,7 +230,7 @@ public class DeliveryTruck : MarioObject
 
 		UpdateDelivering();
 
-		//UpdatePressed();
+		DeliveryButton.interactable = _contents.Sum(c => c.Value) > 0;
 	}
 
 	//private void UpdatePressed()

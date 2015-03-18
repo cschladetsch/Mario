@@ -16,6 +16,8 @@ public class Player : MarioObject
 {
 	public StageGoal CurrentGoal;
 
+	public Text LivesRemainingText;
+
 	/// <summary>
 	/// How much gold (money) the player has
 	/// </summary>
@@ -79,11 +81,12 @@ public class Player : MarioObject
 	public delegate void TriggerHandler(Collider2D other);
 
 	public delegate void PlayerEventHandler(Player player);
+	public delegate void PlayerDroppedPickupHandler(Player player, Pickup pickup);
 
 	public CollisionHandler OnCollision;
 	public TriggerHandler OnTrigger;
 	public PlayerEventHandler OnDied;
-	public PlayerEventHandler OnCakeDropped;
+	public PlayerDroppedPickupHandler OnCakeDropped;
 
 	/// <summary>
 	/// The left character
@@ -94,11 +97,6 @@ public class Player : MarioObject
 	/// The right character
 	/// </summary>
 	public Character Right;
-
-	/// <summary>
-	/// Cached access to the UI
-	/// </summary>
-	private UiCanvas _canvas;
 
 	/// <summary>
 	/// When a cake is dropped or you hit a bomb, you lose a life. 0 lives = game over
@@ -128,21 +126,14 @@ public class Player : MarioObject
 
 	protected override void Construct()
 	{
-		//Debug.Log("Player.Construct");
-
 		Control = GetComponent<Control>();
-		_canvas = FindObjectOfType<UiCanvas>();
 
 		PrepareEmptyInventory();
-
-		//Inventory[IngredientType.Cherry] = 5;
-		//Inventory[IngredientType.Muffin] = 5;
 	}
 
 	private void PrepareEmptyInventory()
 	{
-		foreach (var e in Enum.GetValues(typeof (IngredientType)))
-			Inventory.Add((IngredientType) e, 0);
+		Inventory = IngredientItem.CreateIngredientDict<int>();
 	}
 
 	protected override void BeforeFirstUpdate()
@@ -229,15 +220,16 @@ public class Player : MarioObject
 
 	public void DroppedCake(Pickup pickup)
 	{
+		Debug.Log("Dropped cake");
 		if (Dead || GodMode)
 			return;
 
 		if (pickup is Cake)
 		{
-			Debug.Log("Dropped a " + pickup.name);
+			//Debug.Log("Dropped a " + pickup.name);
 
 			if (OnCakeDropped != null)
-				OnCakeDropped(this);
+				OnCakeDropped(this, pickup);
 
 			LoseLife();
 		}
@@ -335,17 +327,20 @@ public class Player : MarioObject
 
 	private void Died()
 	{
+		Debug.Log("Played lost factory level by dropping too many cakes");
 		World.Pause(true);
 
-		if (!_canvas.Score)
+		if (World.CurrentLevel.NoMoreCakes)
+		{
+			World.CurrentLevel.Truck.StartEmptying();
 			return;
+		}
 
-		var score = int.Parse(_canvas.Score.text);
-
-		if (SaveGame.UpdateHighScore(score))
-			_canvas.ShowHighScore(score);
-		else
-			_canvas.ShowTapToStart();
+		//var score = int.Parse(LivesRemainingText.text);
+		//if (SaveGame.UpdateHighScore(score))
+		//	_canvas.ShowHighScore(score);
+		//else
+		//	_canvas.ShowTapToStart();
 	}
 
 	private void UpdateUi()
@@ -354,8 +349,7 @@ public class Player : MarioObject
 		World.GoalPanel.UpdateUi();
 		World.CookingAreaUi.InventoryPanel.UpdateDisplay(Inventory, false);
 
-		// TODO
-		//_canvas.LivesRemaining.text = Lives.ToString();
+		LivesRemainingText.text = Lives.ToString();
 	}
 
 	public void Reset()

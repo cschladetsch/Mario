@@ -25,34 +25,46 @@ public class Pickup : MarioObject
 	/// <summary>
 	/// True if currently hanging
 	/// </summary>
-	public bool Hanging { get { return _hanging; } }
+	public bool Hanging
+	{
+		get { return _hanging; }
+	}
 
 	/// <summary>
 	/// True if dropped after hanging.
 	/// </summary>
-	public bool Dropped { get { return _dropped; } }
+	public bool Dropped
+	{
+		get { return _dropped; }
+	}
 
-	public float Width { get { return _box.bounds.extents.x*2; } }
+	public float Width
+	{
+		get { return _box.bounds.extents.x*2; }
+	}
 
-	public float Height { get { return _box.bounds.extents.y*2; } }
+	public float Height
+	{
+		get { return _box.bounds.extents.y*2; }
+	}
 
 	private BoxCollider2D _box;
 	private bool _hanging;
 	private bool _kine;
 	private bool _firstDrop;
 
-	void Awake()
+	private void Awake()
 	{
 		_box = GetComponent<BoxCollider2D>();
 		if (rigidbody2D)
 			rigidbody2D.isKinematic = false;
 	}
 
-	void Start()
+	private void Start()
 	{
 	}
 
-	void Update()
+	private void Update()
 	{
 	}
 
@@ -137,13 +149,13 @@ public class Pickup : MarioObject
 		var level = FindObjectOfType<Level>();
 
 		var go = other.gameObject;
-		if (Dropped && go.layer == 8)	// ground
+		if (Dropped && go.layer == 8) // ground
 		{
 			HitGround();
 			return;
 		}
 
-		if (!_firstDrop && !Dropped && go.layer == 9)	// conveyor
+		if (!_firstDrop && !Dropped && go.layer == 9) // conveyor
 		{
 			_firstDrop = true;
 			rigidbody2D.isKinematic = true;

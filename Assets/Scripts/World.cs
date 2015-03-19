@@ -19,13 +19,16 @@ public class World : MonoBehaviour
 
 	public AreaType CurrrentAreaType;
 
-	public StageGoal []StageGoals;
+	public StageGoal[] StageGoals;
 
 	public AreaBase CurrentArea;
 
 	public Level CurrentLevel;
 
-	public StageGoal CurrentGoal { get { return Player.CurrentGoal; } }
+	public StageGoal CurrentGoal
+	{
+		get { return Player.CurrentGoal; }
+	}
 
 	public List<Product> AvailableProducts;
 
@@ -77,7 +80,7 @@ public class World : MonoBehaviour
 
 	public bool GodMode;
 
-	void Awake()
+	private void Awake()
 	{
 		Awaken();
 	}
@@ -109,7 +112,7 @@ public class World : MonoBehaviour
 
 		GatherIngredients();
 	}
-	
+
 	private void GatherIngredients()
 	{
 		//Debug.Log("World.GatherIngredients");
@@ -122,7 +125,7 @@ public class World : MonoBehaviour
 		}
 	}
 
-	void Start()
+	private void Start()
 	{
 		Kernel.Factory.NewCoroutine(TestCoro);
 
@@ -200,16 +203,16 @@ public class World : MonoBehaviour
 
 		switch (area)
 		{
-			//case AreaType.Shop:
-			//	MainShop();			// sending through stock, paying customers, and ordering new ingredients
-			//	break;
+				//case AreaType.Shop:
+				//	MainShop();			// sending through stock, paying customers, and ordering new ingredients
+				//	break;
 
 			case AreaType.Factory:
-				CreateConeyorGame();		// conveyor game. deliver ingredients and products past boss
+				CreateConeyorGame(); // conveyor game. deliver ingredients and products past boss
 				break;
 
 			case AreaType.Bakery:
-				EnterBakery();			// bakery: produce goods for selling in MainShop
+				EnterBakery(); // bakery: produce goods for selling in MainShop
 				break;
 		}
 
@@ -244,7 +247,7 @@ public class World : MonoBehaviour
 		//Debug.Log("Enter Bakery");
 		//if (CurrentLevel)
 		//	Destroy(CurrentLevel.gameObject);
-		
+
 		//foreach (var c in FindObjectsOfType<Cake>())
 		//	Destroy(c.gameObject);
 
@@ -270,7 +273,7 @@ public class World : MonoBehaviour
 		BeginConveyorLevel();
 	}
 
-	void Update()
+	private void Update()
 	{
 		Kernel.Step();
 
@@ -293,7 +296,7 @@ public class World : MonoBehaviour
 
 			return;
 		}
-		
+
 		if (_first)
 		{
 			_first = false;
@@ -329,7 +332,7 @@ public class World : MonoBehaviour
 		}
 
 		var prefab = Levels[_levelIndex];
-		CurrentLevel = ((GameObject)Instantiate(prefab)).GetComponent<Level>();
+		CurrentLevel = ((GameObject) Instantiate(prefab)).GetComponent<Level>();
 		CurrentLevel.transform.position = Vector3.zero;
 		CurrentLevel.Area = CurrentArea as FactoryArea;
 

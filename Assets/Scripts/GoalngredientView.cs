@@ -20,7 +20,7 @@ public class GoalngredientView : MarioObject
 		var image = GetComponent<UnityEngine.UI.Image>();
 		if (image == null)
 		{
-			Debug.LogWarning("GoalIngredientView for " +  Type + " has no image component");
+			Debug.LogWarning("GoalIngredientView for " + Type + " has no image component");
 			return;
 		}
 		image.color = new Color(c, c, c);

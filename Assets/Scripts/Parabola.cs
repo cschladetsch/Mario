@@ -32,10 +32,10 @@ public class Parabola
 		var y2 = p2.y;
 		var y3 = p3.y;
 
-		var denom = (x1 - x2) * (x1 - x3) * (x2 - x3);
-		_a = (x3 * (y2 - y1) + x2 * (y1 - y3) + x1 * (y3 - y2)) / denom;
-		_b = (x3*x3 * (y1 - y2) + x2*x2 * (y3 - y1) + x1*x1 * (y2 - y3)) / denom;
-		_c = (x2 * x3 * (x2 - x3) * y1 + x3 * x1 * (x3 - x1) * y2 + x1 * x2 * (x1 - x2) * y3) / denom;
+		var denom = (x1 - x2)*(x1 - x3)*(x2 - x3);
+		_a = (x3*(y2 - y1) + x2*(y1 - y3) + x1*(y3 - y2))/denom;
+		_b = (x3*x3*(y1 - y2) + x2*x2*(y3 - y1) + x1*x1*(y2 - y3))/denom;
+		_c = (x2*x3*(x2 - x3)*y1 + x3*x1*(x3 - x1)*y2 + x1*x2*(x1 - x2)*y3)/denom;
 	}
 
 	public Vector2 Calc(float x)

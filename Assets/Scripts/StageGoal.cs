@@ -41,7 +41,7 @@ public class StageGoal : MonoBehaviour
 		{
 			if (second)
 				text += ", ";
-			
+
 			text += string.Format("{1} {0}s", kv.Key, kv.Value);
 			second = true;
 		}

@@ -2,7 +2,7 @@
 
 public class AutoDisable : MonoBehaviour
 {
-	void Awake()
+	private void Awake()
 	{
 		gameObject.SetActive(false);
 	}

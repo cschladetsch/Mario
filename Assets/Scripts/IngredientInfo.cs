@@ -12,7 +12,7 @@ public class IngredientInfo : MonoBehaviour
 	/// </summary>
 	public IngredientType Type;
 
-	public Image Image;
+	public GameObject Image;
 
 	/// <summary>
 	/// CostText to buy. If zero, item cannot be bought

@@ -15,7 +15,7 @@ public class Cooker : MarioObject
 
 	public ProgressBar ProgressBar;
 
-	new public IKernel Kernel;
+	public new IKernel Kernel;
 
 	public Color DeselectedColor;
 
@@ -158,7 +158,7 @@ public class Cooker : MarioObject
 
 	private bool _cooking;
 
-	IEnumerator Cook(IGenerator self, IFuture<bool> done)
+	private IEnumerator Cook(IGenerator self, IFuture<bool> done)
 	{
 		if (_cooking)
 		{
@@ -174,7 +174,7 @@ public class Cooker : MarioObject
 		var remaining = Recipe.CookingTime;
 		while (remaining > 0)
 		{
-			remaining -= (float)RealDeltaTime;
+			remaining -= (float) RealDeltaTime;
 			ProgressBar.SetPercent(remaining/Recipe.CookingTime);
 			yield return 0;
 		}

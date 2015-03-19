@@ -48,7 +48,10 @@ public class Character : MarioObject
 		Paused = true;
 	}
 
-	public bool Spasming { get { return _spasmTimer > 0; } }
+	public bool Spasming
+	{
+		get { return _spasmTimer > 0; }
+	}
 
 	protected override void Tick()
 	{

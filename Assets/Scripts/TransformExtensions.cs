@@ -35,5 +35,3 @@ public static class TransformExtensions
 		tr.position = new Vector3(p.x, p.y, z);
 	}
 }
-
-

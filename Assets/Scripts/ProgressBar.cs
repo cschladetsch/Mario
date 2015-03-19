@@ -12,7 +12,11 @@ public class ProgressBar : MarioObject
 	private Image _image;
 
 	private float _time;
-	public bool Completed { get { return _time >= TotalTime; } }
+
+	public bool Completed
+	{
+		get { return _time >= TotalTime; }
+	}
 
 	protected override void Begin()
 	{

@@ -19,20 +19,38 @@ public class MarioObject : MonoBehaviour
 
 	protected IKernel Kernel;
 
-	public Player Player { get { return World.Player; } }
+	public Player Player
+	{
+		get { return World.Player; }
+	}
 
-	public Truck Truck { get { return World.Truck; } }
+	public Truck Truck
+	{
+		get { return World.Truck; }
+	}
 
-	protected UiCanvas Canvas { get { return World.Canvas; } }
+	protected UiCanvas Canvas
+	{
+		get { return World.Canvas; }
+	}
 
-	protected internal Character LeftCharacter { get { return World.Player.Left; } }
+	protected internal Character LeftCharacter
+	{
+		get { return World.Player.Left; }
+	}
 
-	protected internal Character RightCharacter { get { return World.Player.Right; } }
+	protected internal Character RightCharacter
+	{
+		get { return World.Player.Right; }
+	}
 
 	/// <summary>
 	/// The current level being played
 	/// </summary>
-	protected Level CurrentLevel { get { return World.CurrentLevel; } }
+	protected Level CurrentLevel
+	{
+		get { return World.CurrentLevel; }
+	}
 
 	protected float GameTime;
 
@@ -44,7 +62,7 @@ public class MarioObject : MonoBehaviour
 
 	private bool _firstUpate = true;
 
-	void Awake()
+	private void Awake()
 	{
 		World = World.Instance;
 		if (World == null)
@@ -60,7 +78,7 @@ public class MarioObject : MonoBehaviour
 		Construct();
 	}
 
-	void Start()
+	private void Start()
 	{
 		//Debug.Log("Name=" + name + ", World=" + World);
 		_lastTime = DateTime.Now;
@@ -81,7 +99,7 @@ public class MarioObject : MonoBehaviour
 	/// </summary>
 	protected int FrameCount;
 
-	void Update()
+	private void Update()
 	{
 		//// WHAT THE FUCK: why is Update() called twice on MarioObjects?
 		//var frameCount = UnityEngine.Time.frameCount;
@@ -97,7 +115,7 @@ public class MarioObject : MonoBehaviour
 		// use real-time
 		var now = DateTime.Now;
 		var delta = now - _lastTime;
-		RealDeltaTime = (float)delta.TotalSeconds;
+		RealDeltaTime = (float) delta.TotalSeconds;
 		_lastTime = now;
 
 		//Debug.Log(RealDeltaTime);

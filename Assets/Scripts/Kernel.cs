@@ -31,5 +31,4 @@ public class Kernel : MarioObject
 
 		Kern.Step();
 	}
-
 }

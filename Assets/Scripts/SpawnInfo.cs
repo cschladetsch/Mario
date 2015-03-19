@@ -32,9 +32,9 @@ public class SpawnInfo : MarioObject
 	/// </summary>
 	public int MaxSpawns = -1;
 
-	private Transform _folder;		// where to place newly spawned objects and their splines, if any
+	private Transform _folder; // where to place newly spawned objects and their splines, if any
 
-	public float _spawnTimer;		// when this reaches zero, this spawned is able to spawn
+	public float _spawnTimer; // when this reaches zero, this spawned is able to spawn
 	public int _spawnsLeft;
 
 	protected override void Begin()
@@ -75,7 +75,7 @@ public class SpawnInfo : MarioObject
 
 		CalcNextSpawnTime();
 
-		var born = (GameObject)Instantiate(Prefab);
+		var born = (GameObject) Instantiate(Prefab);
 		if (born == null)
 		{
 			Debug.LogError("Unable to spawn " + Prefab.name);

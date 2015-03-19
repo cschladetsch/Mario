@@ -10,6 +10,7 @@ public class Level : MarioObject
 {
 	public int NumTruckLoads = 3;
 
+	public IncomingPanel IncomingPanel;
 
 	/// <summary>
 	/// Where to place newly made cake
@@ -58,7 +59,10 @@ public class Level : MarioObject
 		get { return _conveyors; }
 	}
 
-	public int NumCakesRemaining { get { return Inventory.Sum(c => c.Value); } }
+	public int NumCakesRemaining
+	{
+		get { return Inventory.Sum(c => c.Value); }
+	}
 
 	public bool NoMoreCakes
 	{
@@ -72,14 +76,20 @@ public class Level : MarioObject
 
 			if (Conveyors.Any(c => c.Contents.Count > 0))
 				return false;
-			
+
 			return NumCakesRemaining == 0;
 		}
 	}
 
-	public int SpawnsRemaining { get { return _spawners.Sum(s => s._spawnsLeft); } }
+	public int SpawnsRemaining
+	{
+		get { return _spawners.Sum(s => s._spawnsLeft); }
+	}
 
-	public bool NothingToSpawn { get { return SpawnsRemaining == 0; } }
+	public bool NothingToSpawn
+	{
+		get { return SpawnsRemaining == 0; }
+	}
 
 	public void Init()
 	{
@@ -268,7 +278,7 @@ public class Level : MarioObject
 
 	public FactoryArea Area;
 
-	override protected void Tick()
+	protected override void Tick()
 	{
 		if (!World.Areas[AreaType.Factory].Visual)
 			return;
@@ -321,7 +331,7 @@ public class Level : MarioObject
 	/// <summary>
 	/// Spawn cakes after main update, to account for any dropped cakes
 	/// </summary>
-	void LateUpdate()
+	private void LateUpdate()
 	{
 		//Debug.Log("Level.LateUpdate: Paused " + Paused + " NoMoreCakes: "+ NoMoreCakes);
 		if (Paused)
@@ -404,7 +414,7 @@ public class Level : MarioObject
 	private GameObject NewCake()
 	{
 		var prefab = GetNewPrefab();
-		var cake = (GameObject)Instantiate(prefab);
+		var cake = (GameObject) Instantiate(prefab);
 		cake.transform.parent = _cakesHolder;
 		return cake;
 	}
@@ -440,6 +450,7 @@ public class Level : MarioObject
 		foreach (var conv in _conveyors)
 			conv.Pause(pause);
 	}
+
 	/// <summary>
 	/// Add spawners for contents of truck.
 	/// </summary>

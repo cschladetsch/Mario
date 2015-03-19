@@ -172,7 +172,7 @@ public class Player : MarioObject
 
 	private void GetCharacters()
 	{
-		if (Left) 
+		if (Left)
 			return;
 
 		Left = transform.FindChild("CharacterLeft").GetComponent<Character>();
@@ -224,7 +224,7 @@ public class Player : MarioObject
 #endif
 	}
 
-	List<Product> CalcPossibleProducts()
+	private List<Product> CalcPossibleProducts()
 	{
 		return null;
 	}
@@ -259,7 +259,7 @@ public class Player : MarioObject
 
 	private void UpdateSellItem()
 	{
-		SellingTimer -= (float)RealDeltaTime;
+		SellingTimer -= (float) RealDeltaTime;
 
 		var selling = SellingTimer <= 0;
 		while (selling)
@@ -277,7 +277,7 @@ public class Player : MarioObject
 
 	private void SellItem()
 	{
-		IngredientType[] types = { IngredientType.MintIceCream, IngredientType.CupCake };
+		IngredientType[] types = {IngredientType.MintIceCream, IngredientType.CupCake};
 
 		var canSell = false;
 		foreach (var ty in types)
@@ -291,7 +291,7 @@ public class Player : MarioObject
 
 		if (!canSell)
 			return;
-		
+
 		while (true)
 		{
 			var index0 = UnityEngine.Random.Range(0, types.Length);
@@ -419,7 +419,6 @@ public class Player : MarioObject
 			_sold[kv.Key] = 0;
 
 		return true;
-
 	}
 
 	public void SetGoal(StageGoal goal)

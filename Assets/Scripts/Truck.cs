@@ -42,9 +42,13 @@ public class Truck : MarioObject
 	/// <summary>
 	/// The number of cakes in the truck, or moving to the truck
 	/// </summary>
-	public int NumCakes { get { return _cakes.Count; } }
+	public int NumCakes
+	{
+		get { return _cakes.Count; }
+	}
 
 	public delegate void DeliveredHandler(Truck truck);
+
 	public event DeliveredHandler DeliveryStarted;
 	public event DeliveredHandler DeliveryCompleted;
 
@@ -312,4 +316,3 @@ public class Truck : MarioObject
 			StartEmptying();
 	}
 }
-

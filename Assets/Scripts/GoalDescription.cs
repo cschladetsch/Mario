@@ -43,5 +43,3 @@ public class GoalDescription : MarioObject
 		World.Canvas.GoalPanel.UpdateUi();
 	}
 }
-
-

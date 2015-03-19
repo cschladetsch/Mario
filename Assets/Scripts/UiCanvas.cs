@@ -68,6 +68,7 @@ public class UiCanvas : MarioObject
 	{
 		TapToStart.gameObject.SetActive(true);
 	}
+
 	public void PausedTapped()
 	{
 		PausedPanel.gameObject.SetActive(false);
@@ -84,5 +85,4 @@ public class UiCanvas : MarioObject
 
 		PlayerGoldText.text = Player.Gold.ToString();
 	}
-
 }

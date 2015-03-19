@@ -25,22 +25,20 @@ public class Timer : MonoBehaviour
 	/// </summary>
 	private float _time;
 
-	void Start()
+	private void Start()
 	{
 		_time = Duration;
 	}
 
-	void Update()
+	private void Update()
 	{
 		_time -= Time.deltaTime;
 		if (_time > 0)
 			return;
 
 		_time = Duration;
-			
+
 		if (Target)
 			Target.BroadcastMessage("Trigger");
 	}
 }
-
-

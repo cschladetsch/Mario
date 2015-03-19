@@ -45,7 +45,10 @@ public class DeliveryTruck : MarioObject
 
 	private Dictionary<IngredientType, int> _contents;
 
-	public bool Delivering { get { return _delivering; } }
+	public bool Delivering
+	{
+		get { return _delivering; }
+	}
 
 	private void UpdateDisplay()
 	{
@@ -297,7 +300,7 @@ public class DeliveryTruck : MarioObject
 		Ready = false;
 		_delivering = false;
 		PlayButton.SetActive(false);
-		
+
 
 		// MON
 		//Canvas.CarTimer.text = string.Format("{0:0.0}s", DeliveryTime);

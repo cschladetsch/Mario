@@ -11,7 +11,7 @@ public class BuyingOptions : MarioObject
 	public UnityEngine.UI.Button Chock;
 	public UnityEngine.UI.Button Mint;
 
-	void Update()
+	private void Update()
 	{
 		var lev = World.GoalIndex;
 

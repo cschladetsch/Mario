@@ -19,7 +19,10 @@ public class Conveyor : MarioObject
 	/// <summary>
 	/// The cakes currently on this conveyor
 	/// </summary>
-	public IList<Pickup> Contents { get { return _contents; } }
+	public IList<Pickup> Contents
+	{
+		get { return _contents; }
+	}
 
 	/// <summary>
 	/// The cakes on this conveyor

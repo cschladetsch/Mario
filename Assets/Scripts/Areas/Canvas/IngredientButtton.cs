@@ -45,7 +45,8 @@ public class IngredientButtton : MarioObject
 		}
 
 		var info = World.GetIngredientInfo(Type);
-		Image = info.Image;
+		var go = (GameObject)Instantiate(info.Image);
+		Image = go.GetComponent<Image>();
 
 		CostText.text = string.Format("{0}$", info.Buy);
 		AmountText.text = "0";

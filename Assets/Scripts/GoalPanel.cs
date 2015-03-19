@@ -34,13 +34,13 @@ public class GoalPanel : MarioObject
 	/// <summary>
 	/// What we have currently collected towards the goal
 	/// </summary>
-	readonly List<GoalngredientView> _contents = new List<GoalngredientView>();
+	private readonly List<GoalngredientView> _contents = new List<GoalngredientView>();
 
 	/// <summary>
 	/// What to use to make the goal images. These should have GoalIngredientView components.
 	/// They are stored in the Resources/Images folder
 	/// </summary>
-	readonly Dictionary<IngredientType, GameObject> _prefabs = new Dictionary<IngredientType, GameObject>();
+	private readonly Dictionary<IngredientType, GameObject> _prefabs = new Dictionary<IngredientType, GameObject>();
 
 	protected override void BeforeFirstUpdate()
 	{
@@ -55,8 +55,8 @@ public class GoalPanel : MarioObject
 
 	private void GatherPrefabsForIngredientDisplay()
 	{
-		_prefabs[IngredientType.CupCake] = (GameObject)Resources.Load("Images/Cupcake");
-		_prefabs[IngredientType.MintIceCream] = (GameObject)Resources.Load("Images/ChockMintIceCream");
+		_prefabs[IngredientType.CupCake] = (GameObject) Resources.Load("Images/Cupcake");
+		_prefabs[IngredientType.MintIceCream] = (GameObject) Resources.Load("Images/ChockMintIceCream");
 	}
 
 	public void SetGoal(StageGoal goal)
@@ -136,7 +136,7 @@ public class GoalPanel : MarioObject
 
 			Debug.Log("Adding a " + type + " to the goal list");
 
-			var go = (GameObject)Instantiate(prefab);
+			var go = (GameObject) Instantiate(prefab);
 			var view = go.GetComponent<GoalngredientView>();
 			view.HasBeenReached(false);
 			_contents.Add(view);
@@ -173,7 +173,7 @@ public class GoalPanel : MarioObject
 
 	public void Clear()
 	{
-		Ingredients = new Dictionary<IngredientType, int>();
+		Ingredients = IngredientItem.CreateIngredientDict<int>();
 		UpdateUi();
 	}
 }

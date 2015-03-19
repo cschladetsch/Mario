@@ -4,16 +4,15 @@ using UnityEngine;
 
 public class MarioCamera : MonoBehaviour
 {
-
-	void Awake()
+	private void Awake()
 	{
 	}
 
-	void Start()
+	private void Start()
 	{
 	}
 
-	void Update()
+	private void Update()
 	{
 	}
 

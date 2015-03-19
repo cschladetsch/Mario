@@ -19,10 +19,8 @@ public class MinMaxTimer : MarioObject
 
 	protected override void Tick()
 	{
-		_timer -= (float)RealDeltaTime;
+		_timer -= (float) RealDeltaTime;
 		if (_timer > 0)
 			return;
 	}
 }
-
-

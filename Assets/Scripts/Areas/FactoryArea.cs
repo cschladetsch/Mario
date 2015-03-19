@@ -24,6 +24,8 @@ public class FactoryArea : AreaBase
 
 		World.CurrentLevel.ResetSpeed();
 
+		FindObjectOfType<IncomingPanel>().Reset();
+
 		ToggleVisuals(true);
 	}
 

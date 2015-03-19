@@ -56,7 +56,7 @@ public class Cooker : MarioObject
 
 	private void GoalChanged(int index, StageGoal newgoal)
 	{
-		Debug.Log("Cooker.GoalChanged: " + index + " " + newgoal.Ingredients.Length);
+		//Debug.Log("Cooker.GoalChanged: " + index + " " + newgoal.Ingredients.Length);
 		//var act = index >= 
 	}
 

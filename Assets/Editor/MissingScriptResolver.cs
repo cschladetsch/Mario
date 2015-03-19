@@ -18,6 +18,9 @@ using System;
 using System.Linq;
 using System.Reflection;
 
+// us``
+//#pragma warning disable 618 
+
 using UnityObject = UnityEngine.Object;
 
 [CustomEditor( typeof( MonoBehaviour ) )]

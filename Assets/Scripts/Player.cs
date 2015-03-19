@@ -236,7 +236,7 @@ public class Player : MarioObject
 
 		if (pickup is Cake)
 		{
-			Debug.Log("Dropped a " + pickup.name);
+			//Debug.Log("Dropped a " + pickup.name);
 
 			if (OnCakeDropped != null)
 				OnCakeDropped(this);

@@ -62,4 +62,12 @@ public class IncomingPanel : MarioObject
 			go.transform.SetParent(transform);
 		}
 	}
+
+	public void Reset()
+	{
+		foreach (Transform e in transform)
+		{
+			Destroy(e.gameObject);
+		}
+	}
 }

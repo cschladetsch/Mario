@@ -375,7 +375,7 @@ public class World : MonoBehaviour
 		if (GoalChanged != null)
 			GoalChanged(GoalIndex, goal);
 
-		Debug.Log("World.NextGoal: " + goal.Name);
+		//Debug.Log("World.NextGoal: " + goal.Name);
 		SetPlayerGoal();
 		GoalPanel.SetGoal(goal);
 		GoalPanel.Clear();

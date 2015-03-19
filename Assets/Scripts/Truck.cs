@@ -201,12 +201,9 @@ public class Truck : MarioObject
 
 	public void StartEmptying()
 	{
-		Debug.Log("Truck.StartEmptying");
+		////Debug.Log("Truck.StartEmptying");
 		if (Emptying)
-		{
-			Debug.LogError("Already Emptying");
 			return;
-		}
 
 		World.Pause(true);
 

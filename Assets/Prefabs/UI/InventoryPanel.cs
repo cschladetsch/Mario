@@ -6,7 +6,6 @@ using UnityEngine.UI;
 
 public class InventoryPanel : MarioObject
 {
-
 	private Dictionary<IngredientType, UnityEngine.UI.Text> Counts;
 
 	protected override void Construct()
@@ -103,6 +102,6 @@ public class InventoryPanel : MarioObject
 			truck.BuyItem(item);
 		}
 	}
-//#endif
 
+//#endif
 }

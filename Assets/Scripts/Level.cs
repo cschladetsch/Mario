@@ -223,7 +223,7 @@ public class Level : MarioObject
 		}
 
 		// TODO: 
-		var pos = IncomingPanel.RemoveCake(type);
+		//var pos = IncomingPanel.RemoveCake(type);
 		//Debug.Log(pos);
 		Inventory[type]--;
 
@@ -360,7 +360,7 @@ public class Level : MarioObject
 		foreach (var c in _conveyors)
 			c.Speed *= SpeedIncrementRate;
 
-		Debug.Log("Speed Up " + SpeedLevel);
+		//Debug.Log("Speed Up " + SpeedLevel);
 
 		SpeedLevel++;
 	}

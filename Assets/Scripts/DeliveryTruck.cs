@@ -94,7 +94,7 @@ public class DeliveryTruck : MarioObject
 	{
 		if (_contents.Sum(c => c.Value) == 6)
 		{
-			Debug.Log("Currently limited to 6 items max");
+			//Debug.Log("Currently limited to 6 items max");
 			return;
 		}
 

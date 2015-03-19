@@ -140,8 +140,8 @@ BoxCollider2D:
   m_Enabled: 1
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Size: {x: 1, y: 1.54218125}
-  m_Center: {x: 1.53872921e-21, y: -.271095276}
+  m_Size: {x: 1, y: 1}
+  m_Center: {x: 0, y: 0}
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -153,6 +153,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad8e5ad63e335254bae16b79af135f53, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Paused: 0
   Position: 0
   HangTime: 1.5
   Moved: 0
@@ -162,6 +163,7 @@ MonoBehaviour:
   _droppedTimer: 0
   Type: 1
   CostText: {fileID: 0}
+  Delivered: 0
 --- !u!212 &21204316
 SpriteRenderer:
   m_ObjectHideFlags: 1

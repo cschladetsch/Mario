@@ -570,7 +570,7 @@ public class Level : MarioObject
 		foreach (var c in _conveyors.Where(c => c.Contents.Contains(cake)))
 		{
 			c.RemoveItem(cake);
-			Destroy(cake);
+			Destroy(cake.gameObject);
 			return;
 		}
 	}

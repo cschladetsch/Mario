@@ -380,6 +380,8 @@ public class World : MonoBehaviour
 		GoalPanel.SetGoal(goal);
 		GoalPanel.Clear();
 		GoalPanel.UpdateUi();
+
+		CurrentArea.Paused = true;
 	}
 
 	public void MoveTo(AreaType area)

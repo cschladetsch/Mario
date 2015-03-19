@@ -10,6 +10,7 @@ public class GoalDescription : MarioObject
 
 	public void ButtonPressed()
 	{
+		World.CurrentArea.Paused = false;
 		gameObject.SetActive(false);
 	}
 

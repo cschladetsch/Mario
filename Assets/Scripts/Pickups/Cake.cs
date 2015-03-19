@@ -55,7 +55,10 @@ public class Cake : Pickup
 		base.Tick();
 
 		if (!Dropped)
+		{
+			Debug.Log(Dropped);
 			return;
+		}
 
 		_droppedTimer -= GameDeltaTime;
 		if (_droppedTimer < 0)

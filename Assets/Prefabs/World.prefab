@@ -241,7 +241,7 @@ MonoBehaviour:
   - {fileID: 100004, guid: 1100c0a9ed160384ca84ebbaf85adbfc, type: 2}
   - {fileID: 177390, guid: b7740c47d7f18ab47997290cdf058f47, type: 2}
   GoalIndex: 0
-  GodMode: 1
+  GodMode: 0
   Buttons: {fileID: 0}
 --- !u!124 &12400000
 Behaviour:

@@ -35,7 +35,8 @@ public class SpawnInfo : MarioObject
 	private Transform _folder; // where to place newly spawned objects and their splines, if any
 
 	public float _spawnTimer; // when this reaches zero, this spawned is able to spawn
-	public int _spawnsLeft;
+
+	public int SpawnsLeft;
 
 	protected override void Begin()
 	{
@@ -43,17 +44,17 @@ public class SpawnInfo : MarioObject
 
 		CalcNextSpawnTime();
 
-		_spawnsLeft = MaxSpawns;
+		SpawnsLeft = MaxSpawns;
 	}
 
 	public bool CouldSpawn()
 	{
-		return _spawnTimer < 0 && _spawnsLeft > 0;
+		return _spawnTimer < 0 && SpawnsLeft > 0;
 	}
 
 	protected override void Tick()
 	{
-		if (_spawnsLeft == 0)
+		if (SpawnsLeft == 0)
 			return;
 
 		_spawnTimer -= GameDeltaTime;
@@ -61,7 +62,7 @@ public class SpawnInfo : MarioObject
 
 	public GameObject Spawn(GameObject parent)
 	{
-		if (_spawnsLeft-- <= 0)
+		if (SpawnsLeft-- <= 0)
 		{
 			CalcNextSpawnTime();
 			return null;
@@ -94,12 +95,12 @@ public class SpawnInfo : MarioObject
 
 	public bool CanSpawn()
 	{
-		return _spawnsLeft > 0;
+		return SpawnsLeft > 0;
 	}
 
 	public void SpawnMore(int num)
 	{
-		_spawnsLeft += num;
+		SpawnsLeft += num;
 		MaxSpawns += num;
 	}
 }

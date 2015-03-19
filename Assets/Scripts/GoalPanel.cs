@@ -58,11 +58,11 @@ public class GoalPanel : MarioObject
 		_prefabs[IngredientType.CupCake] = (GameObject) Resources.Load("Images/CupcakeImage");
 		_prefabs[IngredientType.MintIceCream] = (GameObject)Resources.Load("Images/MintIceCreamImage");
 
-		Debug.Log("GoalPanel.GatherPrefabsForIngredientDisplay");
-		foreach (var kv in _prefabs)
-		{
-			Debug.Log(String.Format("{0} {1}", kv.Key, kv.Value));
-		}
+		//Debug.Log("GoalPanel.GatherPrefabsForIngredientDisplay");
+		//foreach (var kv in _prefabs)
+		//{
+		//	Debug.Log(String.Format("{0} {1}", kv.Key, kv.Value));
+		//}
 	}
 
 	public void SetGoal(StageGoal goal)
@@ -115,7 +115,7 @@ public class GoalPanel : MarioObject
 
 	private void AddAllItems()
 	{
-		Debug.Log("Goal.AddAllItems: " + Player.CurrentGoal.Name);
+		//Debug.Log("Goal.AddAllItems: " + Player.CurrentGoal.Name);
 		//Debug.Log(Player.CurrentGoal.Ingredients);
 		//foreach (var kv in Player.CurrentGoal.Ingredients)
 		//	Debug.Log(kv);

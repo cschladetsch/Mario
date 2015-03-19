@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Flow;
 using UnityEngine;
 
 /// <summary>
@@ -83,7 +84,7 @@ public class Level : MarioObject
 
 	public int SpawnsRemaining
 	{
-		get { return _spawners.Sum(s => s._spawnsLeft); }
+		get { return _spawners.Sum(s => s.SpawnsLeft); }
 	}
 
 	public bool NothingToSpawn
@@ -221,14 +222,16 @@ public class Level : MarioObject
 			return;
 		}
 
+		// TODO: 
 		var pos = IncomingPanel.RemoveCake(type);
-		Debug.Log(pos);
+		//Debug.Log(pos);
 		Inventory[type]--;
 
 		//Debug.Log("Cakes Left: " + Inventory.Sum(c => c.Value));
 
 		var born = spawnInfo.Spawn(gameObject);
 		born.transform.position = CakeSpawnPoint.transform.position;
+		//born.GetRectTransform().anchoredPosition = pos;
 		born.name = Guid.NewGuid().ToString();
 		//Debug.Log("Spawned a " + spawnInfo.Prefab.name + " called " + born.name);
 

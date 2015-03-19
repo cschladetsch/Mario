@@ -334,44 +334,44 @@ public class Player : MarioObject
 
 	public float SoldItemTravelTime = 2;
 
-	IEnumerator MoveSoldItem(IGenerator self, IngredientType type)
-	{
-		// make the image to move
-		var go = (GameObject)Instantiate(World.GetInfo(type).ImagePrefab);
-		go.transform.SetParent(World.Canvas.transform);
+	//IEnumerator MoveSoldItem(IGenerator self, IngredientType type)
+	//{
+	//	// make the image to move
+	//	var go = (GameObject)Instantiate(World.GetInfo(type).ImagePrefab);
+	//	go.transform.SetParent(World.Canvas.transform);
 
-		var mainCanvas = World.Canvas.GetComponent<RectTransform>();
-		var product = _products.GetProduct(type);
+	//	var mainCanvas = World.Canvas.GetComponent<RectTransform>();
+	//	var product = _products.GetProduct(type);
 
-		// TODO: Randomise the mid-point a little
-		// make parabola to move through
-		var para = new Parabola(
-			product.GetRectTransform().position,									// start pos
-			new Vector2(mainCanvas.rect.width/2.0f, mainCanvas.rect.height/2.0f),		// mid point
-			World.GoalPanel.gameObject.GetRectTransform().position,		// end point
-			SoldItemTravelTime);
+	//	// TODO: Randomise the mid-point a little
+	//	// make parabola to move through
+	//	var para = new Parabola(
+	//		product.GetRectTransform().position,									// start pos
+	//		new Vector2(mainCanvas.rect.width/2.0f, mainCanvas.rect.height/2.0f),		// mid point
+	//		World.GoalPanel.gameObject.GetRectTransform().position,		// end point
+	//		SoldItemTravelTime);
 
 		
-		// move the image through the parabola
-		var gort = go.GetRectTransform();
-		var t = 0.0f;
-		while (true)
-		{
-			t += RealDeltaTime;
-			if (t > SoldItemTravelTime)
-			{
-				Destroy(go);
-				yield break;
-			}
+	//	// move the image through the parabola
+	//	var gort = go.GetRectTransform();
+	//	var t = 0.0f;
+	//	while (true)
+	//	{
+	//		t += RealDeltaTime;
+	//		if (t > SoldItemTravelTime)
+	//		{
+	//			Destroy(go);
+	//			yield break;
+	//		}
 
-			var pos = para.CalcAtTime(t);
-			var position = new Vector2(pos.x, pos.y);
-			Debug.Log(string.Format("Moving sold item: t={0}, type={1}, pos={2}", t, type, pos));
-			gort.anchoredPosition = position;
+	//		var pos = para.CalcAtTime(t);
+	//		var position = new Vector2(pos.x, pos.y);
+	//		Debug.Log(string.Format("Moving sold item: t={0}, type={1}, pos={2}", t, type, pos));
+	//		gort.anchoredPosition = position;
 			
-			yield return 0;
-		}
-	}
+	//		yield return 0;
+	//	}
+	//}
 
 	private void Died()
 	{
@@ -393,6 +393,7 @@ public class Player : MarioObject
 		World.Canvas.UpdateGoldAmount();
 		World.Canvas.GoalPanel.GetComponent<GoalPanel>().UpdateUi();
 		World.CookingAreaUi.InventoryPanel.UpdateDisplay(Inventory, false);
+		
 
 		LivesRemainingText.text = Lives.ToString();
 	}
@@ -430,7 +431,7 @@ public class Player : MarioObject
 	/// <returns></returns>
 	private bool GoalReached()
 	{
-		Debug.Log("Player.GoalReached?");
+		//Debug.Log("Player.GoalReached?");
 		// make a dictionary mapping type to number required
 		var dict = IngredientItem.CreateIngredientDict<int>();
 		foreach (var type in CurrentGoal.Ingredients)
@@ -445,7 +446,7 @@ public class Player : MarioObject
 			var needed = dict[kv.Key];
 			if (kv.Value < needed && needed > 0)
 			{
-				Debug.Log("Not enough " + kv.Key + ": need " + needed + ", have " + kv.Value);
+				//Debug.Log("Not enough " + kv.Key + ": need " + needed + ", have " + kv.Value);
 				return false;
 			}
 		}

@@ -34,6 +34,11 @@ namespace Flow
 			return go.GetComponent<RectTransform>();
 		}
 
+		public static RectTransform GetRectTransform(this Transform go)
+		{
+			return go.GetComponent<RectTransform>();
+		}
+
 		/// <summary>
 		/// Removes a reference from the list
 		/// </summary>

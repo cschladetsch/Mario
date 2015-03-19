@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Flow;
+using UnityEngine;
 using UnityEngine.UI;
 using wHiteRabbiT.Unity.Extensions;
 
@@ -42,9 +43,10 @@ public class IncomingPanel : MarioObject
 			if (cake.Type != type) 
 				continue;
 
-			var pos = cake.GetComponent<RectTransform>().position;
+			var pos = cake.gameObject.GetRectTransform().position;
 
 			Destroy(cake.gameObject);
+
 			return pos;
 		}
 

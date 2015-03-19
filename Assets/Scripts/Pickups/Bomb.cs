@@ -22,4 +22,3 @@ public class Bomb : Pickup
 		Remove();
 	}
 }
-

@@ -22,11 +22,11 @@ public class SpawnGameobject : MonoBehaviour
 	/// </summary>
 	internal GameObject Instance;
 
-	void Awake()
+	private void Awake()
 	{
 	}
 
-	void Start()
+	private void Start()
 	{
 		Spawn();
 	}

@@ -1,4 +1,5 @@
 // CJS. Nabbed from http://code.google.com/p/mono-soc-2008/source/browse/trunk/parallelfx/System.Threading/System.Threading/SpinWait.cs?r=554
+
 using System;
 using System.Threading;
 
@@ -7,10 +8,10 @@ namespace Flow
 	public struct SpinWait
 	{
 		// The number of step until SpinOnce yield on multicore machine
-		const int step = 20;
-		static readonly bool isSingleCpu = (Environment.ProcessorCount == 1);
+		private const int step = 20;
+		private static readonly bool isSingleCpu = (Environment.ProcessorCount == 1);
 
-		int ntime;
+		private int ntime;
 
 		public void SpinOnce()
 		{
@@ -21,14 +22,14 @@ namespace Flow
 			}
 			else
 			{
-				if (Interlocked.Increment(ref ntime) % step == 0)
+				if (Interlocked.Increment(ref ntime)%step == 0)
 				{
 					Yield();
 				}
 				else
 				{
 					// Multi-CPU system might be hyper-threaded, let other thread run
-					Thread.SpinWait(2 * (ntime + 1));
+					Thread.SpinWait(2*(ntime + 1));
 				}
 			}
 		}
@@ -39,7 +40,7 @@ namespace Flow
 				SpinOnce();
 		}
 
-		static void Yield()
+		private static void Yield()
 		{
 			// Replace sched_yield by Thread.Sleep(0) which does almost the same thing
 			// (going back in kernel mode and yielding) but avoid the branching and unmanaged bridge
@@ -53,18 +54,12 @@ namespace Flow
 
 		public bool NextSpinWillYield
 		{
-			get
-			{
-				return isSingleCpu || ntime % step == 0;
-			}
+			get { return isSingleCpu || ntime%step == 0; }
 		}
 
 		public int Count
 		{
-			get
-			{
-				return ntime;
-			}
+			get { return ntime; }
 		}
 	}
 }

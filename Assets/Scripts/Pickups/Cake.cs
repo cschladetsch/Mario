@@ -56,7 +56,7 @@ public class Cake : Pickup
 
 		if (!Dropped)
 		{
-			Debug.Log(Dropped);
+			//Debug.Log(Dropped);
 			return;
 		}
 
@@ -94,7 +94,7 @@ public class Cake : Pickup
 	}
 
 #if DEBUG
-	void OnDestroy()
+	private void OnDestroy()
 	{
 		Debug.Log("Cake destroyed " + Time.frameCount);
 	}

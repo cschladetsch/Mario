@@ -50,5 +50,3 @@ public class FactoryArea : AreaBase
 		ToggleVisuals(level.gameObject, on);
 	}
 }
-
-

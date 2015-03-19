@@ -69,7 +69,7 @@ namespace Flow
 			}
 		}
 
-		bool StepChannel(IGenerator self)
+		private bool StepChannel(IGenerator self)
 		{
 			++StepNumber;
 
@@ -81,9 +81,9 @@ namespace Flow
 			return true;
 		}
 
-		readonly Queue<TR> _values = new Queue<TR>();
+		private readonly Queue<TR> _values = new Queue<TR>();
 
-		readonly Queue<IFuture<TR>> _requests = new Queue<IFuture<TR>>();
+		private readonly Queue<IFuture<TR>> _requests = new Queue<IFuture<TR>>();
 
 		private readonly object _mutex = new object();
 	}

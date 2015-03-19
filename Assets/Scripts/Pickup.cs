@@ -157,7 +157,6 @@ public class Pickup : MarioObject
 			// HACKS
 			if (conveyor != null)
 				conveyor.AddItem(this, 0.8f);
-
 		}
 	}
 

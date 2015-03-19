@@ -25,7 +25,7 @@ namespace Flow
 		/// Occurs when a transient is removed from this group.
 		/// </summary>
 		event GroupHandler Removed;
-	 
+
 		/// <summary>
 		/// Gets the contents of this group.
 		/// </summary>
@@ -41,7 +41,7 @@ namespace Flow
 		/// The transient to add to this group
 		/// </param>
 		void Add(ITransient trans);
-		
+
 		/// <summary>
 		/// Remove the specified transient from this group.
 		/// </summary>

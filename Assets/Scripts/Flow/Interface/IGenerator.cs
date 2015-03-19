@@ -29,7 +29,7 @@ namespace Flow
 		/// Occurs when suspended.
 		/// </summary>
 		event GeneratorHandler Suspended;
-		
+
 		/// <summary>
 		/// Gets a value indicating whether this <see cref="Flow.IGenerator"/> is running.
 		/// </summary>
@@ -65,7 +65,7 @@ namespace Flow
 		/// Suspend this instance. After this, Step() does nothing.
 		/// </summary>
 		void Suspend();
-		
+
 		/// <summary>
 		/// Suspends this instance after another transient has been deleted
 		/// </summary>
@@ -73,7 +73,7 @@ namespace Flow
 		/// When the given transient is deleted, this instance will be suspended
 		/// </param>
 		void SuspendAfter(ITransient other);
-		
+
 		/// <summary>
 		/// Resumes this instance after another transient has been deleted.
 		/// </summary>

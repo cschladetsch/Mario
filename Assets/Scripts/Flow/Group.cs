@@ -19,17 +19,17 @@ namespace Flow
 
 		/// <inheritdoc />
 		public event GroupHandler Removed;
-		
+
 		/// <inheritdoc />
-		public IEnumerable<ITransient> Contents { get { return _contents; } }
-		
-		/// <inheritdoc />
-		public IEnumerable<IGenerator> Generators 
+		public IEnumerable<ITransient> Contents
 		{
-			get 
-			{
-				return Contents.OfType<IGenerator>();
-			}
+			get { return _contents; }
+		}
+
+		/// <inheritdoc />
+		public IEnumerable<IGenerator> Generators
+		{
+			get { return Contents.OfType<IGenerator>(); }
 		}
 
 		internal Group()
@@ -85,9 +85,9 @@ namespace Flow
 			Deletions.Add(other);
 		}
 
-		void ForEachGenerator(Action<IGenerator> act)
+		private void ForEachGenerator(Action<IGenerator> act)
 		{
-			foreach (var gen in Generators) 
+			foreach (var gen in Generators)
 				act(gen);
 		}
 
@@ -97,9 +97,9 @@ namespace Flow
 			PerformRemoves();
 		}
 
-		void PerformRemoves()
+		private void PerformRemoves()
 		{
-			foreach (var tr in Deletions.ToList()) 
+			foreach (var tr in Deletions.ToList())
 			{
 				_contents.RemoveRef(tr);
 				if (tr == null)
@@ -112,9 +112,9 @@ namespace Flow
 			Deletions.Clear();
 		}
 
-		void PerformAdds()
+		private void PerformAdds()
 		{
-			foreach (var tr in Additions) 
+			foreach (var tr in Additions)
 			{
 				_contents.Add(tr);
 				//tr.Completed += Remove;
@@ -126,7 +126,7 @@ namespace Flow
 		}
 
 		protected readonly List<ITransient> Additions = new List<ITransient>();
-		
+
 		protected readonly List<ITransient> Deletions = new List<ITransient>();
 
 		private readonly List<ITransient> _contents = new List<ITransient>();

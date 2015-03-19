@@ -52,7 +52,6 @@ namespace Flow
 				gen.Post();
 		}
 
-		bool _stepping;
+		private bool _stepping;
 	}
 }
-

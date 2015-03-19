@@ -21,7 +21,7 @@ namespace Flow
 			Timer.Elapsed += HandleElapsed;
 		}
 
-		void HandleElapsed(ITransient sender)
+		private void HandleElapsed(ITransient sender)
 		{
 			if (!Active)
 				return;

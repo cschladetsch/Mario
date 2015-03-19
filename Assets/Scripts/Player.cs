@@ -351,7 +351,7 @@ public class Player : MarioObject
 	//		World.GoalPanel.gameObject.GetRectTransform().position,		// end point
 	//		SoldItemTravelTime);
 
-		
+
 	//	// move the image through the parabola
 	//	var gort = go.GetRectTransform();
 	//	var t = 0.0f;
@@ -368,7 +368,7 @@ public class Player : MarioObject
 	//		var position = new Vector2(pos.x, pos.y);
 	//		Debug.Log(string.Format("Moving sold item: t={0}, type={1}, pos={2}", t, type, pos));
 	//		gort.anchoredPosition = position;
-			
+
 	//		yield return 0;
 	//	}
 	//}
@@ -393,7 +393,7 @@ public class Player : MarioObject
 		World.Canvas.UpdateGoldAmount();
 		World.Canvas.GoalPanel.GetComponent<GoalPanel>().UpdateUi();
 		World.CookingAreaUi.InventoryPanel.UpdateDisplay(Inventory, false);
-		
+
 
 		LivesRemainingText.text = Lives.ToString();
 	}

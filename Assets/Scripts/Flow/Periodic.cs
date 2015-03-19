@@ -5,7 +5,7 @@ using System;
 namespace Flow
 {
 	/// <inheritdoc />
-	class Periodic : Subroutine<bool>, IPeriodic
+	internal class Periodic : Subroutine<bool>, IPeriodic
 	{
 		/// <inheritdoc />
 		public event TransientHandler Elapsed;
@@ -24,7 +24,7 @@ namespace Flow
 			Sub = StepTimer;
 		}
 
-		bool StepTimer(IGenerator self)
+		private bool StepTimer(IGenerator self)
 		{
 			if (Kernel.Time.Now < _expires)
 				return true;
@@ -37,6 +37,6 @@ namespace Flow
 			return true;
 		}
 
-		DateTime _expires;
+		private DateTime _expires;
 	}
 }

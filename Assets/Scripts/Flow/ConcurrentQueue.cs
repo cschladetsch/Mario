@@ -20,27 +20,32 @@ using System.Threading;
 namespace Flow
 {
 	// CJS See http://stackoverflow.com/questions/12550749/what-is-the-dynamicallyinvokable-attribute-for
-	class __DynamicallyInvokable : Attribute
+	internal class __DynamicallyInvokable : Attribute
 	{
 	}
 
-	[Serializable, ComVisible(false), DebuggerDisplay("Count = {Count}"), __DynamicallyInvokable, HostProtection(SecurityAction.LinkDemand, Synchronization = true, ExternalThreading = true)]
+	[Serializable, ComVisible(false), DebuggerDisplay("Count = {Count}"), __DynamicallyInvokable,
+	HostProtection(SecurityAction.LinkDemand, Synchronization = true, ExternalThreading = true)]
 	//CJS public class ConcurrentQueue<T> : IProducerConsumerCollection<T>, IEnumerable<T>, ICollection, IEnumerable
 	public class ConcurrentQueue<T> : IEnumerable<T>, ICollection, IEnumerable
 	{
 		[NonSerialized]
 		private volatile Segment<T> m_head;
+
 		[NonSerialized]
 		internal volatile int m_numSnapshotTakers;
+
 		private T[] m_serializationArray;
+
 		[NonSerialized]
 		private volatile Segment<T> m_tail;
+
 		private const int SEGMENT_SIZE = 0x20;
 
 		[__DynamicallyInvokable]
 		public ConcurrentQueue()
 		{
-			this.m_head = this.m_tail = new Segment<T>(0L, (ConcurrentQueue<T>)this);
+			this.m_head = this.m_tail = new Segment<T>(0L, (ConcurrentQueue<T>) this);
 		}
 
 		[__DynamicallyInvokable]
@@ -111,7 +116,9 @@ namespace Flow
 					}
 					yield return head.m_array[j];
 				}
-				for (Segment<T> iteratorVariable3 = head.Next; iteratorVariable3 != tail; iteratorVariable3 = iteratorVariable3.Next)
+				for (Segment<T> iteratorVariable3 = head.Next;
+					iteratorVariable3 != tail;
+					iteratorVariable3 = iteratorVariable3.Next)
 				{
 					for (int m = 0; m < 0x20; m++)
 					{
@@ -142,7 +149,8 @@ namespace Flow
 			headLow = head.Low;
 			tailHigh = tail.High;
 			SpinWait wait = new SpinWait();
-			while ((((head != this.m_head) || (tail != this.m_tail)) || ((headLow != head.Low) || (tailHigh != tail.High))) || (head.m_index > tail.m_index))
+			while ((((head != this.m_head) || (tail != this.m_tail)) || ((headLow != head.Low) || (tailHigh != tail.High))) ||
+					(head.m_index > tail.m_index))
 			{
 				wait.SpinOnce();
 				head = this.m_head;
@@ -154,7 +162,7 @@ namespace Flow
 
 		private void InitializeFromCollection(IEnumerable<T> collection)
 		{
-			Segment<T> segment = new Segment<T>(0L, (ConcurrentQueue<T>)this);
+			Segment<T> segment = new Segment<T>(0L, (ConcurrentQueue<T>) this);
 			this.m_head = segment;
 			int num = 0;
 			foreach (T local in collection)
@@ -296,7 +304,7 @@ namespace Flow
 					return ((num2 - num) + 1);
 				}
 				int num3 = 0x20 - num;
-				num3 += 0x20 * ((int)((segment2.m_index - segment.m_index) - 1L));
+				num3 += 0x20*((int) ((segment2.m_index - segment.m_index) - 1L));
 				return (num3 + (num2 + 1));
 			}
 		}
@@ -332,21 +340,13 @@ namespace Flow
 		[__DynamicallyInvokable]
 		bool ICollection.IsSynchronized
 		{
-			[__DynamicallyInvokable]
-			get
-			{
-				return false;
-			}
+			[__DynamicallyInvokable] get { return false; }
 		}
 
 		[__DynamicallyInvokable]
 		object ICollection.SyncRoot
 		{
-			[__DynamicallyInvokable]
-			get
-			{
-				throw new NotSupportedException("ConcurrentCollection_SyncRoot_NotSupported");
-			}
+			[__DynamicallyInvokable] get { throw new NotSupportedException("ConcurrentCollection_SyncRoot_NotSupported"); }
 		}
 
 		internal class Segment<T2>
@@ -484,34 +484,22 @@ namespace Flow
 
 			internal int High
 			{
-				get
-				{
-					return Math.Min(this.m_high, 0x1f);
-				}
+				get { return Math.Min(this.m_high, 0x1f); }
 			}
 
 			internal bool IsEmpty
 			{
-				get
-				{
-					return (this.Low > this.High);
-				}
+				get { return (this.Low > this.High); }
 			}
 
 			internal int Low
 			{
-				get
-				{
-					return Math.Min(this.m_low, 0x20);
-				}
+				get { return Math.Min(this.m_low, 0x20); }
 			}
 
 			internal ConcurrentQueue<T2>.Segment<T2> Next
 			{
-				get
-				{
-					return this.m_next;
-				}
+				get { return this.m_next; }
 			}
 		}
 	}

@@ -19,7 +19,7 @@ public class CollisionActivated : Effect
 
 	private Vector3 _where;
 
-	void Start()
+	private void Start()
 	{
 		_player.OnCollision += CollisionEnter;
 		_player.OnTrigger += TriggerEnter;
@@ -50,7 +50,7 @@ public class CollisionActivated : Effect
 		return _triggered;
 	}
 
-	void Update()
+	private void Update()
 	{
 		_triggered = false;
 	}

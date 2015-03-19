@@ -10,7 +10,7 @@ namespace Flow
 			if (!Active || !Running)
 				return;
 
-			if (Sub == null) 
+			if (Sub == null)
 			{
 				Complete();
 				return;

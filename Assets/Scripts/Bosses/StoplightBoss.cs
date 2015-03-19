@@ -14,7 +14,11 @@ public class StoplightBoss : Boss
 {
 	public enum Direction
 	{
-		Left, Right, Forward, Back, Transitioning
+		Left,
+		Right,
+		Forward,
+		Back,
+		Transitioning
 	}
 
 	/// <summary>
@@ -115,7 +119,7 @@ public class StoplightBoss : Boss
 
 	private void RandomTurn()
 	{
-		var values = Enum.GetValues(typeof(Direction));
+		var values = Enum.GetValues(typeof (Direction));
 		var cur = Dir;
 
 		// ensure we transition to a new direction
@@ -129,4 +133,3 @@ public class StoplightBoss : Boss
 		Debug.Log("SpotlightBoss.RandomTurn: " + Dir);
 	}
 }
-

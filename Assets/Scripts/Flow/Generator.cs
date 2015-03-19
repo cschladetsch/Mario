@@ -38,9 +38,9 @@ namespace Flow
 		{
 			if (!Running || !Active)
 				return;
-			
+
 			Running = false;
-			
+
 			if (Suspended != null)
 				Suspended(this);
 		}
@@ -50,7 +50,7 @@ namespace Flow
 		{
 			if (Running || !Active)
 				return;
-			
+
 			Running = true;
 
 			if (Resumed != null)

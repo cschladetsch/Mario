@@ -11,16 +11,16 @@ namespace Flow
 		public bool Available { get; private set; }
 
 		/// <inheritdoc />
-		public T Value 
+		public T Value
 		{
-			get 
+			get
 			{
 				if (!Available)
 					throw new FutureNotSetException();
 
 				return _value;
 			}
-			set 
+			set
 			{
 				if (Available)
 					throw new FutureAlreadySetException();

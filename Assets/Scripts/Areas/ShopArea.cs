@@ -90,5 +90,3 @@ public class ShopArea : AreaBase
 		//DeliveryTruck.Deliver(contents);
 	}
 }
-
-

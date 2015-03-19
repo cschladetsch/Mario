@@ -55,7 +55,7 @@ namespace Flow
 		{
 			for (var n = 0; n < list.Count; ++n)
 			{
-				if (!ReferenceEquals(list[n], obj)) 
+				if (!ReferenceEquals(list[n], obj))
 					continue;
 
 				list.RemoveAt(n);
@@ -80,4 +80,3 @@ namespace Flow
 
 	public delegate void Action<T0, T1>(T0 t0, T1 t1);
 }
-

@@ -22,11 +22,14 @@ public class BuyingAreaUI : MarioObject
 	/// </summary>
 	public Dictionary<IngredientType, int> _contents = new Dictionary<IngredientType, int>();
 
-	public bool HasAnything { get { return _contents.Sum(c => c.Value) > 0; } }
+	public bool HasAnything
+	{
+		get { return _contents.Sum(c => c.Value) > 0; }
+	}
 
 	public UnityEngine.UI.Text GoldText;
 
-	private List<IngredientButtton> _buttons = new List<IngredientButtton>(); 
+	private List<IngredientButtton> _buttons = new List<IngredientButtton>();
 
 	protected override void BeforeFirstUpdate()
 	{
@@ -148,7 +151,7 @@ public class BuyingAreaUI : MarioObject
 	public void SellItem(GameObject go)
 	{
 		var item = go.GetComponent<IngredientItem>().Type;
-		if (_contents[item] == 0)// && Player.Inventory[item] == 0)
+		if (_contents[item] == 0) // && Player.Inventory[item] == 0)
 			return;
 
 		var gold = World.IngredientInfo[item].Sell;
@@ -166,7 +169,7 @@ public class BuyingAreaUI : MarioObject
 		World.ChangeArea(AreaType.Bakery);
 	}
 
-	void OnDisable()
+	private void OnDisable()
 	{
 		//Debug.Log(" " + name + " was disabled");
 	}

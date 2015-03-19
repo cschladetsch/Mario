@@ -18,7 +18,7 @@ public class CookingAreaUI : MarioObject
 	public UnityEngine.UI.Toggle SkipToggle;
 
 	public UnityEngine.UI.Button ShopButton;
- 
+
 	public Cooker MintIceCreamCooker;
 
 	public Cooker CupCakeCooker;
@@ -203,7 +203,7 @@ public class CookingAreaUI : MarioObject
 		//SelectedCooker = go.GetComponent<Cooker>();
 	}
 
-	void UpdateCookerAvailability()
+	private void UpdateCookerAvailability()
 	{
 		//foreach (var c in Cookers)
 		//{
@@ -218,7 +218,7 @@ public class CookingAreaUI : MarioObject
 		World.ChangeArea(0);
 	}
 
-	void OnDisable()
+	private void OnDisable()
 	{
 		//Debug.Log("BakeryArea enabled: " + gameObject.activeSelf);
 	}
@@ -227,4 +227,3 @@ public class CookingAreaUI : MarioObject
 	{
 	}
 }
-

@@ -17,13 +17,10 @@ namespace Flow
 		public event TransientHandlerReason WhyCompleted;
 
 		/// <inheritdoc />
-		public string Name 
-		{ 
-			get 
-			{
-				return _name;
-			}
-			set 
+		public string Name
+		{
+			get { return _name; }
+			set
 			{
 				if (_name == value)
 					return;
@@ -34,12 +31,15 @@ namespace Flow
 				_name = value;
 			}
 		}
-		
+
 		/// <inheritdoc />
 		public IKernel Kernel { get; /*internal*/ set; }
 
 		/// <inheritdoc />
-		public IFactory Factory  { get { return Kernel.Factory; } }
+		public IFactory Factory
+		{
+			get { return Kernel.Factory; }
+		}
 
 		/// <inheritdoc />
 		public event NamedHandler NewName;
@@ -56,18 +56,18 @@ namespace Flow
 		/// <param name='other'>
 		/// The transient to consider
 		/// </param>
-		public static bool IsNullOrEmpty (ITransient other)
+		public static bool IsNullOrEmpty(ITransient other)
 		{
 			return other == null || !other.Active;
 		}
 
 		private System.Guid _guid;
 
-	    public Transient()
+		public Transient()
 		{
 			Active = true;
 
-		    _guid = System.Guid.NewGuid();
+			_guid = System.Guid.NewGuid();
 		}
 
 		public static bool DebugTrace;
@@ -93,7 +93,7 @@ namespace Flow
 			if (other == null)
 				return;
 
-			if (!other.Active) 
+			if (!other.Active)
 			{
 				Complete();
 				return;
@@ -102,7 +102,7 @@ namespace Flow
 			other.Completed += tr => CompletedBecause(other);
 		}
 
-		void CompletedBecause(ITransient other)
+		private void CompletedBecause(ITransient other)
 		{
 			if (!Active)
 				return;

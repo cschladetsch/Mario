@@ -18,7 +18,7 @@ public abstract class Effect : MonoBehaviour
 
 	protected Player _player;
 
-	void Awake()
+	private void Awake()
 	{
 		// de-activate all children
 		_active = true;
@@ -26,7 +26,7 @@ public abstract class Effect : MonoBehaviour
 		_player = FindObjectOfType<Player>();
 	}
 
-	void Start()
+	private void Start()
 	{
 	}
 
@@ -76,7 +76,7 @@ public abstract class Effect : MonoBehaviour
 		ActivateChildren(activate);
 	}
 
-	void Activate(GameObject child, bool activate)
+	private void Activate(GameObject child, bool activate)
 	{
 		if (child == null)
 		{
@@ -139,7 +139,7 @@ public abstract class Effect : MonoBehaviour
 
 	private bool _stop;
 
-	IEnumerator PlayParticleSystem(ParticleSystem ps)
+	private IEnumerator PlayParticleSystem(ParticleSystem ps)
 	{
 		//Debug.Log("Playing " + ps.name);
 		ps.Emit(1);
@@ -176,7 +176,5 @@ public abstract class Effect : MonoBehaviour
 
 public abstract class ScalarDependantEffect : Effect
 {
-	public float Value;// { get; }
-
+	public float Value; // { get; }
 }
-

@@ -56,7 +56,7 @@ public class GoalPanel : MarioObject
 	private void GatherPrefabsForIngredientDisplay()
 	{
 		_prefabs[IngredientType.CupCake] = (GameObject) Resources.Load("Images/CupcakeImage");
-		_prefabs[IngredientType.MintIceCream] = (GameObject)Resources.Load("Images/MintIceCreamImage");
+		_prefabs[IngredientType.MintIceCream] = (GameObject) Resources.Load("Images/MintIceCreamImage");
 
 		//Debug.Log("GoalPanel.GatherPrefabsForIngredientDisplay");
 		//foreach (var kv in _prefabs)

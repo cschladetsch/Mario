@@ -103,7 +103,7 @@ public class Truck : MarioObject
 
 		if (_cakes.Count > 0)
 		{
-			if (_cakes.All(c => c.Delivered))
+			if (World.CurrentLevel.NoMoreCakes && _cakes.All(c => c.Delivered))
 				StartEmptying();
 		}
 	}

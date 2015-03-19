@@ -18,7 +18,7 @@ namespace Flow
 			Removed += Trip;
 		}
 
-		void Trip(IGroup self, ITransient other)
+		private void Trip(IGroup self, ITransient other)
 		{
 			Reason = other;
 

@@ -28,7 +28,7 @@ namespace Flow
 				list.Add(_values.Dequeue());
 			}
 
-			return list;			
+			return list;
 		}
 
 		/// <inheritdoc />
@@ -67,15 +67,15 @@ namespace Flow
 			CompleteAfter(gen);
 		}
 
-		bool StepChannel(IGenerator self)
+		private bool StepChannel(IGenerator self)
 		{
 			Flush();
 
 			return true;
 		}
 
-		readonly Queue<TR> _values = new Queue<TR>();
+		private readonly Queue<TR> _values = new Queue<TR>();
 
-		readonly Queue<IFuture<TR>> _requests = new Queue<IFuture<TR>>();
+		private readonly Queue<IFuture<TR>> _requests = new Queue<IFuture<TR>>();
 	}
 }

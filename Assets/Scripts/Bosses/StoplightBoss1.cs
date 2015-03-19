@@ -12,7 +12,10 @@ public class StoplightBoss1 : Boss
 {
 	public enum Direction
 	{
-		Left, Right, Forward, Transitioning
+		Left,
+		Right,
+		Forward,
+		Transitioning
 	}
 
 	/// <summary>
@@ -70,7 +73,6 @@ public class StoplightBoss1 : Boss
 			_waitTimer = WaitTime;
 			RandomTurn();
 		}
-
 	}
 
 	/// <summary>
@@ -139,12 +141,12 @@ public class StoplightBoss1 : Boss
 
 	private void RandomTurn()
 	{
-		var values = Enum.GetValues(typeof(Direction));
+		var values = Enum.GetValues(typeof (Direction));
 
 		// ensure we transition to a new direction
 		while (true)
 		{
-			_targetDir = (Direction)values.GetValue(UnityEngine.Random.Range(0, values.Length - 1));
+			_targetDir = (Direction) values.GetValue(UnityEngine.Random.Range(0, values.Length - 1));
 			if (_targetDir != Dir && _targetDir != Direction.Transitioning)
 				break;
 		}
@@ -161,4 +163,3 @@ public class StoplightBoss1 : Boss
 		Dir = Direction.Transitioning;
 	}
 }
-

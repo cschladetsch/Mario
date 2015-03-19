@@ -11,13 +11,13 @@ public class EffectGroup : MonoBehaviour
 {
 	private List<ScalarDependantEffect> _effects = new List<ScalarDependantEffect>();
 
-	void Start()
+	private void Start()
 	{
 		_effects = transform.GetComponentsInChildren<ScalarDependantEffect>().ToList();
 		_effects.Sort((a, b) => a.Value.CompareTo(b.Value));
 	}
 
-	void Update()
+	private void Update()
 	{
 		if (_effects.Count == 0)
 			return;

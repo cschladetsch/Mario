@@ -40,7 +40,7 @@ public class IncomingPanel : MarioObject
 		//Debug.Log("IncomingPanel.RemoveCake: " + type);
 		foreach (var cake in transform.GetComponentsInChildren<GoalngredientView>())
 		{
-			if (cake.Type != type) 
+			if (cake.Type != type)
 				continue;
 
 			var pos = cake.gameObject.GetRectTransform().position;

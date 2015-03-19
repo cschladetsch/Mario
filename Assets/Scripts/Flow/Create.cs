@@ -1,5 +1,7 @@
 //
 
+
+
 #pragma warning disable 1685
 
 namespace Flow
@@ -34,7 +36,7 @@ namespace Flow
 			kernel.Factory = factory;
 			factory.Kernel = kernel;
 
-			kernel.Root = new Node { Kernel = kernel };
+			kernel.Root = new Node {Kernel = kernel};
 
 			return factory;
 		}

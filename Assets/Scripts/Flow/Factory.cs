@@ -32,16 +32,16 @@ namespace Flow
 			return Prepare(new Barrier());
 		}
 
-	    public IBarrier NewBarrier(string name, params ITransient[] args)
-	    {
-	        var barrier = NewBarrier();
-	        barrier.Name = name;
-	        foreach (var tr in args)
-	            barrier.Add(tr);
-	        return barrier;
-	    }
-        
-	    /// <inheritdoc />
+		public IBarrier NewBarrier(string name, params ITransient[] args)
+		{
+			var barrier = NewBarrier();
+			barrier.Name = name;
+			foreach (var tr in args)
+				barrier.Add(tr);
+			return barrier;
+		}
+
+		/// <inheritdoc />
 		public ITrigger NewTrigger()
 		{
 			return Prepare(new Trigger());
@@ -122,7 +122,8 @@ namespace Flow
 		}
 
 		/// <inheritdoc />
-		public ITypedCoroutine<TR> NewTypedCoroutine<TR, T0, T1, T2>(Func<IGenerator, T0, T1, T2, IEnumerator<TR>> fun, T0 t0, T1 t1, T2 t2)
+		public ITypedCoroutine<TR> NewTypedCoroutine<TR, T0, T1, T2>(Func<IGenerator, T0, T1, T2, IEnumerator<TR>> fun, T0 t0,
+			T1 t1, T2 t2)
 		{
 			var coro = new TypedCoroutine<TR>();
 			coro.Start = () => fun(coro, t0, t1, t2);
@@ -130,7 +131,8 @@ namespace Flow
 		}
 
 		/// <inheritdoc />
-		public ITypedCoroutine<TR> NewTypedCoroutine<TR, T0, T1, T2, T3>(Func<IGenerator, T0, T1, T2, T3, IEnumerator<TR>> fun, T0 t0, T1 t1, T2 t2, T3 t3)
+		public ITypedCoroutine<TR> NewTypedCoroutine<TR, T0, T1, T2, T3>(
+			Func<IGenerator, T0, T1, T2, T3, IEnumerator<TR>> fun, T0 t0, T1 t1, T2 t2, T3 t3)
 		{
 			var coro = new TypedCoroutine<TR>();
 			coro.Start = () => fun(coro, t0, t1, t2, t3);

@@ -49,12 +49,12 @@ namespace Flow
 		/// </returns>
 		IBarrier NewBarrier();
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="name"></param>
-        /// <param name="args"></param>
-        /// <returns></returns>
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="name"></param>
+		/// <param name="args"></param>
+		/// <returns></returns>
 		IBarrier NewBarrier(string name, params ITransient[] args);
 
 		/// <summary>
@@ -161,7 +161,8 @@ namespace Flow
 		/// </typeparam>
 		ITypedCoroutine<TR> NewTypedCoroutine<TR, T0, T1>(Func<IGenerator, T0, T1, IEnumerator<TR>> fun, T0 t0, T1 t1);
 
-		ITypedCoroutine<TR> NewTypedCoroutine<TR, T0, T1, T2>(Func<IGenerator, T0, T1, T2, IEnumerator<TR>> fun, T0 t0, T1 t1, T2 t2);
+		ITypedCoroutine<TR> NewTypedCoroutine<TR, T0, T1, T2>(Func<IGenerator, T0, T1, T2, IEnumerator<TR>> fun, T0 t0, T1 t1,
+			T2 t2);
 
 		/// <summary>
 		/// 
@@ -169,7 +170,7 @@ namespace Flow
 		/// <param name="fun"></param>
 		/// <returns></returns>
 		ICoroutine NewCoroutine(Func<IGenerator, IEnumerator> fun);
-		
+
 		/// <summary>
 		/// 
 		/// </summary>
@@ -195,7 +196,7 @@ namespace Flow
 		/// <typeparam name='TR'>
 		/// The 1st type parameter.
 		/// </typeparam>
-		ISubroutine<TR> NewSubroutine<TR> (Func<IGenerator, TR> fun);
+		ISubroutine<TR> NewSubroutine<TR>(Func<IGenerator, TR> fun);
 
 		/// <summary>
 		/// News the subroutine.
@@ -215,7 +216,7 @@ namespace Flow
 		/// <typeparam name='T0'>
 		/// The 2nd type parameter.
 		/// </typeparam>
-		ISubroutine<TR> NewSubroutine<TR, T0> (Func<IGenerator, T0, TR> fun, T0 t0);
+		ISubroutine<TR> NewSubroutine<TR, T0>(Func<IGenerator, T0, TR> fun, T0 t0);
 
 		/// <summary>
 		/// News the subroutine.
@@ -241,7 +242,7 @@ namespace Flow
 		/// <typeparam name='T1'>
 		/// The 3rd type parameter.
 		/// </typeparam>
-		ISubroutine<TR> NewSubroutine<TR, T0, T1> (Func<IGenerator, T0, T1, TR> fun, T0 t0, T1 t1);
+		ISubroutine<TR> NewSubroutine<TR, T0, T1>(Func<IGenerator, T0, T1, TR> fun, T0 t0, T1 t1);
 
 		/// <summary>
 		/// News the subroutine.
@@ -273,7 +274,7 @@ namespace Flow
 		/// <typeparam name='T2'>
 		/// The 4th type parameter.
 		/// </typeparam>
-		ISubroutine<TR> NewSubroutine<TR, T0, T1, T2> (Func<IGenerator, T0, T1, T2, TR> fun, T0 t0, T1 t1, T2 t2);
+		ISubroutine<TR> NewSubroutine<TR, T0, T1, T2>(Func<IGenerator, T0, T1, T2, TR> fun, T0 t0, T1 t1, T2 t2);
 
 		/// <summary>
 		/// News the channel.

@@ -1,4 +1,5 @@
 // CJS: Nabbed from decompiled 4.5 .Net
+
 using System.Runtime.InteropServices;
 
 namespace Flow
@@ -7,6 +8,7 @@ namespace Flow
 	internal struct VolatileBool
 	{
 		public volatile bool m_value;
+
 		public VolatileBool(bool value)
 		{
 			this.m_value = value;

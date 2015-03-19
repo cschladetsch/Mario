@@ -13,7 +13,7 @@ namespace Flow
 		/// <summary>
 		/// Periodically occurs when the timer has elapsed. Fired at most once per Kernel Step
 		/// </summary>
-		event TransientHandler Elapsed; 
+		event TransientHandler Elapsed;
 
 		/// <summary>
 		/// Gets the time that this periodic timer was started.

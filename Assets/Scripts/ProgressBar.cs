@@ -50,7 +50,7 @@ public class ProgressBar : MarioObject
 
 	private void UpdateEnded()
 	{
-		if (_time < TotalTime) 
+		if (_time < TotalTime)
 			return;
 
 		Paused = true;

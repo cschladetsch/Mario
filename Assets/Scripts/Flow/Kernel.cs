@@ -13,7 +13,10 @@ namespace Flow
 		public new IFactory Factory { get; internal set; }
 
 		/// <inheritdoc />
-		public ITimeFrame Time { get { return _time; } }
+		public ITimeFrame Time
+		{
+			get { return _time; }
+		}
 
 		internal Kernel()
 		{
@@ -34,7 +37,7 @@ namespace Flow
 			Root.Post();
 		}
 
-		void StepTime()
+		private void StepTime()
 		{
 			var now = DateTime.Now;
 

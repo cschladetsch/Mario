@@ -20,7 +20,7 @@ public class SparkBoss : Boss
 		Kernel.Factory.NewCoroutine(SparkMove);
 	}
 
-	IEnumerator SparkMove(IGenerator self)
+	private IEnumerator SparkMove(IGenerator self)
 	{
 		Debug.Log("SparkMove " + World.CurrentLevel.Conveyors.Count);
 		_spark = ((GameObject) Instantiate(SparkPrefab)).GetComponent<Spark>();
@@ -45,6 +45,5 @@ public class SparkBoss : Boss
 	protected override void Tick()
 	{
 		base.Tick();
-
 	}
 }

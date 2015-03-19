@@ -36,6 +36,11 @@ public class Recipe : MonoBehaviour
 	public int NumResults;
 
 	/// <summary>
+	/// When this Recipe gets activated
+	/// </summary>
+	public int ActiveAtLevel = 0;
+
+	/// <summary>
 	/// Returns true if the given ingredient selection can be used to 
 	/// make this recipe
 	/// </summary>

@@ -12,7 +12,10 @@ public class IngredientInfo : MonoBehaviour
 	/// </summary>
 	public IngredientType Type;
 
-	public GameObject Image;
+	/// <summary>
+	/// Prefab used to make a new image for this ingredient
+	/// </summary>
+	public GameObject ImagePrefab;
 
 	/// <summary>
 	/// CostText to buy. If zero, item cannot be bought

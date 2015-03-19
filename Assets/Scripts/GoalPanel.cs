@@ -55,8 +55,14 @@ public class GoalPanel : MarioObject
 
 	private void GatherPrefabsForIngredientDisplay()
 	{
-		_prefabs[IngredientType.CupCake] = (GameObject) Resources.Load("Images/Cupcake");
-		_prefabs[IngredientType.MintIceCream] = (GameObject) Resources.Load("Images/ChockMintIceCream");
+		_prefabs[IngredientType.CupCake] = (GameObject) Resources.Load("Images/CupcakeImage");
+		_prefabs[IngredientType.MintIceCream] = (GameObject)Resources.Load("Images/MintIceCreamImage");
+
+		Debug.Log("GoalPanel.GatherPrefabsForIngredientDisplay");
+		foreach (var kv in _prefabs)
+		{
+			Debug.Log(String.Format("{0} {1}", kv.Key, kv.Value));
+		}
 	}
 
 	public void SetGoal(StageGoal goal)
@@ -111,15 +117,15 @@ public class GoalPanel : MarioObject
 	{
 		Debug.Log("Goal.AddAllItems: " + Player.CurrentGoal.Name);
 		//Debug.Log(Player.CurrentGoal.Ingredients);
-		foreach (var kv in Player.CurrentGoal.Ingredients)
-			Debug.Log(kv);
+		//foreach (var kv in Player.CurrentGoal.Ingredients)
+		//	Debug.Log(kv);
 
 		if (_prefabs.Count == 0)
 			GatherPrefabsForIngredientDisplay();
 
 		ClearContents();
 
-		var start = StartX;
+		//var start = StartX;
 
 		foreach (var ing in Player.CurrentGoal.Ingredients)
 		{
@@ -132,21 +138,19 @@ public class GoalPanel : MarioObject
 
 			var prefab = _prefabs[type];
 			if (prefab == null)
+			{
+				Debug.LogWarning("No Prefab for " + type);
 				continue;
-
-			Debug.Log("Adding a " + type + " to the goal list");
+			}
 
 			var go = (GameObject) Instantiate(prefab);
 			var view = go.GetComponent<GoalngredientView>();
 			view.HasBeenReached(false);
 			_contents.Add(view);
 
-			//go.transform.parent = Canvas.GoalPanel.transform;
 			go.transform.SetParent(transform, false);
-			go.transform.SetX(start);
-			start += Spacing;
 
-			Debug.Log("Adding a " + view.Type + " to goals");
+			//Debug.Log("Added a " + type + " to the goal list");
 		}
 	}
 

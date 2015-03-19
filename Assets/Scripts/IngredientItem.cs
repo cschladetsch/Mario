@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Net.Mime;
 using UnityEngine;
 using UnityEngine.UI;
 
+/// <summary>
+/// Basic qualities of an ingredient; mostly used to map IngredientType to Image,
+/// but also used in Cookers
+/// </summary>
 public class IngredientItem : MarioObject
 {
 	public IngredientType Type;
@@ -44,7 +47,6 @@ public class IngredientItem : MarioObject
 	{
 		if (!Count || !IsCookingIngredient)
 			return;
-
 
 		var req = int.Parse(Count.text);
 		var hasEnough = req <= Player.Inventory[Type];

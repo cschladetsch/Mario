@@ -135,6 +135,8 @@ public class Level : MarioObject
 		PauseCharacters(false);
 
 		GatherSpawners();
+
+		IncomingPanel = FindObjectOfType<IncomingPanel>();
 	}
 
 	//private int _numTrucksDelivered;
@@ -219,6 +221,8 @@ public class Level : MarioObject
 			return;
 		}
 
+		var pos = IncomingPanel.RemoveCake(type);
+		Debug.Log(pos);
 		Inventory[type]--;
 
 		//Debug.Log("Cakes Left: " + Inventory.Sum(c => c.Value));
@@ -537,11 +541,12 @@ public class Level : MarioObject
 		if (Inventory == null)
 			Inventory = IngredientItem.CreateIngredientDict<int>();
 
+		if (IncomingPanel == null)
+			IncomingPanel = FindObjectOfType<IncomingPanel>();
+
 		foreach (var kv in contents)
 		{
-			//if (kv.Value > 0)
-			//	Debug.Log(string.Format("Adding {0} {1}", kv.Key, kv.Value));
-
+			IncomingPanel.AddItems(kv.Key, kv.Value);
 			Inventory[kv.Key] += kv.Value;
 		}
 
@@ -571,5 +576,13 @@ public class Level : MarioObject
 	{
 		_speedTimer = SpeedIncrementTime;
 		SpeedLevel = 0;
+	}
+
+	public void TestForEnd()
+	{
+		if (NoMoreCakes)
+		{
+			Truck.StartEmptying();
+		}
 	}
 }

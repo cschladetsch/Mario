@@ -53,19 +53,12 @@ public class Pickup : MarioObject
 	private bool _kine;
 	private bool _firstDrop;
 
-	private void Awake()
+	protected override void Begin()
 	{
+		base.Begin();
 		_box = GetComponent<BoxCollider2D>();
 		if (rigidbody2D)
 			rigidbody2D.isKinematic = false;
-	}
-
-	private void Start()
-	{
-	}
-
-	private void Update()
-	{
 	}
 
 	public void Create(Transform folder)
@@ -164,7 +157,7 @@ public class Pickup : MarioObject
 			// HACKS
 			if (conveyor != null)
 				conveyor.AddItem(this, 0.8f);
-			return;
+
 		}
 	}
 
@@ -174,6 +167,10 @@ public class Pickup : MarioObject
 
 	private void HitGround()
 	{
+		Player.DroppedCake(this);
+
+		World.CurrentLevel.TestForEnd();
+
 		Destroy(gameObject);
 	}
 

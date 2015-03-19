@@ -25,6 +25,10 @@ public class World : MonoBehaviour
 
 	public Level CurrentLevel;
 
+	public delegate void GoalChangedHandler(int index, StageGoal newGoal);
+
+	public event GoalChangedHandler GoalChanged;
+
 	public StageGoal CurrentGoal
 	{
 		get { return Player.CurrentGoal; }
@@ -368,6 +372,9 @@ public class World : MonoBehaviour
 	{
 		GoalIndex = (GoalIndex + 1)%StageGoals.Length;
 		var goal = StageGoals[GoalIndex];
+		if (GoalChanged != null)
+			GoalChanged(GoalIndex, goal);
+
 		Debug.Log("World.NextGoal: " + goal.Name);
 		SetPlayerGoal();
 		GoalPanel.SetGoal(goal);

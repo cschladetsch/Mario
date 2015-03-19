@@ -104,4 +104,5 @@ public class InventoryPanel : MarioObject
 		}
 	}
 //#endif
+
 }

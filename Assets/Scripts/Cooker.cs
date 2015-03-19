@@ -50,6 +50,14 @@ public class Cooker : MarioObject
 
 		ProgressBar.TotalTime = Recipe.CookingTime;
 		ProgressBar.Reset();
+
+		World.GoalChanged += GoalChanged;
+	}
+
+	private void GoalChanged(int index, StageGoal newgoal)
+	{
+		Debug.Log("Cooker.GoalChanged: " + index + " " + newgoal.Ingredients.Length);
+		//var act = index >= 
 	}
 
 	protected override void Tick()

@@ -72,8 +72,6 @@ public class Cake : Pickup
 	{
 		base.StartDropped(moveRight);
 
-		Player.DroppedCake(this);
-
 		_droppedTimer = 2;
 		_dropped = true;
 

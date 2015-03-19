@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine;
 
 namespace Flow
 {
@@ -26,6 +27,11 @@ namespace Flow
 		public static bool ContainsRef<T>(this IEnumerable<T> list, T obj)
 		{
 			return list.Any(elem => ReferenceEquals(elem, obj));
+		}
+
+		public static RectTransform GetRectTransform(this GameObject go)
+		{
+			return go.GetComponent<RectTransform>();
 		}
 
 		/// <summary>

@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
-using System.Collections.Generic;
+using wHiteRabbiT.Unity.Extensions;
 
 public class IncomingPanel : MarioObject
 {
@@ -24,6 +24,40 @@ public class IncomingPanel : MarioObject
 	public Vector3 DroppedCakePosition(IngredientType type)
 	{
 		Debug.Log("DroppedCakePosition");
-		//foreach (var go in transform.GetComponentsInChildren<>()
+		RemoveCake(type);
+		return CurrentLevel.CakeSpawnPoint.transform.position;
+	}
+
+	public void Clear()
+	{
+		foreach (var go in gameObject.GetAllChildren())
+			Destroy(go);
+	}
+
+	public Vector2 RemoveCake(IngredientType type)
+	{
+		//Debug.Log("IncomingPanel.RemoveCake: " + type);
+		foreach (var cake in transform.GetComponentsInChildren<GoalngredientView>())
+		{
+			if (cake.Type != type) 
+				continue;
+
+			var pos = cake.GetComponent<RectTransform>().position;
+
+			Destroy(cake.gameObject);
+			return pos;
+		}
+
+		return Vector2.zero;
+	}
+
+	public void AddItems(IngredientType type, int count)
+	{
+		var prefab = World.GetInfo(type).ImagePrefab;
+		for (var n = 0; n < count; ++n)
+		{
+			var go = (GameObject) Instantiate(prefab);
+			go.transform.SetParent(transform);
+		}
 	}
 }

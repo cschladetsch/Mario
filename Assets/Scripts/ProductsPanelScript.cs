@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Linq;
+using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
 
@@ -23,5 +24,11 @@ public class ProductsPanelScript : MarioObject
 		{
 			p.UpdateUi();
 		}
+	}
+
+	public GameObject GetProduct(IngredientType type)
+	{
+		var prod = Products.FirstOrDefault(p => p.Type == type);
+		return prod == null ? null : prod.gameObject;
 	}
 }

@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Net.Mime;
 using Flow;
 using UnityEngine;
 using UnityEngine.UI;
+using Debug = UnityEngine.Debug;
 
 /// <summary>
 /// The single player of the game, whom controls both Left and Right characters.
@@ -116,6 +118,7 @@ public class Player : MarioObject
 		base.Begin();
 
 		_products = FindObjectOfType<ProductsPanelScript>();
+
 		_sold = IngredientItem.CreateIngredientDict<int>();
 	}
 
@@ -327,15 +330,50 @@ public class Player : MarioObject
 
 		if (GoalReached())
 			World.NextGoal();
+
+		Kernel.Factory.NewCoroutine(MoveSoldItem, type);
 	}
 
-	//IEnumerator MoveSoldItem(IGenerator self, IngredientType type)
-	//{
-	//	//var info = World.GetInfo(type);
-	//	//var image = info.Image;
-	//	//var sprite = new UI.Sprite();
-	//	//sprite.
-	//}
+	public float SolidItemTravelTime = 2;
+
+	IEnumerator MoveSoldItem(IGenerator self, IngredientType type)
+	{
+		// make the image to move
+		var go = (GameObject)Instantiate(World.GetInfo(type).ImagePrefab);
+		go.transform.SetParent(World.Canvas.transform);
+
+		var mainCanvas = World.Canvas.GetComponent<RectTransform>();
+		var product = _products.GetProduct(type);
+
+		// TODO: Randomise the mid-point a little
+		// make parabola to move through
+		var para = new Parabola(
+			product.GetRectTransform().position,									// start pos
+			new Vector2(mainCanvas.rect.width/2.0f, mainCanvas.rect.height/2.0f),		// mid point
+			World.GoalPanel.gameObject.GetRectTransform().position,		// end point
+			SolidItemTravelTime);
+
+		
+		// move the image through the parabola
+		var gort = go.GetRectTransform();
+		var t = SolidItemTravelTime;
+		while (true)
+		{
+			t -= RealDeltaTime;
+			if (t < 0)
+			{
+				Destroy(go);
+				yield break;
+			}
+
+			var pos = para.CalcAtTime(t);
+			var position = new Vector2(pos.x, pos.y);
+			Debug.Log(string.Format("Moving sold item: t={0}, type={1}, pos={2}", t, type, pos));
+			gort.anchoredPosition = position;
+			
+			yield return 0;
+		}
+	}
 
 	private void Died()
 	{

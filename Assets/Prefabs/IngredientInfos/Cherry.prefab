@@ -40,7 +40,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Type: 0
-  Image: {fileID: 151582}
+  ImagePrefab: {fileID: 100000, guid: b1490c2a38faff34baa73551ad108d1a, type: 2}
   Buy: 1
   Sell: 1
   MinSpawnRate: 2

@@ -222,6 +222,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   IngredientDetails: {fileID: 0}
+  CurrentGoalDisplayPanel: {fileID: 0}
+  GoalPanel: {fileID: 0}
   CurrrentAreaType: 0
   StageGoals:
   - {fileID: 11481494, guid: 0f15c10cf07047f4398aae0899c4bd72, type: 2}
@@ -239,7 +241,7 @@ MonoBehaviour:
   - {fileID: 100004, guid: 1100c0a9ed160384ca84ebbaf85adbfc, type: 2}
   - {fileID: 177390, guid: b7740c47d7f18ab47997290cdf058f47, type: 2}
   GoalIndex: 0
-  GodMode: 0
+  GodMode: 1
   Buttons: {fileID: 0}
 --- !u!124 &12400000
 Behaviour:

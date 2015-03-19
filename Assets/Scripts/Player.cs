@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Net.Mime;
 using Flow;
 using UnityEngine;
 using UnityEngine.UI;
@@ -331,10 +328,11 @@ public class Player : MarioObject
 		if (GoalReached())
 			World.NextGoal();
 
-		Kernel.Factory.NewCoroutine(MoveSoldItem, type);
+		// TODO: move sold item
+		//Kernel.Factory.NewCoroutine(MoveSoldItem, type);
 	}
 
-	public float SolidItemTravelTime = 2;
+	public float SoldItemTravelTime = 2;
 
 	IEnumerator MoveSoldItem(IGenerator self, IngredientType type)
 	{
@@ -351,16 +349,16 @@ public class Player : MarioObject
 			product.GetRectTransform().position,									// start pos
 			new Vector2(mainCanvas.rect.width/2.0f, mainCanvas.rect.height/2.0f),		// mid point
 			World.GoalPanel.gameObject.GetRectTransform().position,		// end point
-			SolidItemTravelTime);
+			SoldItemTravelTime);
 
 		
 		// move the image through the parabola
 		var gort = go.GetRectTransform();
-		var t = SolidItemTravelTime;
+		var t = 0.0f;
 		while (true)
 		{
-			t -= RealDeltaTime;
-			if (t < 0)
+			t += RealDeltaTime;
+			if (t > SoldItemTravelTime)
 			{
 				Destroy(go);
 				yield break;

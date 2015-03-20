@@ -63,11 +63,11 @@ public class IngredientItem : MarioObject
 	{
 		if (Count == null)
 		{
-			Debug.LogWarning("Ingredient button for " + Type + " is null?");
+			Debug.LogWarning("Ingredient button for " + Type + " is null?" + transform.parent.name);
 			return;
 		}
 
-		Debug.Log("Setting type " + Type + " : avail " + avail);
+		//Debug.Log("Setting type " + Type + " : avail " + avail);
 
 		Count.text = amount.ToString();
 		Count.color = avail ? Color.green : Color.red;

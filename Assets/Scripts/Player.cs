@@ -486,4 +486,9 @@ public class Player : MarioObject
 	{
 		return Inventory[type];
 	}
+
+	public bool HasItem(IngredientType type)
+	{
+		return Inventory[type] > 0;
+	}
 }

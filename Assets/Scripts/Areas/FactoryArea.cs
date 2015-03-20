@@ -27,6 +27,9 @@ public class FactoryArea : AreaBase
 		FindObjectOfType<IncomingPanel>().Reset();
 
 		ToggleVisuals(true);
+
+		Canvas.GoalPanel.gameObject.SetActive(false);
+		Canvas.GoldPanel.gameObject.SetActive(false);
 	}
 
 	public override void LeaveArea()
@@ -41,6 +44,9 @@ public class FactoryArea : AreaBase
 		Player.ShowCharacters(false);
 
 		ToggleVisuals(false);
+
+		Canvas.GoalPanel.gameObject.SetActive(true);
+		Canvas.GoldPanel.gameObject.SetActive(true);
 	}
 
 	public void ToggleVisuals(bool on)

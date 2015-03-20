@@ -15,6 +15,7 @@ public class UiCanvas : MarioObject
 	public GameObject PausedPanel;
 	public GoalPanel GoalPanel;
 	public GameObject TintPanel;
+	public GameObject GoldPanel;
 
 	protected override void Begin()
 	{

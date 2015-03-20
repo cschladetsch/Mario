@@ -151,45 +151,45 @@ public class CookingAreaUI : MarioObject
 	//private Cooker _cakes;
 	//private Cooker _iceCream;
 
-	public void IngredientButtonPressed(GameObject button)
-	{
-		//Debug.Log("Pressed " + button.name);
-		//if (!SelectedCooker)
-		//	return;
-		var type = button.GetComponent<IngredientItem>().Type;
-		if (Player.Inventory[type] == 0)
-			return;
+	//public void IngredientButtonPressed(GameObject button)
+	//{
+	//	//Debug.Log("Pressed " + button.name);
+	//	//if (!SelectedCooker)
+	//	//	return;
+	//	var type = button.GetComponent<IngredientItem>().Type;
+	//	if (Player.Inventory[type] == 0)
+	//		return;
 
-		//SelectedCooker.IngredientButtonPressed(item);
+	//	//SelectedCooker.IngredientButtonPressed(item);
 
-		// HACKS
-		switch (type)
-		{
-			case IngredientType.Cherry:
-			case IngredientType.Muffin:
-			{
-				if (CupCakeCooker.Add(type))
-				{
-					RemoveItemFromPlayer(type);
-					if (CupCakeCooker.CanCook())
-						CupCakeCooker.Cook();
-				}
-				break;
-			}
+	//	// HACKS
+	//	switch (type)
+	//	{
+	//		case IngredientType.Cherry:
+	//		case IngredientType.Muffin:
+	//		{
+	//			if (CupCakeCooker.Add(type))
+	//			{
+	//				RemoveItemFromPlayer(type);
+	//				if (CupCakeCooker.CanCook())
+	//					CupCakeCooker.Cook();
+	//			}
+	//			break;
+	//		}
 
-			case IngredientType.Chocolate:
-			case IngredientType.Mint:
-			{
-				if (MintIceCreamCooker.Add(type))
-				{
-					RemoveItemFromPlayer(type);
-					if (MintIceCreamCooker.CanCook())
-						MintIceCreamCooker.Cook();
-				}
-				break;
-			}
-		}
-	}
+	//		case IngredientType.Chocolate:
+	//		case IngredientType.Mint:
+	//		{
+	//			if (MintIceCreamCooker.Add(type))
+	//			{
+	//				RemoveItemFromPlayer(type);
+	//				if (MintIceCreamCooker.CanCook())
+	//					MintIceCreamCooker.Cook();
+	//			}
+	//			break;
+	//		}
+	//	}
+	//}
 
 	private void RemoveItemFromPlayer(IngredientType item)
 	{

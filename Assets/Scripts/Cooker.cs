@@ -62,7 +62,6 @@ public class Cooker : MarioObject
 
 	protected override void Begin()
 	{
-		Debug.Log("Cooker.begin");
 		base.Begin();
 
 		World.GoalChanged += GoalChanged;
@@ -95,16 +94,41 @@ public class Cooker : MarioObject
 		//var act = index >= 
 	}
 
+	public void AddIngredient()
+	{
+		foreach (var kv in _requirements)
+		{
+			var type = kv.Key;
+			var num = kv.Value;
+
+			if (_inventory[type] < num && Player.HasItem(type))
+			{
+				_inventory[type]++;
+				Player.RemoveItem(type);
+				Debug.Log("Adding a " + type);
+				break;
+			}
+		}
+
+		Debug.Log("CanCook: " + CanCook());
+		if (CanCook())
+			Cook();
+
+		UpdateDisplay();
+	}
+
 	protected override void Tick()
 	{
 		base.Tick();
+
+		//Product.interactable = !_cooking && CanCook();
 
 		Overlay.SetActive(!IsInteractable());
 	}
 
 	public void Pressed(GameObject go)
 	{
-		Debug.Log("Cooker ingredient button pressed");
+		//Debug.Log("Cooker ingredient button pressed");
 		var item = go.GetComponent<IngredientItem>();
 		if (item == null)
 		{
@@ -240,6 +264,7 @@ public class Cooker : MarioObject
 		ProgressBar.Reset();
 		ProgressBar.TotalTime = Recipe.CookingTime;
 
+		Debug.Log("Cooking a " + Recipe.Result);
 		_cooking = true;
 
 		var remaining = Recipe.CookingTime;
@@ -255,7 +280,10 @@ public class Cooker : MarioObject
 		self.Complete();
 
 		foreach (var ing in Recipe.Ingredients)
+		{
+			//Debug.Log(string.Format("Removing {0}", ing));
 			_inventory[ing]--;
+		}
 
 		Generator = null;
 
@@ -301,7 +329,7 @@ public class Cooker : MarioObject
 	{
 		UpdateIngredientButtons();
 
-		Product.interactable = CanCook();
+		//Product.interactable = CanCook();
 
 		foreach (var ing in FindObjectsOfType<InventoryPanel>())
 			ing.UpdateDisplay(Player.Inventory, false);
@@ -309,11 +337,6 @@ public class Cooker : MarioObject
 
 	private bool UpdateIngredientButtons()
 	{
-		Debug.Log("UpdateIngredientButtons	: " + _ingredientButtons);
-		//// TODO: WTF why?
-		//if (_ingredientButtons == null)
-		//	Begin();
-
 		foreach (var kv in _ingredientButtons)
 		{
 			var button = kv.Value;
@@ -324,7 +347,7 @@ public class Cooker : MarioObject
 			var required = _requirements[button.Type];
 
 			var avail = amount >= required;
-			Debug.Log(String.Format("type" + " {0}, avail {1}", button.Type, avail));
+			//Debug.Log(String.Format("type" + " {0}, avail {1}", button.Type, avail));
 
 			if (avail)
 				button.SetAmount(amount, true);

@@ -137,7 +137,8 @@ public class Level : MarioObject
 
 		GatherSpawners();
 
-		IncomingPanel = FindObjectOfType<IncomingPanel>();
+		if (IncomingPanel == null)
+			IncomingPanel = FindObjectOfType<IncomingPanel>();
 	}
 
 	//private int _numTrucksDelivered;
@@ -223,8 +224,8 @@ public class Level : MarioObject
 		}
 
 		// TODO: 
-		//var pos = IncomingPanel.RemoveCake(type);
-		//Debug.Log(pos);
+		var pos = IncomingPanel.RemoveCake(type);
+		Debug.Log(pos);
 		Inventory[type]--;
 
 		//Debug.Log("Cakes Left: " + Inventory.Sum(c => c.Value));
@@ -247,7 +248,8 @@ public class Level : MarioObject
 		// to spawn a cake, but we don't want to show it
 		if (cake && !Area.Visual)
 			AreaBase.ToggleVisuals(cake.gameObject, false);
-
+		
+		
 		// FRI
 		if (ToTruck)
 			Truck.AddCake(cake);

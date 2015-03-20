@@ -55,7 +55,7 @@ public class Recipe : MonoBehaviour
 
 			if (ingredients[type] < count)
 			{
-				//Debug.Log("Not enough " + type + " for cooker " + Result);
+				Debug.Log("Not enough " + type + " for cooker " + Result + " have " + ingredients[type] + " need" + count);
 				return false;
 			}
 		}

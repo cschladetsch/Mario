@@ -56,51 +56,51 @@ public class CookingAreaUI : MarioObject
 		}
 	}
 
-	public void ProductClicked(GameObject product)
-	{
-		var cooker = product.transform.parent.GetComponent<Cooker>();
-		var recipe = cooker.Recipe;
+	//public void ProductClicked(GameObject product)
+	//{
+	//	var cooker = product.transform.parent.GetComponent<Cooker>();
+	//	var recipe = cooker.Recipe;
 
-		var canCook = true;
-		var req = IngredientItem.CreateIngredientDict<int>();
-		for (var n = 0; n < recipe.Ingredients.Count; ++n)
-		{
-			var ty = recipe.Ingredients[n];
-			var num = recipe.Counts[n];
+	//	var canCook = true;
+	//	var req = IngredientItem.CreateIngredientDict<int>();
+	//	for (var n = 0; n < recipe.Ingredients.Count; ++n)
+	//	{
+	//		var ty = recipe.Ingredients[n];
+	//		var num = recipe.Counts[n];
 
-			if (Player.Inventory[ty] < num)
-			{
-				canCook = false;
-				break;
-			}
+	//		if (Player.Inventory[ty] < num)
+	//		{
+	//			canCook = false;
+	//			break;
+	//		}
 
-			req[ty] += num;
-		}
+	//		req[ty] += num;
+	//	}
 
-		if (!canCook)
-			return;
+	//	if (!canCook)
+	//		return;
 
-		//Debug.Log("Cooking " + recipe.NumResults + " of " + recipe.Result);
+	//	//Debug.Log("Cooking " + recipe.NumResults + " of " + recipe.Result);
 
-		switch (recipe.Result)
-		{
-			case IngredientType.CupCake:
-				if (CupCakeCooker.CanCook())
-				{
-					RemoveIngredients(req);
-					CupCakeCooker.Cook();
-				}
-				break;
+	//	switch (recipe.Result)
+	//	{
+	//		case IngredientType.CupCake:
+	//			if (CupCakeCooker.CanCook())
+	//			{
+	//				RemoveIngredients(req);
+	//				CupCakeCooker.Cook();
+	//			}
+	//			break;
 
-			case IngredientType.MintIceCream:
-				if (MintIceCreamCooker.CanCook())
-				{
-					RemoveIngredients(req);
-					MintIceCreamCooker.Cook();
-				}
-				break;
-		}
-	}
+	//		case IngredientType.MintIceCream:
+	//			if (MintIceCreamCooker.CanCook())
+	//			{
+	//				RemoveIngredients(req);
+	//				MintIceCreamCooker.Cook();
+	//			}
+	//			break;
+	//	}
+	//}
 
 	private void RemoveIngredients(Dictionary<IngredientType, int> req)
 	{

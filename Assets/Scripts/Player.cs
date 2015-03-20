@@ -468,4 +468,22 @@ public class Player : MarioObject
 		Inventory[cake.Type]++;
 		UpdateUi();
 	}
+
+	public bool RemoveItem(IngredientType type)
+	{
+		if (Inventory[type] == 0)
+			return false;
+
+		Inventory[type]--;
+
+		foreach (var panel in FindObjectsOfType<InventoryPanel>())
+			panel.UpdateDisplay(Inventory, false);
+
+		return true;
+	}
+
+	public int GetItemCount(IngredientType type)
+	{
+		return Inventory[type];
+	}
 }

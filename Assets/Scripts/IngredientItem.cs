@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -21,6 +22,8 @@ public class IngredientItem : MarioObject
 	{
 		base.Begin();
 
+		//Count = transform.FindChild("Count").GetComponent<Text>();
+
 		_truck = FindObjectOfType<DeliveryTruck>();
 	}
 
@@ -40,7 +43,7 @@ public class IngredientItem : MarioObject
 	{
 		base.Tick();
 
-		UpdateUi();
+		//UpdateUi();
 	}
 
 	public void UpdateUi()
@@ -48,11 +51,25 @@ public class IngredientItem : MarioObject
 		if (!Count || !IsCookingIngredient)
 			return;
 
-		var req = int.Parse(Count.text);
-		var hasEnough = req <= Player.Inventory[Type];
-		var color = hasEnough ? Color.green : Color.red;
-		if (!hasEnough && _truck.HasItems(Type, req))
-			color = Color.yellow;
-		Count.color = color;
+		//var req = int.Parse(Count.text);
+		//var hasEnough = req <= Player.Inventory[Type];
+		//var color = hasEnough ? Color.green : Color.red;
+		//if (!hasEnough && _truck.HasItems(Type, req))
+		//	color = Color.yellow;
+		//Count.color = color;
+	}
+
+	public void SetAmount(int amount, bool avail)
+	{
+		if (Count == null)
+		{
+			Debug.LogWarning("Ingredient button for " + Type + " is null?");
+			return;
+		}
+
+		Debug.Log("Setting type " + Type + " : avail " + avail);
+
+		Count.text = amount.ToString();
+		Count.color = avail ? Color.green : Color.red;
 	}
 }

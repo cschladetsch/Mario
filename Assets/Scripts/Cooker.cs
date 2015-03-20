@@ -1,4 +1,7 @@
-﻿using Flow;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System;
+using Flow;
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
@@ -12,6 +15,13 @@ public class Cooker : MarioObject
 	/// How to make the product that this cooker... cooks
 	/// </summary>
 	public Recipe Recipe;
+
+	public Button Product;
+
+	/// <summary>
+	/// Used to disable the cooker
+	/// </summary>
+	public GameObject Overlay;
 
 	public ProgressBar ProgressBar;
 
@@ -34,24 +44,49 @@ public class Cooker : MarioObject
 
 	public event CompletedHandler Completed;
 
-	//public UnityEngine.UI.Text TimerText;
-
-	//private Dictionary<IngredientType, int> _ingredients;
-
-	//private Dictionary<IngredientType, UnityEngine.UI.Text> _counts;
-
-	//public GameObject ProgressBar;
-
 	public UnityEngine.UI.Image ProductImage;
+
+	private bool _cooking;
+
+	/// <summary>
+	/// The buttons in this cooker
+	/// </summary>
+	private Dictionary<IngredientType, IngredientItem> _ingredientButtons;
+	
+	/// <summary>
+	/// What is currently in the cooker
+	/// </summary>
+	private readonly Dictionary<IngredientType, int> _inventory = IngredientItem.CreateIngredientDict<int>();
+
+	private readonly Dictionary<IngredientType, int> _requirements = IngredientItem.CreateIngredientDict<int>();
 
 	protected override void Begin()
 	{
+		Debug.Log("Cooker.begin");
 		base.Begin();
+
+		World.GoalChanged += GoalChanged;
 
 		ProgressBar.TotalTime = Recipe.CookingTime;
 		ProgressBar.Reset();
 
-		World.GoalChanged += GoalChanged;
+		GatherRequirements();
+
+		GatherIngredientButtons();
+	}
+
+	private void GatherRequirements()
+	{
+		for (int i = 0; i < Recipe.Ingredients.Count; i++)
+		{
+			_requirements[Recipe.Ingredients[i]] = Recipe.Counts[i];
+		}
+
+		//Debug.Log("GatherRequirements");
+		//foreach (var kv in _requirements)
+		//{
+		//	Debug.Log(String.Format("key {0}, value {1}", kv.Key, kv.Value));
+		//}
 	}
 
 	private void GoalChanged(int index, StageGoal newgoal)
@@ -64,9 +99,51 @@ public class Cooker : MarioObject
 	{
 		base.Tick();
 
-		//Debug.Log(name + " " + CanCook());
-		var c = CanCook() ? 1.0f : 0.5f;
-		ProductImage.color = new Color(c, c, c, c);
+		Overlay.SetActive(!IsInteractable());
+	}
+
+	public void Pressed(GameObject go)
+	{
+		Debug.Log("Cooker ingredient button pressed");
+		var item = go.GetComponent<IngredientItem>();
+		if (item == null)
+		{
+			Debug.LogWarning("GameObject " + go.name + " has no IngredientItem component in cooker for " + Recipe.Result);
+			return;
+		}
+
+		var type = item.Type;
+		if (Player.GetItemCount(type) == 0)
+			return;
+
+		_inventory[type]++;
+
+		//Debug.Log("Added a " + type);
+
+		item.SetAmount(_inventory[type], _inventory[type] >= _requirements[type]);
+
+		Player.RemoveItem(type);
+
+		UpdateDisplay();
+	}
+
+	private bool IsInteractable()
+	{
+		for (var i = 0; i <= Mathf.Min(World.GoalIndex, World.StageGoals.Length - 1); i++)
+		{
+			var goal = World.StageGoals[i];
+
+			//Debug.Log("Testing for goal: " + goal.Name);
+			// if this cooker can make any of the requirements in any of the goals,
+			// then it is interactable
+			if (goal.Ingredients.Any(req => Recipe.Result == req))
+			{
+				//Debug.Log("Can use " + Recipe.Result);
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 	public void Select(bool select)
@@ -79,31 +156,21 @@ public class Cooker : MarioObject
 	{
 		base.BeforeFirstUpdate();
 
-		//_ingredients = IngredientItem.CreateIngredientDict<int>();
-
 		GatherIngredientButtons();
-
-		//Kernel = FindObjectOfType<Kernel>().Kern;
 	}
 
 	private void GatherIngredientButtons()
 	{
-		////Debug.Log("GatherIngredientButtons: " + name);
-		//_counts = IngredientItem.CreateIngredientDict<UnityEngine.UI.Text>();
-		//foreach (Transform tr in transform)
-		//{
-		//	var ing = tr.GetComponent<IngredientItem>();
-		//	if (ing == null)
-		//	{
-		//		//Debug.Log("No IngredientItem for " + tr.name);
-		//		continue;
-		//	}
+		//Debug.Log("Gather Ingredient buttons");
 
-		//	var text = tr.FindChild("Count").GetComponent<UnityEngine.UI.Text>();
-		//	_counts[ing.Type] = text;
-
-		//	//Debug.Log("Found Ingredient button for " + ing.Type + ": " + text.text);
-		//}
+		_ingredientButtons = IngredientItem.CreateIngredientDict<IngredientItem>();
+		foreach (var item in transform.GetComponentsInChildren<IngredientItem>())
+		{
+			_ingredientButtons[item.Type] = item;
+			var amount = _requirements[item.Type];
+			//Debug.Log(String.Format("amount {0}, type {1}", amount, item.Type));
+			item.SetAmount(amount, false);
+		}
 	}
 
 	/// <summary>
@@ -121,7 +188,7 @@ public class Cooker : MarioObject
 		//		continue;
 
 		//	_ingredients[type]++;
-		//	_counts[type].text = _ingredients[type].ToString();
+		//	_ingredientButtons[type].text = _ingredients[type].ToString();
 
 		//	return true;
 		//}
@@ -147,8 +214,8 @@ public class Cooker : MarioObject
 		if (_cooking)
 			return null;
 
-		//if (!Recipe.Satisfied(_ingredients))
-		//	return null;
+		if (!CanCook())
+			return null;
 
 		// TODO: WHY OH WHY IS this.Kernel null?
 		var k = FindObjectOfType<World>().Kernel;
@@ -159,12 +226,8 @@ public class Cooker : MarioObject
 
 	public bool CanCook()
 	{
-		var satisfied = Recipe.Satisfied(Player.Inventory);
-		//Debug.Log("satisfied: " + satisfied + ", cooking: " + _cooking);
-		return satisfied && !_cooking;
+		return !_cooking && Recipe.Satisfied(_inventory);
 	}
-
-	private bool _cooking;
 
 	private IEnumerator Cook(IGenerator self, IFuture<bool> done)
 	{
@@ -190,6 +253,9 @@ public class Cooker : MarioObject
 		done.Value = true;
 
 		self.Complete();
+
+		foreach (var ing in Recipe.Ingredients)
+			_inventory[ing]--;
 
 		Generator = null;
 
@@ -233,19 +299,40 @@ public class Cooker : MarioObject
 
 	private void UpdateDisplay()
 	{
-		//foreach (IngredientType type in Enum.GetValues(typeof (IngredientType)))
-		//{
-		//	if (type == IngredientType.None)
-		//		continue;
+		UpdateIngredientButtons();
 
-		//	if (_counts[type] == null)
-		//		continue;
+		Product.interactable = CanCook();
 
-		//	_counts[type].text = _ingredients[type].ToString();
-		//}
+		foreach (var ing in FindObjectsOfType<InventoryPanel>())
+			ing.UpdateDisplay(Player.Inventory, false);
+	}
 
-		var ui = World.CookingAreaUi;
-		ui.InventoryPanel.UpdateDisplay(Player.Inventory, false);
+	private bool UpdateIngredientButtons()
+	{
+		Debug.Log("UpdateIngredientButtons	: " + _ingredientButtons);
+		//// TODO: WTF why?
+		//if (_ingredientButtons == null)
+		//	Begin();
+
+		foreach (var kv in _ingredientButtons)
+		{
+			var button = kv.Value;
+			if (button == null)
+				return true;
+
+			var amount = _inventory[button.Type];
+			var required = _requirements[button.Type];
+
+			var avail = amount >= required;
+			Debug.Log(String.Format("type" + " {0}, avail {1}", button.Type, avail));
+
+			if (avail)
+				button.SetAmount(amount, true);
+			else
+				button.SetAmount(required, false);
+		}
+
+		return false;
 	}
 
 	public void IngredientButtonPressed(IngredientType item)
@@ -264,6 +351,7 @@ public class Cooker : MarioObject
 	public void StartBake()
 	{
 		Debug.Log("Start Bake");
+		Cook();
 	}
 
 	public bool Cooking()

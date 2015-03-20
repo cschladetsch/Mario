@@ -381,6 +381,9 @@ public class World : MonoBehaviour
 		GoalPanel.Clear();
 		GoalPanel.UpdateUi();
 
+		if (CurrentLevel)
+			CurrentLevel.Pause(true);
+
 		CurrentArea.Paused = true;
 	}
 

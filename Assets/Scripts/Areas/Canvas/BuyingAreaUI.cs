@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Flow;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -150,15 +152,21 @@ public class BuyingAreaUI : MarioObject
 
 	public void SellItem(GameObject go)
 	{
-		var item = go.GetComponent<IngredientItem>().Type;
-		if (_contents[item] == 0) // && Player.Inventory[item] == 0)
+		var type = go.GetComponent<IngredientItem>().Type;
+		if (_contents[type] == 0) // && Player.Inventory[item] == 0)
 			return;
 
-		var gold = World.IngredientInfo[item].Sell;
+		var gold = World.IngredientInfo[type].Sell;
 		Player.Gold += gold;
-		_contents[item]--;
+		_contents[type]--;
 
+		Kernel.Factory.NewCoroutine(MoveSoldItem, type);
 		UpdateDisplay();
+	}
+
+	IEnumerator MoveSoldItem(IGenerator self, IngredientType sold)
+	{
+		yield break;	
 	}
 
 	/// <summary>

@@ -11,6 +11,9 @@ public class GoalDescription : MarioObject
 	public void ButtonPressed()
 	{
 		World.CurrentArea.Paused = false;
+		if (World.CurrentLevel)
+			World.CurrentLevel.Pause(false);
+
 		gameObject.SetActive(false);
 	}
 

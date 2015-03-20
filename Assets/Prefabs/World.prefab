@@ -226,7 +226,7 @@ MonoBehaviour:
   GoalPanel: {fileID: 0}
   CurrrentAreaType: 0
   StageGoals:
-  - {fileID: 11481494, guid: 0f15c10cf07047f4398aae0899c4bd72, type: 2}
+  - {fileID: 11416742, guid: f80dd1ba2b0ec2642bd7a5a7a9d8a58b, type: 2}
   - {fileID: 11416742, guid: f80dd1ba2b0ec2642bd7a5a7a9d8a58b, type: 2}
   - {fileID: 11411668, guid: a4f2d781738cba841b74f05b98aaf7fd, type: 2}
   CurrentArea: {fileID: 0}

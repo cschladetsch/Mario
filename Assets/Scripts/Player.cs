@@ -117,6 +117,14 @@ public class Player : MarioObject
 		_products = FindObjectOfType<ProductsPanelScript>();
 
 		_sold = IngredientItem.CreateIngredientDict<int>();
+
+		if (World.GodMode)
+		{
+			Player.Inventory[IngredientType.Cherry] = 99;
+			Player.Inventory[IngredientType.Muffin] = 99;
+			Player.Inventory[IngredientType.Mint] = 99;
+			Player.Inventory[IngredientType.Chocolate] = 99;
+		}
 	}
 
 	public void ShowCharacters(bool show)
@@ -151,6 +159,8 @@ public class Player : MarioObject
 	{
 		// TODO: attach to truck
 		ShowCharacters(false);
+
+
 	}
 
 	private bool _lastAny;
@@ -311,68 +321,8 @@ public class Player : MarioObject
 		if (Inventory[type] == 0)
 			return;
 
-		var info = World.IngredientInfo[type];
-		Gold += info.Sell;
-		Inventory[type]--;
-		//Debug.Log("SOLD a " + type + " for " + info.Sell + "$" + UnityEngine.Time.frameCount);
-		_sold[type]++;
-
-		var p = FindObjectOfType<ProductsPanelScript>();
-		if (p)
-			p.SellProgressBar.Reset();
-
-		UpdateUi();
-
-		World.GoalPanel.AddItem(type);
-
-		if (GoalReached())
-			World.NextGoal();
-
-		// TODO: move sold item
-		//Kernel.Factory.NewCoroutine(MoveSoldItem, type);
+		World.CurrentArea.SellItem(type);
 	}
-
-	public float SoldItemTravelTime = 2;
-
-	//IEnumerator MoveSoldItem(IGenerator self, IngredientType type)
-	//{
-	//	// make the image to move
-	//	var go = (GameObject)Instantiate(World.GetInfo(type).ImagePrefab);
-	//	go.transform.SetParent(World.Canvas.transform);
-
-	//	var mainCanvas = World.Canvas.GetComponent<RectTransform>();
-	//	var product = _products.GetProduct(type);
-
-	//	// TODO: Randomise the mid-point a little
-	//	// make parabola to move through
-	//	var para = new Parabola(
-	//		product.GetRectTransform().position,									// start pos
-	//		new Vector2(mainCanvas.rect.width/2.0f, mainCanvas.rect.height/2.0f),		// mid point
-	//		World.GoalPanel.gameObject.GetRectTransform().position,		// end point
-	//		SoldItemTravelTime);
-
-
-	//	// move the image through the parabola
-	//	var gort = go.GetRectTransform();
-	//	var t = 0.0f;
-	//	while (true)
-	//	{
-	//		t += RealDeltaTime;
-	//		if (t > SoldItemTravelTime)
-	//		{
-	//			Destroy(go);
-	//			yield break;
-	//		}
-
-	//		var pos = para.CalcAtTime(t);
-	//		var position = new Vector2(pos.x, pos.y);
-	//		Debug.Log(string.Format("Moving sold item: t={0}, type={1}, pos={2}", t, type, pos));
-	//		gort.anchoredPosition = position;
-
-	//		yield return 0;
-	//	}
-	//}
-
 	private void Died()
 	{
 		World.Pause(true);
@@ -388,7 +338,7 @@ public class Player : MarioObject
 			_canvas.ShowTapToStart();
 	}
 
-	private void UpdateUi()
+	public void UpdateUi()
 	{
 		World.Canvas.UpdateGoldAmount();
 		World.Canvas.GoalPanel.GetComponent<GoalPanel>().UpdateUi();
@@ -429,7 +379,7 @@ public class Player : MarioObject
 	/// Check if we have reached current goal
 	/// </summary>
 	/// <returns></returns>
-	private bool GoalReached()
+	public bool GoalReached()
 	{
 		//Debug.Log("Player.GoalReached?");
 		// make a dictionary mapping type to number required
@@ -490,5 +440,13 @@ public class Player : MarioObject
 	public bool HasItem(IngredientType type)
 	{
 		return Inventory[type] > 0;
+	}
+
+	public void SoldItem(IngredientInfo info)
+	{
+		Gold += info.Sell;
+		_sold[info.Type]++;
+
+		UpdateUi();
 	}
 }

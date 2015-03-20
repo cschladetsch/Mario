@@ -67,7 +67,7 @@ public class IngredientItem : MarioObject
 			return;
 		}
 
-		//Debug.Log("Setting type " + Type + " : avail " + avail);
+		//Debug.Log("Setting type " + Type + " : avail " + avail + " num " + amount);
 
 		Count.text = amount.ToString();
 		Count.color = avail ? Color.green : Color.red;

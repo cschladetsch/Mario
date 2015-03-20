@@ -62,6 +62,7 @@ public class Cooker : MarioObject
 
 	protected override void Begin()
 	{
+		//Debug.Log("Cooker " + name + " Begin");
 		base.Begin();
 
 		World.GoalChanged += GoalChanged;
@@ -105,12 +106,12 @@ public class Cooker : MarioObject
 			{
 				_inventory[type]++;
 				Player.RemoveItem(type);
-				Debug.Log("Adding a " + type);
+				//Debug.Log("Adding a " + type);
 				break;
 			}
 		}
 
-		Debug.Log("CanCook: " + CanCook());
+		//Debug.Log("CanCook: " + CanCook());
 		if (CanCook())
 			Cook();
 
@@ -120,8 +121,6 @@ public class Cooker : MarioObject
 	protected override void Tick()
 	{
 		base.Tick();
-
-		//Product.interactable = !_cooking && CanCook();
 
 		Overlay.SetActive(!IsInteractable());
 	}
@@ -176,25 +175,37 @@ public class Cooker : MarioObject
 		//_tint.color = DeselectedColor;
 	}
 
+	void OnDestroy()
+	{
+		//Debug.Log("Cooker " + name + " Destroyed");
+	}
+
 	protected override void BeforeFirstUpdate()
 	{
 		base.BeforeFirstUpdate();
 
-		GatherIngredientButtons();
+		//GatherIngredientButtons();
 	}
 
 	private void GatherIngredientButtons()
 	{
-		//Debug.Log("Gather Ingredient buttons");
+		//Debug.Log("GatherIngredientButtons for " + name);
 
 		_ingredientButtons = IngredientItem.CreateIngredientDict<IngredientItem>();
 		foreach (var item in transform.GetComponentsInChildren<IngredientItem>())
 		{
+			if (item == null)
+				return;
+
 			_ingredientButtons[item.Type] = item;
 			var amount = _requirements[item.Type];
 			//Debug.Log(String.Format("amount {0}, type {1}", amount, item.Type));
 			item.SetAmount(amount, false);
 		}
+
+		var list = (from kv in _ingredientButtons where kv.Value == null select kv.Key).ToList();
+		foreach (var k in list)
+			_ingredientButtons.Remove(k);
 	}
 
 	/// <summary>
@@ -265,6 +276,7 @@ public class Cooker : MarioObject
 		ProgressBar.TotalTime = Recipe.CookingTime;
 
 		Debug.Log("Cooking a " + Recipe.Result);
+		Product.interactable = false;
 		_cooking = true;
 
 		var remaining = Recipe.CookingTime;
@@ -278,12 +290,9 @@ public class Cooker : MarioObject
 		done.Value = true;
 
 		self.Complete();
+		Product.interactable = true;
 
-		foreach (var ing in Recipe.Ingredients)
-		{
-			//Debug.Log(string.Format("Removing {0}", ing));
-			_inventory[ing]--;
-		}
+		RemoveItemsFromInventory();
 
 		Generator = null;
 
@@ -296,9 +305,23 @@ public class Cooker : MarioObject
 
 		Player.CookedItem(Recipe.Result, count);
 
+		foreach (var kv in _ingredientButtons)
+		{
+			var type = kv.Key;
+			var button = kv.Value;
+			//Debug.Log(string.Format("Buttton {0} needs {1}", button.Type, _requirements[type]));
+			button.SetAmount(_requirements[type], false);
+		}
+
 		UpdateDisplay();
 
 		_cooking = false;
+	}
+
+	private void RemoveItemsFromInventory()
+	{
+		for (int i = 0; i < Recipe.Ingredients.Count; i++)
+			_inventory[Recipe.Ingredients[i]] -= Recipe.Counts[i];
 	}
 
 	private void UpdateProgressBar(float t)
@@ -337,22 +360,22 @@ public class Cooker : MarioObject
 
 	private bool UpdateIngredientButtons()
 	{
+		//Debug.Log("UpdateIngredientButtons: " + _ingredientButtons.Count + " for " + name);
+
 		foreach (var kv in _ingredientButtons)
 		{
 			var button = kv.Value;
 			if (button == null)
-				return true;
+				continue;
 
 			var amount = _inventory[button.Type];
 			var required = _requirements[button.Type];
-
 			var avail = amount >= required;
-			//Debug.Log(String.Format("type" + " {0}, avail {1}", button.Type, avail));
+			var num = required - amount;
 
-			if (avail)
-				button.SetAmount(amount, true);
-			else
-				button.SetAmount(required, false);
+			//Debug.Log(string.Format("amount {0}, required {1}, num {2}, avail {3}", amount, required, num, avail));
+
+			button.SetAmount(num, avail);
 		}
 
 		return false;

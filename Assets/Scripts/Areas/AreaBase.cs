@@ -47,6 +47,10 @@ public class AreaBase : MarioObject
 		base.BeforeFirstUpdate();
 	}
 
+	public virtual void SellItem(IngredientType type)
+	{
+	}
+
 	protected override void Tick()
 	{
 		base.Tick();
@@ -80,5 +84,20 @@ public class AreaBase : MarioObject
 
 			go.gameObject.SetActive(on);
 		}
+	}
+
+	/// <summary>
+	/// Item has been sold by the player
+	/// </summary>
+	/// <param name="type"></param>
+	protected void ItemSold(IngredientType type)
+	{
+		var info = World.GetInfo(type);
+		Player.SoldItem(info);
+
+		World.GoalPanel.AddItem(type);
+
+		if (Player.GoalReached())
+			World.NextGoal();
 	}
 }

@@ -27,7 +27,7 @@ public class DeliverNowPanel : MarioObject
 		if (_truck == null)
 			_truck = FindObjectOfType<DeliveryTruck>();
 
-		foreach (var kv in _truck._contents)
+		foreach (var kv in _truck.Contents)
 		{
 			var item = kv.Key;
 			var count = kv.Value;

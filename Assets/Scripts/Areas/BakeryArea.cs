@@ -92,6 +92,7 @@ public class BakeryArea : AreaBase
 
 		DeliveryTruck = FindObjectOfType<DeliveryTruck>();
 
+		DeliveryTruck.Reset();
 		DeliveryTruck.ShowBuyingPanel(false);
 	}
 

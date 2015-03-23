@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.InteropServices;
+using System.Net.Mime;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -46,12 +46,9 @@ public class DeliveryTruck : MarioObject
 
 	private bool _delivering;
 
-	internal Dictionary<IngredientType, int> _contents;
+	internal Dictionary<IngredientType, int> Contents;
 
-	public bool Delivering
-	{
-		get { return _delivering; }
-	}
+	public bool Delivering { get { return _delivering; } }
 
 	private void UpdateDisplay()
 	{
@@ -63,8 +60,6 @@ public class DeliveryTruck : MarioObject
 
 	public void VanButtonPressed()
 	{
-		//Debug.Log("VanButtonPressed");
-
 		if (Ready)
 			PlayButtonPressed();
 
@@ -86,7 +81,6 @@ public class DeliveryTruck : MarioObject
 
 	public void PlayButtonPressed()
 	{
-		//Debug.Log("PlayButtonPressed" + "");
 		Complete();
 	}
 
@@ -95,7 +89,7 @@ public class DeliveryTruck : MarioObject
 	/// </summary>
 	public void OrderButtonPressed()
 	{
-		Debug.Log("Delivery time for " + _contents.Sum(c => c.Value) + " is " + CalcDeliveryTime());
+		Debug.Log("Delivery time for " + Contents.Sum(c => c.Value) + " is " + CalcDeliveryTime());
 
 		BuyingOptions.SetActive(false);
 		PlayButton.SetActive(false);
@@ -103,13 +97,12 @@ public class DeliveryTruck : MarioObject
 		ProgressBar.Reset();
 		ProgressBar.TotalTime = CalcDeliveryTime();
 		ProgressBar.Paused = false;
-		Deliver(_contents);
-
+		Deliver(Contents);
 	}
 
 	public void BuyItem(GameObject go)
 	{
-		if (_contents.Sum(c => c.Value) == 6)
+		if (Contents.Sum(c => c.Value) == 6)
 		{
 			//Debug.Log("Currently limited to 6 items max");
 			return;
@@ -117,21 +110,14 @@ public class DeliveryTruck : MarioObject
 
 		var button = go.GetComponent<IngredientButtton>();
 		var type = button.Type;
-		//if (World.GoalIndex == 0 && (type == IngredientType.Mint || type == IngredientType.Chocolate))
-		//	return;
 
 		var info = World.IngredientInfo[type];
 		if (Player.Gold < info.Buy)
 			return;
 
 		button.AddAmount(1);
-		//if (!_contents.ContainsKey(type))
-		//{
-		//	Debug.LogError("Shop doesn't have entry for " + type);
-		//	return;
-		//}
 
-		_contents[type]++;
+		Contents[type]++;
 		Player.Gold -= info.Buy;
 		UpdateDisplay();
 	}
@@ -147,7 +133,7 @@ public class DeliveryTruck : MarioObject
 
 		GatherIngredientButtons();
 
-		_contents = IngredientItem.CreateIngredientDict<int>();
+		Contents = IngredientItem.CreateIngredientDict<int>();
 
 		UpdateDisplay();
 	}
@@ -162,15 +148,12 @@ public class DeliveryTruck : MarioObject
 		foreach (Transform tr in BuyingOptions.transform)
 		{
 			var ing = tr.GetComponent<IngredientButtton>();
-			if (ing != null)
-			{
-				_buttons.Add(ing);
-				ing.SetAmount(0);
-				ing.SetCost(World.IngredientInfo[ing.Type].Buy);
+			if (ing == null) 
+				continue;
 
-				//if (World.GoalIndex == 0 && (ing.Type == IngredientType.Mint || ing.Type == IngredientType.Chocolate))
-				//	ing.gameObject.GetComponent<Button>().interactable = false;
-			}
+			_buttons.Add(ing);
+			ing.SetAmount(0);
+			ing.SetCost(World.IngredientInfo[ing.Type].Buy);
 		}
 	}
 
@@ -184,16 +167,16 @@ public class DeliveryTruck : MarioObject
 
 		PlayButton.gameObject.SetActive(false);
 
-		_contents = new Dictionary<IngredientType, int>();
+		Contents = new Dictionary<IngredientType, int>();
 		foreach (var kv in contents)
-			_contents.Add(kv.Key, kv.Value);
+			Contents.Add(kv.Key, kv.Value);
 
 		Ready = false;
 	}
 
 	private float CalcDeliveryTime()
 	{
-		return DeliveryTime + _contents.Sum(c => c.Value);
+		return DeliveryTime + Contents.Sum(c => c.Value);
 	}
 
 	protected override void BeforeFirstUpdate()
@@ -226,7 +209,7 @@ public class DeliveryTruck : MarioObject
 	public void CancelOrdering()
 	{
 		BuyingOptions.SetActive(false);
-		_contents = IngredientItem.CreateIngredientDict<int>();
+		Contents = IngredientItem.CreateIngredientDict<int>();
 		RefundItems();
 		UpdateDisplay();
 	}
@@ -253,22 +236,17 @@ public class DeliveryTruck : MarioObject
 
 		UpdateDeliveryButton();
 
-		UpdateTimer();
-
 		UpdateDelivering();
 	}
 
 	private void UpdateDeliveryButton()
 	{
-		DeliveryButton.interactable = _contents.Sum(c => c.Value) > 0;
+		DeliveryButton.interactable = Contents.Sum(c => c.Value) > 0;
 	}
 
 	public void Complete()
 	{
 		//Debug.LogWarning("DeliveryTruck.Complete");
-
-		//if (!Ready)
-		//	return;
 
 		PlayButton.SetActive(true);
 		ProgressBar.gameObject.SetActive(false);
@@ -276,11 +254,11 @@ public class DeliveryTruck : MarioObject
 		TurnTimerOn(false);
 
 		World.ChangeArea(AreaType.Factory);
-		World.CurrentLevel.AddIngredients(_contents);
+		World.CurrentLevel.AddIngredients(Contents);
 
 		Ready = false;
 
-		_contents = IngredientItem.CreateIngredientDict<int>();
+		Contents = IngredientItem.CreateIngredientDict<int>();
 
 		_delivering = false;
 		_deliveryTimer = CalcDeliveryTime();
@@ -306,16 +284,6 @@ public class DeliveryTruck : MarioObject
 		PlayButton.SetActive(true);
 	}
 
-	private void UpdateTimer()
-	{
-		if (!_delivering)
-			return;
-
-		//var text = string.Format("{0:0.0}s", _deliveryTimer);
-		//PlayButtonText.text = text;
-		//PlayButtonText.color = Color.black;
-	}
-
 	private void ResetTruck()
 	{
 		//Debug.Log("DeliveryCar.ResetTruck");
@@ -323,10 +291,6 @@ public class DeliveryTruck : MarioObject
 		Ready = false;
 		_delivering = false;
 		PlayButton.SetActive(false);
-
-
-		// MON
-		//Canvas.CarTimer.text = string.Format("{0:0.0}s", DeliveryTime);
 	}
 
 	public void ShowBuyingPanel(bool show)
@@ -336,12 +300,9 @@ public class DeliveryTruck : MarioObject
 
 	public void BuyItem(IngredientItem item)
 	{
-		foreach (var b in _buttons)
+		foreach (var b in _buttons.Where(b => b.Type == item.Type))
 		{
-			if (b.Type == item.Type)
-			{
-				BuyItem(b.gameObject);
-			}
+			BuyItem(b.gameObject);
 		}
 	}
 
@@ -352,6 +313,12 @@ public class DeliveryTruck : MarioObject
 
 	public void Deliver()
 	{
-		Deliver(_contents);
+		Deliver(Contents);
+	}
+
+	public void Reset()
+	{
+		Contents = IngredientItem.CreateIngredientDict<int>();
+		_delivering = false;
 	}
 }

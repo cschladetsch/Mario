@@ -41,6 +41,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Type: 3
   ImagePrefab: {fileID: 100000, guid: 8ca681cea9077f1418f67b6caae066f1, type: 2}
+  SellingTime: 50
   Buy: 3
   Sell: 3
   MinSpawnRate: 4

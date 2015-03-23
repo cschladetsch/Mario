@@ -89,6 +89,10 @@ public class BakeryArea : AreaBase
 
 		var ui = FindObjectOfType<CookingAreaUI>();
 		ui.InventoryPanel.UpdateDisplay(Player.Inventory, false);
+
+		DeliveryTruck = FindObjectOfType<DeliveryTruck>();
+
+		DeliveryTruck.ShowBuyingPanel(false);
 	}
 
 	public IGenerator TakeDelivery(List<Cake> cakes)

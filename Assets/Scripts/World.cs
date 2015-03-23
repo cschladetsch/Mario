@@ -254,7 +254,7 @@ public class World : MonoBehaviour
 				area.EnterArea();
 
 			area.gameObject.SetActive(act);
-			area.UiCanvas.SetActive(act);
+			//area.UiCanvas.SetActive(act);
 			//area.UiCanvas.BroadcastMessage("Reset", SendMessageOptions.DontRequireReceiver);
 		}
 	}

@@ -42,7 +42,6 @@ MonoBehaviour:
   Ingredients: 0300000004000000
   Counts: 0200000002000000
   CookingTime: 12
-  SellingTime: 20
   Result: 5
   NumResults: 3
   ActiveAtLevel: 1

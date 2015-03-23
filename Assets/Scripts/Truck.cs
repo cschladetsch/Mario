@@ -23,7 +23,7 @@ public class Truck : MarioObject
 	/// <summary>
 	/// How long cakes take to fly into the truck
 	/// </summary>
-	public float FlightTime = 2.5f;
+	public float FlightTime = 0.5f;
 
 	/// <summary>
 	/// Number of columns for the stacked cakes
@@ -235,9 +235,9 @@ public class Truck : MarioObject
 			}
 
 			var para = cake.TruckParabola;
-			cake.transform.position = para.Calc(cake.transform.position.x);
+			cake.transform.position = para.UpdatePos();
 
-			if (cake.transform.position.x <= para.FinalPos.x)
+			if (para.Completed)
 			{
 				cake.transform.position = para.FinalPos;
 				cake.TruckParabola = null;
@@ -289,9 +289,9 @@ public class Truck : MarioObject
 		finalPos.x += col*width;
 		finalPos.y += row*height;
 
-		float delta = cake.transform.position.x - finalPos.x;
-		float dx = -delta/FlightTime;
-		cake.TruckParabola = new Parabola(cake.transform.position, _flyThroughPoint.position, finalPos, dx);
+		Debug.DrawLine(cake.transform.position, _flyThroughPoint.position, Color.green, 2);
+		Debug.DrawLine(_flyThroughPoint.position, finalPos, Color.red, 2);
+		cake.TruckParabola = new ParabolaUI(cake.transform.position, _flyThroughPoint.position, finalPos, FlightTime);
 
 		cake.Position = 0;
 		_cakes.Add(cake);

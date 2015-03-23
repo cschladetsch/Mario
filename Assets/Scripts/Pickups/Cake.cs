@@ -8,7 +8,7 @@ public class Cake : Pickup
 	/// <summary>
 	/// Where we will end up in the truck, as we are being delivered to it
 	/// </summary>
-	internal Parabola TruckParabola;
+	internal ParabolaUI TruckParabola;
 
 	/// <summary>
 	/// The related information about this ingredient is in World.Ingredients[Type]

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -94,13 +95,16 @@ public class DeliveryTruck : MarioObject
 	/// </summary>
 	public void OrderButtonPressed()
 	{
+		Debug.Log("Delivery time for " + _contents.Sum(c => c.Value) + " is " + CalcDeliveryTime());
+
 		BuyingOptions.SetActive(false);
 		PlayButton.SetActive(false);
 		ProgressBar.gameObject.SetActive(true);
 		ProgressBar.Reset();
-		ProgressBar.TotalTime = DeliveryTime;
+		ProgressBar.TotalTime = CalcDeliveryTime();
 		ProgressBar.Paused = false;
 		Deliver(_contents);
+
 	}
 
 	public void BuyItem(GameObject go)
@@ -175,7 +179,7 @@ public class DeliveryTruck : MarioObject
 		if (TestForSkip(contents))
 			return;
 
-		_deliveryTimer = DeliveryTime;
+		_deliveryTimer = CalcDeliveryTime();
 		_delivering = true;
 
 		PlayButton.gameObject.SetActive(false);
@@ -185,6 +189,11 @@ public class DeliveryTruck : MarioObject
 			_contents.Add(kv.Key, kv.Value);
 
 		Ready = false;
+	}
+
+	private float CalcDeliveryTime()
+	{
+		return DeliveryTime + _contents.Sum(c => c.Value);
 	}
 
 	protected override void BeforeFirstUpdate()
@@ -274,7 +283,7 @@ public class DeliveryTruck : MarioObject
 		_contents = IngredientItem.CreateIngredientDict<int>();
 
 		_delivering = false;
-		_deliveryTimer = DeliveryTime;
+		_deliveryTimer = CalcDeliveryTime();
 
 		ResetTruck();
 	}

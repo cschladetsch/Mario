@@ -14,7 +14,7 @@ public class BakeryArea : AreaBase
 	/// </summary>
 	public List<Recipe> Recipes = new List<Recipe>();
 
-	private ProductsPanelScript _products;
+	public ProductsPanelScript SellingProductsPanel;
 
 	protected override void Construct()
 	{
@@ -25,7 +25,7 @@ public class BakeryArea : AreaBase
 	{
 		base.Begin();
 
-		_products = FindObjectOfType<ProductsPanelScript>();
+		SellingProductsPanel = FindObjectOfType<ProductsPanelScript>();
 	}
 
 	public void IngredientButtonPressed(IngredientType type)
@@ -59,11 +59,9 @@ public class BakeryArea : AreaBase
 
 	IEnumerator ItemSold(IGenerator self, IngredientType type)
 	{
-		Debug.Log("SOLD a " + type);
+		//Debug.Log("SOLD a " + type);
 
-		var p = FindObjectOfType<ProductsPanelScript>();
-		if (p)
-			p.SellProgressBar.Reset();
+		SellingProductsPanel.SellProgressBar.Reset();
 
 		ItemSold(type);
 
@@ -80,32 +78,24 @@ public class BakeryArea : AreaBase
 		var go = (GameObject)Instantiate(World.GetInfo(type).ImagePrefab);
 		go.transform.SetParent(World.Canvas.transform);
 
-		var product = _products.GetProduct(type);
+		var product = SellingProductsPanel.GetProduct(type);
 
 		var start = product.transform.position;
 		var end = World.Canvas.GoldPanel.gameObject.transform.position;
-		var mid = (end - start)/2.0f;
+		var mid = start + (end - start)/2.0f;
+		mid.x += UnityEngine.Random.Range(-Screen.width/10, Screen.width/10);
+		mid.y += UnityEngine.Random.Range(-Screen.height/10, Screen.height/10);
 		var para = new ParabolaUI(start, mid, end, SoldItemTravelTime);
 
-		Debug.DrawLine(start, mid, Color.white, 5);
-		Debug.DrawLine(mid, end, Color.red, 5);
-
-		// move the image through the parabola
-		//var gort = go.GetRectTransform();
-		var t = 0.0f;
 		while (true)
 		{
-			t += GameDeltaTime;
-			if (t > SoldItemTravelTime)
+			if (para.Completed)
 			{
 				Destroy(go);
 				yield break;
 			}
 
 			var pos = para.UpdatePos();
-			//var position = new Vector2(pos.x, pos.y);
-			//Debug.Log(string.Format("Moving sold item: t={0}, type={1}, pos={2}", t, type, pos));
-			//gort.anchoredPosition = position;
 			go.transform.position = new Vector3(pos.x, pos.y, 0);
 
 			yield return 0;
@@ -121,4 +111,5 @@ public class BakeryArea : AreaBase
 		var ui = FindObjectOfType<CookingAreaUI>();
 		ui.InventoryPanel.UpdateDisplay(Player.Inventory, false);
 	}
+
 }

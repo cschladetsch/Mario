@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System;
+using System.Net.Mime;
 using Flow;
 using UnityEngine;
 using UnityEngine.UI;
@@ -78,21 +79,11 @@ public class Cooker : MarioObject
 	private void GatherRequirements()
 	{
 		for (int i = 0; i < Recipe.Ingredients.Count; i++)
-		{
 			_requirements[Recipe.Ingredients[i]] = Recipe.Counts[i];
-		}
-
-		//Debug.Log("GatherRequirements");
-		//foreach (var kv in _requirements)
-		//{
-		//	Debug.Log(String.Format("key {0}, value {1}", kv.Key, kv.Value));
-		//}
 	}
 
 	private void GoalChanged(int index, StageGoal newgoal)
 	{
-		//Debug.Log("Cooker.GoalChanged: " + index + " " + newgoal.Ingredients.Length);
-		//var act = index >= 
 	}
 
 	public void AddIngredient()
@@ -100,19 +91,17 @@ public class Cooker : MarioObject
 		foreach (var kv in _requirements)
 		{
 			var type = kv.Key;
-			var num = kv.Value;
+			var required = kv.Value;
 
-			if (_inventory[type] < num && Player.HasItem(type))
+			if (_inventory[type] < required && Player.HasItem(type))
 			{
 				_inventory[type]++;
 				Player.RemoveItem(type);
-				Debug.Log("Adding a " + type);
 				World.Kernel.Factory.NewCoroutine(AnimateItem, type, Product.gameObject);
 				break;
 			}
 		}
 
-		//Debug.Log("CanCook: " + CanCook());
 		if (CanCook())
 			Cook();
 
@@ -135,15 +124,12 @@ public class Cooker : MarioObject
 		var inv = FindObjectOfType<InventoryPanel>();
 		var source = inv.GetButton(type);
 
-		//var end = dest.GetRectTransform().anchoredPosition;
-		//var start = source.GetRectTransform().anchoredPosition;
 		var end = dest.transform.position;
 		var start = source.transform.position;
-		var mid = (end - start)/2.0f;
+		var mid = start + (end - start)/2.0f;
+		mid.x += UnityEngine.Random.Range(-Screen.width/10, Screen.width/10);
+		mid.y += UnityEngine.Random.Range(-Screen.height/10, Screen.height/10);
 		var para = new ParabolaUI(start, mid, end, 1);
-
-		Debug.DrawLine(start, mid, Color.green, 5);
-		Debug.DrawLine(mid, end, Color.blue, 5);
 
 		while (true)
 		{
@@ -155,9 +141,7 @@ public class Cooker : MarioObject
 				yield break;
 			}
 
-			var pos = para.UpdatePos();
-			//Debug.Log(pos);
-			image.GetRectTransform().anchoredPosition = pos;
+			image.transform.position = para.UpdatePos();
 			yield return 0;
 		}
 	}
@@ -357,9 +341,51 @@ public class Cooker : MarioObject
 			button.SetAmount(_requirements[type], false);
 		}
 
+		World.Kernel.Factory.NewCoroutine(MoveCookedItems);
+
+
 		UpdateDisplay();
 
 		_cooking = false;
+	}
+
+	IEnumerator MoveCookedItems(IGenerator self)
+	{
+		for (var i = 0; i < Recipe.NumResults; i++)
+		{
+			self.Factory.NewCoroutine(MoveCookedItem);
+			yield return self.ResumeAfter(TimeSpan.FromSeconds(0.5f));
+		}
+	}
+
+	IEnumerator MoveCookedItem(IGenerator self)
+	{
+		yield return self.ResumeAfter(TimeSpan.FromSeconds(UnityEngine.Random.Range(1, 1)));
+
+		var start = Product.transform.position;
+		var area = World.Areas[AreaType.Bakery] as BakeryArea;
+		var prod = area.SellingProductsPanel.GetProduct(Recipe.Result);
+		if (prod == null)
+			yield break;
+
+		var end = prod.transform.position;
+		var mid = start + (end - start)/2.0f;
+		mid.x += UnityEngine.Random.Range(-Screen.width/10, Screen.width/10);
+		mid.y += UnityEngine.Random.Range(-Screen.height/10, Screen.height/10);
+		Debug.DrawLine(start, mid, Color.green, 5);
+		Debug.DrawLine(mid, end, Color.blue, 5);
+
+		var item = (GameObject)Instantiate(World.GetInfo(Recipe.Result).ImagePrefab);
+		item.transform.SetParent(World.Canvas.transform);
+
+		var para = new ParabolaUI(start, mid, end, 1);
+		while (!para.Completed)
+		{
+			item.transform.position = para.UpdatePos();
+			yield return 0;
+		}
+
+		Destroy(item);
 	}
 
 	private void RemoveItemsFromInventory()

@@ -323,6 +323,7 @@ public class Player : MarioObject
 
 		World.CurrentArea.SellItem(type);
 	}
+
 	private void Died()
 	{
 		World.Pause(true);

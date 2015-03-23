@@ -5,6 +5,12 @@
 /// </summary>
 public class ParabolaUI
 {
+
+	/// <summary>
+	/// True if we're at the end-point given
+	/// </summary>
+	public bool Completed { get { return _alpha >= 1; }}
+
 	/// <summary>
 	/// Were we end up
 	/// </summary>
@@ -32,6 +38,29 @@ public class ParabolaUI
 	public float _timeScale;
 
 
+	//public ParabolaUI(Vector2 p1, Vector2 p2, Vector2 p3, float timeSpan)
+	//{
+	//	StartPos = p1;
+	//	FinalPos = p3;
+
+	//	_deltaX = p3.x - p1.x;
+	//	_startX = p1.x;
+	//	_timeScale = _deltaX/timeSpan;
+
+	//	var x1 = p1.x;
+	//	var x2 = p2.x;
+	//	var x3 = p3.x;
+
+	//	var y1 = p1.y;
+	//	var y2 = p2.y;
+	//	var y3 = p3.y;
+
+	//	var denom = (x1 - x2)*(x1 - x3)*(x2 - x3);
+	//	_a = (x3*(y2 - y1) + x2*(y1 - y3) + x1*(y3 - y2))/denom;
+	//	_b = (x3*x3*(y1 - y2) + x2*x2*(y3 - y1) + x1*x1*(y2 - y3))/denom;
+	//	_c = (x2*x3*(x2 - x3)*y1 + x3*x1*(x3 - x1)*y2 + x1*x2*(x1 - x2)*y3)/denom;
+	//}
+
 	public ParabolaUI(Vector2 p1, Vector2 p2, Vector2 p3, float timeSpan)
 	{
 		StartPos = p1;
@@ -49,13 +78,15 @@ public class ParabolaUI
 		var y2 = p2.y;
 		var y3 = p3.y;
 
-		var denom = (x1 - x2)*(x1 - x3)*(x2 - x3);
-		_a = (x3*(y2 - y1) + x2*(y1 - y3) + x1*(y3 - y2))/denom;
-		_b = (x3*x3*(y1 - y2) + x2*x2*(y3 - y1) + x1*x1*(y2 - y3))/denom;
-		_c = (x2*x3*(x2 - x3)*y1 + x3*x1*(x3 - x1)*y2 + x1*x2*(x1 - x2)*y3)/denom;
-	}
+		// see http://math.stackexchange.com/questions/405451/is-it-possible-to-find-out-x2-parabola-and-function-from-3-given-points
+		_a = (y2*(x3 - x1) - y1*(x3 - x2) - y3*(x2 - x1))
+			/(x1*x1*(x2 - x3) - x3*x3*(x2 - x1) - x2*x2*(x1 - x3));
 
-	public bool Completed { get { return _alpha >= 1; }}
+		_b = (y2 - y1 + _a*(x1*x1 - x2*x2))
+			/(x2 - x1);
+
+		_c = -_a*x1*x1 - _b*x1 + y1;
+	}
 
 	/// <summary>
 	/// Return a position based on game time delta
@@ -71,18 +102,16 @@ public class ParabolaUI
 	public void Update()
 	{
 		if (_alpha > 1)
+		{
+			if (Ended != null)
+				Ended(this);
 			return;
+		}
 
 		var pos = UpdatePos();
 
 		if (PositionChanged != null)
 			PositionChanged(pos);
-
-		if (_alpha < 1)
-			return;
-
-		if (Ended != null)
-			Ended(this);
 	}
 
 	Vector2 CalcAt(float x)

@@ -62,7 +62,7 @@ public class DeliveryTruck : MarioObject
 
 	public void VanButtonPressed()
 	{
-		Debug.Log("VanButtonPressed");
+		//Debug.Log("VanButtonPressed");
 
 		if (Ready)
 			PlayButtonPressed();

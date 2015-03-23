@@ -9,6 +9,7 @@ public class ParabolaUI
 	/// Were we end up
 	/// </summary>
 	public Vector3 FinalPos;
+	public Vector3 StartPos;
 
 	public delegate void PositionChangedHandler(Vector2 pos);
 	public delegate void EndedHandler(ParabolaUI para);
@@ -26,13 +27,14 @@ public class ParabolaUI
 	private readonly float _deltaX;
 
 	// how long along the curve from 0..1
-	private float _alpha;
+	internal float _alpha;
 
 	public float _timeScale;
 
 
 	public ParabolaUI(Vector2 p1, Vector2 p2, Vector2 p3, float timeSpan)
 	{
+		StartPos = p1;
 		FinalPos = p3;
 
 		_deltaX = p3.x - p1.x;
@@ -53,14 +55,17 @@ public class ParabolaUI
 		_c = (x2*x3*(x2 - x3)*y1 + x3*x1*(x3 - x1)*y2 + x1*x2*(x1 - x2)*y3)/denom;
 	}
 
+	public bool Completed { get { return _alpha >= 1; }}
+
 	/// <summary>
 	/// Return a position based on game time delta
 	/// </summary>
 	/// <returns></returns>
 	public Vector2 UpdatePos()
 	{
-		_alpha += UnityEngine.Time.deltaTime*_timeScale;
-		return CalcAt(_startX + _alpha);
+		//_alpha += UnityEngine.Time.deltaTime*_timeScale;
+		_alpha += Time.deltaTime;
+		return CalcAt(_startX + _alpha*(FinalPos.x - StartPos.x));
 	}
 
 	public void Update()

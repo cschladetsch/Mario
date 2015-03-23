@@ -24,6 +24,9 @@ public class DeliverNowPanel : MarioObject
 	public int CalcDeliveryCost()
 	{
 		var sum = 0;
+		if (_truck == null)
+			_truck = FindObjectOfType<DeliveryTruck>();
+
 		foreach (var kv in _truck._contents)
 		{
 			var item = kv.Key;
@@ -38,7 +41,7 @@ public class DeliverNowPanel : MarioObject
 
 	public void DeliverNowCancelled()
 	{
-		Debug.Log("DeliverNow Cancelled");
+		//Debug.Log("DeliverNow Cancelled");
 		gameObject.SetActive(false);
 
 	}
@@ -46,7 +49,7 @@ public class DeliverNowPanel : MarioObject
 	{
 		var deliveryCost = CalcDeliveryCost();
 
-		Debug.Log("DeliverNow Pressed: Gold: " + Player.Gold + ", cost: " + deliveryCost);
+		//Debug.Log("DeliverNow Pressed: Gold: " + Player.Gold + ", cost: " + deliveryCost);
 
 		if (Player.Gold < deliveryCost)
 		{
@@ -54,7 +57,7 @@ public class DeliverNowPanel : MarioObject
 			return;
 		}
 
-		Debug.Log("Delivering now...");
+		//Debug.Log("Delivering now...");
 		Player.RemoveGold(deliveryCost);
 		gameObject.SetActive(false);
 		_truck.Complete();
@@ -67,6 +70,7 @@ public class DeliverNowPanel : MarioObject
 	protected override void Begin()
 	{
 		_truck = FindObjectOfType<DeliveryTruck>();
+		//Debug.Log("DeliverNowPanel.Begin: " + _truck + " world=" + World);
 	}
 
 	protected override void Tick()

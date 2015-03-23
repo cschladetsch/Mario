@@ -7122,6 +7122,10 @@ Prefab:
       propertyPath: m_Pivot.y
       value: .5
       objectReference: {fileID: 0}
+    - target: {fileID: 132284, guid: 8a210a704aa1dcb4587e134cdd23d32e, type: 2}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 8a210a704aa1dcb4587e134cdd23d32e, type: 2}
   m_RootGameObject: {fileID: 2116243660}
@@ -9482,6 +9486,10 @@ Prefab:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 480271815}
+    - target: {fileID: 124614, guid: cefffd2b1ad10d048945373edb30e07d, type: 2}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: cefffd2b1ad10d048945373edb30e07d, type: 2}
   m_RootGameObject: {fileID: 1110832444}
@@ -9503,7 +9511,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1110832445
 RectTransform:
   m_ObjectHideFlags: 0

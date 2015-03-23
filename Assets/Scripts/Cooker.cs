@@ -106,7 +106,8 @@ public class Cooker : MarioObject
 			{
 				_inventory[type]++;
 				Player.RemoveItem(type);
-				//Debug.Log("Adding a " + type);
+				Debug.Log("Adding a " + type);
+				World.Kernel.Factory.NewCoroutine(AnimateItem, type, Product.gameObject);
 				break;
 			}
 		}
@@ -116,6 +117,49 @@ public class Cooker : MarioObject
 			Cook();
 
 		UpdateDisplay();
+	}
+
+	private GameObject FindButton(IngredientType type)
+	{
+		return _ingredientButtons.ContainsKey(type) ? _ingredientButtons[type].gameObject : null;
+	}
+
+	IEnumerator AnimateItem(IGenerator self, IngredientType type, GameObject dest)
+	{
+		if (dest == null)
+			yield break;
+
+		var image = (GameObject) Instantiate(World.GetInfo(type).ImagePrefab);
+		image.transform.SetParent(transform);
+
+		var inv = FindObjectOfType<InventoryPanel>();
+		var source = inv.GetButton(type);
+
+		//var end = dest.GetRectTransform().anchoredPosition;
+		//var start = source.GetRectTransform().anchoredPosition;
+		var end = dest.transform.position;
+		var start = source.transform.position;
+		var mid = (end - start)/2.0f;
+		var para = new ParabolaUI(start, mid, end, 1);
+
+		Debug.DrawLine(start, mid, Color.green, 5);
+		Debug.DrawLine(mid, end, Color.blue, 5);
+
+		while (true)
+		{
+			//Debug.Log("Animation image: " + para._alpha);
+			if (para.Completed)
+			{
+				//Debug.Log("Animation done");
+				Destroy(image);
+				yield break;
+			}
+
+			var pos = para.UpdatePos();
+			//Debug.Log(pos);
+			image.GetRectTransform().anchoredPosition = pos;
+			yield return 0;
+		}
 	}
 
 	protected override void Tick()

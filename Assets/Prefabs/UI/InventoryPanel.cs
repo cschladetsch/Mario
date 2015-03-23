@@ -84,7 +84,6 @@ public class InventoryPanel : MarioObject
 		}
 	}
 
-//#if DEBUG
 	public void ButtonPressed(GameObject button)
 	{
 		var item = button.GetComponent<IngredientItem>();
@@ -103,5 +102,9 @@ public class InventoryPanel : MarioObject
 		}
 	}
 
-//#endif
+	public GameObject GetButton(IngredientType type)
+	{
+		var text = Counts[type];
+		return text == null ? null : text.gameObject;
+	}
 }

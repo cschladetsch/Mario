@@ -181,4 +181,9 @@ public class Conveyor : MarioObject
 
 		_contents.Clear();
 	}
+
+	public void Clear()
+	{
+		_contents.Clear();
+	}
 }

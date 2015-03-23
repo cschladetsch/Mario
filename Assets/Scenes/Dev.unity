@@ -3694,7 +3694,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 11400004, guid: 52fa16e38a71b9f47bb741e162594937, type: 2}
       propertyPath: Gold
-      value: 5
+      value: 999
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 52fa16e38a71b9f47bb741e162594937, type: 2}
@@ -6700,7 +6700,7 @@ MonoBehaviour:
   Paused: 0
   CurrentGoal: {fileID: 934029830}
   LivesRemainingText: {fileID: 834258410}
-  Gold: 5
+  Gold: 999
   CharacterLeftPrefab: {fileID: 100000, guid: eea6edd4ec45af4439cf304f8b814600, type: 2}
   CharacterRightPrefab: {fileID: 100000, guid: eea6edd4ec45af4439cf304f8b814600, type: 2}
   Control: {fileID: 0}
@@ -7211,6 +7211,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Paused: 0
   InventoryPanel: {fileID: 38048929}
+  ProductsPanel: {fileID: 0}
   SkipToggle: {fileID: 911076246}
   ShopButton: {fileID: 1350555886}
   MintIceCreamCooker: {fileID: 259449477}
@@ -8133,6 +8134,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 969429795}
   - 114: {fileID: 969429796}
+  - 114: {fileID: 969429797}
   m_Layer: 0
   m_Name: World
   m_TagString: Untagged
@@ -8176,6 +8178,8 @@ MonoBehaviour:
   - {fileID: 11416742, guid: f80dd1ba2b0ec2642bd7a5a7a9d8a58b, type: 2}
   - {fileID: 11411668, guid: a4f2d781738cba841b74f05b98aaf7fd, type: 2}
   CurrentArea: {fileID: 0}
+  FactoryArea: {fileID: 0}
+  BakeryArea: {fileID: 0}
   CurrentLevel: {fileID: 0}
   AvailableProducts: []
   CookingAreaUi: {fileID: 844922099}
@@ -8187,8 +8191,20 @@ MonoBehaviour:
   - {fileID: 100004, guid: 1100c0a9ed160384ca84ebbaf85adbfc, type: 2}
   - {fileID: 177390, guid: b7740c47d7f18ab47997290cdf058f47, type: 2}
   GoalIndex: 0
-  GodMode: 0
+  GodMode: 1
   Buttons: {fileID: 1167272206}
+--- !u!114 &969429797
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 969429794}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1779f4dd645812a40bedbde4a0b27dbf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Paused: 0
 --- !u!1 &983606105
 GameObject:
   m_ObjectHideFlags: 0
@@ -13304,7 +13320,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 11400002, guid: 9b2af9083a32e3641a5d9c733b805197, type: 2}
       propertyPath: GodMode
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 9b2af9083a32e3641a5d9c733b805197, type: 2}
@@ -13570,6 +13586,8 @@ MonoBehaviour:
   - {fileID: 11416742, guid: f80dd1ba2b0ec2642bd7a5a7a9d8a58b, type: 2}
   - {fileID: 11411668, guid: a4f2d781738cba841b74f05b98aaf7fd, type: 2}
   CurrentArea: {fileID: 0}
+  FactoryArea: {fileID: 0}
+  BakeryArea: {fileID: 0}
   CurrentLevel: {fileID: 0}
   AvailableProducts: []
   CookingAreaUi: {fileID: 844922099}

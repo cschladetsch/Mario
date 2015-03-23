@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System;
-using System.Net.Mime;
 using Flow;
 using UnityEngine;
 using UnityEngine.UI;
@@ -93,13 +92,14 @@ public class Cooker : MarioObject
 			var type = kv.Key;
 			var required = kv.Value;
 
-			if (_inventory[type] < required && Player.HasItem(type))
-			{
-				_inventory[type]++;
-				Player.RemoveItem(type);
-				World.Kernel.Factory.NewCoroutine(AnimateItem, type, Product.gameObject);
-				break;
-			}
+			if (_inventory[type] >= required || !Player.HasItem(type)) 
+				continue;
+
+			_inventory[type]++;
+			Player.RemoveItem(type);
+			var source = FindObjectOfType<InventoryPanel>().GetButton(type);
+			ItemAnimation.Animate(type, source, Product.gameObject, 1);
+			break;
 		}
 
 		if (CanCook())
@@ -111,39 +111,6 @@ public class Cooker : MarioObject
 	private GameObject FindButton(IngredientType type)
 	{
 		return _ingredientButtons.ContainsKey(type) ? _ingredientButtons[type].gameObject : null;
-	}
-
-	IEnumerator AnimateItem(IGenerator self, IngredientType type, GameObject dest)
-	{
-		if (dest == null)
-			yield break;
-
-		var image = (GameObject) Instantiate(World.GetInfo(type).ImagePrefab);
-		image.transform.SetParent(transform);
-
-		var inv = FindObjectOfType<InventoryPanel>();
-		var source = inv.GetButton(type);
-
-		var end = dest.transform.position;
-		var start = source.transform.position;
-		var mid = start + (end - start)/2.0f;
-		mid.x += UnityEngine.Random.Range(-Screen.width/10, Screen.width/10);
-		mid.y += UnityEngine.Random.Range(-Screen.height/10, Screen.height/10);
-		var para = new ParabolaUI(start, mid, end, 1);
-
-		while (true)
-		{
-			//Debug.Log("Animation image: " + para._alpha);
-			if (para.Completed)
-			{
-				//Debug.Log("Animation done");
-				Destroy(image);
-				yield break;
-			}
-
-			image.transform.position = para.UpdatePos();
-			yield return 0;
-		}
 	}
 
 	protected override void Tick()
@@ -200,7 +167,6 @@ public class Cooker : MarioObject
 	public void Select(bool select)
 	{
 		Debug.Log("Selected " + name + " " + select);
-		//_tint.color = DeselectedColor;
 	}
 
 	void OnDestroy()
@@ -303,7 +269,7 @@ public class Cooker : MarioObject
 		ProgressBar.Reset();
 		ProgressBar.TotalTime = Recipe.CookingTime;
 
-		Debug.Log("Cooking a " + Recipe.Result);
+		//Debug.Log("Cooking a " + Recipe.Result);
 		Product.interactable = false;
 		_cooking = true;
 
@@ -318,6 +284,12 @@ public class Cooker : MarioObject
 		done.Value = true;
 
 		self.Complete();
+
+		EndCook();
+	}
+
+	private void EndCook()
+	{
 		Product.interactable = true;
 
 		RemoveItemsFromInventory();
@@ -327,12 +299,19 @@ public class Cooker : MarioObject
 		if (Completed != null)
 			Completed(Recipe.Result);
 
-		var count = Recipe.NumResults;
-		//Debug.Log("Cooked " + count + " " + Recipe.Result);
 		ProgressBar.Reset();
 
-		Player.CookedItem(Recipe.Result, count);
+		ResetRequiredIngredientsButton();
 
+		World.Kernel.Factory.NewCoroutine(MoveCookedItems);
+
+		UpdateDisplay();
+
+		_cooking = false;
+	}
+
+	private void ResetRequiredIngredientsButton()
+	{
 		foreach (var kv in _ingredientButtons)
 		{
 			var type = kv.Key;
@@ -340,52 +319,22 @@ public class Cooker : MarioObject
 			//Debug.Log(string.Format("Buttton {0} needs {1}", button.Type, _requirements[type]));
 			button.SetAmount(_requirements[type], false);
 		}
+	}
 
-		World.Kernel.Factory.NewCoroutine(MoveCookedItems);
-
-
-		UpdateDisplay();
-
-		_cooking = false;
+	void MovedToSellingArea(IngredientType type)
+	{
+		Player.CookedItem(type, 1);
 	}
 
 	IEnumerator MoveCookedItems(IGenerator self)
 	{
 		for (var i = 0; i < Recipe.NumResults; i++)
 		{
-			self.Factory.NewCoroutine(MoveCookedItem);
+			var area = World.Areas[AreaType.Bakery] as BakeryArea;
+			ItemAnimation.Animate(Recipe.Result, Product.gameObject, area.SellingProductsPanel.GetProduct(Recipe.Result), 2, MovedToSellingArea);
 			yield return self.ResumeAfter(TimeSpan.FromSeconds(0.5f));
 		}
-	}
 
-	IEnumerator MoveCookedItem(IGenerator self)
-	{
-		yield return self.ResumeAfter(TimeSpan.FromSeconds(UnityEngine.Random.Range(1, 1)));
-
-		var start = Product.transform.position;
-		var area = World.Areas[AreaType.Bakery] as BakeryArea;
-		var prod = area.SellingProductsPanel.GetProduct(Recipe.Result);
-		if (prod == null)
-			yield break;
-
-		var end = prod.transform.position;
-		var mid = start + (end - start)/2.0f;
-		mid.x += UnityEngine.Random.Range(-Screen.width/10, Screen.width/10);
-		mid.y += UnityEngine.Random.Range(-Screen.height/10, Screen.height/10);
-		Debug.DrawLine(start, mid, Color.green, 5);
-		Debug.DrawLine(mid, end, Color.blue, 5);
-
-		var item = (GameObject)Instantiate(World.GetInfo(Recipe.Result).ImagePrefab);
-		item.transform.SetParent(World.Canvas.transform);
-
-		var para = new ParabolaUI(start, mid, end, 1);
-		while (!para.Completed)
-		{
-			item.transform.position = para.UpdatePos();
-			yield return 0;
-		}
-
-		Destroy(item);
 	}
 
 	private void RemoveItemsFromInventory()
@@ -394,35 +343,9 @@ public class Cooker : MarioObject
 			_inventory[Recipe.Ingredients[i]] -= Recipe.Counts[i];
 	}
 
-	private void UpdateProgressBar(float t)
-	{
-		//t = Mathf.Clamp01(t);
-		//TimerText.text = string.Format("{0:0.0}", t);
-
-		//var y = ProgressBar.transform.position.y;
-		//var len = t*1.25f;
-
-		//ProgressBar.transform.localScale = new Vector3(len, 1, 1);
-		//ProgressBar.transform.SetX(len/2.0f);
-		////Debug.Log("Cooking " + Recipe.Result + " in " + t);
-	}
-
-	//public void RemoveIngredient(GameObject go)
-	//{
-	//	var type = go.GetComponent<IngredientItem>().Type;
-	//	Debug.Log("Remove " + type);
-	//	if (!Remove(type))
-	//		return;
-
-	//	Player.Inventory[type]++;
-	//	UpdateDisplay();
-	//}
-
 	private void UpdateDisplay()
 	{
 		UpdateIngredientButtons();
-
-		//Product.interactable = CanCook();
 
 		foreach (var ing in FindObjectsOfType<InventoryPanel>())
 			ing.UpdateDisplay(Player.Inventory, false);

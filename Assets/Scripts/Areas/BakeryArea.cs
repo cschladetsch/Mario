@@ -1,6 +1,8 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using Flow;
+using UnityEditorInternal.VersionControl;
 using UnityEngine;
 
 /// <summary>
@@ -16,6 +18,10 @@ public class BakeryArea : AreaBase
 
 	public ProductsPanelScript SellingProductsPanel;
 
+	public DeliveryTruck DeliveryTruck;
+
+	public InventoryPanel InventoryPanel;
+
 	protected override void Construct()
 	{
 		base.Construct();
@@ -26,6 +32,8 @@ public class BakeryArea : AreaBase
 		base.Begin();
 
 		SellingProductsPanel = FindObjectOfType<ProductsPanelScript>();
+		DeliveryTruck = FindObjectOfType<DeliveryTruck>();
+		InventoryPanel = FindObjectOfType<InventoryPanel>();
 	}
 
 	public void IngredientButtonPressed(IngredientType type)
@@ -46,60 +54,31 @@ public class BakeryArea : AreaBase
 	protected override void Tick()
 	{
 		base.Tick();
+
+#if DEBUG
+		if (Input.GetKeyDown(KeyCode.C))
+			DeliveryTruck.Complete();
+#endif
 	}
+
+	public float SoldItemTravelTime = 2;
 
 	public override void SellItem(IngredientType type)
 	{
 		base.SellItem(type);
 
-		var move = Kernel.Factory.NewCoroutine(MoveSoldItem, type);
+		var move = ItemAnimation.Animate(type, SellingProductsPanel.GetProduct(type), Canvas.GoldPanel, SoldItemTravelTime);
 		var sell = Kernel.Factory.NewCoroutine(ItemSold, type);
 		sell.ResumeAfter(move);
 	}
 
 	IEnumerator ItemSold(IGenerator self, IngredientType type)
 	{
-		//Debug.Log("SOLD a " + type);
-
 		SellingProductsPanel.SellProgressBar.Reset();
 
 		ItemSold(type);
 
 		yield break;
-	}
-
-	public float SoldItemTravelTime = 2;
-
-	IEnumerator MoveSoldItem(IGenerator self, IngredientType type)
-	{
-		Player.RemoveItem(type);
-
-		// make the image to move
-		var go = (GameObject)Instantiate(World.GetInfo(type).ImagePrefab);
-		go.transform.SetParent(World.Canvas.transform);
-
-		var product = SellingProductsPanel.GetProduct(type);
-
-		var start = product.transform.position;
-		var end = World.Canvas.GoldPanel.gameObject.transform.position;
-		var mid = start + (end - start)/2.0f;
-		mid.x += UnityEngine.Random.Range(-Screen.width/10, Screen.width/10);
-		mid.y += UnityEngine.Random.Range(-Screen.height/10, Screen.height/10);
-		var para = new ParabolaUI(start, mid, end, SoldItemTravelTime);
-
-		while (true)
-		{
-			if (para.Completed)
-			{
-				Destroy(go);
-				yield break;
-			}
-
-			var pos = para.UpdatePos();
-			go.transform.position = new Vector3(pos.x, pos.y, 0);
-
-			yield return 0;
-		}
 	}
 
 	public override void EnterArea()
@@ -112,4 +91,24 @@ public class BakeryArea : AreaBase
 		ui.InventoryPanel.UpdateDisplay(Player.Inventory, false);
 	}
 
+	public IGenerator TakeDelivery(List<Cake> cakes)
+	{
+		return Kernel.Factory.NewCoroutine(TakeDelivery, cakes);
+	}
+
+	public IEnumerator TakeDelivery(IGenerator self, List<Cake> cakes)
+	{
+		foreach (var c in cakes)
+		{
+			ItemAnimation.Animate(c.Type, DeliveryTruck.gameObject,
+				InventoryPanel.GetButton(c.Type).gameObject, 2, AddIngredient);
+
+			yield return self.ResumeAfter(TimeSpan.FromSeconds(UnityEngine.Random.Range(1, 2)));
+		}
+	}
+
+	private void AddIngredient(IngredientType type)
+	{
+		Player.AddCake(type);
+	}
 }

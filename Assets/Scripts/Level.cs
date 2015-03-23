@@ -225,14 +225,10 @@ public class Level : MarioObject
 
 		// TODO: 
 		IncomingPanel.RemoveCake(type);
-		//Debug.Log(pos);
 		Inventory[type]--;
 
-		//Debug.Log("Cakes Left: " + Inventory.Sum(c => c.Value));
-
-		var born = spawnInfo.Spawn(gameObject);
+		var born = spawnInfo.Spawn();
 		born.transform.position = CakeSpawnPoint.transform.position;
-		//born.GetRectTransform().anchoredPosition = pos;
 		born.name = Guid.NewGuid().ToString();
 		//Debug.Log("Spawned a " + spawnInfo.Prefab.name + " called " + born.name);
 
@@ -332,7 +328,7 @@ public class Level : MarioObject
 		}
 	}
 
-	private SpawnInfo GetSpawner(IngredientType type)
+	public SpawnInfo GetSpawner(IngredientType type)
 	{
 		return _spawners.FirstOrDefault(sp => sp.Type == type);
 	}

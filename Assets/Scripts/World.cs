@@ -23,6 +23,10 @@ public class World : MonoBehaviour
 
 	public AreaBase CurrentArea;
 
+	public FactoryArea FactoryArea;
+
+	public BakeryArea BakeryArea;
+
 	public Level CurrentLevel;
 
 	public delegate void GoalChangedHandler(int index, StageGoal newGoal);
@@ -135,6 +139,25 @@ public class World : MonoBehaviour
 
 		var root = transform.FindChild("Areas");
 
+		CreateAreas(root);
+
+		// just for ease of access
+		FactoryArea = Areas[AreaType.Bakery] as FactoryArea;
+		BakeryArea = Areas[AreaType.Bakery] as BakeryArea;
+
+		Player = FindObjectOfType<Player>();
+
+		GoalIndex = 0;
+		SetPlayerGoal();
+
+		CreateConeyorGame();
+
+		_areaType = AreaType.Bakery;
+		ChangeArea(_areaType);
+	}
+
+	private void CreateAreas(Transform root)
+	{
 		foreach (var a in AreaPrefabs)
 		{
 			//Debug.Log("Creating a " + a.name);
@@ -159,16 +182,6 @@ public class World : MonoBehaviour
 
 			Areas[area.Type] = area;
 		}
-
-		Player = FindObjectOfType<Player>();
-
-		GoalIndex = 0;
-		SetPlayerGoal();
-
-		CreateConeyorGame();
-
-		_areaType = AreaType.Bakery;
-		ChangeArea(_areaType);
 	}
 
 	private void SetPlayerGoal()
@@ -279,9 +292,29 @@ public class World : MonoBehaviour
 
 	private void Update()
 	{
-		Kernel.Step();
+		//if (!Paused)
+			Kernel.Step();
 
-		// need to wait a few updates before beginning, because we can have nested SpawnGameObject components...
+		if (UpdateBeginLevel()) return;
+
+		if (_first)
+		{
+			_first = false;
+
+			Pause(true);
+		}
+	}
+
+	/// <summary>
+	/// This is a bit of a hack. Because we use GameObect Spawners, which need
+	/// an update, we have to wait a while before they are all spawned,
+	/// as some objects created by a GameObjectSpawner also contain GameObjectSpawners,
+	/// so we need to wait a few updates to ensure all objects are spawned.
+	/// </summary>
+	/// <returns></returns>
+	private bool UpdateBeginLevel()
+	{
+	// need to wait a few updates before beginning, because we can have nested SpawnGameObject components...
 		if (_beginLevelAfterThisManyUpdates > 0)
 		{
 			--_beginLevelAfterThisManyUpdates;
@@ -298,26 +331,21 @@ public class World : MonoBehaviour
 				CurrentLevel.BeginLevel();
 			}
 
-			return;
+			return true;
 		}
 
-		if (_first)
-		{
-			_first = false;
-
-			Pause(true);
-		}
+		return false;
 	}
 
 	public void Pause(bool pause)
 	{
-		//_paused = pause;
+		_paused = pause;
 
-		//foreach (var cake in FindObjectsOfType<Cake>())
-		//	cake.Pause(pause);
+		foreach (var cake in FindObjectsOfType<Cake>())
+			cake.Pause(pause);
 
-		//if (CurrentLevel)
-		//	CurrentLevel.Pause(pause);
+		if (CurrentLevel)
+			CurrentLevel.Pause(pause);
 	}
 
 	public void TogglePause()

@@ -11,9 +11,7 @@ public class CookingAreaUI : MarioObject
 	/// </summary>
 	public InventoryPanel InventoryPanel;
 
-	//public List<Cooker> Cookers;
-
-	//public Cooker SelectedCooker;
+	public ProductsPanelScript ProductsPanel;
 
 	public UnityEngine.UI.Toggle SkipToggle;
 
@@ -29,6 +27,8 @@ public class CookingAreaUI : MarioObject
 
 		//GatherCookers();
 
+		ProductsPanel = FindObjectOfType<ProductsPanelScript>();
+
 		UpdateDisplay();
 	}
 
@@ -41,7 +41,6 @@ public class CookingAreaUI : MarioObject
 			cooker = MintIceCreamCooker;
 		else
 			cooker = CupCakeCooker;
-
 
 		if (Player.Inventory[type] > 0)
 		{
@@ -56,86 +55,40 @@ public class CookingAreaUI : MarioObject
 		}
 	}
 
-	//public void ProductClicked(GameObject product)
+	//private void RemoveIngredients(Dictionary<IngredientType, int> req)
 	//{
-	//	var cooker = product.transform.parent.GetComponent<Cooker>();
-	//	var recipe = cooker.Recipe;
-
-	//	var canCook = true;
-	//	var req = IngredientItem.CreateIngredientDict<int>();
-	//	for (var n = 0; n < recipe.Ingredients.Count; ++n)
+	//	foreach (var kv in req)
 	//	{
-	//		var ty = recipe.Ingredients[n];
-	//		var num = recipe.Counts[n];
-
-	//		if (Player.Inventory[ty] < num)
-	//		{
-	//			canCook = false;
-	//			break;
-	//		}
-
-	//		req[ty] += num;
+	//		//Debug.Log("Removing " + kv.Value + " of " + kv.Key);
+	//		Player.Inventory[kv.Key] -= kv.Value;
 	//	}
 
-	//	if (!canCook)
-	//		return;
-
-	//	//Debug.Log("Cooking " + recipe.NumResults + " of " + recipe.Result);
-
-	//	switch (recipe.Result)
-	//	{
-	//		case IngredientType.CupCake:
-	//			if (CupCakeCooker.CanCook())
-	//			{
-	//				RemoveIngredients(req);
-	//				CupCakeCooker.Cook();
-	//			}
-	//			break;
-
-	//		case IngredientType.MintIceCream:
-	//			if (MintIceCreamCooker.CanCook())
-	//			{
-	//				RemoveIngredients(req);
-	//				MintIceCreamCooker.Cook();
-	//			}
-	//			break;
-	//	}
+	//	UpdateDisplay();
 	//}
-
-	private void RemoveIngredients(Dictionary<IngredientType, int> req)
-	{
-		foreach (var kv in req)
-		{
-			//Debug.Log("Removing " + kv.Value + " of " + kv.Key);
-			Player.Inventory[kv.Key] -= kv.Value;
-		}
-
-		UpdateDisplay();
-	}
 
 	private void UpdateDisplay()
 	{
 		InventoryPanel.UpdateDisplay(Player.Inventory, false);
 	}
 
-	private void GatherCookers()
-	{
-		//foreach (Transform tr in transform)
-		//{
-		//	var cooker = tr.GetComponent<Cooker>();
-		//	if (!cooker)
-		//		continue;
+	//private void GatherCookers()
+	//{
+	//	//foreach (Transform tr in transform)
+	//	//{
+	//	//	var cooker = tr.GetComponent<Cooker>();
+	//	//	if (!cooker)
+	//	//		continue;
 
-		//	Cookers.Add(cooker);
-		//	//Debug.Log("Found a cooker for " + cooker.Recipe.name);
+	//	//	Cookers.Add(cooker);
+	//	//	//Debug.Log("Found a cooker for " + cooker.Recipe.name);
 
-		//	//  HACKS
-		//	if (cooker.name == "CupcakeCooker")
-		//		_cakes = cooker;
-		//	else
-		//		_iceCream = cooker;
-		//}
-	}
+	//	//	//  HACKS
+	//	//	if (cooker.name == "CupcakeCooker")
+	//	//		_cakes = cooker;
+	//	//	else
+	//	//		_iceCream = cooker;
+	//	//}
+	//}
 
 	protected override void Tick()
 	{

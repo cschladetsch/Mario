@@ -344,7 +344,7 @@ public class Player : MarioObject
 		World.Canvas.UpdateGoldAmount();
 		World.Canvas.GoalPanel.GetComponent<GoalPanel>().UpdateUi();
 		World.CookingAreaUi.InventoryPanel.UpdateDisplay(Inventory, false);
-
+		World.CookingAreaUi.ProductsPanel.UpdateUi();
 
 		LivesRemainingText.text = Lives.ToString();
 	}
@@ -416,7 +416,7 @@ public class Player : MarioObject
 
 	public void AddCake(Cake cake)
 	{
-		Inventory[cake.Type]++;
+		AddCake(cake.Type);
 		UpdateUi();
 	}
 
@@ -446,7 +446,9 @@ public class Player : MarioObject
 	public void SoldItem(IngredientInfo info)
 	{
 		Gold += info.Sell;
+
 		_sold[info.Type]++;
+		Inventory[info.Type]--;
 
 		UpdateUi();
 	}
@@ -454,6 +456,12 @@ public class Player : MarioObject
 	public void RemoveGold(int sum)
 	{
 		Gold -= sum;
+		UpdateUi();
+	}
+
+	public void AddCake(IngredientType type)
+	{
+		Inventory[type]++;
 		UpdateUi();
 	}
 }

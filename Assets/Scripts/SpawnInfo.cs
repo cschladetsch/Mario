@@ -60,7 +60,7 @@ public class SpawnInfo : MarioObject
 		_spawnTimer -= GameDeltaTime;
 	}
 
-	public GameObject Spawn(GameObject parent)
+	public GameObject Spawn()
 	{
 		if (SpawnsLeft-- <= 0)
 		{

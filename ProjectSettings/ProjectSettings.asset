@@ -158,7 +158,8 @@ PlayerSettings:
   psp2PackagedResourcesPath: 
   flashStrippingLevel: 2
   spritePackerPolicy: 
-  scriptingDefineSymbols: {}
+  scriptingDefineSymbols:
+    7: DEBUG
   metroPackageName: Mario
   metroPackageLogo: 
   metroPackageLogo140: 

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Flow;
 using UnityEngine;
 
 #pragma warning disable 414
@@ -160,14 +161,6 @@ public class Truck : MarioObject
 			DeliveryCompleted(this);
 
 		//Debug.Log("Delivery completed: " + _cakes.Count);
-		foreach (var c in _cakes)
-		{
-			Player.AddCake(c);
-			Destroy(c.gameObject);
-		}
-
-		_cakes.Clear();
-
 		EndEmptying();
 		//StartMovingRight();
 	}
@@ -197,14 +190,23 @@ public class Truck : MarioObject
 		World.Pause(false);
 
 		World.ChangeArea(AreaType.Bakery);
+
+		World.BakeryArea.TakeDelivery(_cakes).Completed += f =>
+		{
+			foreach (var c in _cakes)
+				Destroy(c.gameObject);
+			_cakes.Clear();
+
+			World.Pause(false);
+		};
 	}
 
 	public void StartEmptying()
 	{
-		////Debug.Log("Truck.StartEmptying");
 		if (Emptying)
 			return;
 
+		Debug.Log("Truck.StartEmptying");
 		World.Pause(true);
 
 		if (DeliveryStarted != null)
@@ -311,5 +313,14 @@ public class Truck : MarioObject
 	{
 		if (_cakes.Count > 0 && _cakes.All(c => c.Delivered))
 			StartEmptying();
+	}
+
+	public void ForceDelivery()
+	{
+		foreach (var c in _cakes)
+			c.Delivered = true;
+
+		Emptying = false;
+		StartEmptying();
 	}
 }

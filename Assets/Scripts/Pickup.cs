@@ -53,9 +53,9 @@ public class Pickup : MarioObject
 	private bool _kine;
 	private bool _firstDrop;
 
-	protected override void Begin()
+	protected override void Construct()
 	{
-		base.Begin();
+		base.Construct();
 		_box = GetComponent<BoxCollider2D>();
 		if (rigidbody2D)
 			rigidbody2D.isKinematic = false;

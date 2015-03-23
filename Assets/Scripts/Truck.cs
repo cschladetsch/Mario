@@ -206,7 +206,7 @@ public class Truck : MarioObject
 		if (Emptying)
 			return;
 
-		Debug.Log("Truck.StartEmptying");
+		//Debug.Log("Truck.StartEmptying");
 		World.Pause(true);
 
 		if (DeliveryStarted != null)

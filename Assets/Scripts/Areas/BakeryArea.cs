@@ -74,7 +74,7 @@ public class BakeryArea : AreaBase
 
 	IEnumerator ItemSold(IGenerator self, IngredientType type)
 	{
-		SellingProductsPanel.SellProgressBar.Reset();
+		//SellingProductsPanel.GetButton(type).Reset();
 
 		ItemSold(type);
 

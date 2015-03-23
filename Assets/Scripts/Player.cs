@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
-using Flow;
 using UnityEngine;
 using UnityEngine.UI;
-using Debug = UnityEngine.Debug;
 
 /// <summary>
 /// The single player of the game, whom controls both Left and Right characters.
@@ -76,9 +73,7 @@ public class Player : MarioObject
 	//public List<Product> SellingProducts = new List<Product>(); 
 
 	public delegate void CollisionHandler(Collision2D other);
-
 	public delegate void TriggerHandler(Collider2D other);
-
 	public delegate void PlayerEventHandler(Player player);
 
 	public CollisionHandler OnCollision;
@@ -106,7 +101,7 @@ public class Player : MarioObject
 	/// </summary>
 	public int Lives = 3;
 
-	private ProductsPanelScript _products;
+	//private ProductsPanelScript _products;
 
 	private Dictionary<IngredientType, int> _sold;
 
@@ -114,7 +109,7 @@ public class Player : MarioObject
 	{
 		base.Begin();
 
-		_products = FindObjectOfType<ProductsPanelScript>();
+		//_products = FindObjectOfType<ProductsPanelScript>();
 
 		_sold = IngredientItem.CreateIngredientDict<int>();
 
@@ -144,9 +139,6 @@ public class Player : MarioObject
 		_canvas = FindObjectOfType<UiCanvas>();
 
 		PrepareEmptyInventory();
-
-		//Inventory[IngredientType.Cherry] = 5;
-		//Inventory[IngredientType.Muffin] = 5;
 	}
 
 	private void PrepareEmptyInventory()
@@ -159,8 +151,6 @@ public class Player : MarioObject
 	{
 		// TODO: attach to truck
 		ShowCharacters(false);
-
-
 	}
 
 	private bool _lastAny;
@@ -169,7 +159,7 @@ public class Player : MarioObject
 	{
 		base.Tick();
 
-		UpdateSellingProgressBar();
+		//UpdateSellingProgressBar();
 
 		GetCharacters();
 
@@ -177,7 +167,7 @@ public class Player : MarioObject
 		UpdateDebugKeys();
 #endif
 
-		UpdateSellItem();
+		//UpdateSellItem();
 	}
 
 	private void GetCharacters()
@@ -189,32 +179,35 @@ public class Player : MarioObject
 		Right = transform.FindChild("CharacterRight").GetComponent<Character>();
 	}
 
-	private void UpdateSellingProgressBar()
-	{
-		var any = Inventory[IngredientType.CupCake] > 0 || Inventory[IngredientType.MintIceCream] > 0;
-		var bar = _products.SellProgressBar;
-		if (!any && !bar.Paused)
-		{
-			bar.Reset();
-		}
+	//private void UpdateSellingProgressBar()
+	//{
+	//	var any = Inventory[IngredientType.CupCake] > 0 || Inventory[IngredientType.MintIceCream] > 0;
+	//	var bar = _products.SellProgressBar;
+	//	if (!any && !bar.Paused)
+	//	{
+	//		bar.Reset();
+	//	}
 
-		if (any && bar.Paused || (!_lastAny && any))
-		{
-			bar.Reset();
-			bar.Paused = false;
+	//	if (any && bar.Paused || (!_lastAny && any))
+	//	{
+	//		bar.Reset();
+	//		bar.Paused = false;
 
-			SellingTimer = SellingInterval;
+	//		SellingTimer = SellingInterval;
 
-			// TODO: Use Recipe.SellingTime
-			bar.TotalTime = Player.SellingInterval;
-		}
+	//		// TODO: Use Recipe.SellingTime
+	//		bar.TotalTime = Player.SellingInterval;
+	//	}
 
-		_lastAny = any;
-	}
+	//	_lastAny = any;
+	//}
 
 	private void UpdateDebugKeys()
 	{
 #if DEBUG
+		if (!Input.GetKeyDown(KeyCode.LeftShift))
+			return;
+
 		if (Input.GetKeyDown(KeyCode.Space))
 		{
 			FindObjectOfType<World>().TogglePause();
@@ -232,11 +225,6 @@ public class Player : MarioObject
 			CookedItem(IngredientType.MintIceCream, 1);
 		}
 #endif
-	}
-
-	private List<Product> CalcPossibleProducts()
-	{
-		return null;
 	}
 
 	public void DroppedCake(Pickup pickup)
@@ -263,66 +251,66 @@ public class Player : MarioObject
 		UpdateUi();
 	}
 
-	public float SellingInterval = 3;
+	//public float SellingInterval = 3;
 
-	public float SellingTimer;
+	//public float SellingTimer;
 
-	private void UpdateSellItem()
-	{
-		SellingTimer -= (float) RealDeltaTime;
+	//private void UpdateSellItem()
+	//{
+	//	SellingTimer -= (float) RealDeltaTime;
 
-		var selling = SellingTimer <= 0;
-		while (selling)
-		{
-			SellItem();
-			SellingTimer += SellingInterval;
+	//	var selling = SellingTimer <= 0;
+	//	while (selling)
+	//	{
+	//		SellItem();
+	//		SellingTimer += SellingInterval;
 
-			if (SellingTimer > 0)
-			{
-				selling = false;
-				SellingTimer = SellingInterval;
-			}
-		}
-	}
+	//		if (SellingTimer > 0)
+	//		{
+	//			selling = false;
+	//			SellingTimer = SellingInterval;
+	//		}
+	//	}
+	//}
 
-	private void SellItem()
-	{
-		IngredientType[] types = {IngredientType.MintIceCream, IngredientType.CupCake};
+	//private void SellItem()
+	//{
+	//	IngredientType[] types = {IngredientType.MintIceCream, IngredientType.CupCake};
 
-		var canSell = false;
-		foreach (var ty in types)
-		{
-			if (Inventory[ty] > 0)
-			{
-				canSell = true;
-				break;
-			}
-		}
+	//	var canSell = false;
+	//	foreach (var ty in types)
+	//	{
+	//		if (Inventory[ty] > 0)
+	//		{
+	//			canSell = true;
+	//			break;
+	//		}
+	//	}
 
-		if (!canSell)
-			return;
+	//	if (!canSell)
+	//		return;
 
-		while (true)
-		{
-			var index0 = UnityEngine.Random.Range(0, types.Length);
-			var type = types[index0];
+	//	while (true)
+	//	{
+	//		var index0 = UnityEngine.Random.Range(0, types.Length);
+	//		var type = types[index0];
 
-			if (Inventory[type] <= 0)
-				continue;
+	//		if (Inventory[type] <= 0)
+	//			continue;
 
-			SellItem(type);
+	//		SellItem(type);
 
-			break;
-		}
-	}
+	//		break;
+	//	}
+	//}
 
-	private void SellItem(IngredientType type)
-	{
-		if (Inventory[type] == 0)
-			return;
+	//private void SellItem(IngredientType type)
+	//{
+	//	if (Inventory[type] == 0)
+	//		return;
 
-		World.CurrentArea.SellItem(type);
-	}
+	//	World.CurrentArea.SellItem(type);
+	//}
 
 	private void Died()
 	{

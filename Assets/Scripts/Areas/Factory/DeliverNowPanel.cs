@@ -14,7 +14,7 @@ public class DeliverNowPanel : MarioObject
 
 	public void UpdateDisplayTex()
 	{
-		DisplayText.text = string.Format("Deliver now for {0} gold?", CalcDeliveryCost());
+		DisplayText.text = string.Format("Deliver for {0}$?", CalcDeliveryCost());
 	}
 
 	/// <summary>

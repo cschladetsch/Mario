@@ -41,9 +41,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Ingredients: 0000000001000000
   Counts: 0100000001000000
-  CookingTime: 20
+  CookingTime: 7
+  SellingTime: 10
   Result: 2
   NumResults: 5
+  ActiveAtLevel: 0
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1

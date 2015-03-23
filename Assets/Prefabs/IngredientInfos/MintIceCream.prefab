@@ -42,7 +42,7 @@ MonoBehaviour:
   Type: 5
   ImagePrefab: {fileID: 122570, guid: 8dc4a928350ec22489ff99a70d9e4e1d, type: 2}
   Buy: 3
-  Sell: 5
+  Sell: 9
   MinSpawnRate: 4
   MaxSpawnRate: 5
 --- !u!1001 &100100000

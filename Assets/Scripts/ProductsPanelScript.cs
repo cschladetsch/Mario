@@ -7,16 +7,16 @@ public class ProductsPanelScript : MarioObject
 {
 	public List<ProductItem> Products = new List<ProductItem>();
 
-	public ProgressBar SellProgressBar;
+	//public ProgressBar SellProgressBar;
 
-	public void RemoveProduct(IngredientType type)
-	{
-		foreach (var prod in Products.Where(prod => prod.Type == type))
-		{
-			prod.UpdateUi();
-			return;
-		}
-	}
+	//public void RemoveProduct(IngredientType type)
+	//{
+	//	foreach (var prod in Products.Where(prod => prod.Type == type))
+	//	{
+	//		prod.UpdateUi();
+	//		return;
+	//	}
+	//}
 
 	protected override void Construct()
 	{

@@ -100,5 +100,4 @@ public class AreaBase : MarioObject
 		if (Player.GoalReached())
 			World.NextGoal();
 	}
-
 }

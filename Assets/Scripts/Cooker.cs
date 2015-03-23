@@ -120,30 +120,30 @@ public class Cooker : MarioObject
 		Overlay.SetActive(!IsInteractable());
 	}
 
-	public void Pressed(GameObject go)
-	{
-		//Debug.Log("Cooker ingredient button pressed");
-		var item = go.GetComponent<IngredientItem>();
-		if (item == null)
-		{
-			Debug.LogWarning("GameObject " + go.name + " has no IngredientItem component in cooker for " + Recipe.Result);
-			return;
-		}
+	//public void Pressed(GameObject go)
+	//{
+	//	//Debug.Log("Cooker ingredient button pressed");
+	//	var item = go.GetComponent<IngredientItem>();
+	//	if (item == null)
+	//	{
+	//		Debug.LogWarning("GameObject " + go.name + " has no IngredientItem component in cooker for " + Recipe.Result);
+	//		return;
+	//	}
 
-		var type = item.Type;
-		if (Player.GetItemCount(type) == 0)
-			return;
+	//	var type = item.Type;
+	//	if (Player.GetItemCount(type) == 0)
+	//		return;
 
-		_inventory[type]++;
+	//	_inventory[type]++;
 
-		//Debug.Log("Added a " + type);
+	//	//Debug.Log("Added a " + type);
 
-		item.SetAmount(_inventory[type], _inventory[type] >= _requirements[type]);
+	//	item.SetAmount(_inventory[type], _inventory[type] >= _requirements[type]);
 
-		Player.RemoveItem(type);
+	//	Player.RemoveItem(type);
 
-		UpdateDisplay();
-	}
+	//	UpdateDisplay();
+	//}
 
 	private bool IsInteractable()
 	{
@@ -376,7 +376,7 @@ public class Cooker : MarioObject
 
 	public void IngredientButtonPressed(IngredientType item)
 	{
-		Debug.Log("Cooker added " + item);
+		//Debug.Log("Cooker added " + item);
 		// TODO
 		//if (Recipe.CanAdd(item))
 		//	Recipe.Add(item);

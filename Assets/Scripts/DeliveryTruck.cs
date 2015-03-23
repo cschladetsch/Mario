@@ -256,7 +256,7 @@ public class DeliveryTruck : MarioObject
 
 	public void Complete()
 	{
-		Debug.LogWarning("DeliveryTruck.Complete");
+		//Debug.LogWarning("DeliveryTruck.Complete");
 
 		//if (!Ready)
 		//	return;

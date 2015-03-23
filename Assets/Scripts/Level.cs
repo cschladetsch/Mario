@@ -224,8 +224,8 @@ public class Level : MarioObject
 		}
 
 		// TODO: 
-		var pos = IncomingPanel.RemoveCake(type);
-		Debug.Log(pos);
+		IncomingPanel.RemoveCake(type);
+		//Debug.Log(pos);
 		Inventory[type]--;
 
 		//Debug.Log("Cakes Left: " + Inventory.Sum(c => c.Value));

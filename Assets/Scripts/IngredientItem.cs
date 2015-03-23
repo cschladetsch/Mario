@@ -16,7 +16,7 @@ public class IngredientItem : MarioObject
 
 	public bool IsCookingIngredient;
 
-	private DeliveryTruck _truck;
+	//private DeliveryTruck _truck;
 
 	protected override void Begin()
 	{
@@ -24,7 +24,7 @@ public class IngredientItem : MarioObject
 
 		//Count = transform.FindChild("Count").GetComponent<Text>();
 
-		_truck = FindObjectOfType<DeliveryTruck>();
+		//_truck = FindObjectOfType<DeliveryTruck>();
 	}
 
 	public static Dictionary<IngredientType, T> CreateIngredientDict<T>()

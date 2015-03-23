@@ -449,4 +449,10 @@ public class Player : MarioObject
 
 		UpdateUi();
 	}
+
+	public void RemoveGold(int sum)
+	{
+		Gold -= sum;
+		UpdateUi();
+	}
 }

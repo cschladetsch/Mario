@@ -8,6 +8,8 @@ using UnityEngine.UI;
 /// </summary>
 public class DeliveryTruck : MarioObject
 {
+	public DeliverNowPanel DeliverNowPanel;
+
 	public Button DeliveryButton;
 
 	/// <summary>
@@ -43,7 +45,7 @@ public class DeliveryTruck : MarioObject
 
 	private bool _delivering;
 
-	private Dictionary<IngredientType, int> _contents;
+	internal Dictionary<IngredientType, int> _contents;
 
 	public bool Delivering
 	{
@@ -60,14 +62,25 @@ public class DeliveryTruck : MarioObject
 
 	public void VanButtonPressed()
 	{
+		Debug.Log("VanButtonPressed");
+
 		if (Ready)
 			PlayButtonPressed();
 
 		if (_delivering)
+		{
+			ShowDeliverNowPanel();
 			return;
+		}
 
 		GatherIngredientButtons();
 		BuyingOptions.SetActive(true);
+	}
+
+	private void ShowDeliverNowPanel()
+	{
+		DeliverNowPanel.UpdateDisplayTex();
+		DeliverNowPanel.gameObject.SetActive(true);
 	}
 
 	public void PlayButtonPressed()
@@ -123,6 +136,7 @@ public class DeliveryTruck : MarioObject
 	{
 		base.Begin();
 
+		DeliverNowPanel.gameObject.SetActive(false);
 		BuyingOptions.SetActive(false);
 		PlayButton.SetActive(false);
 		ProgressBar.gameObject.SetActive(false);
@@ -244,8 +258,8 @@ public class DeliveryTruck : MarioObject
 	{
 		//Debug.LogWarning("DeliveryTruck.Complete");
 
-		if (!Ready)
-			return;
+		//if (!Ready)
+		//	return;
 
 		PlayButton.SetActive(true);
 		ProgressBar.gameObject.SetActive(false);
@@ -325,5 +339,10 @@ public class DeliveryTruck : MarioObject
 	public bool HasItems(IngredientType type, int num)
 	{
 		return _buttons.Where(b => b.Type == type).Any(b => b.Amount >= num);
+	}
+
+	public void Deliver()
+	{
+		Deliver(_contents);
 	}
 }

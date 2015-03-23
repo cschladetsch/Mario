@@ -91,7 +91,7 @@ public class BakeryArea : AreaBase
 		Debug.DrawLine(mid, end, Color.red, 5);
 
 		// move the image through the parabola
-		var gort = go.GetRectTransform();
+		//var gort = go.GetRectTransform();
 		var t = 0.0f;
 		while (true)
 		{

@@ -12,6 +12,7 @@ public class ProgressBar : MarioObject
 	private Image _image;
 
 	private float _time;
+	public float PercentFinished { get { return 1.0f - _time/TotalTime; } }
 
 	public delegate void EndedHandler(ProgressBar pb);
 

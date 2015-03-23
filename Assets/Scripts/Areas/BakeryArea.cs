@@ -98,7 +98,8 @@ public class BakeryArea : AreaBase
 
 	public IGenerator TakeDelivery(List<Cake> cakes)
 	{
-		return Kernel.Factory.NewCoroutine(TakeDelivery, cakes);
+		var take = Kernel.Factory.NewCoroutine(TakeDelivery, cakes);
+		take.Completed += f => DeliveryTruck.Reset();
 	}
 
 	public IEnumerator TakeDelivery(IGenerator self, List<Cake> cakes)

@@ -197,6 +197,7 @@ public class Truck : MarioObject
 				Destroy(c.gameObject);
 			_cakes.Clear();
 
+			Truck.Reset();
 			World.Pause(false);
 		};
 	}

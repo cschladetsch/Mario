@@ -45,6 +45,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 400004}
   - 114: {fileID: 11400002}
+  - 114: {fileID: 11472144}
   m_Layer: 0
   m_Name: World
   m_TagString: Untagged
@@ -226,10 +227,12 @@ MonoBehaviour:
   GoalPanel: {fileID: 0}
   CurrrentAreaType: 0
   StageGoals:
-  - {fileID: 11416742, guid: f80dd1ba2b0ec2642bd7a5a7a9d8a58b, type: 2}
+  - {fileID: 11481494, guid: 0f15c10cf07047f4398aae0899c4bd72, type: 2}
   - {fileID: 11416742, guid: f80dd1ba2b0ec2642bd7a5a7a9d8a58b, type: 2}
   - {fileID: 11411668, guid: a4f2d781738cba841b74f05b98aaf7fd, type: 2}
   CurrentArea: {fileID: 0}
+  FactoryArea: {fileID: 0}
+  BakeryArea: {fileID: 0}
   CurrentLevel: {fileID: 0}
   AvailableProducts: []
   CookingAreaUi: {fileID: 0}
@@ -241,8 +244,20 @@ MonoBehaviour:
   - {fileID: 100004, guid: 1100c0a9ed160384ca84ebbaf85adbfc, type: 2}
   - {fileID: 177390, guid: b7740c47d7f18ab47997290cdf058f47, type: 2}
   GoalIndex: 0
-  GodMode: 1
+  GodMode: 0
   Buttons: {fileID: 0}
+--- !u!114 &11472144
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100004}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1779f4dd645812a40bedbde4a0b27dbf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Paused: 0
 --- !u!124 &12400000
 Behaviour:
   m_ObjectHideFlags: 1

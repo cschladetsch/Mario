@@ -6,7 +6,6 @@ public class UiCanvas : MarioObject
 	public UnityEngine.UI.Text LivesRemaining;
 	public UnityEngine.UI.Text Score;
 	public UnityEngine.UI.Text CarTimer;
-	public UnityEngine.UI.Text PlayerGoldText;
 
 	public GameObject CarTimerObject;
 	public GameObject TapToStart;
@@ -15,7 +14,7 @@ public class UiCanvas : MarioObject
 	public GameObject PausedPanel;
 	public GoalPanel GoalPanel;
 	public GameObject TintPanel;
-	public GameObject GoldPanel;
+	public PriceText PlayerGold;
 
 	protected override void Begin()
 	{
@@ -84,6 +83,6 @@ public class UiCanvas : MarioObject
 			return;
 		}
 
-		PlayerGoldText.text = Player.Gold.ToString();
+		PlayerGold.SetAmount(Player.Gold);
 	}
 }

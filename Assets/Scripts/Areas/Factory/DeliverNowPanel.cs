@@ -27,6 +27,10 @@ public class DeliverNowPanel : MarioObject
 		if (_truck == null)
 			_truck = FindObjectOfType<DeliveryTruck>();
 
+		// TODO WTF why does this keep happening
+		if (World == null)
+			World = FindObjectOfType<World>();
+
 		foreach (var kv in _truck.Contents)
 		{
 			var item = kv.Key;

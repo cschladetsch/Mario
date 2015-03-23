@@ -19,7 +19,7 @@ public class FactoryArea : AreaBase
 		ToggleVisuals(true);
 
 		Canvas.GoalPanel.gameObject.SetActive(false);
-		Canvas.GoldPanel.gameObject.SetActive(false);
+		Canvas.PlayerGold.transform.parent.gameObject.SetActive(false);
 
 		//World.CurrentLevel.SpeedLevel = 0;
 
@@ -71,7 +71,7 @@ public class FactoryArea : AreaBase
 		ToggleVisuals(false);
 
 		Canvas.GoalPanel.gameObject.SetActive(true);
-		Canvas.GoldPanel.gameObject.SetActive(true);
+		Canvas.PlayerGold.transform.parent.gameObject.SetActive(true);
 	}
 
 	public void ToggleVisuals(bool on)

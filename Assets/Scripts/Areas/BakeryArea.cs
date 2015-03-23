@@ -67,7 +67,7 @@ public class BakeryArea : AreaBase
 	{
 		base.SellItem(type);
 
-		var move = ItemAnimation.Animate(type, SellingProductsPanel.GetProduct(type), Canvas.GoldPanel, SoldItemTravelTime);
+		var move = ItemAnimation.Animate(type, SellingProductsPanel.GetProduct(type), Canvas.PlayerGold.gameObject, SoldItemTravelTime);
 		var sell = Kernel.Factory.NewCoroutine(ItemSold, type);
 		sell.ResumeAfter(move);
 	}

@@ -100,6 +100,7 @@ public class BakeryArea : AreaBase
 	{
 		var take = Kernel.Factory.NewCoroutine(TakeDelivery, cakes);
 		take.Completed += f => DeliveryTruck.Reset();
+		return take;
 	}
 
 	public IEnumerator TakeDelivery(IGenerator self, List<Cake> cakes)

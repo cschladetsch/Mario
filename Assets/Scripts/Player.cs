@@ -433,7 +433,7 @@ public class Player : MarioObject
 
 	public void SoldItem(IngredientInfo info)
 	{
-		Debug.Log("Sold a " + info.Type);
+		//Debug.Log("Sold a " + info.Type);
 
 		Gold += info.Sell;
 

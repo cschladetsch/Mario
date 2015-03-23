@@ -1,14 +1,11 @@
-﻿using System.Net.Mime;
-using System.Runtime.InteropServices;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
-using System.Collections;
 
 public class IngredientButtton : MarioObject
 {
 	public IngredientType Type;
 
-	public Text CostText;
+	public PriceText PriceText;
 
 	public Text AmountText;
 
@@ -48,7 +45,7 @@ public class IngredientButtton : MarioObject
 		var go = (GameObject) Instantiate(info.ImagePrefab);
 		Image = go.GetComponent<Image>();
 
-		CostText.text = string.Format("{0}$", info.Buy);
+		SetAmount(info.Buy);
 		AmountText.text = "0";
 	}
 
@@ -71,6 +68,7 @@ public class IngredientButtton : MarioObject
 
 	public void SetCost(int buy)
 	{
-		CostText.text = buy.ToString();
+
+		PriceText.SetAmount(buy);
 	}
 }

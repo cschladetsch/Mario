@@ -104,6 +104,8 @@ public class Cooker : MarioObject
 
 		if (CanCook())
 			Cook();
+		else
+			World.BakeryArea.DeliveryTruck.ShowBuyingPanel(true);
 
 		UpdateDisplay();
 	}

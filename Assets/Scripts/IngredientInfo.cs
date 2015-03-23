@@ -18,6 +18,11 @@ public class IngredientInfo : MonoBehaviour
 	public GameObject ImagePrefab;
 
 	/// <summary>
+	/// How long it takes to cooks this item by default
+	/// </summary>
+	public float SellingTime = 50;
+
+	/// <summary>
 	/// CostText to buy. If zero, item cannot be bought
 	/// </summary>
 	public int Buy;

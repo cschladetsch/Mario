@@ -24,6 +24,7 @@ public class ProductItem : MarioObject
 		var shadow = Price.transform.FindChild("Shadow").GetComponent<Text>();
 		shadow.text = Price.text = World.GetInfo(Type).Sell.ToString();
 
+		ProgressBar.TotalTime = World.GetInfo(Type).SellingTime;
 		ProgressBar.Reset();
 		ProgressBar.Ended += ProgressBarEnded;
 	}

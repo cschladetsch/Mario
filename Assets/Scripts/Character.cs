@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using UnityEngine;
 
 public class Character : MarioObject
@@ -172,13 +170,6 @@ public class Character : MarioObject
 	{
 		if (Side == WhichSide.Left && pos.x > Screen.width*0.4f)
 			return;
-
-		//var ratio = Screen.height/pos.y;
-		//Debug.Log(ratio);
-
-		//// don't respond to button presses to change area
-		//if (Side == WhichSide.Right && ratio < 1.44f)
-		//	return;
 
 		if (Side == WhichSide.Right && pos.x < Screen.width*0.6f)
 			return;

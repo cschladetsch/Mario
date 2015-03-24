@@ -105,8 +105,31 @@ public class Conveyor : MarioObject
 			return false;
 		}
 
-		//Cake closest;
-		//var sep = float.MaxValue;
+		// ensure pickups do not stack on top of each other
+		var move = EnsurePickupsDontStack(item);
+
+		item.Moved = move;
+		if (move)
+			item.Position += Speed*GameDeltaTime;
+
+		if (item.Position > 1)
+		{
+			item.StartHanging();
+			return false;
+		}
+
+		var dist = item.Position*_box.bounds.size.x;
+		var loc = _box.bounds.min.x + dist;
+		if (!MoveRight)
+			loc = _box.bounds.max.x - dist;
+
+		item.gameObject.transform.position = new Vector3(loc, transform.position.y + 1, 0);
+
+		return true;
+	}
+
+	private bool EnsurePickupsDontStack(Pickup item)
+	{
 		var mx = item.transform.position.x;
 		var move = true;
 		foreach (var c in _contents)
@@ -143,24 +166,7 @@ public class Conveyor : MarioObject
 			}
 		}
 
-		item.Moved = move;
-		if (move)
-			item.Position += Speed*GameDeltaTime;
-
-		if (item.Position > 1)
-		{
-			item.StartHanging();
-			return false;
-		}
-
-		var dist = item.Position*_box.bounds.size.x;
-		var loc = _box.bounds.min.x + dist;
-		if (!MoveRight)
-			loc = _box.bounds.max.x - dist;
-
-		item.gameObject.transform.position = new Vector3(loc, transform.position.y + 1, 0);
-
-		return true;
+		return move;
 	}
 
 	public void RemoveItem(Pickup item)

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using UnityEngine;
-
-public class Kernel : MarioObject
+﻿public class Kernel : MarioObject
 {
 	public Flow.IKernel Kern;
 

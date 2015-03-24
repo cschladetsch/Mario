@@ -49,20 +49,12 @@ public class GoalPanel : MarioObject
 		GatherPrefabsForIngredientDisplay();
 
 		AddAllItems();
-
-		//SetGoal(Player.CurrentGoal);
 	}
 
 	private void GatherPrefabsForIngredientDisplay()
 	{
 		_prefabs[IngredientType.CupCake] = (GameObject) Resources.Load("Images/CupcakeImage");
 		_prefabs[IngredientType.MintIceCream] = (GameObject) Resources.Load("Images/MintIceCreamImage");
-
-		//Debug.Log("GoalPanel.GatherPrefabsForIngredientDisplay");
-		//foreach (var kv in _prefabs)
-		//{
-		//	Debug.Log(String.Format("{0} {1}", kv.Key, kv.Value));
-		//}
 	}
 
 	public void SetGoal(StageGoal goal)
@@ -74,17 +66,11 @@ public class GoalPanel : MarioObject
 
 	public void GoalButtonPressed()
 	{
-		//World.GoalPanel.SetActive(false);
 	}
 
 	private void ChangeOverlayColor(Color color)
 	{
 		transform.parent.GetComponent<Image>().color = color;
-	}
-
-	protected override void Begin()
-	{
-		base.Begin();
 	}
 
 	public void UpdateUi()

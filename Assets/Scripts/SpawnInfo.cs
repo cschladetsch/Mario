@@ -85,9 +85,9 @@ public class SpawnInfo : MarioObject
 		return born;
 	}
 
-	private float CalcNextSpawnTime()
+	private void CalcNextSpawnTime()
 	{
-		return _spawnTimer = Random.Range(MinSpawnTime, MaxSpawnTime);
+		_spawnTimer = Random.Range(MinSpawnTime, MaxSpawnTime);
 	}
 
 	public bool CanSpawn()

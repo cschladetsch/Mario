@@ -1,23 +1,9 @@
 ﻿using System.Collections;
 using Flow;
 using UnityEngine;
-using UnityEngine.UI;
-using System.Collections.Generic;
 
 public class ItemAnimation : MarioObject
 {
-	protected override void Construct()
-	{
-	}
-
-	protected override void Begin()
-	{
-	}
-
-	protected override void Tick()
-	{
-	}
-
 	public delegate void CallbackHandler(IngredientType type);
 
 	private struct Args

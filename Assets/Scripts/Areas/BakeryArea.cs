@@ -21,11 +21,6 @@ public class BakeryArea : AreaBase
 
 	public InventoryPanel InventoryPanel;
 
-	protected override void Construct()
-	{
-		base.Construct();
-	}
-
 	protected override void Begin()
 	{
 		base.Begin();
@@ -53,11 +48,6 @@ public class BakeryArea : AreaBase
 		}
 	}
 
-	protected override void BeforeFirstUpdate()
-	{
-		base.BeforeFirstUpdate();
-	}
-
 	protected override void Tick()
 	{
 		base.Tick();
@@ -83,8 +73,6 @@ public class BakeryArea : AreaBase
 
 	private IEnumerator ItemSold(IGenerator self, IngredientType type)
 	{
-		//SellingProductsPanel.GetButton(type).Reset();
-
 		ItemSold(type);
 
 		yield break;
@@ -120,7 +108,7 @@ public class BakeryArea : AreaBase
 
 	public IEnumerator TakeDelivery(IGenerator self, List<Cake> cakes)
 	{
-		Debug.Log("BakeryArea.TakeDelivery: " + cakes.Count);
+		//Debug.Log("BakeryArea.TakeDelivery: " + cakes.Count);
 
 		foreach (var c in cakes)
 		{

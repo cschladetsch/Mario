@@ -1,5 +1,8 @@
 ﻿using UnityEngine;
 
+/// <summary>
+/// Something that can interact with the player
+/// </summary>
 public class Pickup : MarioObject
 {
 	/// <summary>
@@ -13,8 +16,14 @@ public class Pickup : MarioObject
 	public float HangTime = 4;
 
 	public bool Moved;
+
+	/// <summary>
+	/// The conveyor this pickup is currently on
+	/// </summary>
 	public Conveyor Conveyor;
+
 	public float _hangTimer;
+
 	public bool _dropped;
 
 	/// <summary>
@@ -38,6 +47,11 @@ public class Pickup : MarioObject
 		get { return _dropped; }
 	}
 
+	private BoxCollider2D _box;
+	private bool _hanging;
+	private bool _kine;
+	private bool _firstDrop;
+
 	public float Width
 	{
 		get { return _box.bounds.extents.x*2; }
@@ -47,11 +61,6 @@ public class Pickup : MarioObject
 	{
 		get { return _box.bounds.extents.y*2; }
 	}
-
-	private BoxCollider2D _box;
-	private bool _hanging;
-	private bool _kine;
-	private bool _firstDrop;
 
 	protected override void Construct()
 	{

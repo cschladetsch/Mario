@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using UnityEngine;
-
-public class MinMaxTimer : MarioObject
+﻿public class MinMaxTimer : MarioObject
 {
 	public float MinTime = 1;
 

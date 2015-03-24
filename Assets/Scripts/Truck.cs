@@ -119,7 +119,6 @@ public class Truck : MarioObject
 			return;
 
 		//Debug.Log("UpdateEmptying: " + " left=" + _movingLeft + " moveTime=" + _moveTime + " , dt=" + GameDeltaTime);
-
 		var dt = GameDeltaTime;
 
 		_moveTime -= dt;
@@ -162,7 +161,6 @@ public class Truck : MarioObject
 
 		//Debug.Log("Delivery completed: " + _cakes.Count);
 		EndEmptying();
-		//StartMovingRight();
 	}
 
 	private void StartMovingRight()

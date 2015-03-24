@@ -1,5 +1,4 @@
-﻿using System.Net.Mime;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 /// <summary>
@@ -7,32 +6,49 @@ using UnityEngine.UI;
 /// </summary>
 public class ProgressBar : MarioObject
 {
+	/// <summary>
+	/// The total time for the bar
+	/// </summary>
 	public float TotalTime;
 
+	/// <summary>
+	/// If true, I have NFI
+	/// </summary>
 	public bool ShowTimer;
 
+	/// <summary>
+	/// Current real-time elapsed
+	/// </summary>
 	public float Elapsed
 	{
 		get { return _time; }
 	}
 
+	/// <summary>
+	/// The image used to scale for progression
+	/// </summary>
 	private Image _image;
 
+	/// <summary>
+	/// Current real-time of the bar
+	/// </summary>
 	private float _time;
 
+	/// <summary>
+	/// Self-explanatory
+	/// </summary>
 	public float PercentFinished
 	{
 		get { return 1.0f - _time/TotalTime; }
 	}
 
-	public delegate void EndedHandler(ProgressBar pb);
-
-	public event EndedHandler Ended;
-
 	public bool Completed
 	{
 		get { return _time >= TotalTime; }
 	}
+
+	public delegate void EndedHandler(ProgressBar pb);
+	public event EndedHandler Ended;
 
 	protected override void Begin()
 	{
@@ -67,7 +83,6 @@ public class ProgressBar : MarioObject
 
 		Paused = true;
 
-		//Debug.Log("Bar Ended " + name);
 		if (Ended != null)
 			Ended(this);
 

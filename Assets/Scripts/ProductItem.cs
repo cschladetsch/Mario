@@ -1,6 +1,4 @@
-﻿using UnityEngine;
-using UnityEngine.UI;
-using System.Collections.Generic;
+﻿using UnityEngine.UI;
 
 public class ProductItem : MarioObject
 {
@@ -11,6 +9,7 @@ public class ProductItem : MarioObject
 	public Text Price;
 
 	public IngredientType Type;
+
 	private IngredientInfo _ingredientInfo;
 
 	protected override void Construct()

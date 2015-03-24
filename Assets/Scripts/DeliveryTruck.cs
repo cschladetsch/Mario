@@ -29,8 +29,6 @@ public class DeliveryTruck : MarioObject
 
 	public Button Button;
 
-	//public Button TimerButtton;
-
 	public GameObject BuyingOptions;
 
 	public GameObject PlayButton;
@@ -96,7 +94,6 @@ public class DeliveryTruck : MarioObject
 		ProgressBar.Reset();
 
 		//Debug.Log("Delivery time for " + Contents.Sum(c => c.Value) + " is " + CalcDeliveryTime());
-
 		BuyingOptions.SetActive(false);
 		PlayButton.SetActive(false);
 		ProgressBar.gameObject.SetActive(true);
@@ -245,7 +242,6 @@ public class DeliveryTruck : MarioObject
 				continue;
 
 			//Debug.Log("Refunding " + b.Type + "x" + b.Amount + " for " + World.GetInfo(b.Type).Buy + " each");
-
 			Player.Gold += b.Amount*World.GetInfo(b.Type).Buy;
 
 			b.SetAmount(0);
@@ -349,7 +345,6 @@ public class DeliveryTruck : MarioObject
 	public void Reset()
 	{
 		//Debug.Log("DeliveryTruck.Reset");
-
 		Contents = IngredientItem.CreateIngredientDict<int>();
 		_delivering = false;
 		Pulling = false;

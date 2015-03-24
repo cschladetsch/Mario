@@ -35,9 +35,4 @@ public class IngredientInfo : MonoBehaviour
 	public int MinSpawnRate;
 
 	public int MaxSpawnRate;
-
-	///// <summary>
-	///// How long to sell one of these items. NOT USED YET.
-	///// </summary>
-	//public float SellTimer = 3;
 }

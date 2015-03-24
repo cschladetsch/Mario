@@ -329,26 +329,22 @@ public class World : MonoBehaviour
 	private bool UpdateBeginLevel()
 	{
 		// need to wait a few updates before beginning, because we can have nested SpawnGameObject components...
-		if (_beginLevelAfterThisManyUpdates > 0)
-		{
-			--_beginLevelAfterThisManyUpdates;
+		if (_beginLevelAfterThisManyUpdates <= 0)
+			return false;
 
-			if (_beginLevelAfterThisManyUpdates == 0)
-			{
-				//Debug.Log("BeginConveyorLevel");
+		--_beginLevelAfterThisManyUpdates;
 
-				BeginConveyorLevel();
-
-				// if this is the first level, then we pause else we un-pause
-				Pause(_levelIndex == 0);
-
-				CurrentLevel.BeginLevel();
-			}
-
+		if (_beginLevelAfterThisManyUpdates != 0) 
 			return true;
-		}
 
-		return false;
+		BeginConveyorLevel();
+
+		// if this is the first level, then we pause else we un-pause
+		Pause(_levelIndex == 0);
+
+		CurrentLevel.BeginLevel();
+
+		return true;
 	}
 
 	public void Pause(bool pause)
@@ -370,17 +366,16 @@ public class World : MonoBehaviour
 	public void CreateConeyorGame()
 	{
 		//Debug.LogWarning("CreateConeyorGame");
-
 		if (CurrentLevel)
 		{
-			CurrentLevel.Area = CurrentArea as FactoryArea;
+			//CurrentLevel.Area = CurrentArea as FactoryArea;
 			return;
 		}
 
 		var prefab = Levels[_levelIndex];
 		CurrentLevel = ((GameObject) Instantiate(prefab)).GetComponent<Level>();
 		CurrentLevel.transform.position = Vector3.zero;
-		CurrentLevel.Area = CurrentArea as FactoryArea;
+		//CurrentLevel.Area = CurrentArea as FactoryArea;
 
 		CurrentLevel.Paused = true;
 
@@ -397,17 +392,6 @@ public class World : MonoBehaviour
 		Pause(false);
 
 		CurrentLevel.Pause(false);
-	}
-
-	public void BeginMainGame(Dictionary<IngredientType, int> contents)
-	{
-		//_contents = contents;
-
-		//_levelIndex = 0;
-
-		//CreateConeyorGame();
-
-		//ChangeArea(AreaType.Factory);
 	}
 
 	public void NextGoal()

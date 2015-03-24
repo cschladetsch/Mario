@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Flow;
 using UnityEngine;
 
 /// <summary>
@@ -9,8 +8,14 @@ using UnityEngine;
 /// </summary>
 public class Level : MarioObject
 {
-	public int NumTruckLoads = 3;
+	/// <summary>
+	/// What needs to be delivered on the level
+	/// </summary>
+	public Dictionary<IngredientType, int> Inventory;
 
+	/// <summary>
+	/// The panel that holds what is coming down the pipe
+	/// </summary>
 	public IncomingPanel IncomingPanel;
 
 	/// <summary>
@@ -42,27 +47,13 @@ public class Level : MarioObject
 
 	public float OverallSpeed = 1;
 
-	private List<Conveyor> _conveyors = new List<Conveyor>();
-
 	/// <summary>
-	/// How to make new cakes. TODO: make this a dictionary of type to spawner?
+	/// The conveyors in the level. Each level can have different number
+	/// of levels.
 	/// </summary>
-	public List<SpawnInfo> _spawners = new List<SpawnInfo>();
-
-	private Transform _cakesHolder;
-
-	private Character[] _characters;
-
-	private float _initialConveyorSpeed;
-
 	public IList<Conveyor> Conveyors
 	{
 		get { return _conveyors; }
-	}
-
-	public int NumCakesRemaining
-	{
-		get { return Inventory.Sum(c => c.Value); }
 	}
 
 	public bool NoMoreCakes
@@ -82,9 +73,12 @@ public class Level : MarioObject
 		}
 	}
 
-	public int SpawnsRemaining
+	/// <summary>
+	/// How many actual items needs to be delivered
+	/// </summary>
+	public int NumCakesRemaining
 	{
-		get { return _spawners.Sum(s => s.SpawnsLeft); }
+		get { return Inventory.Sum(c => c.Value); }
 	}
 
 	public bool NothingToSpawn
@@ -92,15 +86,28 @@ public class Level : MarioObject
 		get { return SpawnsRemaining == 0; }
 	}
 
+	public int SpawnsRemaining
+	{
+		get { return _spawners.Sum(s => s.SpawnsLeft); }
+	}
+
+	/// <summary>
+	/// How to make new cakes. TODO: make this a dictionary of type to spawner?
+	/// </summary>
+	public List<SpawnInfo> _spawners = new List<SpawnInfo>();
+
+	private List<Conveyor> _conveyors = new List<Conveyor>();
+
+	private Transform _cakesHolder;
+
+	private Character[] _characters;
+
+	private float _initialConveyorSpeed;
+
 	public void Init()
 	{
 		_initialConveyorSpeed = ConveyorSpeed;
 		_cakesHolder = transform.FindChild("Contents");
-	}
-
-	public override void End()
-	{
-		base.End();
 	}
 
 	private void CakeDropped(Player player)
@@ -121,6 +128,7 @@ public class Level : MarioObject
 		_characters = FindObjectsOfType<Character>();
 		PauseCharacters(true);
 
+		// In case we BeginLevel twice, remove previous delegate
 		Player.OnCakeDropped -= CakeDropped;
 		Player.OnCakeDropped += CakeDropped;
 
@@ -141,17 +149,13 @@ public class Level : MarioObject
 			IncomingPanel = FindObjectOfType<IncomingPanel>();
 	}
 
-	//private int _numTrucksDelivered;
-
 	private void DeliveryCompleted(Truck truck)
 	{
-		//Debug.Log("DeliveryCompleted: " + NoMoreCakes);
 	}
 
 	public void EndLevel()
 	{
 		Debug.Log("EndLevel " + name);
-		//_ended = true;
 
 		Canvas.LevelEnded(this);
 
@@ -175,14 +179,6 @@ public class Level : MarioObject
 	}
 
 	/// <summary>
-	/// Spawn something at the start of the level, so there is no initial pause
-	/// </summary>
-	private void SpawnSomething()
-	{
-		//AddCake(_spawners[0]);
-	}
-
-	/// <summary>
 	/// Add a new cake to the conveyors
 	/// </summary>
 	/// <param name="spawnInfo"></param>
@@ -195,7 +191,6 @@ public class Level : MarioObject
 		}
 
 		//Debug.Log("Adding a " + spawnInfo.Type);
-
 		if (spawnInfo.Prefab == null)
 		{
 			Debug.LogWarning("Level.AddCake: Spawner for " + spawnInfo.Type + " has no prefab");
@@ -234,15 +229,9 @@ public class Level : MarioObject
 
 		var cake = born.GetComponent<Cake>();
 
-		if (Area == null)
-		{
-			Debug.LogError("Level as no Area??");
-			return;
-		}
-
 		// if we're in another area, we still want
 		// to spawn a cake, but we don't want to show it
-		if (cake && !Area.Visual)
+		if (cake && !World.CurrentArea.Visual)
 			AreaBase.ToggleVisuals(cake.gameObject, false);
 
 		// FRI
@@ -285,10 +274,6 @@ public class Level : MarioObject
 	}
 
 	private float _speedTimer;
-
-	public Dictionary<IngredientType, int> Inventory;
-
-	public FactoryArea Area;
 
 	protected override void Tick()
 	{
@@ -357,9 +342,8 @@ public class Level : MarioObject
 		foreach (var c in _conveyors)
 			c.Speed *= SpeedIncrementRate;
 
-		//Debug.Log("Speed Up " + SpeedLevel);
-
 		SpeedLevel++;
+		//Debug.Log("Speed Up " + SpeedLevel);
 	}
 
 	private void UpdateSpawners()
@@ -522,7 +506,6 @@ public class Level : MarioObject
 		}
 
 		//Debug.Log("Using " + sp.Prefab.name + " prefab to make " + type);
-
 		_spawners.Add(sp);
 	}
 
@@ -556,14 +539,11 @@ public class Level : MarioObject
 			IncomingPanel = FindObjectOfType<IncomingPanel>();
 		}
 
-		foreach (var kv in contents)
+		foreach (var kv in contents.Where(kv => kv.Value > 0))
 		{
-			if (kv.Value > 0)
-			{
-				//Debug.Log("Adding a " + kv.Key + " to factory, kv.Value "+kv.Value);
-				IncomingPanel.AddItems(kv.Key, kv.Value);
-				Inventory[kv.Key] += kv.Value;
-			}
+			//Debug.Log("Adding a " + kv.Key + " to factory, kv.Value "+kv.Value);
+			IncomingPanel.AddItems(kv.Key, kv.Value);
+			Inventory[kv.Key] += kv.Value;
 		}
 
 		AddSpawners(Inventory);

@@ -7,17 +7,10 @@ public class DeliverNowPanel : MarioObject
 	public Button YesButton;
 	public Button NoButton;
 
-	protected override void Construct()
-	{
-		base.Construct();
-		//Debug.Log("DeliverNowPanel.Construct: " +" world=" + World);
-	}
-
 	protected override void Begin()
 	{
 		base.Begin();
 		_truck = FindObjectOfType<DeliveryTruck>();
-		//Debug.Log("DeliverNowPanel.Begin: " + _truck + " world=" + World);
 	}
 
 	public Text DisplayText;
@@ -73,7 +66,6 @@ public class DeliverNowPanel : MarioObject
 		var deliveryCost = CalcDeliveryCost();
 
 		//Debug.Log("DeliverNow Pressed: Gold: " + Player.Gold + ", cost: " + deliveryCost);
-
 		if (Player.Gold < deliveryCost)
 		{
 			Debug.Log("Not enough gold to deliver now");

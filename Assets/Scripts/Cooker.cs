@@ -183,31 +183,6 @@ public class Cooker : MarioObject
 		Overlay.SetActive(!IsInteractable());
 	}
 
-	//public void Pressed(GameObject go)
-	//{
-	//	//Debug.Log("Cooker ingredient button pressed");
-	//	var item = go.GetComponent<IngredientItem>();
-	//	if (item == null)
-	//	{
-	//		Debug.LogWarning("GameObject " + go.name + " has no IngredientItem component in cooker for " + Recipe.Result);
-	//		return;
-	//	}
-
-	//	var type = item.Type;
-	//	if (Player.GetItemCount(type) == 0)
-	//		return;
-
-	//	_inventory[type]++;
-
-	//	//Debug.Log("Added a " + type);
-
-	//	item.SetAmount(_inventory[type], _inventory[type] >= _requirements[type]);
-
-	//	Player.RemoveItem(type);
-
-	//	UpdateDisplay();
-	//}
-
 	private bool IsInteractable()
 	{
 		for (var i = 0; i <= Mathf.Min(World.GoalIndex, World.StageGoals.Length - 1); i++)
@@ -237,13 +212,6 @@ public class Cooker : MarioObject
 		//Debug.Log("Cooker " + name + " Destroyed");
 	}
 
-	protected override void BeforeFirstUpdate()
-	{
-		base.BeforeFirstUpdate();
-
-		//GatherIngredientButtons();
-	}
-
 	private void GatherIngredientButtons()
 	{
 		//Debug.Log("GatherIngredientButtons for " + name);
@@ -265,42 +233,6 @@ public class Cooker : MarioObject
 			_ingredientButtons.Remove(k);
 	}
 
-	/// <summary>
-	/// Add an ingredient to the recipe
-	/// </summary>
-	/// <param name="type">the ingredient to add</param>
-	/// <returns>true if was added</returns>
-	public bool Add(IngredientType type)
-	{
-		//Debug.Log("Adding " + type + " to " + name);
-
-		//for (var n = 0; n < Recipe.Inventory.Count; ++n)
-		//{
-		//	if (type != Recipe.Inventory[n]) 
-		//		continue;
-
-		//	_ingredients[type]++;
-		//	_ingredientButtons[type].text = _ingredients[type].ToString();
-
-		//	return true;
-		//}
-
-		return false;
-	}
-
-	/// <summary>
-	/// Remove an ingredient from the recipe
-	/// </summary>
-	/// <param name="type"></param>
-	/// <returns>true if ingredient was removed</returns>
-	public bool Remove(IngredientType type)
-	{
-		//if (_ingredients[type] == 0)
-		//	return false;
-		//_ingredients[type]--;
-		return true;
-	}
-
 	public void Cook()
 	{
 		if (!CanCook())
@@ -314,54 +246,6 @@ public class Cooker : MarioObject
 	{
 		return ProgressBar.Paused && Recipe.Satisfied(_inventory);
 	}
-
-	//private IEnumerator Cook(IGenerator self, IFuture<bool> done)
-	//{
-	//	if (_cooking)
-	//	{
-	//		self.Complete();
-	//		yield break;
-	//	}
-
-	//	ProgressBar.Reset();
-	//	ProgressBar.TotalTime = Recipe.CookingTime;
-
-	//	//Debug.Log("Cooking a " + Recipe.Result);
-	//	Product.interactable = false;
-	//	_cooking = true;
-
-	//	var remaining = Recipe.CookingTime;
-	//	while (remaining > 0)
-	//	{
-	//		remaining -= (float) RealDeltaTime;
-	//		ProgressBar.SetPercent(remaining/Recipe.CookingTime);
-	//		yield return 0;
-	//	}
-
-	//	done.Value = true;
-
-	//	self.Complete();
-
-	//	EndCook();
-	//}
-
-	//private void EndCook()
-	//{
-	//	Product.interactable = true;
-
-	//	RemoveItemsFromInventory();
-
-	//	if (Completed != null)
-	//		Completed(Recipe.Result);
-
-	//	ResetRequiredIngredientsButton();
-
-	//	//World.Kernel.Factory.NewCoroutine(MoveCookedItems);
-
-	//	UpdateDisplay();
-
-	//	_cooking = false;
-	//}
 
 	private void ResetRequiredIngredientsButton()
 	{
@@ -417,7 +301,6 @@ public class Cooker : MarioObject
 	private bool UpdateIngredientButtons()
 	{
 		//Debug.Log("UpdateIngredientButtons: " + _ingredientButtons.Count + " for " + name);
-
 		foreach (var kv in _ingredientButtons)
 		{
 			var button = kv.Value;
@@ -430,19 +313,10 @@ public class Cooker : MarioObject
 			var num = required - amount;
 
 			//Debug.Log(string.Format("amount {0}, required {1}, num {2}, avail {3}", amount, required, num, avail));
-
 			button.SetAmount(num, avail);
 		}
 
 		return false;
-	}
-
-	public void IngredientButtonPressed(IngredientType item)
-	{
-		//Debug.Log("Cooker added " + item);
-		// TODO
-		//if (Recipe.CanAdd(item))
-		//	Recipe.Add(item);
 	}
 
 	public void CanUse(bool use)

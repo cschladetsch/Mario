@@ -1,7 +1,8 @@
-﻿using UnityEngine;
-using UnityEngine.UI;
-using System.Collections.Generic;
+﻿using UnityEngine.UI;
 
+/// <summary>
+/// Shadowed gold text
+/// </summary>
 public class PriceText : MarioObject
 {
 	public Text Price;

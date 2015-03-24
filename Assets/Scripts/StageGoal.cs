@@ -1,7 +1,9 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
-using System.Collections;
 
+/// <summary>
+/// A goal that the player must meet to reach next goal
+/// </summary>
 public class StageGoal : MonoBehaviour
 {
 	/// <summary>

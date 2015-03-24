@@ -1,17 +1,9 @@
-﻿using System.Net.Mime;
-using UnityEngine;
-using System.Collections;
-using UnityEngine.UI;
+﻿using UnityEngine;
 
 
 public class GoalngredientView : MarioObject
 {
 	public IngredientType Type;
-
-	protected override void Begin()
-	{
-		base.Begin();
-	}
 
 	public void HasBeenReached(bool reached)
 	{

@@ -62,16 +62,6 @@ public class Player : MarioObject
 	/// </summary>
 	public Dictionary<IngredientType, int> Inventory = new Dictionary<IngredientType, int>();
 
-	///// <summary>
-	///// The completed products - they may be sold directly, or used to make better products
-	///// </summary>
-	//public List<Product> Products = new List<Product>();
-
-	///// <summary>
-	///// What is currently on sale
-	///// </summary>
-	//public List<Product> SellingProducts = new List<Product>(); 
-
 	public delegate void CollisionHandler(Collision2D other);
 
 	public delegate void TriggerHandler(Collider2D other);
@@ -180,29 +170,6 @@ public class Player : MarioObject
 		Right = transform.FindChild("CharacterRight").GetComponent<Character>();
 	}
 
-	//private void UpdateSellingProgressBar()
-	//{
-	//	var any = Inventory[IngredientType.CupCake] > 0 || Inventory[IngredientType.MintIceCream] > 0;
-	//	var bar = _products.SellProgressBar;
-	//	if (!any && !bar.Paused)
-	//	{
-	//		bar.Reset();
-	//	}
-
-	//	if (any && bar.Paused || (!_lastAny && any))
-	//	{
-	//		bar.Reset();
-	//		bar.Paused = false;
-
-	//		SellingTimer = SellingInterval;
-
-	//		// TODO: Use Recipe.SellingTime
-	//		bar.TotalTime = Player.SellingInterval;
-	//	}
-
-	//	_lastAny = any;
-	//}
-
 	private void UpdateDebugKeys()
 	{
 #if DEBUG
@@ -254,67 +221,6 @@ public class Player : MarioObject
 
 		UpdateUi();
 	}
-
-	//public float SellingInterval = 3;
-
-	//public float SellingTimer;
-
-	//private void UpdateSellItem()
-	//{
-	//	SellingTimer -= (float) RealDeltaTime;
-
-	//	var selling = SellingTimer <= 0;
-	//	while (selling)
-	//	{
-	//		SellItem();
-	//		SellingTimer += SellingInterval;
-
-	//		if (SellingTimer > 0)
-	//		{
-	//			selling = false;
-	//			SellingTimer = SellingInterval;
-	//		}
-	//	}
-	//}
-
-	//private void SellItem()
-	//{
-	//	IngredientType[] types = {IngredientType.MintIceCream, IngredientType.CupCake};
-
-	//	var canSell = false;
-	//	foreach (var ty in types)
-	//	{
-	//		if (Inventory[ty] > 0)
-	//		{
-	//			canSell = true;
-	//			break;
-	//		}
-	//	}
-
-	//	if (!canSell)
-	//		return;
-
-	//	while (true)
-	//	{
-	//		var index0 = UnityEngine.Random.Range(0, types.Length);
-	//		var type = types[index0];
-
-	//		if (Inventory[type] <= 0)
-	//			continue;
-
-	//		SellItem(type);
-
-	//		break;
-	//	}
-	//}
-
-	//private void SellItem(IngredientType type)
-	//{
-	//	if (Inventory[type] == 0)
-	//		return;
-
-	//	World.CurrentArea.SellItem(type);
-	//}
 
 	private void Died()
 	{
@@ -447,7 +353,6 @@ public class Player : MarioObject
 			return;
 
 		//Debug.Log("Sold a " + info.Type + " @" + Time.frameCount);
-
 		Gold += info.Sell;
 		_sold[info.Type]++;
 		Inventory[info.Type]--;

@@ -99,6 +99,13 @@ public class MarioObject : MonoBehaviour
 	/// </summary>
 	protected int FrameCount;
 
+	protected void ResetRealTime()
+	{
+		_lastTime = DateTime.Now;
+		RealDeltaTime = 0;
+		RealTime = 0;
+	}
+
 	private void Update()
 	{
 		//// WHAT THE FUCK: why is Update() called twice on MarioObjects?

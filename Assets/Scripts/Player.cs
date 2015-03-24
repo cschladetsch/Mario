@@ -159,15 +159,14 @@ public class Player : MarioObject
 	{
 		base.Tick();
 
-		//UpdateSellingProgressBar();
+		// TODO: not test this every frame!
+
 
 		GetCharacters();
 
 #if !FINAL
 		UpdateDebugKeys();
 #endif
-
-		//UpdateSellItem();
 	}
 
 	private void GetCharacters()
@@ -368,9 +367,8 @@ public class Player : MarioObject
 
 	public void CookedItem(IngredientType type, int count)
 	{
-		Debug.Log("Player.CookedItem: " + type);
+		//Debug.Log("Player.CookedItem: " + type);
 		Inventory[type] += count;
-
 		UpdateUi();
 	}
 
@@ -446,7 +444,7 @@ public class Player : MarioObject
 		if (Inventory[info.Type] == 0)
 			return;
 
-		Debug.Log("Sold a " + info.Type + " @" + Time.frameCount);
+		//Debug.Log("Sold a " + info.Type + " @" + Time.frameCount);
 
 		Gold += info.Sell;
 		_sold[info.Type]++;
@@ -469,7 +467,7 @@ public class Player : MarioObject
 
 	public void AddGold(int amount)
 	{
-		Debug.Log("Player added " + amount + " gold");
+		//Debug.Log("Player added " + amount + " gold");
 		Gold += amount;
 		UpdateUi();
 	}

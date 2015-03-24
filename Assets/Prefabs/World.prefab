@@ -46,6 +46,7 @@ GameObject:
   - 4: {fileID: 400004}
   - 114: {fileID: 11400002}
   - 114: {fileID: 11472144}
+  - 114: {fileID: 11432178}
   m_Layer: 0
   m_Name: World
   m_TagString: Untagged
@@ -246,6 +247,18 @@ MonoBehaviour:
   GoalIndex: 0
   GodMode: 0
   Buttons: {fileID: 0}
+--- !u!114 &11432178
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100004}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1779f4dd645812a40bedbde4a0b27dbf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Paused: 0
 --- !u!114 &11472144
 MonoBehaviour:
   m_ObjectHideFlags: 1

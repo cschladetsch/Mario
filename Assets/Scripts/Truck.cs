@@ -201,6 +201,7 @@ public class Truck : MarioObject
 			_cakes.Clear();
 
 			Truck.Reset();
+			World.BakeryArea.DeliveryTruck.Reset();
 			World.Pause(false);
 		};
 	}

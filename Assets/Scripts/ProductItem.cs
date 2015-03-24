@@ -40,7 +40,7 @@ public class ProductItem : MarioObject
 			if (Player.Inventory[Type] == 0)
 				break;
 
-			Debug.Log("SOLD from ProductItem");
+			//Debug.Log("SOLD from ProductItem");
 			World.CurrentArea.SellItem(Type);
 
 			elapsed -= _ingredientInfo.SellingTime;

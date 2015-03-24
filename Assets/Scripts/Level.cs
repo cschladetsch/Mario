@@ -194,7 +194,7 @@ public class Level : MarioObject
 			return;
 		}
 
-		Debug.Log("Adding a " + spawnInfo.Type);
+		//Debug.Log("Adding a " + spawnInfo.Type);
 
 		if (spawnInfo.Prefab == null)
 		{
@@ -521,7 +521,7 @@ public class Level : MarioObject
 			return;
 		}
 
-		Debug.Log("Using " + sp.Prefab.name + " prefab to make " + type);
+		//Debug.Log("Using " + sp.Prefab.name + " prefab to make " + type);
 
 		_spawners.Add(sp);
 	}
@@ -533,7 +533,7 @@ public class Level : MarioObject
 
 	public void AddIngredients(Dictionary<IngredientType, int> contents)
 	{
-		Debug.Log("Level.AddIngredients");
+		//Debug.Log("Level.AddIngredients");
 
 		if (contents.Sum(c => c.Value) == 0)
 		{
@@ -560,7 +560,7 @@ public class Level : MarioObject
 		{
 			if (kv.Value > 0)
 			{
-				Debug.Log("Adding a " + kv.Key + " to factory, kv.Value "+kv.Value);
+				//Debug.Log("Adding a " + kv.Key + " to factory, kv.Value "+kv.Value);
 				IncomingPanel.AddItems(kv.Key, kv.Value);
 				Inventory[kv.Key] += kv.Value;
 			}

@@ -72,7 +72,7 @@ public class BakeryArea : AreaBase
 
 	public override void SellItem(IngredientType type)
 	{
-		Debug.Log("BakeryArea.SellItem: " + Time.frameCount);
+		//Debug.Log("BakeryArea.SellItem: " + Time.frameCount);
 		base.SellItem(type);
 
 		var move = ItemAnimation.Animate(type, SellingProductsPanel.GetProduct(type), Canvas.PlayerGold.gameObject, SoldItemTravelTime);

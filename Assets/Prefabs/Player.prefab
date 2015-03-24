@@ -136,9 +136,6 @@ MonoBehaviour:
   Left: {fileID: 0}
   Right: {fileID: 0}
   Lives: 3
-  SellingInterval: 3
-  SellingTimer: 0
-  SoldItemTravelTime: 1
 --- !u!114 &11400006
 MonoBehaviour:
   m_ObjectHideFlags: 1

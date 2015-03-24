@@ -47,4 +47,5 @@ public class StageGoal : MonoBehaviour
 		}
 		return text;
 	}
+
 }

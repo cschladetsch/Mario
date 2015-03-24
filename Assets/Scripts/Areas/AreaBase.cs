@@ -94,9 +94,7 @@ public class AreaBase : MarioObject
 	{
 		var info = World.GetInfo(type);
 		Player.SoldItem(info);
-
 		World.GoalPanel.AddItem(type);
-
 		if (Player.GoalReached())
 			World.NextGoal();
 	}

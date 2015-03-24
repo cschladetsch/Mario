@@ -69,6 +69,8 @@ public class ProgressBar : MarioObject
 
 	public void Reset()
 	{
+		ResetRealTime();
+
 		_time = 0;
 		if (_image == null)
 			_image = GetComponent<Image>();

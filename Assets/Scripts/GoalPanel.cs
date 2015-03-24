@@ -89,8 +89,6 @@ public class GoalPanel : MarioObject
 
 	public void UpdateUi()
 	{
-		//Debug.Log("Syncing goal panel");
-
 		if (Ingredients == null)
 			Ingredients = IngredientItem.CreateIngredientDict<int>();
 
@@ -115,11 +113,6 @@ public class GoalPanel : MarioObject
 
 	private void AddAllItems()
 	{
-		//Debug.Log("Goal.AddAllItems: " + Player.CurrentGoal.Name);
-		//Debug.Log(Player.CurrentGoal.Ingredients);
-		//foreach (var kv in Player.CurrentGoal.Ingredients)
-		//	Debug.Log(kv);
-
 		if (_prefabs.Count == 0)
 			GatherPrefabsForIngredientDisplay();
 

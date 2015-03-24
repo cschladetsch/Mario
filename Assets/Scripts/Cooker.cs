@@ -90,7 +90,7 @@ public class Cooker : MarioObject
 		var cookingTime = Recipe.CookingTime;
 		var numResults = Recipe.NumResults;
 
-		Debug.Log("Cooker.ProgressEnded: " + pb.Elapsed + ", cookingTime: " + cookingTime + " selling time:" + info.SellingTime);
+		//Debug.Log("Cooker.ProgressEnded: " + pb.Elapsed + ", cookingTime: " + cookingTime + " selling time:" + info.SellingTime);
 
 		// find out how many we cooked
 		while (elapsed > cookingTime)
@@ -104,20 +104,19 @@ public class Cooker : MarioObject
 			elapsed -= cookingTime;
 		}
 
-		Debug.Log("Cooked " + numCooked);
+		//Debug.Log("Cooked " + numCooked);
 
 		// now immediately sell using whatever time remaining
 		var sellTime = info.SellingTime;
 		while (numCooked > 0 && elapsed > sellTime)
 		{
 			Player.AddCake(info.Type);
-			//Debug.Log("SOLD! From cooker!");
-			Player.SoldItem(info);
+			World.CurrentArea.SellItem(info.Type);
 			elapsed -= sellTime;
 			--numCooked;
 		}
 
-		Debug.Log("Adding  remainder " + numCooked + " of type " + Recipe.Result + " to selling area...");
+		//Debug.Log("Adding  remainder " + numCooked + " of type " + Recipe.Result + " to selling area...");
 
 		// TODO WTF why is Kernel empty
 		var k = FindObjectOfType<World>().Kernel;

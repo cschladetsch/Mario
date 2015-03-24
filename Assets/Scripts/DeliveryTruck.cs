@@ -89,6 +89,8 @@ public class DeliveryTruck : MarioObject
 	/// </summary>
 	public void OrderButtonPressed()
 	{
+		ProgressBar.Reset();
+
 		Debug.Log("Delivery time for " + Contents.Sum(c => c.Value) + " is " + CalcDeliveryTime());
 
 		BuyingOptions.SetActive(false);
@@ -146,6 +148,8 @@ public class DeliveryTruck : MarioObject
 		Contents = IngredientItem.CreateIngredientDict<int>();
 
 		UpdateDisplay();
+
+		ProgressBar.TotalTime = CalcDeliveryTime();
 	}
 
 	/// <summary>
@@ -186,8 +190,8 @@ public class DeliveryTruck : MarioObject
 
 	private float CalcDeliveryTime()
 	{
-		if (World.GodMode)
-			return 1;
+		//if (World.GodMode)
+		//	return 1;
 
 		//return DeliveryTime + Contents.Sum(c => c.Value);
 		return DeliveryTime;
@@ -261,7 +265,7 @@ public class DeliveryTruck : MarioObject
 	public void CompleteDeliveryToFactory()
 	{
 		var sum = Contents.Sum(c => c.Value);
-		Debug.LogWarning("DeliveryTruck.CompleteDeliveryToFactory: " + sum);
+		//Debug.LogWarning("DeliveryTruck.CompleteDeliveryToFactory: " + sum);
 		if (sum == 0)
 		{
 			Debug.LogError("No delivery truck contents??");
@@ -334,15 +338,17 @@ public class DeliveryTruck : MarioObject
 
 	public void Deliver()
 	{
+		ProgressBar.Reset();
 		Deliver(Contents);
 	}
 
 	public void Reset()
 	{
-		//Debug.Log("DeliveryTruck.Reset");
+		Debug.Log("DeliveryTruck.Reset");
 
 		Contents = IngredientItem.CreateIngredientDict<int>();
 		_delivering = false;
 		Pulling = false;
+		ProgressBar.Reset();
 	}
 }

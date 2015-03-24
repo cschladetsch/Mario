@@ -443,10 +443,12 @@ public class Player : MarioObject
 
 	public void SoldItem(IngredientInfo info)
 	{
-		//Debug.Log("Sold a " + info.Type);
+		if (Inventory[info.Type] == 0)
+			return;
+
+		Debug.Log("Sold a " + info.Type + " @" + Time.frameCount);
 
 		Gold += info.Sell;
-
 		_sold[info.Type]++;
 		Inventory[info.Type]--;
 

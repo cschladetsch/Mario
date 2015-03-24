@@ -46,8 +46,6 @@ public class Cooker : MarioObject
 
 	public UnityEngine.UI.Image ProductImage;
 
-	private bool _cooking;
-
 	/// <summary>
 	/// The buttons in this cooker
 	/// </summary>
@@ -69,10 +67,72 @@ public class Cooker : MarioObject
 
 		ProgressBar.TotalTime = Recipe.CookingTime;
 		ProgressBar.Reset();
+		ProgressBar.Ended -= ProgressEnded;
+		ProgressBar.Ended += ProgressEnded;
 
 		GatherRequirements();
 
 		GatherIngredientButtons();
+	}
+
+	/// <summary>
+	/// The progress bar has ended - but it may've been hours or days since
+	/// it was started. we need to produce and maybe even sell everything
+	/// that may've been made while the device was off or game suspended
+	/// </summary>
+	/// <param name="pb"></param>
+	private void ProgressEnded(ProgressBar pb)
+	{
+		var info = World.GetInfo(Recipe.Result);
+		var elapsed = pb.Elapsed;
+		var numCooked = 0;
+
+		var cookingTime = Recipe.CookingTime;
+		var numResults = Recipe.NumResults;
+
+		Debug.Log("Cooker.ProgressEnded: " + pb.Elapsed + ", cookingTime: " + cookingTime + " selling time:" + info.SellingTime);
+
+		// find out how many we cooked
+		while (elapsed > cookingTime)
+		{
+			if (!Recipe.Satisfied(_inventory))
+				break;
+
+			RemoveItemsFromInventory();
+
+			numCooked += numResults;
+			elapsed -= cookingTime;
+		}
+
+		Debug.Log("Cooked " + numCooked);
+
+		// now immediately sell using whatever time remaining
+		var sellTime = info.SellingTime;
+		while (numCooked > 0 && elapsed > sellTime)
+		{
+			Player.AddCake(info.Type);
+			//Debug.Log("SOLD! From cooker!");
+			Player.SoldItem(info);
+			elapsed -= sellTime;
+			--numCooked;
+		}
+
+		Debug.Log("Adding  remainder " + numCooked + " of type " + Recipe.Result + " to selling area...");
+
+		// TODO WTF why is Kernel empty
+		var k = FindObjectOfType<World>().Kernel;
+		k.Factory.NewCoroutine(MoveCookedItems, numCooked);
+
+		Product.interactable = true;
+
+		ProgressBar.Reset();
+
+		UpdateDisplay();
+		Player.UpdateUi();
+
+		foreach (var kv in _inventory)
+			if (kv.Value > 0)
+				Debug.Log(string.Format("Have {1} of {0} left", kv.Value, kv.Key));
 	}
 
 	private void GatherRequirements()
@@ -102,10 +162,12 @@ public class Cooker : MarioObject
 			break;
 		}
 
-		if (CanCook())
-			Cook();
-		//else
-		//	World.BakeryArea.DeliveryTruck.ShowBuyingPanel(true);
+		//Debug.Log(string.Format("ProgressBasePaused: {0}, Elapsed {1}, CanCook {2}", ProgressBar.Paused, ProgressBar.Elapsed, CanCook()));
+		if (ProgressBar.Paused && CanCook())
+		{
+			ProgressBar.Reset();
+			ProgressBar.Paused = false;
+		}
 
 		UpdateDisplay();
 	}
@@ -240,77 +302,67 @@ public class Cooker : MarioObject
 		return true;
 	}
 
-	public IFuture<bool> Cook()
+	public void Cook()
 	{
-		if (_cooking)
-			return null;
-
 		if (!CanCook())
-			return null;
+			return;
 
-		// TODO: WHY OH WHY IS this.Kernel null?
-		var k = FindObjectOfType<World>().Kernel;
-		var future = k.Factory.NewFuture<bool>();
-		Generator = k.Factory.NewCoroutine(Cook, future);
-		return future;
+		ProgressBar.Reset();
+		ProgressBar.Paused = false;
 	}
 
 	public bool CanCook()
 	{
-		return !_cooking && Recipe.Satisfied(_inventory);
+		return ProgressBar.Paused && Recipe.Satisfied(_inventory);
 	}
 
-	private IEnumerator Cook(IGenerator self, IFuture<bool> done)
-	{
-		if (_cooking)
-		{
-			self.Complete();
-			yield break;
-		}
+	//private IEnumerator Cook(IGenerator self, IFuture<bool> done)
+	//{
+	//	if (_cooking)
+	//	{
+	//		self.Complete();
+	//		yield break;
+	//	}
 
-		ProgressBar.Reset();
-		ProgressBar.TotalTime = Recipe.CookingTime;
+	//	ProgressBar.Reset();
+	//	ProgressBar.TotalTime = Recipe.CookingTime;
 
-		//Debug.Log("Cooking a " + Recipe.Result);
-		Product.interactable = false;
-		_cooking = true;
+	//	//Debug.Log("Cooking a " + Recipe.Result);
+	//	Product.interactable = false;
+	//	_cooking = true;
 
-		var remaining = Recipe.CookingTime;
-		while (remaining > 0)
-		{
-			remaining -= (float) RealDeltaTime;
-			ProgressBar.SetPercent(remaining/Recipe.CookingTime);
-			yield return 0;
-		}
+	//	var remaining = Recipe.CookingTime;
+	//	while (remaining > 0)
+	//	{
+	//		remaining -= (float) RealDeltaTime;
+	//		ProgressBar.SetPercent(remaining/Recipe.CookingTime);
+	//		yield return 0;
+	//	}
 
-		done.Value = true;
+	//	done.Value = true;
 
-		self.Complete();
+	//	self.Complete();
 
-		EndCook();
-	}
+	//	EndCook();
+	//}
 
-	private void EndCook()
-	{
-		Product.interactable = true;
+	//private void EndCook()
+	//{
+	//	Product.interactable = true;
 
-		RemoveItemsFromInventory();
+	//	RemoveItemsFromInventory();
 
-		Generator = null;
+	//	if (Completed != null)
+	//		Completed(Recipe.Result);
 
-		if (Completed != null)
-			Completed(Recipe.Result);
+	//	ResetRequiredIngredientsButton();
 
-		ProgressBar.Reset();
+	//	//World.Kernel.Factory.NewCoroutine(MoveCookedItems);
 
-		ResetRequiredIngredientsButton();
+	//	UpdateDisplay();
 
-		World.Kernel.Factory.NewCoroutine(MoveCookedItems);
-
-		UpdateDisplay();
-
-		_cooking = false;
-	}
+	//	_cooking = false;
+	//}
 
 	private void ResetRequiredIngredientsButton()
 	{
@@ -328,10 +380,10 @@ public class Cooker : MarioObject
 		Player.CookedItem(type, 1);
 	}
 
-	IEnumerator MoveCookedItems(IGenerator self)
+	IEnumerator MoveCookedItems(IGenerator self, int num)
 	{
 		var product = World.BakeryArea.SellingProductsPanel.GetProduct(Recipe.Result);
-		for (var i = 0; i < Recipe.NumResults; i++)
+		for (var i = 0; i < num; i++)
 		{
 			if (World.CurrentArea != World.BakeryArea)
 			{
@@ -399,20 +451,8 @@ public class Cooker : MarioObject
 		Debug.Log("Can use cooker " + name + ": " + use);
 	}
 
-	public void StartBake()
-	{
-		Debug.Log("Start Bake");
-		Cook();
-	}
-
-	public bool Cooking()
-	{
-		return _cooking;
-	}
-
 	public void Reset()
 	{
-		_cooking = false;
 		_inventory = IngredientItem.CreateIngredientDict<int>();
 		ProgressBar.Reset();
 	}

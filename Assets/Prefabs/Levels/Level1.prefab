@@ -1455,7 +1455,7 @@ MonoBehaviour:
   SpeedIncrementTime: 30
   SpawnIncrementRate: 1.5
   SpeedIncrementRate: 1.29999995
-  ConveyorSpeed: .400000006
+  ConveyorSpeed: .25
   SpeedLevel: 0
   OverallSpeed: 1
   _spawners: []

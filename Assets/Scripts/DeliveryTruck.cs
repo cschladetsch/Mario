@@ -189,7 +189,8 @@ public class DeliveryTruck : MarioObject
 		if (World.GodMode)
 			return 1;
 
-		return DeliveryTime + Contents.Sum(c => c.Value);
+		//return DeliveryTime + Contents.Sum(c => c.Value);
+		return DeliveryTime;
 	}
 
 	protected override void BeforeFirstUpdate()
@@ -338,7 +339,7 @@ public class DeliveryTruck : MarioObject
 
 	public void Reset()
 	{
-		Debug.Log("DeliveryTruck.Reset");
+		//Debug.Log("DeliveryTruck.Reset");
 
 		Contents = IngredientItem.CreateIngredientDict<int>();
 		_delivering = false;

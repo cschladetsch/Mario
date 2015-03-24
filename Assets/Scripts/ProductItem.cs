@@ -11,6 +11,7 @@ public class ProductItem : MarioObject
 	public Text Price;
 
 	public IngredientType Type;
+	private IngredientInfo _ingredientInfo;
 
 	protected override void Construct()
 	{
@@ -22,21 +23,30 @@ public class ProductItem : MarioObject
 			return;
 
 		var shadow = Price.transform.FindChild("Shadow").GetComponent<Text>();
-		shadow.text = Price.text = World.GetInfo(Type).Sell.ToString();
+		_ingredientInfo = World.GetInfo(Type);
+		shadow.text = Price.text = _ingredientInfo.Sell.ToString();
 
-		ProgressBar.TotalTime = World.GetInfo(Type).SellingTime;
+		ProgressBar.TotalTime = _ingredientInfo.SellingTime;
 		ProgressBar.Reset();
+		ProgressBar.Ended -= ProgressBarEnded;
 		ProgressBar.Ended += ProgressBarEnded;
 	}
 
 	private void ProgressBarEnded(ProgressBar pb)
 	{
+		var elapsed = pb.Elapsed;
+		while (elapsed > _ingredientInfo.SellingTime)
+		{
+			if (Player.Inventory[Type] == 0)
+				break;
+
+			Debug.Log("SOLD from ProductItem");
+			World.CurrentArea.SellItem(Type);
+
+			elapsed -= _ingredientInfo.SellingTime;
+		}
+
 		ProgressBar.Reset();
-
-		if (Player.Inventory[Type] == 0)
-			return;
-
-		World.CurrentArea.SellItem(Type);
 	}
 
 	protected override void Tick()

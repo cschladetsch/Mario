@@ -107,18 +107,17 @@ public class MarioObject : MonoBehaviour
 		//if (frameCount == _updateFrame && _updateFrame > 0)
 		//	return;
 
+		// use real-time
+		var now = DateTime.Now;
+		var delta = now - _lastTime;
+		RealDeltaTime = (float)delta.TotalSeconds;
+		_lastTime = now;
+		RealTime += RealDeltaTime;
+
 		if (Paused)
 			return;
 
 		FrameCount++;
-
-		// use real-time
-		var now = DateTime.Now;
-		var delta = now - _lastTime;
-		RealDeltaTime = (float) delta.TotalSeconds;
-		_lastTime = now;
-
-		//Debug.Log(RealDeltaTime);
 
 		GameDeltaTime = Time.deltaTime;
 
@@ -133,7 +132,6 @@ public class MarioObject : MonoBehaviour
 
 		Tick();
 
-		RealTime += RealDeltaTime;
 		GameTime += GameDeltaTime;
 	}
 

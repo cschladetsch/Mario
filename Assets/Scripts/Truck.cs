@@ -303,7 +303,7 @@ public class Truck : MarioObject
 
 	public void Reset()
 	{
-		Debug.Log("Truck.Reset");
+		//Debug.Log("Truck.Reset");
 		foreach (var c in _cakes)
 			Destroy(c.gameObject);
 

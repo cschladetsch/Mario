@@ -26,9 +26,9 @@ public class ProductsPanelScript : MarioObject
 	private void GatherProducts()
 	{
 		Products.AddRange(gameObject.GetComponentsInChildren<ProductItem>());
-		Debug.Log("ProductsPanelScript: " + Products.Count);
-		foreach (var p in Products)
-			Debug.Log(p.Type);
+		//Debug.Log("ProductsPanelScript: " + Products.Count);
+		//foreach (var p in Products)
+		//	Debug.Log(p.Type);
 	}
 
 	protected override void Begin()

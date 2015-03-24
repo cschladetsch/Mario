@@ -1,13 +1,17 @@
 ﻿using System.Net.Mime;
 using UnityEngine;
 using UnityEngine.UI;
-using System.Collections.Generic;
 
+/// <summary>
+/// A progress bar that uses real time
+/// </summary>
 public class ProgressBar : MarioObject
 {
 	public float TotalTime;
 
 	public bool ShowTimer;
+
+	public float Elapsed { get { return _time; } }
 
 	private Image _image;
 
@@ -43,7 +47,7 @@ public class ProgressBar : MarioObject
 	{
 		base.Tick();
 
-		_time += GameDeltaTime;
+		_time += RealDeltaTime;
 		_image.fillAmount = Mathf.Min(1.0f, _time/TotalTime);
 
 		UpdateEnded();
@@ -56,8 +60,11 @@ public class ProgressBar : MarioObject
 
 		Paused = true;
 
+		//Debug.Log("Bar Ended " + name);
 		if (Ended != null)
 			Ended(this);
+
+		_time = 0;
 	}
 
 	public void Reset()
@@ -68,5 +75,23 @@ public class ProgressBar : MarioObject
 
 		_image.fillAmount = 0;
 		Paused = true;
+	}
+
+	public bool NextPeriod()
+	{
+		if (_time < TotalTime)
+			return false;
+
+		_time -= TotalTime;
+		if (_time < 0)
+			_time = 0;
+
+		return true;
+	}
+
+	public void Reset(float elapsed)
+	{
+		Reset();
+		_time = elapsed;
 	}
 }

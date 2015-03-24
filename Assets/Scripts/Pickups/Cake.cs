@@ -64,6 +64,7 @@ public class Cake : Pickup
 		if (_droppedTimer < 0)
 		{
 			Debug.Log("Cake '"+Type+"' has fallen for too long, destroying");
+			Player.DroppedCake(this);
 			CurrentLevel.DestroyCake(this);
 			if (CurrentLevel.NoMoreCakes)
 				Truck.StartEmptying();

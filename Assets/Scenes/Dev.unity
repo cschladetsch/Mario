@@ -907,6 +907,10 @@ Prefab:
       propertyPath: m_Colors.m_DisabledColor.a
       value: .450980395
       objectReference: {fileID: 0}
+    - target: {fileID: 11497614, guid: cf7e638d9162e024d9018cd73de9b9c8, type: 2}
+      propertyPath: MinGoalIndex
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: cf7e638d9162e024d9018cd73de9b9c8, type: 2}
   m_RootGameObject: {fileID: 339188264}
@@ -2633,7 +2637,7 @@ MonoBehaviour:
   AmountText: {fileID: 568794346}
   Image: {fileID: 1303718126}
   Amount: 0
-  MinGoalIndex: 0
+  MinGoalIndex: 1
 --- !u!114 &339188267
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9146,6 +9150,10 @@ Prefab:
       propertyPath: m_Colors.m_DisabledColor.a
       value: .450980395
       objectReference: {fileID: 0}
+    - target: {fileID: 11497614, guid: cf7e638d9162e024d9018cd73de9b9c8, type: 2}
+      propertyPath: MinGoalIndex
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: cf7e638d9162e024d9018cd73de9b9c8, type: 2}
   m_RootGameObject: {fileID: 1912874461}
@@ -15459,7 +15467,7 @@ MonoBehaviour:
   AmountText: {fileID: 659758763}
   Image: {fileID: 259525409}
   Amount: 0
-  MinGoalIndex: 0
+  MinGoalIndex: 1
 --- !u!114 &1912874464
 MonoBehaviour:
   m_ObjectHideFlags: 0

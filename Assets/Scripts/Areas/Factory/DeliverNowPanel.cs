@@ -6,6 +6,20 @@ public class DeliverNowPanel : MarioObject
 {
 	public Button YesButton;
 	public Button NoButton;
+
+	protected override void Construct()
+	{
+		base.Construct();
+		Debug.Log("DeliverNowPanel.Construct: " +" world=" + World);
+	}
+
+	protected override void Begin()
+	{
+		base.Begin();
+		_truck = FindObjectOfType<DeliveryTruck>();
+		Debug.Log("DeliverNowPanel.Begin: " + _truck + " world=" + World);
+	}
+
 	public Text DisplayText;
 
 	private DeliveryTruck _truck;
@@ -27,9 +41,9 @@ public class DeliverNowPanel : MarioObject
 		if (_truck == null)
 			_truck = FindObjectOfType<DeliveryTruck>();
 
-		// TODO WTF why does this keep happening
-		if (World == null)
-			World = FindObjectOfType<World>();
+		//// TODO WTF why does this keep happening
+		//if (World == null)
+		//	World = FindObjectOfType<World>();
 
 		foreach (var kv in _truck.Contents)
 		{
@@ -43,12 +57,18 @@ public class DeliverNowPanel : MarioObject
 		return Mathf.Max(2, (int)(percent*fullCost));
 	}
 
+	void OnDestroy()
+	{
+		Debug.Log("DeliverNowPanel.Destroy");
+	}
+
 	public void DeliverNowCancelled()
 	{
 		//Debug.Log("DeliverNow Cancelled");
 		gameObject.SetActive(false);
 
 	}
+
 	public void DeliverNowPressed()
 	{
 		var deliveryCost = CalcDeliveryCost();
@@ -65,16 +85,6 @@ public class DeliverNowPanel : MarioObject
 		Player.RemoveGold(deliveryCost);
 		gameObject.SetActive(false);
 		_truck.Complete();
-	}	
-
-	protected override void Construct()
-	{
-	}
-
-	protected override void Begin()
-	{
-		_truck = FindObjectOfType<DeliveryTruck>();
-		//Debug.Log("DeliverNowPanel.Begin: " + _truck + " world=" + World);
 	}
 
 	protected override void Tick()

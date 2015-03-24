@@ -114,11 +114,18 @@ public class DeliveryTruck : MarioObject
 		if (Player.Gold < info.Buy)
 			return;
 
+		AddAnimation(type, go);
 		button.AddAmount(1);
 
 		Contents[type]++;
 		Player.Gold -= info.Buy;
 		UpdateDisplay();
+	}
+
+	private void AddAnimation(IngredientType type, GameObject dest)
+	{
+		var end = dest;
+		ItemAnimation.Animate(type, Canvas.PlayerGold.gameObject, end, 2);
 	}
 
 	protected override void Begin()
@@ -245,7 +252,7 @@ public class DeliveryTruck : MarioObject
 
 	public void Complete()
 	{
-		//Debug.LogWarning("DeliveryTruck.Complete");
+		Debug.LogWarning("DeliveryTruck.Complete");
 
 		PlayButton.SetActive(true);
 		ProgressBar.gameObject.SetActive(false);

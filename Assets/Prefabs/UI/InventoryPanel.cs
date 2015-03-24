@@ -15,6 +15,7 @@ public class InventoryPanel : MarioObject
 
 	protected override void Begin()
 	{
+		base.Begin();
 	}
 
 	protected override void BeforeFirstUpdate()

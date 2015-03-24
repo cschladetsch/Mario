@@ -159,7 +159,7 @@ PlayerSettings:
   flashStrippingLevel: 2
   spritePackerPolicy: 
   scriptingDefineSymbols:
-    7: DEBUG
+    7: 
   metroPackageName: Mario
   metroPackageLogo: 
   metroPackageLogo140: 

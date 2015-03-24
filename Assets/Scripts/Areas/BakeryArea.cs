@@ -112,6 +112,8 @@ public class BakeryArea : AreaBase
 
 			yield return self.ResumeAfter(TimeSpan.FromSeconds(UnityEngine.Random.Range(1, 2)));
 		}
+
+		DeliveryTruck.Reset();
 	}
 
 	private void AddIngredient(IngredientType type)

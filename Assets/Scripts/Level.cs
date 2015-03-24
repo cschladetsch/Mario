@@ -194,7 +194,7 @@ public class Level : MarioObject
 			return;
 		}
 
-		//Debug.Log("Adding a " + spawnInfo.Type);
+		Debug.Log("Adding a " + spawnInfo.Type);
 
 		if (spawnInfo.Prefab == null)
 		{
@@ -202,7 +202,7 @@ public class Level : MarioObject
 			return;
 		}
 
-		//Debug.Log("AddCake: prefab=" + spawnInfo.Prefab.name + "@" + UnityEngine.Time.frameCount);
+		Debug.Log("AddCake: prefab=" + spawnInfo.Prefab.name + "@" + UnityEngine.Time.frameCount);
 		if (!spawnInfo.CanSpawn())
 		{
 			Debug.Log("Spawner " + spawnInfo.Type + " cannot spawn");
@@ -230,7 +230,7 @@ public class Level : MarioObject
 		var born = spawnInfo.Spawn();
 		born.transform.position = CakeSpawnPoint.transform.position;
 		born.name = Guid.NewGuid().ToString();
-		//Debug.Log("Spawned a " + spawnInfo.Prefab.name + " called " + born.name);
+		Debug.Log("Spawned a " + spawnInfo.Prefab.name + " called " + born.name);
 
 		var cake = born.GetComponent<Cake>();
 
@@ -244,7 +244,6 @@ public class Level : MarioObject
 		// to spawn a cake, but we don't want to show it
 		if (cake && !Area.Visual)
 			AreaBase.ToggleVisuals(cake.gameObject, false);
-		
 		
 		// FRI
 		if (ToTruck)
@@ -287,14 +286,6 @@ public class Level : MarioObject
 	{
 		if (!World.Areas[AreaType.Factory].Visual)
 			return;
-
-		////Debug.Log(string.Format("NoMore: {0}, Emptying: {1}", NoMoreCakes, Truck.Emptying));
-		//if (NoMoreCakes && !Truck.Emptying)
-		//{
-		//	_ended = true;
-		//	Truck.StartEmptying();
-		//	return;
-		//}
 
 		UpdateSpeed();
 
@@ -522,7 +513,7 @@ public class Level : MarioObject
 			return;
 		}
 
-		//Debug.Log("Using " + sp.Prefab.name + " prefab to make " + c.Key);
+		Debug.Log("Using " + sp.Prefab.name + " prefab to make " + type);
 
 		_spawners.Add(sp);
 	}
@@ -534,7 +525,7 @@ public class Level : MarioObject
 
 	public void AddIngredients(Dictionary<IngredientType, int> contents)
 	{
-		//Debug.Log("Level.AddIngredients");
+		Debug.Log("Level.AddIngredients");
 
 		// because this is called before level has been created due to
 		// SpawnGameObject issues that take many updates to fully expand out
@@ -547,6 +538,7 @@ public class Level : MarioObject
 
 		foreach (var kv in contents)
 		{
+			Debug.Log("Adding a " + kv.Key + " to factory");
 			IncomingPanel.AddItems(kv.Key, kv.Value);
 			Inventory[kv.Key] += kv.Value;
 		}

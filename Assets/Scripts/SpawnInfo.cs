@@ -62,11 +62,8 @@ public class SpawnInfo : MarioObject
 
 	public GameObject Spawn()
 	{
-		if (SpawnsLeft-- <= 0)
-		{
-			CalcNextSpawnTime();
+		if (SpawnsLeft == 0)
 			return null;
-		}
 
 		if (Prefab == null)
 		{

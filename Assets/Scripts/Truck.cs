@@ -193,6 +193,8 @@ public class Truck : MarioObject
 
 		World.BakeryArea.TakeDelivery(_cakes).Completed += f =>
 		{
+			Debug.Log("TakeDelivery Completed");
+
 			foreach (var c in _cakes)
 				Destroy(c.gameObject);
 			_cakes.Clear();

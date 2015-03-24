@@ -91,7 +91,7 @@ public class DeliveryTruck : MarioObject
 	{
 		ProgressBar.Reset();
 
-		Debug.Log("Delivery time for " + Contents.Sum(c => c.Value) + " is " + CalcDeliveryTime());
+		//Debug.Log("Delivery time for " + Contents.Sum(c => c.Value) + " is " + CalcDeliveryTime());
 
 		BuyingOptions.SetActive(false);
 		PlayButton.SetActive(false);
@@ -344,7 +344,7 @@ public class DeliveryTruck : MarioObject
 
 	public void Reset()
 	{
-		Debug.Log("DeliveryTruck.Reset");
+		//Debug.Log("DeliveryTruck.Reset");
 
 		Contents = IngredientItem.CreateIngredientDict<int>();
 		_delivering = false;

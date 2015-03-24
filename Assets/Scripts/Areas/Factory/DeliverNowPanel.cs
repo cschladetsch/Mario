@@ -10,14 +10,14 @@ public class DeliverNowPanel : MarioObject
 	protected override void Construct()
 	{
 		base.Construct();
-		Debug.Log("DeliverNowPanel.Construct: " +" world=" + World);
+		//Debug.Log("DeliverNowPanel.Construct: " +" world=" + World);
 	}
 
 	protected override void Begin()
 	{
 		base.Begin();
 		_truck = FindObjectOfType<DeliveryTruck>();
-		Debug.Log("DeliverNowPanel.Begin: " + _truck + " world=" + World);
+		//Debug.Log("DeliverNowPanel.Begin: " + _truck + " world=" + World);
 	}
 
 	public Text DisplayText;
@@ -59,7 +59,7 @@ public class DeliverNowPanel : MarioObject
 
 	void OnDestroy()
 	{
-		Debug.Log("DeliverNowPanel.Destroy");
+		//Debug.Log("DeliverNowPanel.Destroy");
 	}
 
 	public void DeliverNowCancelled()

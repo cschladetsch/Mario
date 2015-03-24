@@ -20,7 +20,7 @@ public class ItemAnimation : MarioObject
 
 	public delegate void CallbackHandler(IngredientType type);
 
-	struct Args
+	private struct Args
 	{
 		public IngredientType Type;
 		public GameObject From;
@@ -30,14 +30,16 @@ public class ItemAnimation : MarioObject
 		public CallbackHandler Callback;
 	}
 
-	public static IGenerator Animate(IngredientType type, GameObject from, GameObject to, float time, CallbackHandler cb = null)
+	public static IGenerator Animate(IngredientType type, GameObject from, GameObject to, float time,
+		CallbackHandler cb = null)
 	{
 		var world = FindObjectOfType<World>();
 		return world
-			.Kernel.Factory.NewCoroutine(AnimateItemCoro, new Args {World = world, Type = type, From = from, To = to, Time = time, Callback = cb});
+			.Kernel.Factory.NewCoroutine(AnimateItemCoro,
+				new Args {World = world, Type = type, From = from, To = to, Time = time, Callback = cb});
 	}
 
-	static IEnumerator AnimateItemCoro(IGenerator self, Args args)
+	private static IEnumerator AnimateItemCoro(IGenerator self, Args args)
 	{
 		if (!args.From)
 		{
@@ -50,7 +52,7 @@ public class ItemAnimation : MarioObject
 			yield break;
 		}
 
-		var item = (GameObject)Instantiate(args.World.GetInfo(args.Type).ImagePrefab);
+		var item = (GameObject) Instantiate(args.World.GetInfo(args.Type).ImagePrefab);
 		if (item == null)
 		{
 			Debug.LogWarning("Couldn't make image for " + args.Type);

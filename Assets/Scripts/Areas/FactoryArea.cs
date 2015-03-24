@@ -39,7 +39,7 @@ public class FactoryArea : AreaBase
 
 	private void DeliverEverythingNow()
 	{
-		if (!Input.GetKeyDown(KeyCode.C)) 
+		if (!Input.GetKeyDown(KeyCode.C))
 			return;
 
 		foreach (var c in FindObjectsOfType<Cake>())

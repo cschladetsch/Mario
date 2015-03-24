@@ -244,7 +244,7 @@ public class Level : MarioObject
 		// to spawn a cake, but we don't want to show it
 		if (cake && !Area.Visual)
 			AreaBase.ToggleVisuals(cake.gameObject, false);
-		
+
 		// FRI
 		if (ToTruck)
 			Truck.AddCake(cake);

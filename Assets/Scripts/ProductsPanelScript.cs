@@ -45,7 +45,6 @@ public class ProductsPanelScript : MarioObject
 
 	public GameObject GetProduct(IngredientType type)
 	{
-
 		//Debug.Log("ProductPanelScript.GetProduct: " + type + ", prods.Count=" + Products.Count);
 		//foreach (var p in Products)
 		//	Debug.Log(p.Type);

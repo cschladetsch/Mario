@@ -5,19 +5,23 @@
 /// </summary>
 public class ParabolaUI
 {
-
 	/// <summary>
 	/// True if we're at the end-point given
 	/// </summary>
-	public bool Completed { get { return _alpha >= 1; }}
+	public bool Completed
+	{
+		get { return _alpha >= 1; }
+	}
 
 	/// <summary>
 	/// Were we end up
 	/// </summary>
 	public Vector3 FinalPos;
+
 	public Vector3 StartPos;
 
 	public delegate void PositionChangedHandler(Vector2 pos);
+
 	public delegate void EndedHandler(ParabolaUI para);
 
 	public event PositionChangedHandler PositionChanged;
@@ -114,7 +118,7 @@ public class ParabolaUI
 			PositionChanged(pos);
 	}
 
-	Vector2 CalcAt(float x)
+	private Vector2 CalcAt(float x)
 	{
 		return new Vector2(x, _a*x*x + _b*x + _c);
 	}

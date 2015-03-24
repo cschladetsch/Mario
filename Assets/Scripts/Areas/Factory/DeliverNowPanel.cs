@@ -54,10 +54,10 @@ public class DeliverNowPanel : MarioObject
 
 		var fullCost = sum*DeliverNowCostFraction;
 		var percent = _truck.ProgressBar.PercentFinished;
-		return Mathf.Max(2, (int)(percent*fullCost));
+		return Mathf.Max(2, (int) (percent*fullCost));
 	}
 
-	void OnDestroy()
+	private void OnDestroy()
 	{
 		//Debug.Log("DeliverNowPanel.Destroy");
 	}
@@ -66,7 +66,6 @@ public class DeliverNowPanel : MarioObject
 	{
 		//Debug.Log("DeliverNow Cancelled");
 		gameObject.SetActive(false);
-
 	}
 
 	public void DeliverNowPressed()

@@ -50,7 +50,7 @@ public class Cooker : MarioObject
 	/// The buttons in this cooker
 	/// </summary>
 	private Dictionary<IngredientType, IngredientItem> _ingredientButtons;
-	
+
 	/// <summary>
 	/// What is currently in the cooker
 	/// </summary>
@@ -151,7 +151,7 @@ public class Cooker : MarioObject
 			var type = kv.Key;
 			var required = kv.Value;
 
-			if (_inventory[type] >= required || !Player.HasItem(type)) 
+			if (_inventory[type] >= required || !Player.HasItem(type))
 				continue;
 
 			_inventory[type]++;
@@ -232,7 +232,7 @@ public class Cooker : MarioObject
 		Debug.Log("Selected " + name + " " + select);
 	}
 
-	void OnDestroy()
+	private void OnDestroy()
 	{
 		//Debug.Log("Cooker " + name + " Destroyed");
 	}
@@ -374,12 +374,12 @@ public class Cooker : MarioObject
 		}
 	}
 
-	void MovedToSellingArea(IngredientType type)
+	private void MovedToSellingArea(IngredientType type)
 	{
 		Player.CookedItem(type, 1);
 	}
 
-	IEnumerator MoveCookedItems(IGenerator self, int num)
+	private IEnumerator MoveCookedItems(IGenerator self, int num)
 	{
 		var product = World.BakeryArea.SellingProductsPanel.GetProduct(Recipe.Result);
 		for (var i = 0; i < num; i++)

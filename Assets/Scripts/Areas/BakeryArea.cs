@@ -75,12 +75,13 @@ public class BakeryArea : AreaBase
 		//Debug.Log("BakeryArea.SellItem: " + Time.frameCount);
 		base.SellItem(type);
 
-		var move = ItemAnimation.Animate(type, SellingProductsPanel.GetProduct(type), Canvas.PlayerGold.gameObject, SoldItemTravelTime);
+		var move = ItemAnimation.Animate(type, SellingProductsPanel.GetProduct(type), Canvas.PlayerGold.gameObject,
+			SoldItemTravelTime);
 		var sell = Kernel.Factory.NewCoroutine(ItemSold, type);
 		sell.ResumeAfter(move);
 	}
 
-	IEnumerator ItemSold(IGenerator self, IngredientType type)
+	private IEnumerator ItemSold(IGenerator self, IngredientType type)
 	{
 		//SellingProductsPanel.GetButton(type).Reset();
 

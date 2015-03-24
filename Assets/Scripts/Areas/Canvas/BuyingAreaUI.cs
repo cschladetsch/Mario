@@ -164,9 +164,9 @@ public class BuyingAreaUI : MarioObject
 		UpdateDisplay();
 	}
 
-	IEnumerator MoveSoldItem(IGenerator self, IngredientType sold)
+	private IEnumerator MoveSoldItem(IGenerator self, IngredientType sold)
 	{
-		yield break;	
+		yield break;
 	}
 
 	/// <summary>

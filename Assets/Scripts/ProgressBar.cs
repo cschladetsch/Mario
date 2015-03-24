@@ -11,12 +11,19 @@ public class ProgressBar : MarioObject
 
 	public bool ShowTimer;
 
-	public float Elapsed { get { return _time; } }
+	public float Elapsed
+	{
+		get { return _time; }
+	}
 
 	private Image _image;
 
 	private float _time;
-	public float PercentFinished { get { return 1.0f - _time/TotalTime; } }
+
+	public float PercentFinished
+	{
+		get { return 1.0f - _time/TotalTime; }
+	}
 
 	public delegate void EndedHandler(ProgressBar pb);
 

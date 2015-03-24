@@ -73,7 +73,9 @@ public class Player : MarioObject
 	//public List<Product> SellingProducts = new List<Product>(); 
 
 	public delegate void CollisionHandler(Collision2D other);
+
 	public delegate void TriggerHandler(Collider2D other);
+
 	public delegate void PlayerEventHandler(Player player);
 
 	public CollisionHandler OnCollision;

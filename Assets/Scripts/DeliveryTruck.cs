@@ -47,7 +47,11 @@ public class DeliveryTruck : MarioObject
 
 	internal Dictionary<IngredientType, int> Contents;
 
-	public bool Delivering { get { return _delivering; } }
+	public bool Delivering
+	{
+		get { return _delivering; }
+	}
+
 	public bool Pulling;
 
 	private void UpdateDisplay()
@@ -162,7 +166,7 @@ public class DeliveryTruck : MarioObject
 		foreach (Transform tr in BuyingOptions.transform)
 		{
 			var ing = tr.GetComponent<IngredientButtton>();
-			if (ing == null) 
+			if (ing == null)
 				continue;
 
 			_buttons.Add(ing);

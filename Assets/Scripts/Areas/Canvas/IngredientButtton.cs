@@ -68,7 +68,6 @@ public class IngredientButtton : MarioObject
 
 	public void SetCost(int buy)
 	{
-
 		PriceText.SetAmount(buy);
 	}
 }

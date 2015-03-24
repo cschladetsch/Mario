@@ -63,7 +63,7 @@ public class Cake : Pickup
 		_droppedTimer -= GameDeltaTime;
 		if (_droppedTimer < 0)
 		{
-			Debug.Log("Cake '"+Type+"' has fallen for too long, destroying");
+			Debug.Log("Cake '" + Type + "' has fallen for too long, destroying");
 			Player.DroppedCake(this);
 			CurrentLevel.DestroyCake(this);
 			if (CurrentLevel.NoMoreCakes)

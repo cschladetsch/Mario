@@ -6,6 +6,5 @@ public class BuyingOptionsPanel : MarioObject
 {
 	protected override void Tick()
 	{
-		
 	}
 }

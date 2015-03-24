@@ -308,7 +308,7 @@ public class World : MonoBehaviour
 		}
 #endif
 
-		if (UpdateBeginLevel()) 
+		if (UpdateBeginLevel())
 			return;
 
 		if (_first)
@@ -328,7 +328,7 @@ public class World : MonoBehaviour
 	/// <returns></returns>
 	private bool UpdateBeginLevel()
 	{
-	// need to wait a few updates before beginning, because we can have nested SpawnGameObject components...
+		// need to wait a few updates before beginning, because we can have nested SpawnGameObject components...
 		if (_beginLevelAfterThisManyUpdates > 0)
 		{
 			--_beginLevelAfterThisManyUpdates;
@@ -444,5 +444,4 @@ public class World : MonoBehaviour
 	{
 		return GetInfo(type);
 	}
-
 }

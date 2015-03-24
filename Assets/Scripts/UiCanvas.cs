@@ -9,6 +9,7 @@ public class UiCanvas : MarioObject
 
 	public GameObject CarTimerObject;
 	public GameObject TapToStart;
+	public GameObject GameOverPanel;
 	public GameObject LevelCompleted;
 	public GameObject HighScore;
 	public GameObject PausedPanel;
@@ -29,6 +30,7 @@ public class UiCanvas : MarioObject
 		LevelCompleted.SetActive(false);
 		HighScore.gameObject.SetActive(false);
 		PausedPanel.gameObject.SetActive(false);
+		GameOverPanel.gameObject.SetActive(false);
 
 		TintPanel.SetActive(true);
 	}

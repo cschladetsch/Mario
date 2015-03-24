@@ -14,7 +14,7 @@ namespace Flow
 	/// <list>
 	/// <item>fire its TimedOut event</item>
 	/// <item>set its HasTimedOut property to true, and then</item>
-	/// <item>Complete itself</item>
+	/// <item>CompleteDeliveryToFactory itself</item>
 	/// </list>
 	/// </summary>
 	public interface ITimesOut : ITransient

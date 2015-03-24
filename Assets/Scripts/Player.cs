@@ -240,6 +240,9 @@ public class Player : MarioObject
 				OnCakeDropped(this);
 
 			LoseLife();
+
+			if (CurrentLevel.NoMoreCakes)
+				CurrentLevel.Truck.StartEmptying();
 		}
 	}
 
@@ -316,6 +319,8 @@ public class Player : MarioObject
 	{
 		World.Pause(true);
 
+		Canvas.GameOverPanel.gameObject.SetActive(true);
+
 		if (!_canvas.Score)
 			return;
 
@@ -340,6 +345,11 @@ public class Player : MarioObject
 	public void Reset()
 	{
 		Lives = 3;
+		Gold = 5;
+
+		Inventory = IngredientItem.CreateIngredientDict<int>();
+		foreach (var cooker in World.BakeryArea.gameObject.GetComponentsInChildren<Cooker>())
+			cooker.Reset();
 
 		UpdateUi();
 	}
@@ -358,7 +368,7 @@ public class Player : MarioObject
 
 	public void CookedItem(IngredientType type, int count)
 	{
-		//Debug.Log("Player.CookedItem: " + type);
+		Debug.Log("Player.CookedItem: " + type);
 		Inventory[type] += count;
 
 		UpdateUi();
@@ -452,6 +462,13 @@ public class Player : MarioObject
 	public void AddCake(IngredientType type)
 	{
 		Inventory[type]++;
+		UpdateUi();
+	}
+
+	public void AddGold(int amount)
+	{
+		Debug.Log("Player added " + amount + " gold");
+		Gold += amount;
 		UpdateUi();
 	}
 }

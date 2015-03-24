@@ -48,6 +48,7 @@ public class DeliveryTruck : MarioObject
 	internal Dictionary<IngredientType, int> Contents;
 
 	public bool Delivering { get { return _delivering; } }
+	public bool Pulling;
 
 	private void UpdateDisplay()
 	{
@@ -80,7 +81,7 @@ public class DeliveryTruck : MarioObject
 
 	public void PlayButtonPressed()
 	{
-		Complete();
+		CompleteDeliveryToFactory();
 	}
 
 	/// <summary>
@@ -101,6 +102,9 @@ public class DeliveryTruck : MarioObject
 
 	public void BuyItem(GameObject go)
 	{
+		if (Pulling)
+			return;
+
 		if (Contents.Sum(c => c.Value) == 6)
 		{
 			//Debug.Log("Currently limited to 6 items max");
@@ -182,6 +186,9 @@ public class DeliveryTruck : MarioObject
 
 	private float CalcDeliveryTime()
 	{
+		if (World.GodMode)
+			return 1;
+
 		return DeliveryTime + Contents.Sum(c => c.Value);
 	}
 
@@ -250,17 +257,24 @@ public class DeliveryTruck : MarioObject
 		DeliveryButton.interactable = Contents.Sum(c => c.Value) > 0;
 	}
 
-	public void Complete()
+	public void CompleteDeliveryToFactory()
 	{
-		Debug.LogWarning("DeliveryTruck.Complete");
+		var sum = Contents.Sum(c => c.Value);
+		Debug.LogWarning("DeliveryTruck.CompleteDeliveryToFactory: " + sum);
+		if (sum == 0)
+		{
+			Debug.LogError("No delivery truck contents??");
+			Reset();
+		}
 
 		PlayButton.SetActive(true);
 		ProgressBar.gameObject.SetActive(false);
 
 		TurnTimerOn(false);
 
+		var cp = Contents.ToDictionary(kv => kv.Key, kv => kv.Value);
 		World.ChangeArea(AreaType.Factory);
-		World.CurrentLevel.AddIngredients(Contents);
+		World.CurrentLevel.AddIngredients(cp);
 
 		Ready = false;
 
@@ -324,7 +338,10 @@ public class DeliveryTruck : MarioObject
 
 	public void Reset()
 	{
+		Debug.Log("DeliveryTruck.Reset");
+
 		Contents = IngredientItem.CreateIngredientDict<int>();
 		_delivering = false;
+		Pulling = false;
 	}
 }

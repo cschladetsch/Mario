@@ -56,7 +56,7 @@ public class Cooker : MarioObject
 	/// <summary>
 	/// What is currently in the cooker
 	/// </summary>
-	private readonly Dictionary<IngredientType, int> _inventory = IngredientItem.CreateIngredientDict<int>();
+	private Dictionary<IngredientType, int> _inventory = IngredientItem.CreateIngredientDict<int>();
 
 	private readonly Dictionary<IngredientType, int> _requirements = IngredientItem.CreateIngredientDict<int>();
 
@@ -330,13 +330,23 @@ public class Cooker : MarioObject
 
 	IEnumerator MoveCookedItems(IGenerator self)
 	{
+		var product = World.BakeryArea.SellingProductsPanel.GetProduct(Recipe.Result);
 		for (var i = 0; i < Recipe.NumResults; i++)
 		{
-			var area = World.Areas[AreaType.Bakery] as BakeryArea;
-			ItemAnimation.Animate(Recipe.Result, Product.gameObject, area.SellingProductsPanel.GetProduct(Recipe.Result), 2, MovedToSellingArea);
-			yield return self.ResumeAfter(TimeSpan.FromSeconds(0.5f));
+			if (World.CurrentArea != World.BakeryArea)
+			{
+				Player.CookedItem(Recipe.Result, 1);
+			}
+			else
+			{
+				// don't animate a cooked item if we're not in the bakery area
+				ItemAnimation.Animate(Recipe.Result, Product.gameObject, product, 2, MovedToSellingArea);
+			}
+
+			yield return self.ResumeAfter(TimeSpan.FromSeconds(UnityEngine.Random.Range(.5f, 1.0f)));
 		}
 
+		self.Complete();
 	}
 
 	private void RemoveItemsFromInventory()
@@ -398,5 +408,12 @@ public class Cooker : MarioObject
 	public bool Cooking()
 	{
 		return _cooking;
+	}
+
+	public void Reset()
+	{
+		_cooking = false;
+		_inventory = IngredientItem.CreateIngredientDict<int>();
+		ProgressBar.Reset();
 	}
 }

@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
@@ -170,6 +170,7 @@ public class Conveyor : MarioObject
 
 	public void Pause(bool pause)
 	{
+		// Debug.Log("Conveyor "+name+" pause set to "+pause);
 		Paused = pause;
 	}
 

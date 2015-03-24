@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 
 /// <summary>
 /// The visual representation of a cake in the game.
@@ -63,7 +63,10 @@ public class Cake : Pickup
 		_droppedTimer -= GameDeltaTime;
 		if (_droppedTimer < 0)
 		{
+			Debug.Log("Cake '"+Type+"' has fallen for too long, destroying");
 			CurrentLevel.DestroyCake(this);
+			if (CurrentLevel.NoMoreCakes)
+				Truck.StartEmptying();
 		}
 	}
 

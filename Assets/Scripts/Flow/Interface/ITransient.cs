@@ -25,7 +25,7 @@ namespace Flow
 		Guid Guid { get; }
 
 		/// <summary>
-		/// Occurs when the Complete method is first called. Successive calls to Complete will do nothing.
+		/// Occurs when the CompleteDeliveryToFactory method is first called. Successive calls to CompleteDeliveryToFactory will do nothing.
 		/// </summary>
 		event TransientHandler Completed;
 
@@ -54,20 +54,20 @@ namespace Flow
 		/// Gets a value indicating whether this <see cref="Flow.ITransient"/> is still active and has not been Completed.
 		/// </summary>
 		/// <value>
-		/// True if this ITransient instance has not been Complete()'d.
+		/// True if this ITransient instance has not been CompleteDeliveryToFactory()'d.
 		/// </value>
 		bool Active { get; }
 
 		/// <summary>
-		/// Complete this instance and fire the Completed event iff it has not already been Completed.
+		/// CompleteDeliveryToFactory this instance and fire the Completed event iff it has not already been Completed.
 		/// </summary>
 		void Complete();
 
 		/// <summary>
-		/// Ensure that this instance is Complete()'d after the given other transient is Completed.
+		/// Ensure that this instance is CompleteDeliveryToFactory()'d after the given other transient is Completed.
 		/// </summary>
 		/// <param name='other'>
-		/// Another transient that is stopping this transient from being Complete()'d.
+		/// Another transient that is stopping this transient from being CompleteDeliveryToFactory()'d.
 		/// </param>
 		void CompleteAfter(ITransient other);
 

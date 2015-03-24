@@ -203,6 +203,11 @@ public class World : MonoBehaviour
 
 	public void Reset()
 	{
+		//Kernel = Flow.Create.NewKernel();
+		CurrentLevel.Reset();
+		Player.Reset();
+		CurrentArea.Reset();
+		Truck.Reset();
 	}
 
 	public void ChangeArea(AreaType area)
@@ -292,10 +297,19 @@ public class World : MonoBehaviour
 
 	private void Update()
 	{
-		//if (!Paused)
-			Kernel.Step();
+		Kernel.Step();
 
-		if (UpdateBeginLevel()) return;
+#if !FINAL
+		if (Input.GetKeyDown(KeyCode.G))
+		{
+			GodMode = !GodMode;
+			if (GodMode)
+				Player.AddGold(500);
+		}
+#endif
+
+		if (UpdateBeginLevel()) 
+			return;
 
 		if (_first)
 		{
@@ -430,4 +444,5 @@ public class World : MonoBehaviour
 	{
 		return GetInfo(type);
 	}
+
 }

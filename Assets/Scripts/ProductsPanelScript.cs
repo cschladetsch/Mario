@@ -20,7 +20,15 @@ public class ProductsPanelScript : MarioObject
 
 	protected override void Construct()
 	{
+		GatherProducts();
+	}
+
+	private void GatherProducts()
+	{
 		Products.AddRange(gameObject.GetComponentsInChildren<ProductItem>());
+		Debug.Log("ProductsPanelScript: " + Products.Count);
+		foreach (var p in Products)
+			Debug.Log(p.Type);
 	}
 
 	protected override void Begin()
@@ -37,6 +45,11 @@ public class ProductsPanelScript : MarioObject
 
 	public GameObject GetProduct(IngredientType type)
 	{
+
+		//Debug.Log("ProductPanelScript.GetProduct: " + type + ", prods.Count=" + Products.Count);
+		//foreach (var p in Products)
+		//	Debug.Log(p.Type);
+
 		var prod = Products.FirstOrDefault(p => p.Type == type);
 		return prod == null ? null : prod.gameObject;
 	}
@@ -45,8 +58,12 @@ public class ProductsPanelScript : MarioObject
 	{
 		//Debug.Log("ProductsPanelScript.UpdateUI");
 		foreach (var p in Products)
-		{
 			p.UpdateUi();
-		}
+	}
+
+	public void Reset()
+	{
+		GatherProducts();
+		UpdateUi();
 	}
 }

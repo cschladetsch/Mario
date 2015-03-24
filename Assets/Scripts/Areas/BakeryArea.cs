@@ -36,6 +36,14 @@ public class BakeryArea : AreaBase
 		InventoryPanel = FindObjectOfType<InventoryPanel>();
 	}
 
+	public override void Reset()
+	{
+		base.Reset();
+		DeliveryTruck.Reset();
+		InventoryPanel.Reset();
+		SellingProductsPanel.Reset();
+	}
+
 	public void IngredientButtonPressed(IngredientType type)
 	{
 		Debug.Log("Added a " + type);
@@ -57,7 +65,7 @@ public class BakeryArea : AreaBase
 
 #if DEBUG
 		if (Input.GetKeyDown(KeyCode.C))
-			DeliveryTruck.Complete();
+			DeliveryTruck.CompleteDeliveryToFactory();
 #endif
 	}
 
@@ -96,8 +104,14 @@ public class BakeryArea : AreaBase
 		DeliveryTruck.ShowBuyingPanel(false);
 	}
 
+	/// <summary>
+	/// Move all items from truck to inventory panel then reset it
+	/// </summary>
+	/// <param name="cakes"></param>
+	/// <returns></returns>
 	public IGenerator TakeDelivery(List<Cake> cakes)
 	{
+		DeliveryTruck.Pulling = true;
 		var take = Kernel.Factory.NewCoroutine(TakeDelivery, cakes);
 		take.Completed += f => DeliveryTruck.Reset();
 		return take;
@@ -105,6 +119,8 @@ public class BakeryArea : AreaBase
 
 	public IEnumerator TakeDelivery(IGenerator self, List<Cake> cakes)
 	{
+		Debug.Log("BakeryArea.TakeDelivery: " + cakes.Count);
+
 		foreach (var c in cakes)
 		{
 			ItemAnimation.Animate(c.Type, DeliveryTruck.gameObject,
@@ -114,6 +130,8 @@ public class BakeryArea : AreaBase
 		}
 
 		DeliveryTruck.Reset();
+
+		self.Complete();
 	}
 
 	private void AddIngredient(IngredientType type)

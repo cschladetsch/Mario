@@ -39,7 +39,24 @@ public class ItemAnimation : MarioObject
 
 	static IEnumerator AnimateItemCoro(IGenerator self, Args args)
 	{
+		if (!args.From)
+		{
+			Debug.Log("AnimateItemCoro: From is null");
+			yield break;
+		}
+		if (!args.To)
+		{
+			Debug.Log("AnimateItemCoro: To is null");
+			yield break;
+		}
+
 		var item = (GameObject)Instantiate(args.World.GetInfo(args.Type).ImagePrefab);
+		if (item == null)
+		{
+			Debug.LogWarning("Couldn't make image for " + args.Type);
+			yield break;
+		}
+
 		item.transform.SetParent(World.Canvas.transform);
 
 		var start = args.From.transform.position;

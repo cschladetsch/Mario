@@ -95,17 +95,21 @@ public class InventoryPanel : MarioObject
 			return;
 		}
 
-		var truck = FindObjectOfType<DeliveryTruck>();
-		if (!truck.Delivering)
-		{
-			truck.ShowBuyingPanel(true);
-			truck.BuyItem(item);
-		}
+		//var truck = FindObjectOfType<DeliveryTruck>();
+		//if (!truck.Delivering)
+		//{
+		//	truck.ShowBuyingPanel(true);
+		//	truck.BuyItem(item);
+		//}
 	}
 
 	public GameObject GetButton(IngredientType type)
 	{
 		var text = Counts[type];
 		return text == null ? null : text.gameObject;
+	}
+
+	public void Reset()
+	{
 	}
 }

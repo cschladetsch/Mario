@@ -1455,7 +1455,7 @@ MonoBehaviour:
   SpeedIncrementTime: 30
   SpawnIncrementRate: 1.5
   SpeedIncrementRate: 1.29999995
-  ConveyorSpeed: .159999996
+  ConveyorSpeed: .400000006
   SpeedLevel: 0
   OverallSpeed: 1
   _spawners: []
@@ -1473,7 +1473,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Paused: 0
-  Speed: .200000003
+  Speed: .800000012
   MoveRight: 1
   MinCakeSeparation: 2
   _contents: []
@@ -1489,7 +1489,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Paused: 0
-  Speed: .200000003
+  Speed: .800000012
   MoveRight: 0
   MinCakeSeparation: 2
   _contents: []
@@ -1505,7 +1505,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Paused: 0
-  Speed: .200000003
+  Speed: .800000012
   MoveRight: 0
   MinCakeSeparation: 2
   _contents: []
@@ -1539,7 +1539,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Paused: 0
-  Speed: .200000003
+  Speed: .800000012
   MoveRight: 0
   MinCakeSeparation: 2
   _contents: []
@@ -1555,7 +1555,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Paused: 0
-  Speed: .200000003
+  Speed: .800000012
   MoveRight: 1
   MinCakeSeparation: 2
   _contents: []
@@ -1584,7 +1584,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Paused: 0
-  Speed: .200000003
+  Speed: .800000012
   MoveRight: 0
   MinCakeSeparation: 2
   _contents: []

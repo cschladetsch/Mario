@@ -191,6 +191,7 @@ public class Truck : MarioObject
 
 		World.ChangeArea(AreaType.Bakery);
 
+		Debug.Log("Truck.EndEmptying: " + _cakes.Count);
 		World.BakeryArea.TakeDelivery(_cakes).Completed += f =>
 		{
 			Debug.Log("TakeDelivery Completed");
@@ -302,6 +303,7 @@ public class Truck : MarioObject
 
 	public void Reset()
 	{
+		Debug.Log("Truck.Reset");
 		foreach (var c in _cakes)
 			Destroy(c.gameObject);
 

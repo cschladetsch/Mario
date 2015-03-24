@@ -23,6 +23,8 @@ public class FactoryArea : AreaBase
 
 		//World.CurrentLevel.SpeedLevel = 0;
 
+		World.CurrentLevel.Paused = false;
+
 		Truck.Reset();
 	}
 

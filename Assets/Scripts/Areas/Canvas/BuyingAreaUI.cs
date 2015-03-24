@@ -82,7 +82,7 @@ public class BuyingAreaUI : MarioObject
 			ClearContents();
 		}
 		else
-			truck.Complete();
+			truck.CompleteDeliveryToFactory();
 	}
 
 	private void ClearButtons()
@@ -96,7 +96,7 @@ public class BuyingAreaUI : MarioObject
 	}
 
 	/// <summary>
-	/// Complete the order, remove the UI, start the truck
+	/// CompleteDeliveryToFactory the order, remove the UI, start the truck
 	/// </summary>
 	public void FinishOrder()
 	{
@@ -107,7 +107,7 @@ public class BuyingAreaUI : MarioObject
 	public void EnterGame()
 	{
 		var truck = FindObjectOfType<DeliveryTruck>();
-		truck.Complete();
+		truck.CompleteDeliveryToFactory();
 	}
 
 	private void UpdateDisplay()

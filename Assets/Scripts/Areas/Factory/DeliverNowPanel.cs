@@ -41,9 +41,9 @@ public class DeliverNowPanel : MarioObject
 		if (_truck == null)
 			_truck = FindObjectOfType<DeliveryTruck>();
 
-		//// TODO WTF why does this keep happening
-		//if (World == null)
-		//	World = FindObjectOfType<World>();
+		// TODO WTF why does this keep happening
+		if (World == null)
+			World = FindObjectOfType<World>();
 
 		foreach (var kv in _truck.Contents)
 		{
@@ -84,7 +84,7 @@ public class DeliverNowPanel : MarioObject
 		//Debug.Log("Delivering now...");
 		Player.RemoveGold(deliveryCost);
 		gameObject.SetActive(false);
-		_truck.Complete();
+		_truck.CompleteDeliveryToFactory();
 	}
 
 	protected override void Tick()

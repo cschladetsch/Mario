@@ -242,20 +242,23 @@ public class DeliveryTruck : MarioObject
 	public void CancelOrdering()
 	{
 		BuyingOptions.SetActive(false);
-		Contents = IngredientItem.CreateIngredientDict<int>();
 		RefundItems();
+		Contents = IngredientItem.CreateIngredientDict<int>();
 		UpdateDisplay();
 	}
 
 	private void RefundItems()
 	{
-		//Debug.Log("RefundItems");
+		Debug.Log("RefundItems: " + _buttons.Count);
+		if (_buttons.Count == 0)
+			GatherIngredientButtons();
+
 		foreach (var b in _buttons)
 		{
 			if (b.Amount == 0)
 				continue;
 
-			//Debug.Log("Refunding " + b.Type + "x" + b.Amount + " for " + World.GetInfo(b.Type).Buy + " each");
+			Debug.Log("Refunding " + b.Type + "x" + b.Amount + " for " + World.GetInfo(b.Type).Buy + " each");
 			Player.Gold += b.Amount*World.GetInfo(b.Type).Buy;
 
 			b.SetAmount(0);

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Flow;
 using UnityEngine;
 
@@ -119,7 +120,8 @@ public class BakeryArea : AreaBase
 	{
 		//Debug.Log("BakeryArea.TakeDelivery: " + cakes.Count);
 
-		foreach (var c in cakes)
+		var dupe = cakes.ToList();
+		foreach (var c in dupe)
 		{
 			ItemAnimation.Animate(c.Type, DeliveryTruck.gameObject,
 				InventoryPanel.GetButton(c.Type).gameObject, 2, AddIngredient);
@@ -128,8 +130,6 @@ public class BakeryArea : AreaBase
 		}
 
 		DeliveryTruck.Reset();
-
-		self.Complete();
 	}
 
 	private void AddIngredient(IngredientType type)

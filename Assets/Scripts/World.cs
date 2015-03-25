@@ -129,7 +129,7 @@ public class World : MonoBehaviour
 		{
 			var info = tr.GetComponent<IngredientInfo>();
 			IngredientInfo.Add(info.Type, info);
-			Debug.Log("Adding info about " + info.Type);
+			//Debug.Log("Adding info about " + info.Type);
 		}
 	}
 

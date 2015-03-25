@@ -268,6 +268,8 @@ public class Player : MarioObject
 
 	public void AddLife()
 	{
+		Debug.Log("Player.AddLife");
+
 		++Lives;
 
 		UpdateUi();

@@ -11,7 +11,7 @@ public class ExtraLife : Cake
 
 		Remove();
 
-		UnityEngine.Debug.Log("Character hit extra life, returning false");
+		//UnityEngine.Debug.Log("Character hit extra life, returning false");
 
 		return false;
 	}

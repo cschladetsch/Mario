@@ -219,8 +219,10 @@ public class Level : MarioObject
 			return;
 		}
 
-		// TODO: 
 		var pos = IncomingPanel.RemoveCake(type);
+		if (pos == Vector3.zero)
+			pos = CakeSpawnPoint.transform.position;
+
 		Inventory[type]--;
 
 		var born = spawnInfo.Spawn();

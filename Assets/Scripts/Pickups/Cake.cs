@@ -38,15 +38,15 @@ public class Cake : Pickup
 
 	public override bool CharacterHit(Character character, Conveyor conv, Conveyor next)
 	{
-		Debug.Log("CharacterHit " + name);
+		//Debug.Log("CharacterHit " + name);
 
 		if (!base.CharacterHit(character, conv, next))
 		{
-			Debug.Log("Not transitioning because we failed CharacterHit");
+			//Debug.Log("Not transitioning because we failed CharacterHit");
 			return false;
 		}
 
-		Debug.Log("Hit " + name + " and still processing");
+		//Debug.Log("Hit " + name + " and still processing");
 
 		if (!gameObject)
 			return false;
@@ -58,7 +58,7 @@ public class Cake : Pickup
 
 		if (next)
 		{
-			Debug.Log("Adding transition for " + name);
+			//Debug.Log("Adding transition for " + name);
 			World.Kernel.Factory.NewCoroutine(TransitionCake, conv, next);
 			return true;
 		}

@@ -4810,10 +4810,6 @@ Prefab:
       propertyPath: m_AnchoredPosition.x
       value: 20
       objectReference: {fileID: 0}
-    - target: {fileID: 176566, guid: 46f03b40df539b043974f54ddc0afe9f, type: 2}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 46f03b40df539b043974f54ddc0afe9f, type: 2}
   m_RootGameObject: {fileID: 403044516}

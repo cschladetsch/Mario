@@ -2420,6 +2420,7 @@ GameObject:
   - 224: {fileID: 315068282}
   - 222: {fileID: 315068284}
   - 114: {fileID: 315068283}
+  - 114: {fileID: 315068285}
   m_Layer: 5
   m_Name: Text
   m_TagString: Untagged
@@ -2469,13 +2470,28 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Factory
+  m_Text: Play!
 --- !u!222 &315068284
 CanvasRenderer:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 315068281}
+--- !u!114 &315068285
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 315068281}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d70bf2f776fdd3648aaa402bcd16fa41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Paused: 0
+  From: {r: .448275924, g: 1, b: 0, a: 1}
+  To: {r: 1, g: 1, b: 1, a: 1}
+  Interval: .300000012
 --- !u!1 &329734250
 GameObject:
   m_ObjectHideFlags: 0
@@ -3671,6 +3687,7 @@ GameObject:
   - 222: {fileID: 480271814}
   - 114: {fileID: 480271813}
   - 114: {fileID: 480271815}
+  - 114: {fileID: 480271816}
   m_Layer: 5
   m_Name: DeliveryVan
   m_TagString: Untagged
@@ -3743,16 +3760,33 @@ MonoBehaviour:
   Paused: 0
   DeliverNowPanel: {fileID: 2116243664}
   DeliveryButton: {fileID: 1941931454}
+  DeliverNowCostFraction: .400000006
   Ready: 0
-  DeliveryTime: 30
+  DeliveryTime: 15
   Collider: {fileID: 0}
   Button: {fileID: 0}
   BuyingOptions: {fileID: 1110832444}
   PlayButton: {fileID: 1028618148}
   PlayButtonText: {fileID: 315068283}
+  DeliverText: {fileID: 751647301}
   ProgressBar: {fileID: 1683169353}
   _deliveryTimer: 0
   Pulling: 0
+--- !u!114 &480271816
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 480271811}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d70bf2f776fdd3648aaa402bcd16fa41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Paused: 0
+  From: {r: 1, g: .921568632, b: .0156862754, a: 1}
+  To: {r: 1, g: 1, b: 1, a: .450980395}
+  Interval: .5
 --- !u!1001 &491201018
 Prefab:
   m_ObjectHideFlags: 0
@@ -6148,10 +6182,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: .196078435, g: .196078435, b: .196078435, a: 1}
+  m_Color: {r: 0, g: 0, b: 0, a: 1}
   m_FontData:
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
-    m_FontSize: 14
+    m_FontSize: 22
     m_FontStyle: 0
     m_BestFit: 1
     m_MinSize: 10
@@ -7675,6 +7709,7 @@ GameObject:
   - 222: {fileID: 1028618152}
   - 114: {fileID: 1028618151}
   - 114: {fileID: 1028618150}
+  - 114: {fileID: 1028618153}
   m_Layer: 5
   m_Name: PlayButton
   m_TagString: Untagged
@@ -7690,7 +7725,7 @@ RectTransform:
   m_GameObject: {fileID: 1028618148}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1.46236062, y: 1.4623605, z: 1.4623605}
   m_Children:
   - {fileID: 315068282}
   m_Father: {fileID: 480271812}
@@ -7780,6 +7815,21 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1028618148}
+--- !u!114 &1028618153
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1028618148}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d70bf2f776fdd3648aaa402bcd16fa41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Paused: 0
+  From: {r: .282758594, g: 1, b: 0, a: 1}
+  To: {r: 1, g: .889655232, b: 0, a: 1}
+  Interval: .5
 --- !u!1 &1040469541
 GameObject:
   m_ObjectHideFlags: 0
@@ -8180,7 +8230,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1110832445
 RectTransform:
   m_ObjectHideFlags: 0
@@ -12941,7 +12991,7 @@ RectTransform:
   m_GameObject: {fileID: 1683169351}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: .594886005, y: .832839966, z: .832839966}
+  m_LocalScale: {x: 1.08497941, y: 1.30664444, z: 1.30664444}
   m_Children:
   - {fileID: 751647300}
   m_Father: {fileID: 480271812}
@@ -15687,7 +15737,6 @@ MonoBehaviour:
   YesButton: {fileID: 583134610}
   NoButton: {fileID: 2017935281}
   DisplayText: {fileID: 823334252}
-  DeliverNowCostFraction: .699999988
 --- !u!1 &2127052963
 GameObject:
   m_ObjectHideFlags: 0

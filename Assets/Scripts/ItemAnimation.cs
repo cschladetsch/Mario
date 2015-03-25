@@ -51,7 +51,7 @@ public class ItemAnimation : MarioObject
 
 		self.Completed += f =>
 		{
-			Debug.Log("Completed anim for " + args.Type);
+			//Debug.Log("Completed animation for " + args.Type);
 			if (args.Callback != null)
 				args.Callback(args.Type);
 			Destroy(item);

@@ -135,9 +135,9 @@ public class Cooker : MarioObject
 		UpdateDisplay();
 		Player.UpdateUi();
 
-		foreach (var kv in _inventory)
-			if (kv.Value > 0)
-				Debug.Log(string.Format("Have {1} of {0} left", kv.Value, kv.Key));
+		//foreach (var kv in _inventory)
+		//	if (kv.Value > 0)
+		//		Debug.Log(string.Format("Have {1} of {0} left", kv.Value, kv.Key));
 	}
 
 	private void GatherRequirements()

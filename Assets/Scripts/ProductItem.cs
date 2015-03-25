@@ -39,7 +39,6 @@ public class ProductItem : MarioObject
 			if (Player.Inventory[Type] == 0)
 				break;
 
-			UnityEngine.Debug.Log("World.CurrentArea.ItemSold: " + Type);
 			World.CurrentArea.ItemSold(Type);
 
 			elapsed -= _ingredientInfo.SellingTime;

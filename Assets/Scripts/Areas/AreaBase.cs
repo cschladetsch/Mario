@@ -80,7 +80,7 @@ public class AreaBase : MarioObject
 	/// <param name="type"></param>
 	public virtual void ItemSold(IngredientType type)
 	{
-		Debug.Log("AreaBase.ItemSold: " + type);
+		//Debug.Log("AreaBase.ItemSold: " + type);
 		var info = World.GetInfo(type);
 		Player.SoldItem(info);
 		World.GoalPanel.AddItem(type);

@@ -12,6 +12,8 @@ public class DeliveryTruck : MarioObject
 
 	public Button DeliveryButton;
 
+	public float DeliverNowCostFraction = 0.4f;
+
 	/// <summary>
 	/// True if truck has been delivered
 	/// </summary>
@@ -35,6 +37,8 @@ public class DeliveryTruck : MarioObject
 
 	public Text PlayButtonText;
 
+	public Text DeliverText;
+
 	public ProgressBar ProgressBar;
 
 	private readonly List<IngredientButtton> _buttons = new List<IngredientButtton>();
@@ -44,6 +48,8 @@ public class DeliveryTruck : MarioObject
 	private bool _delivering;
 
 	internal Dictionary<IngredientType, int> Contents;
+
+	private MakeGlow _glow;
 
 	public bool Delivering
 	{
@@ -62,6 +68,12 @@ public class DeliveryTruck : MarioObject
 
 	public void VanButtonPressed()
 	{
+		if (_glow.enabled)
+		{
+			_glow.enabled = false;
+			GetComponent<Image>().color = Color.white;
+		}
+
 		if (Ready)
 			PlayButtonPressed();
 
@@ -137,6 +149,8 @@ public class DeliveryTruck : MarioObject
 
 	protected override void Begin()
 	{
+		_glow = GetComponent<MakeGlow>();
+
 		base.Begin();
 
 		DeliverNowPanel.gameObject.SetActive(false);
@@ -252,6 +266,8 @@ public class DeliveryTruck : MarioObject
 	{
 		base.Tick();
 
+		DeliverText.text = string.Format("{0}$ to Deliver", (int)CalcDeliveryCost());
+
 		UpdateDeliveryButton();
 
 		UpdateDelivering();
@@ -260,6 +276,21 @@ public class DeliveryTruck : MarioObject
 	private void UpdateDeliveryButton()
 	{
 		DeliveryButton.interactable = Contents.Sum(c => c.Value) > 0;
+	}
+
+	public int CalcDeliveryCost()
+	{
+		var sum = 0;
+		foreach (var kv in Contents)
+		{
+			var item = kv.Key;
+			var count = kv.Value;
+			sum += World.GetInfo(item).Buy*count;
+		}
+
+		var fullCost = sum*DeliverNowCostFraction;
+		var percent = (1.0f - ProgressBar.PercentFinished)*3;	// 0 -> 2, 1 -> 0
+		return Mathf.Max(2, (int)(percent*fullCost));
 	}
 
 	public void CompleteDeliveryToFactory()

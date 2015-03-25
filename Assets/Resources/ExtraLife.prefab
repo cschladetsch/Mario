@@ -59,7 +59,7 @@ Transform:
   m_GameObject: {fileID: 100000}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: .5, y: .360000014, z: 1}
   m_Children:
   - {fileID: 404316}
   m_Father: {fileID: 400002}
@@ -71,7 +71,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100002}
   m_LocalRotation: {x: 0, y: 1, z: 0, w: -4.37113883e-08}
-  m_LocalPosition: {x: 70.3132401, y: 93.8087234, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1.5, y: 1, z: 1}
   m_Children:
   - {fileID: 400000}
@@ -150,7 +150,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 100002}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ad8e5ad63e335254bae16b79af135f53, type: 3}
+  m_Script: {fileID: 11500000, guid: 33ff3ff82c077e241a120508af627c50, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   Paused: 0
@@ -161,7 +161,7 @@ MonoBehaviour:
   _hangTimer: 0
   _dropped: 0
   _droppedTimer: 0
-  Type: 1
+  Type: 7
   CostText: {fileID: 0}
   Delivered: 0
   TransitionTime: 3
@@ -185,7 +185,7 @@ SpriteRenderer:
   m_ScaleInLightmap: 1
   m_SortingLayerID: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 854d9afd83e958c4cb59c9cd39f0cb1a, type: 3}
+  m_Sprite: {fileID: 21300000, guid: bdab1d2d63dc6e849a34cbe0387a7877, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
 --- !u!1001 &100100000
 Prefab:

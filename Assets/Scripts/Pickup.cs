@@ -182,13 +182,16 @@ public class Pickup : MarioObject
 		Destroy(gameObject);
 	}
 
-	public virtual void CharacterHit(Character character, Conveyor conv, Conveyor next)
+	public virtual bool CharacterHit(Character character, Conveyor conv, Conveyor next)
 	{
+		return true;
 	}
 
 	protected void Remove()
 	{
+		Debug.Log("Obj " + name + " destroyed");
 		Conveyor.RemoveItem(this);
+
 		Destroy(gameObject);
 	}
 }

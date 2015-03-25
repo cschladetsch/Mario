@@ -36,29 +36,47 @@ public class Cake : Pickup
 		StartDropped(false);
 	}
 
-	public override void CharacterHit(Character character, Conveyor conv, Conveyor next)
+	public override bool CharacterHit(Character character, Conveyor conv, Conveyor next)
 	{
-		base.CharacterHit(character, conv, next);
+		Debug.Log("CharacterHit " + name);
+
+		if (!base.CharacterHit(character, conv, next))
+		{
+			Debug.Log("Not transitioning because we failed CharacterHit");
+			return false;
+		}
+
+		Debug.Log("Hit " + name + " and still processing");
+
+		if (!gameObject)
+			return false;
 
 		conv.RemoveItem(this);
 
 		if (!gameObject.activeSelf)
-			return;
+			return false;
 
 		if (next)
 		{
+			Debug.Log("Adding transition for " + name);
 			World.Kernel.Factory.NewCoroutine(TransitionCake, conv, next);
-			return;
+			return true;
 		}
 
 		// no next conveyor, add to truck
 		Truck.AddCake(this);
+
+		return true;
 	}
 
 	public float TransitionTime = 3;
 
 	private IEnumerator TransitionCake(IGenerator self, Conveyor from, Conveyor to)
 	{
+		// we got destroyed when we got picked up at end of conveyor
+		if (!gameObject)
+			yield break;
+
 		if (from == World.CurrentLevel.GetConveyor(0))
 		{
 			// TODO: animate straight across

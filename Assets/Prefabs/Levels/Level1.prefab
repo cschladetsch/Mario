@@ -72,7 +72,6 @@ GameObject:
   m_Component:
   - 4: {fileID: 458738}
   - 114: {fileID: 11458730}
-  - 114: {fileID: 11409584}
   m_Layer: 0
   m_Name: Level1
   m_TagString: Untagged
@@ -1438,26 +1437,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &11409584
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 158738}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7fc9a78396fa0104094cd9974547a1f4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Paused: 0
-  Prefab: {fileID: 100002, guid: 32f1bb4dd94bbc54184a411da716081f, type: 2}
-  Type: 6
-  Weight: 1
-  MinSpawnTime: 1
-  MaxSpawnTime: 1
-  MaxSpawns: 1
-  _spawnTimer: 5
-  SpawnsLeft: 1
 --- !u!114 &11458730
 MonoBehaviour:
   m_ObjectHideFlags: 1

@@ -1,21 +1,25 @@
-﻿/// <summary>
+﻿using System.Diagnostics;
+
+/// <summary>
 /// A Pickup that adds an extra life to the player
 /// </summary>
-public class ExtraLife : Pickup
+public class ExtraLife : Cake
 {
-	public override void CharacterHit(Character character, Conveyor conv, Conveyor next)
+	public override bool CharacterHit(Character character, Conveyor conv, Conveyor next)
 	{
-		base.CharacterHit(character, conv, next);
+		Player.AddLife();
 
 		Remove();
 
-		FindObjectOfType<Player>().AddLife();
+		UnityEngine.Debug.Log("Character hit extra life, returning false");
+
+		return false;
 	}
 
-	protected override void StartDropped(bool moveRight)
-	{
-		base.StartDropped(moveRight);
+	//protected override void StartDropped(bool moveRight)
+	//{
+	//	base.StartDropped(moveRight);
 
-		Remove();
-	}
+	//	Remove();
+	//}
 }

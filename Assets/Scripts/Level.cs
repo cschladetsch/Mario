@@ -548,6 +548,9 @@ public class Level : MarioObject
 			Inventory[kv.Key] += kv.Value;
 		}
 
+		Inventory[IngredientType.Bomb] = 2;
+		Inventory[IngredientType.ExtraLife] = 1;
+
 		AddSpawners(Inventory);
 	}
 

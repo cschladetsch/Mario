@@ -123,13 +123,13 @@ public class World : MonoBehaviour
 
 	private void GatherIngredients()
 	{
-		//Debug.Log("World.GatherIngredients");
+		Debug.Log("World.GatherIngredients");
 
 		foreach (Transform tr in IngredientDetails.transform)
 		{
 			var info = tr.GetComponent<IngredientInfo>();
 			IngredientInfo.Add(info.Type, info);
-			//Debug.Log("Adding info about " + info.Type);
+			Debug.Log("Adding info about " + info.Type);
 		}
 	}
 

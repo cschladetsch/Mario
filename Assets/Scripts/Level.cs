@@ -234,7 +234,7 @@ public class Level : MarioObject
 		// if we're in another area, we still want
 		// to spawn a cake, but we don't want to show it
 		if (cake && !World.CurrentArea.Visual)
-			AreaBase.ToggleVisuals(cake.gameObject, false);
+			AreaBase.SetVisual(cake.gameObject, false);
 
 		// FRI
 		if (ToTruck)

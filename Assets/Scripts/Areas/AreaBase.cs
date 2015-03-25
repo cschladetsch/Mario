@@ -47,9 +47,13 @@ public class AreaBase : MarioObject
 		base.BeforeFirstUpdate();
 	}
 
-	public virtual void SellItem(IngredientType type)
+	public virtual void ItemCooked(IngredientType item)
 	{
 	}
+
+	//public virtual void SellItem(IngredientType type)
+	//{
+	//}
 
 	protected override void Tick()
 	{
@@ -70,7 +74,21 @@ public class AreaBase : MarioObject
 		Visual = false;
 	}
 
-	public static void ToggleVisuals(GameObject root, bool on)
+	/// <summary>
+	/// Item has been sold by the player
+	/// </summary>
+	/// <param name="type"></param>
+	public virtual void ItemSold(IngredientType type)
+	{
+		Debug.Log("AreaBase.ItemSold: " + type);
+		var info = World.GetInfo(type);
+		Player.SoldItem(info);
+		World.GoalPanel.AddItem(type);
+		if (Player.GoalReached())
+			World.NextGoal();
+	}
+
+	public static void SetVisual(GameObject root, bool on)
 	{
 		foreach (var go in root.GetAllChildren())
 		{
@@ -84,19 +102,6 @@ public class AreaBase : MarioObject
 
 			go.gameObject.SetActive(on);
 		}
-	}
-
-	/// <summary>
-	/// Item has been sold by the player
-	/// </summary>
-	/// <param name="type"></param>
-	protected void ItemSold(IngredientType type)
-	{
-		var info = World.GetInfo(type);
-		Player.SoldItem(info);
-		World.GoalPanel.AddItem(type);
-		if (Player.GoalReached())
-			World.NextGoal();
 	}
 
 	public virtual void Reset()

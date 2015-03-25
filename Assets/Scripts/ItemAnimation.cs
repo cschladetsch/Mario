@@ -49,8 +49,16 @@ public class ItemAnimation : MarioObject
 			yield break;
 		}
 
+		self.Completed += f =>
+		{
+			Debug.Log("Completed anim for " + args.Type);
+			if (args.Callback != null)
+				args.Callback(args.Type);
+			Destroy(item);
+		};
+
 		var rc = item.GetRectTransform();
-		var scale = 0.15f;
+		const float scale = 0.15f;
 		var size = Mathf.Min(Screen.width*scale, Screen.height*scale);
 		rc.sizeDelta = new Vector2(size, size);
 		
@@ -66,19 +74,9 @@ public class ItemAnimation : MarioObject
 
 		var para = new ParabolaUI(start, mid, end, args.Time);
 
-		while (true)
+		while (!para.Completed)
 		{
-			if (para.Completed)
-			{
-				if (args.Callback != null)
-					args.Callback(args.Type);
-
-				Destroy(item);
-				yield break;
-			}
-
 			item.transform.position = para.UpdatePos();
-
 			yield return 0;
 		}
 	}

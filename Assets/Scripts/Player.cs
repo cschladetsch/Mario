@@ -29,10 +29,10 @@ public class Player : MarioObject
 	/// </summary>
 	public GameObject CharacterRightPrefab;
 
-	/// <summary>
-	/// The control (input) system
-	/// </summary>
-	public Control Control;
+	///// <summary>
+	///// The control (input) system
+	///// </summary>
+	//public Control Control;
 
 	/// <summary>
 	/// Where to store particle systems
@@ -119,15 +119,15 @@ public class Player : MarioObject
 		if (!Left)
 			return;
 
-		AreaBase.ToggleVisuals(Left.gameObject, show);
-		AreaBase.ToggleVisuals(Right.gameObject, show);
+		AreaBase.SetVisual(Left.gameObject, show);
+		AreaBase.SetVisual(Right.gameObject, show);
 	}
 
 	protected override void Construct()
 	{
 		//Debug.Log("Player.Construct");
 
-		Control = GetComponent<Control>();
+		//Control = GetComponent<Control>();
 		_canvas = FindObjectOfType<UiCanvas>();
 
 		PrepareEmptyInventory();

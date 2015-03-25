@@ -44,8 +44,8 @@ GameObject:
   - 224: {fileID: 22428696}
   - 222: {fileID: 22228696}
   - 114: {fileID: 11428694}
-  - 114: {fileID: 11428692}
   - 114: {fileID: 11428698}
+  - 114: {fileID: 11428692}
   m_Layer: 5
   m_Name: ProgressRing1
   m_TagString: Untagged
@@ -136,7 +136,7 @@ MonoBehaviour:
   m_Text: 0 %
 --- !u!114 &11428692
 MonoBehaviour:
-  m_ObjectHideFlags: 1
+  m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 128696}

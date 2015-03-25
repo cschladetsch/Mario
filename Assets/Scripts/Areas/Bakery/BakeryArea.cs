@@ -60,23 +60,22 @@ public class BakeryArea : AreaBase
 
 	public float SoldItemTravelTime = 2;
 
-	public override void SellItem(IngredientType type)
+	public override void ItemCooked(IngredientType type)
 	{
-		//Debug.Log("BakeryArea.SellItem: " + Time.frameCount);
-		base.SellItem(type);
-
-		var move = ItemAnimation.Animate(type, SellingProductsPanel.GetProduct(type), Canvas.PlayerGold.gameObject,
-			SoldItemTravelTime);
-		var sell = Kernel.Factory.NewCoroutine(ItemSold, type);
-		sell.ResumeAfter(move);
+		base.ItemCooked(type);
+		//Debug.Log("Bakery.ItemCooked: " + type);
 	}
 
-	private IEnumerator ItemSold(IGenerator self, IngredientType type)
+	public override void ItemSold(IngredientType type)
 	{
-		ItemSold(type);
+		base.ItemSold(type);
+		Debug.Log("Bakery.ItemSold: " + type);
 
-		yield break;
+		// TODO: add the resulting generator to a Group, so they can all be disabled when moving to factory area
+		_animators.Add(ItemAnimation.Animate(type, SellingProductsPanel.GetProduct(type), Canvas.PlayerGold.gameObject, SoldItemTravelTime));
 	}
+
+	readonly List<IGenerator> _animators = new List<IGenerator>(); 
 
 	public override void EnterArea()
 	{
@@ -91,6 +90,16 @@ public class BakeryArea : AreaBase
 
 		DeliveryTruck.Reset();
 		DeliveryTruck.ShowBuyingPanel(false);
+	}
+
+	public override void LeaveArea()
+	{
+		base.LeaveArea();
+
+		foreach (var an in _animators)
+		{
+			an.Complete();
+		}
 	}
 
 	/// <summary>

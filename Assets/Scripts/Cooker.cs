@@ -40,9 +40,9 @@ public class Cooker : MarioObject
 
 	public IFuture<bool> Future;
 
-	public delegate void CompletedHandler(IngredientType type);
+	//public delegate void CompletedHandler(IngredientType type);
 
-	public event CompletedHandler Completed;
+	//public event CompletedHandler Completed;
 
 	public UnityEngine.UI.Image ProductImage;
 
@@ -100,6 +100,12 @@ public class Cooker : MarioObject
 
 			RemoveItemsFromInventory();
 
+			for (var i = 0; i < Recipe.NumResults; i++)
+			{
+				//Debug.Log("World.CurrentlArea.ItemCooked " + Recipe.Result);
+				World.CurrentArea.ItemCooked(Recipe.Result);
+			}
+
 			numCooked += numResults;
 			elapsed -= cookingTime;
 		}
@@ -111,7 +117,7 @@ public class Cooker : MarioObject
 		while (numCooked > 0 && elapsed > sellTime)
 		{
 			Player.AddCake(info.Type);
-			World.CurrentArea.SellItem(info.Type);
+			World.CurrentArea.ItemSold(info.Type);
 			elapsed -= sellTime;
 			--numCooked;
 		}

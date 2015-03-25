@@ -76,7 +76,7 @@ public class ParabolaUI
 	{
 		//_alpha += UnityEngine.Time.deltaTime*_timeScale;
 		_alpha += Time.deltaTime*_timeScale;
-		return CalcAt(_startX + _alpha*(FinalPos.x - StartPos.x));
+		return CalcAt(_startX + _alpha*(_deltaX));
 	}
 
 	public void Update()

@@ -1,5 +1,4 @@
-﻿using System.Runtime.InteropServices;
-using UnityEngine;
+﻿using UnityEngine;
 
 /// <summary>
 /// Controller for main game transitions
@@ -21,6 +20,7 @@ public class FactoryArea : AreaBase
 		Canvas.GoalPanel.gameObject.SetActive(false);
 		Canvas.PlayerGold.transform.parent.gameObject.SetActive(false);
 
+		// dow we want to reset speed level when entering factory area?
 		//World.CurrentLevel.SpeedLevel = 0;
 
 		World.CurrentLevel.Paused = false;
@@ -76,12 +76,24 @@ public class FactoryArea : AreaBase
 		Canvas.PlayerGold.transform.parent.gameObject.SetActive(true);
 	}
 
+	public override void ItemCooked(IngredientType type)
+	{
+		base.ItemCooked(type);
+		Debug.Log("Factory.ItemCooked: " + type);
+	}
+
+	public override void ItemSold(IngredientType type)
+	{
+		base.ItemSold(type);
+		Debug.Log("Factory.ItemSold: " + type);
+	}
+
 	public void ToggleVisuals(bool on)
 	{
 		var level = World.CurrentLevel;
 		if (!level)
 			return;
 
-		ToggleVisuals(level.gameObject, on);
+		SetVisual(level.gameObject, on);
 	}
 }

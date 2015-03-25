@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using Flow;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class ItemAnimation : MarioObject
 {
@@ -45,6 +46,11 @@ public class ItemAnimation : MarioObject
 			yield break;
 		}
 
+		var rc = item.GetRectTransform();
+		var scale = 0.15f;
+		var size = Mathf.Min(Screen.width*scale, Screen.height*scale);
+		rc.sizeDelta = new Vector2(size, size);
+		
 		item.transform.SetParent(World.Canvas.transform);
 
 		var start = args.From.transform.position;

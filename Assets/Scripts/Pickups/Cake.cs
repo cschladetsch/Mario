@@ -59,23 +59,28 @@ public class Cake : Pickup
 
 	private IEnumerator TransitionCake(IGenerator self, Conveyor from, Conveyor to)
 	{
-		var start = transform.position;
-		var end = to.GetStartLocation();
-		var mid = start + (end - start)/2.0f;
-
-		var disp = 1.5f;
-		if (from.MoveRight)
-			mid.x += disp;
-		else
-			mid.x -= disp;
-
-		var para = new ParabolaUI(start, mid, end, TransitionTime);
-		Debug.DrawLine(start, mid, Color.green, 5);
-		Debug.DrawLine(mid, end, Color.red, 5);
-
-		while (!para.Completed)
+		if (from == World.CurrentLevel.GetConveyor(0))
 		{
-			transform.position = para.UpdatePos();
+			// TODO: animate straight across
+			to.AddItem(this, 0);
+			yield break;
+		}
+
+		var radius = 1.0f;
+		var time = 0.5f;
+		var startAngle = Mathf.Deg2Rad*270.0f;
+		var endAngle = Mathf.Deg2Rad*90.0f;
+		var da = endAngle - startAngle;
+
+		var dir = from.MoveRight ? -1.0f : 1.0f;
+		var startPos = transform.position;
+		for (var t = 0.0f; t < time; t += Time.deltaTime)
+		{
+			var angle = startAngle + dir*t/time*da;
+
+			var x = radius*(Mathf.Cos(angle));
+			var y = radius*(Mathf.Sin(angle));
+			transform.position = startPos + new Vector3(x,y  + radius,0);
 			yield return 0;
 		}
 

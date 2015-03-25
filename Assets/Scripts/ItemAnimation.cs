@@ -20,6 +20,9 @@ public class ItemAnimation : MarioObject
 	public static IGenerator Animate(IngredientType type, GameObject from, GameObject to, float time,
 		CallbackHandler cb = null)
 	{
+		// TODO: fix parabola time
+		time = 1;
+
 		var world = FindObjectOfType<World>();
 		return world
 			.Kernel.Factory.NewCoroutine(AnimateItemCoro,

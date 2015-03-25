@@ -88,6 +88,7 @@ public class MakeGlow : MarioObject
 			return;
 		}
 
-		_image.color = color;
+		if (_image)
+			_image.color = color;
 	}
 }

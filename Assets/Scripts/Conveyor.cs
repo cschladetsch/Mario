@@ -24,6 +24,11 @@ public class Conveyor : MarioObject
 		get { return _contents; }
 	}
 
+	public decimal NumCakes
+	{
+		get { return Contents.Sum(c => Cake.Is(c.Type) ? 1 : 0); }
+	}
+
 	/// <summary>
 	/// The cakes on this conveyor
 	/// </summary>

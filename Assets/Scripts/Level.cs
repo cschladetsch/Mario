@@ -67,7 +67,7 @@ public class Level : MarioObject
 				return true;
 			}
 
-			if (Conveyors.Any(c => c.Contents.Count > 0))
+			if (Conveyors.Any(c => c.NumCakes > 0))
 				return false;
 
 			return NumCakesRemaining == 0;
@@ -79,7 +79,7 @@ public class Level : MarioObject
 	/// </summary>
 	public int NumCakesRemaining
 	{
-		get { return Inventory.Sum(c => c.Value); }
+		get { return Inventory.Sum(c => (c.Key == IngredientType.Bomb || c.Key == IngredientType.ExtraLife) ? 0 : c.Value); }
 	}
 
 	public bool NothingToSpawn
@@ -89,7 +89,7 @@ public class Level : MarioObject
 
 	public int SpawnsRemaining
 	{
-		get { return _spawners.Sum(s => s.SpawnsLeft); }
+		get { return _spawners.Sum(s => Cake.Is(s.Type) ? s.SpawnsLeft : 0); }
 	}
 
 	/// <summary>
@@ -550,8 +550,9 @@ public class Level : MarioObject
 			Inventory[kv.Key] += kv.Value;
 		}
 
-		Inventory[IngredientType.Bomb] = 2;
-		Inventory[IngredientType.ExtraLife] = 1;
+		// TODO
+		//Inventory[IngredientType.Bomb] = 2;
+		//Inventory[IngredientType.ExtraLife] = 1;
 
 		AddSpawners(Inventory);
 	}

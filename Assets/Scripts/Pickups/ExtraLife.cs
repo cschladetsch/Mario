@@ -5,7 +5,7 @@
 /// </summary>
 public class ExtraLife : Cake
 {
-	public override bool CharacterHit(Character character, Conveyor conv, Conveyor next)
+	public override bool CharacterHit(Character character, Conveyor @from, Conveyor next)
 	{
 		Player.AddLife();
 

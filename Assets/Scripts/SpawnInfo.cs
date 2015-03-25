@@ -65,6 +65,8 @@ public class SpawnInfo : MarioObject
 		if (SpawnsLeft == 0)
 			return null;
 
+		--SpawnsLeft;
+
 		if (Prefab == null)
 		{
 			Debug.LogError("Spawner has no Prefab");

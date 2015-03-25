@@ -5,6 +5,8 @@
 /// </summary>
 public class Pickup : MarioObject
 {
+	public IngredientType Type;
+
 	/// <summary>
 	/// Parameterised position along conveyor: 0 is at start, 1 at end
 	/// </summary>

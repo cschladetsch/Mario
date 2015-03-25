@@ -154,6 +154,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Paused: 0
+  Type: 6
   Position: 0
   HangTime: 1.5
   Moved: 0

@@ -96,10 +96,22 @@ public class Truck : MarioObject
 
 		if (World.CurrentLevel.NothingToSpawn)
 		{
-			if (World.CurrentLevel.Conveyors.Any(c => c.Contents.Count > 0))
+			if (World.CurrentLevel.Conveyors.Any(c => c.NumCakes > 0))
 			{
 				return;
 			}
+			//foreach (var c in World.CurrentLevel.Conveyors)
+			//{
+			//	if (c.NumCakes > 0)
+			//	{
+			//		Debug.Log(c.name + " has " + c.NumCakes);
+			//		foreach (var k in c.Contents)
+			//		{
+			//			Debug.Log(k.Type + " is cake: " + Cake.Is(k.Type));
+			//		}
+			//		return;
+			//	}
+			//}
 		}
 
 		if (_cakes.Count > 0)

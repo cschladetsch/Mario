@@ -13,11 +13,6 @@ public class Cake : Pickup
 	internal ParabolaUI TruckParabola;
 
 	/// <summary>
-	/// The related information about this ingredient is in World.Ingredients[Type]
-	/// </summary>
-	public IngredientType Type;
-
-	/// <summary>
 	/// The UI label to update with the cost amount
 	/// </summary>
 	public UnityEngine.UI.Text CostText;
@@ -38,27 +33,22 @@ public class Cake : Pickup
 
 	public override bool CharacterHit(Character character, Conveyor conv, Conveyor next)
 	{
-		//Debug.Log("CharacterHit " + name);
-
 		if (!base.CharacterHit(character, conv, next))
 		{
-			//Debug.Log("Not transitioning because we failed CharacterHit");
 			return false;
 		}
-
-		//Debug.Log("Hit " + name + " and still processing");
 
 		if (!gameObject)
 			return false;
 
-		conv.RemoveItem(this);
-
 		if (!gameObject.activeSelf)
 			return false;
 
+		if (Cake.Is(Type))
+			conv.RemoveItem(this);
+
 		if (next)
 		{
-			//Debug.Log("Adding transition for " + name);
 			World.Kernel.Factory.NewCoroutine(TransitionCake, conv, next);
 			return true;
 		}
@@ -160,4 +150,9 @@ public class Cake : Pickup
 		//Debug.Log("Cake destroyed " + Time.frameCount);
 	}
 #endif
+
+	public static bool Is(IngredientType type)
+	{
+		return type != IngredientType.Bomb && type != IngredientType.ExtraLife;
+	}
 }

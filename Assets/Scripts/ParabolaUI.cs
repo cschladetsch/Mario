@@ -41,14 +41,14 @@ public class ParabolaUI
 
 	public float _timeScale;
 
-	public ParabolaUI(Vector2 p1, Vector2 p2, Vector2 p3, float timeSpan)
+	public ParabolaUI(Vector2 p1, Vector2 p2, Vector2 p3, float timeScale)
 	{
 		StartPos = p1;
 		FinalPos = p3;
 
 		_deltaX = p3.x - p1.x;
 		_startX = p1.x;
-		_timeScale = _deltaX/timeSpan;
+		_timeScale = timeScale;
 
 		var x1 = p1.x;
 		var x2 = p2.x;
@@ -75,7 +75,7 @@ public class ParabolaUI
 	public Vector2 UpdatePos()
 	{
 		//_alpha += UnityEngine.Time.deltaTime*_timeScale;
-		_alpha += Time.deltaTime;
+		_alpha += Time.deltaTime*_timeScale;
 		return CalcAt(_startX + _alpha*(FinalPos.x - StartPos.x));
 	}
 

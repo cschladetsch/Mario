@@ -36,7 +36,7 @@ public class Conveyor : MarioObject
 
 	protected override void Begin()
 	{
-		//Debug.Log("Conveyor created");
+		base.Begin();
 		_box = GetComponentInChildren<BoxCollider2D>();
 	}
 
@@ -53,6 +53,15 @@ public class Conveyor : MarioObject
 		item.Conveyor = this;
 
 		_contents.Add(item);
+	}
+
+	public Vector3 GetStartLocation()
+	{
+		var loc = _box.bounds.min.x;
+		if (!MoveRight)
+			loc = _box.bounds.max.x;
+		var pos = transform.position;
+		return new Vector3(loc, pos.y, pos.z);
 	}
 
 	protected override void Tick()

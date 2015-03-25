@@ -2,22 +2,27 @@
 using UnityEngine.UI;
 using System.Collections.Generic;
 
+/// <summary>
+/// Controller for the panel that pops up when the player
+/// taps on the delivery van while it is delivering
+/// </summary>
 public class DeliverNowPanel : MarioObject
 {
 	public Button YesButton;
+
 	public Button NoButton;
+
+	public Text DisplayText;
+
+	public float DeliverNowCostFraction = 0.4f;
+
+	private DeliveryTruck _truck;
 
 	protected override void Begin()
 	{
 		base.Begin();
 		_truck = FindObjectOfType<DeliveryTruck>();
 	}
-
-	public Text DisplayText;
-
-	private DeliveryTruck _truck;
-
-	public float DeliverNowCostFraction = 0.4f;
 
 	public void UpdateDisplayTex()
 	{
@@ -34,9 +39,11 @@ public class DeliverNowPanel : MarioObject
 		if (_truck == null)
 			_truck = FindObjectOfType<DeliveryTruck>();
 
-		// TODO WTF why does this keep happening
-		if (World == null)
-			World = FindObjectOfType<World>();
+		//// TODO WTF why does this keep happening
+		// ANSWER: if the game object starts disabled in the scene, it's Awake and Start methods
+		// are NOT called(!)
+		//if (World == null)
+		//	World = FindObjectOfType<World>();
 
 		foreach (var kv in _truck.Contents)
 		{
@@ -46,7 +53,7 @@ public class DeliverNowPanel : MarioObject
 		}
 
 		var fullCost = sum*DeliverNowCostFraction;
-		var percent = _truck.ProgressBar.PercentFinished;
+		var percent = (1.0f - _truck.ProgressBar.PercentFinished)*3;	// 0 -> 2, 1 -> 0
 		return Mathf.Max(2, (int) (percent*fullCost));
 	}
 

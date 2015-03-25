@@ -153,6 +153,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad8e5ad63e335254bae16b79af135f53, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Paused: 0
   Position: 0
   HangTime: 1.5
   Moved: 0
@@ -162,6 +163,8 @@ MonoBehaviour:
   _droppedTimer: 0
   Type: 3
   CostText: {fileID: 0}
+  Delivered: 0
+  TransitionTime: 3
 --- !u!212 &21248726
 SpriteRenderer:
   m_ObjectHideFlags: 1

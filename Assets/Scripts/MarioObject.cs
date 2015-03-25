@@ -15,9 +15,23 @@ public class MarioObject : MonoBehaviour
 	/// <summary>
 	/// The single world object
 	/// </summary>
-	protected World World;
+	protected World World
+	{
+		get
+		{
+			if (_world != null) 
+				return _world;
 
-	protected IKernel Kernel;
+			Awake();
+			Start();
+
+			return _world;
+		}
+	}
+
+	private World _world;
+
+	protected IKernel Kernel { get { return World.Kernel; } }
 
 	public Player Player
 	{
@@ -64,16 +78,14 @@ public class MarioObject : MonoBehaviour
 
 	private void Awake()
 	{
-		World = World.Instance;
-		if (World == null)
+		_world = World.Instance;
+		if (_world == null)
 		{
 			FindObjectOfType<World>().Awaken();
-			World = World.Instance;
+			_world = World.Instance;
 		}
 
-		World.Awaken();
-
-		Kernel = World.Kernel;
+		_world.Awaken();
 
 		Construct();
 	}

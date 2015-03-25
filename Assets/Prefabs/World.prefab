@@ -226,7 +226,7 @@ MonoBehaviour:
   IngredientDetails: {fileID: 0}
   CurrentGoalDisplayPanel: {fileID: 0}
   GoalPanel: {fileID: 0}
-  CurrrentAreaType: 0
+  CurrrentAreaType: 1
   StageGoals:
   - {fileID: 11481494, guid: 0f15c10cf07047f4398aae0899c4bd72, type: 2}
   - {fileID: 11416742, guid: f80dd1ba2b0ec2642bd7a5a7a9d8a58b, type: 2}

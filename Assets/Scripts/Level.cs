@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Flow;
 using UnityEngine;
 
 /// <summary>
@@ -219,14 +220,15 @@ public class Level : MarioObject
 		}
 
 		// TODO: 
-		IncomingPanel.RemoveCake(type);
+		var pos = IncomingPanel.RemoveCake(type);
 		Inventory[type]--;
 
 		var born = spawnInfo.Spawn();
-		born.transform.position = CakeSpawnPoint.transform.position;
+		//born.transform.position = CakeSpawnPoint.transform.position;
+		born.transform.position = pos;
 		born.name = Guid.NewGuid().ToString();
-		//Debug.Log("Spawned a " + spawnInfo.Prefab.name + " called " + born.name);
 
+		//Debug.Log("Spawned a " + spawnInfo.Prefab.name + " called " + born.name);
 		var cake = born.GetComponent<Cake>();
 
 		// if we're in another area, we still want

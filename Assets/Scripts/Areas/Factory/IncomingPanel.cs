@@ -1,21 +1,13 @@
 ﻿using Flow;
 using UnityEngine;
 using UnityEngine.UI;
-using wHiteRabbiT.Unity.Extensions;
 
 public class IncomingPanel : MarioObject
 {
-	protected override void Construct()
-	{
-	}
-
-	protected override void Begin()
-	{
-	}
-
-	protected override void Tick()
-	{
-	}
+	/// <summary>
+	/// Scale of image, relative to screen size
+	/// </summary>
+	public float ImageScale = 0.12f;
 
 	public void Populate()
 	{
@@ -35,7 +27,7 @@ public class IncomingPanel : MarioObject
 			Destroy(go);
 	}
 
-	public Vector2 RemoveCake(IngredientType type)
+	public Vector3 RemoveCake(IngredientType type)
 	{
 		//Debug.Log("IncomingPanel.RemoveCake: " + type);
 		foreach (var cake in transform.GetComponentsInChildren<GoalngredientView>())
@@ -45,12 +37,15 @@ public class IncomingPanel : MarioObject
 
 			var pos = cake.gameObject.GetRectTransform().position;
 
+			Vector3 world;
+			RectTransformUtility.ScreenPointToWorldPointInRectangle(gameObject.GetRectTransform(), pos, Camera.main, out world);
+
 			Destroy(cake.gameObject);
 
-			return pos;
+			return world;
 		}
 
-		return Vector2.zero;
+		return Vector3.zero;
 	}
 
 	public void AddItems(IngredientType type, int count)
@@ -58,8 +53,12 @@ public class IncomingPanel : MarioObject
 		var prefab = World.GetInfo(type).ImagePrefab;
 		for (var n = 0; n < count; ++n)
 		{
+			// make the image
 			var go = (GameObject) Instantiate(prefab);
 			go.transform.SetParent(transform);
+
+			// why do I need to do this?
+			go.transform.localScale = Vector3.one;
 		}
 	}
 

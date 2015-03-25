@@ -39,7 +39,7 @@ public class ProgressBar : MarioObject
 	/// </summary>
 	public float PercentFinished
 	{
-		get { return 1.0f - _time/TotalTime; }
+		get { return _time/TotalTime; }
 	}
 
 	public bool Completed

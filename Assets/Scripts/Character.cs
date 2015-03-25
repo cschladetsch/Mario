@@ -1,8 +1,14 @@
 ﻿using System.Linq;
 using UnityEngine;
 
+/// <summary>
+/// A chef on either side of the screen, controlled by the player.
+/// </summary>
 public class Character : MarioObject
 {
+	/// <summary>
+	/// Which side the character is on
+	/// </summary>
 	public enum WhichSide
 	{
 		Left,
@@ -14,8 +20,6 @@ public class Character : MarioObject
 	public int Height;
 
 	public float MovementSpeed;
-
-	public float LevelHeight = 1.5f;
 
 	private Vector3 _moveVel;
 

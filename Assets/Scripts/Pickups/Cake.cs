@@ -1,3 +1,5 @@
+using System.Collections;
+using Flow;
 using UnityEngine;
 
 /// <summary>
@@ -40,14 +42,46 @@ public class Cake : Pickup
 
 		conv.RemoveItem(this);
 
+		if (!gameObject.activeSelf)
+			return;
+
 		if (next)
 		{
-			next.AddItem(this, 0);
+			World.Kernel.Factory.NewCoroutine(TransitionCake, conv, next);
 			return;
 		}
 
 		// no next conveyor, add to truck
 		Truck.AddCake(this);
+	}
+
+	public float TransitionTime = 3;
+
+	private IEnumerator TransitionCake(IGenerator self, Conveyor from, Conveyor to)
+	{
+		var start = transform.position;
+		var end = to.GetStartLocation();
+		var mid = start + (end - start)/2.0f;
+
+		var disp = 1.5f;
+		if (from.MoveRight)
+			mid.x += disp;
+		else
+			mid.x -= disp;
+
+		var para = new ParabolaUI(start, mid, end, TransitionTime);
+		Debug.DrawLine(start, mid, Color.green, 5);
+		Debug.DrawLine(mid, end, Color.red, 5);
+
+		while (!para.Completed)
+		{
+			transform.position = para.UpdatePos();
+			yield return 0;
+		}
+
+		to.AddItem(this, 0);
+
+		yield break;
 	}
 
 	protected override void Tick()

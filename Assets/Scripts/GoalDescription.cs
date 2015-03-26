@@ -1,7 +1,14 @@
-﻿using System.Text;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 using UnityEngine;
 using UnityEngine.UI;
 
+/// <summary>
+/// Controller for the GoalDescription panel. Currently it's just text
+/// TODO: Add icons for 2xA + 3xB = C
+/// </summary>
 public class GoalDescription : MarioObject
 {
 	public Text Title;
@@ -26,14 +33,18 @@ public class GoalDescription : MarioObject
 		foreach (var i in goal.Ingredients)
 			dict[i]++;
 
+		Objective.text = BuildDescription(dict);
+
+		World.Canvas.GoalPanel.UpdateUi();
+	}
+
+	private static String BuildDescription(Dictionary<IngredientType, int> dict)
+	{
 		var sb = new StringBuilder();
 		sb.Append("Sell ");
 		var second = false;
-		foreach (var kv in dict)
+		foreach (var kv in dict.Where(kv => kv.Value != 0))
 		{
-			if (kv.Value == 0)
-				continue;
-
 			if (second)
 				sb.Append(", and ");
 
@@ -42,8 +53,6 @@ public class GoalDescription : MarioObject
 			sb.Append(string.Format("{0} {1}s", kv.Value, kv.Key));
 		}
 
-		Objective.text = sb.ToString();
-
-		World.Canvas.GoalPanel.UpdateUi();
+		return sb.ToString();
 	}
 }

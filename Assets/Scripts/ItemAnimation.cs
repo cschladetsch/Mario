@@ -42,8 +42,8 @@ public class ItemAnimation : MarioObject
 			yield break;
 		}
 
-		Debug.Log(args.From.name);
-		Debug.Log(args.From.transform.position);
+		//Debug.Log(args.From.name);
+		//Debug.Log(args.From.transform.position);
 
 		var item = (GameObject) Instantiate(args.World.GetInfo(args.Type).ImagePrefab);
 		if (item == null)

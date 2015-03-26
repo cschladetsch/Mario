@@ -1055,6 +1055,7 @@ MonoBehaviour:
   Speed: .800000012
   MoveRight: 0
   MinCakeSeparation: 2
+  Number: 0
   _contents: []
 --- !u!1 &127990021
 GameObject:
@@ -4190,6 +4191,7 @@ MonoBehaviour:
   Speed: .800000012
   MoveRight: 0
   MinCakeSeparation: 2
+  Number: 0
   _contents: []
 --- !u!1 &568794344
 GameObject:
@@ -6161,6 +6163,7 @@ MonoBehaviour:
   Speed: .800000012
   MoveRight: 0
   MinCakeSeparation: 2
+  Number: 0
   _contents: []
 --- !u!1 &766647621
 GameObject:
@@ -8264,6 +8267,7 @@ MonoBehaviour:
   Speed: .800000012
   MoveRight: 0
   MinCakeSeparation: 2
+  Number: 0
   _contents: []
 --- !u!1001 &1133361468
 Prefab:
@@ -12852,6 +12856,7 @@ MonoBehaviour:
   Speed: .800000012
   MoveRight: 1
   MinCakeSeparation: 2
+  Number: 0
   _contents: []
 --- !u!1 &1655486144
 GameObject:
@@ -15900,6 +15905,7 @@ MonoBehaviour:
   Speed: .800000012
   MoveRight: 1
   MinCakeSeparation: 2
+  Number: 0
   _contents: []
 --- !u!1001 &2131045470
 Prefab:

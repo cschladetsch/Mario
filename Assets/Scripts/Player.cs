@@ -259,6 +259,7 @@ public class Player : MarioObject
 
 	public void BombHit(Bomb bomb)
 	{
+		Debug.Log("Player hit bomb");
 		LoseLife();
 	}
 

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Flow;
 using UnityEngine;
 
 /// <summary>
@@ -47,6 +46,17 @@ public class Level : MarioObject
 	public float SpeedLevel;
 
 	public float OverallSpeed = 1;
+
+	/// <summary>
+	/// The maximum number of bombs that will drop in a level
+	/// </summary>
+	public int MaxBombs = 3;
+
+	/// <summary>
+	/// The maximum number of ExtraLive objects that will drop in a level
+	/// </summary>
+	public int MaxExtraLives = 1;
+
 
 	/// <summary>
 	/// The conveyors in the level. Each level can have different number
@@ -96,15 +106,27 @@ public class Level : MarioObject
 	/// <summary>
 	/// How to make new cakes. TODO: make this a dictionary of type to spawner?
 	/// </summary>
-	public List<SpawnInfo> _spawners = new List<SpawnInfo>();
+	private readonly List<SpawnInfo> _spawners = new List<SpawnInfo>();
 
+	/// <summary>
+	/// All conveyors in the level
+	/// </summary>
 	private List<Conveyor> _conveyors = new List<Conveyor>();
 
+	/// <summary>
+	/// Where new cakes are placed in the scene hierarchy
+	/// </summary>
 	private Transform _cakesHolder;
 
 	private Character[] _characters;
 
 	private float _initialConveyorSpeed;
+
+	/// <summary>
+	/// How long till next level speedup
+	/// </summary>
+	private float _speedTimer;
+
 
 	public void Init()
 	{
@@ -199,7 +221,7 @@ public class Level : MarioObject
 			return;
 		}
 
-		Debug.Log("AddCake: prefab=" + spawnInfo.Prefab.name + "@" + UnityEngine.Time.frameCount);
+		//Debug.Log("AddCake: prefab=" + spawnInfo.Prefab.name + "@" + UnityEngine.Time.frameCount);
 		if (!spawnInfo.CanSpawn())
 		{
 			Debug.Log("Spawner " + spawnInfo.Type + " cannot spawn");
@@ -220,6 +242,11 @@ public class Level : MarioObject
 			return;
 		}
 
+		CreateCake(spawnInfo, type);
+	}
+
+	private void CreateCake(SpawnInfo spawnInfo, IngredientType type)
+	{
 		var pos = IncomingPanel.RemoveCake(type);
 		if (pos == Vector3.zero)
 			pos = CakeSpawnPoint.transform.position;
@@ -227,9 +254,10 @@ public class Level : MarioObject
 		Inventory[type]--;
 
 		var born = spawnInfo.Spawn();
-		//born.transform.position = CakeSpawnPoint.transform.position;
 		born.transform.position = pos;
-		born.name = Guid.NewGuid().ToString();
+#if DEBUG
+		born.name = string.Format("{0}: {1}", type.ToString().ToUpper(), Guid.NewGuid());
+#endif
 
 		//Debug.Log("Spawned a " + spawnInfo.Prefab.name + " called " + born.name);
 		var cake = born.GetComponent<Cake>();
@@ -280,8 +308,6 @@ public class Level : MarioObject
 		}
 	}
 
-	private float _speedTimer;
-
 	protected override void Tick()
 	{
 		if (!World.Areas[AreaType.Factory].Visual)
@@ -319,6 +345,9 @@ public class Level : MarioObject
 		}
 	}
 
+	/// <summary>
+	/// Return a spawner for the given type of thing
+	/// </summary>
 	public SpawnInfo GetSpawner(IngredientType type)
 	{
 		return _spawners.FirstOrDefault(sp => sp.Type == type);
@@ -329,7 +358,6 @@ public class Level : MarioObject
 	/// </summary>
 	private void LateUpdate()
 	{
-		//Debug.Log("Level.LateUpdate: Paused " + Paused + " NoMoreCakes: "+ NoMoreCakes);
 		if (Paused || World.CurrentLevel == null)
 			return;
 
@@ -340,7 +368,7 @@ public class Level : MarioObject
 	private void UpdateSpeed()
 	{
 		_speedTimer -= GameDeltaTime;
-		if (!(_speedTimer < 0))
+		if (_speedTimer > 0)
 			return;
 
 		_speedTimer = SpeedIncrementTime;
@@ -350,7 +378,8 @@ public class Level : MarioObject
 			c.Speed *= SpeedIncrementRate;
 
 		SpeedLevel++;
-		//Debug.Log("Speed Up " + SpeedLevel);
+
+		Debug.Log("Speed Up " + SpeedLevel);
 	}
 
 	private void UpdateSpawners()
@@ -539,7 +568,18 @@ public class Level : MarioObject
 			World.ChangeArea(AreaType.Bakery);
 		}
 
-		// because this is called before level has been created due to
+		EnsureComponents();
+
+		AddIngredients(contents);
+
+		//AddExtras();
+
+		AddSpawners(Inventory);
+	}
+
+	private void EnsureComponents()
+	{
+// because this is called before level has been created due to
 		// SpawnGameObject issues that take many updates to fully expand out
 		// to target objects
 		if (Inventory == null)
@@ -553,19 +593,22 @@ public class Level : MarioObject
 			//Debug.LogWarning("Unexpected - IncomingPanel is null");
 			IncomingPanel = FindObjectOfType<IncomingPanel>();
 		}
+	}
 
+	private void AddIngredients(Dictionary<IngredientType, int> contents)
+	{
 		foreach (var kv in contents.Where(kv => kv.Value > 0))
 		{
 			//Debug.Log("Adding a " + kv.Key + " to factory, kv.Value "+kv.Value);
 			IncomingPanel.AddItems(kv.Key, kv.Value);
 			Inventory[kv.Key] += kv.Value;
 		}
+	}
 
-		// TODO
-		//Inventory[IngredientType.Bomb] = 2;
-		Inventory[IngredientType.ExtraLife] = 1;
-
-		AddSpawners(Inventory);
+	private void AddExtras()
+	{
+		Inventory[IngredientType.Bomb] = UnityEngine.Random.Range(0, MaxBombs);
+		Inventory[IngredientType.ExtraLife] = UnityEngine.Random.Range(0, MaxExtraLives);
 	}
 
 	/// <summary>

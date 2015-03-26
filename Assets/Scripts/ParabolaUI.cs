@@ -50,6 +50,9 @@ public class ParabolaUI
 		_startX = p1.x;
 		_timeScale = timeScale;
 
+		Debug.DrawLine(p1, p2, Color.green, 5);
+		Debug.DrawLine(p2, p3, Color.red, 5);
+
 		var x1 = p1.x;
 		var x2 = p2.x;
 		var x3 = p3.x;

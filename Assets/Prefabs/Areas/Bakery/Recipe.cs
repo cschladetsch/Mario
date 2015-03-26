@@ -58,44 +58,51 @@ public class Recipe : MonoBehaviour
 		return true;
 	}
 
-	/// <summary>
-	/// Removes items required for this Recipe from the given ingredients list
-	/// </summary>
-	/// <param name="ingredients"></param>
-	/// <returns>true if all ingredients were removed</returns>
-	public bool RemoveIngredients(Dictionary<IngredientType, int> ingredients)
-	{
-		if (!Satisfied(ingredients))
-			return false;
+	///// <summary>
+	///// Removes items required for this Recipe from the given ingredients list
+	///// </summary>
+	///// <param name="ingredients"></param>
+	///// <returns>true if all ingredients were removed</returns>
+	//public bool RemoveIngredients(Dictionary<IngredientType, int> ingredients)
+	//{
+	//	if (!Satisfied(ingredients))
+	//		return false;
 
-		for (var n = 0; n < Ingredients.Count; ++n)
-		{
-			var type = Ingredients[n];
-			var count = Counts[n];
+	//	for (var n = 0; n < Ingredients.Count; ++n)
+	//	{
+	//		if (!RemoveIngredient(ingredients, n))
+	//			return false;
+	//	}
 
-			if (ingredients[type] - count < 0)
-			{
-				Debug.LogWarning("Couldn't remove " + type + " from ingredients list, only has " + ingredients[type]);
-				return false;
-			}
+	//	return true;
+	//}
 
-			ingredients[type] -= count;
-		}
+	//private bool RemoveIngredient(Dictionary<IngredientType, int> ingredients, int n)
+	//{
+	//	var type = Ingredients[n];
+	//	var count = Counts[n];
 
-		return true;
-	}
+	//	if (ingredients[type] - count < 0)
+	//	{
+	//		Debug.LogWarning("Couldn't remove " + type + " from ingredients list, only has " + ingredients[type]);
+	//		return false;
+	//	}
 
-	public bool CanAdd(IngredientType item, int current)
-	{
-		for (var n = 0; n < Ingredients.Count; ++n)
-		{
-			if (item != Ingredients[n])
-				continue;
+	//	ingredients[type] -= count;
+	//	return true;
+	//}
 
-			if (Counts[n] < current)
-				return true;
-		}
+	//public bool CanAdd(IngredientType item, int current)
+	//{
+	//	for (var n = 0; n < Ingredients.Count; ++n)
+	//	{
+	//		if (item != Ingredients[n])
+	//			continue;
 
-		return false;
-	}
+	//		if (Counts[n] < current)
+	//			return true;
+	//	}
+
+	//	return false;
+	//}
 }

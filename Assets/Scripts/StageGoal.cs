@@ -28,15 +28,11 @@ public class StageGoal : MonoBehaviour
 
 	public static string MakeDescription(StageGoal goal)
 	{
-		var dict = new Dictionary<IngredientType, int>();
-		foreach (var ing in goal.Ingredients)
-		{
-			if (!dict.ContainsKey(ing))
-				dict.Add(ing, 0);
+		return CreateText(MakeDict(goal));
+	}
 
-			dict[ing]++;
-		}
-
+	private static string CreateText(Dictionary<IngredientType, int> dict)
+	{
 		var text = "Make ";
 		var second = false;
 		foreach (var kv in dict)
@@ -47,6 +43,20 @@ public class StageGoal : MonoBehaviour
 			text += string.Format("{1} {0}s", kv.Key, kv.Value);
 			second = true;
 		}
+
 		return text;
+	}
+
+	private static Dictionary<IngredientType, int> MakeDict(StageGoal goal)
+	{
+		var dict = new Dictionary<IngredientType, int>();
+		foreach (var ing in goal.Ingredients)
+		{
+			if (!dict.ContainsKey(ing))
+				dict.Add(ing, 0);
+
+			dict[ing]++;
+		}
+		return dict;
 	}
 }

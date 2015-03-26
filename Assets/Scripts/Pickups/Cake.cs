@@ -96,7 +96,8 @@ public class Cake : Pickup
 			yield return 0;
 		}
 
-		to.AddItem(this, 0);
+		if (to)
+			to.AddItem(this, 0);
 
 		yield break;
 	}

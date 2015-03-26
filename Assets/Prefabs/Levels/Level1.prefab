@@ -1452,9 +1452,9 @@ MonoBehaviour:
   IncomingPanel: {fileID: 0}
   CakeSpawnPoint: {fileID: 158782}
   SpeedIncrementTime: 30
-  SpawnIncrementRate: 1.5
-  SpeedIncrementRate: 1.29999995
-  ConveyorSpeed: .25
+  SpawnIncrementRate: 1.29999995
+  SpeedIncrementRate: 1.20000005
+  ConveyorSpeed: .159999996
   SpeedLevel: 0
   OverallSpeed: 1
   _spawners: []

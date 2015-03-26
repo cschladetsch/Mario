@@ -44,8 +44,8 @@ MonoBehaviour:
   SellingTime: 5
   Buy: 1
   Sell: 1
-  MinSpawnRate: 2
-  MaxSpawnRate: 4
+  MinSpawnRate: 4
+  MaxSpawnRate: 6
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1

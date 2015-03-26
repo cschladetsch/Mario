@@ -154,14 +154,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Paused: 0
+  Type: 1
   Position: 0
-  HangTime: 1.5
+  HangTime: 3
   Moved: 0
   Conveyor: {fileID: 0}
   _hangTimer: 0
   _dropped: 0
   _droppedTimer: 0
-  Type: 1
   CostText: {fileID: 0}
   Delivered: 0
   TransitionTime: 3

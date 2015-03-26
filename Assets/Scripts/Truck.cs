@@ -48,6 +48,8 @@ public class Truck : MarioObject
 		get { return _cakes.Count; }
 	}
 
+	private Transform _spawned;
+
 	public delegate void DeliveredHandler(Truck truck);
 
 	public event DeliveredHandler DeliveryStarted;
@@ -69,6 +71,8 @@ public class Truck : MarioObject
 	protected override void Begin()
 	{
 		base.Begin();
+
+		_spawned = transform.parent.FindChild("Spawned");
 
 		Emptying = false;
 		_startPos = transform.position.x;
@@ -100,6 +104,12 @@ public class Truck : MarioObject
 			{
 				return;
 			}
+
+			if (_spawned.GetComponentsInChildren<Cake>().Any(item => item.Hanging))
+			{
+				return;
+			}
+
 			//foreach (var c in World.CurrentLevel.Conveyors)
 			//{
 			//	if (c.NumCakes > 0)

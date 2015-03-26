@@ -41,6 +41,8 @@ public class DeliveryTruck : MarioObject
 
 	public ProgressBar ProgressBar;
 
+	public GameObject ProgressBarPanel;
+
 	private readonly List<IngredientButtton> _buttons = new List<IngredientButtton>();
 
 	public float _deliveryTimer;
@@ -108,11 +110,16 @@ public class DeliveryTruck : MarioObject
 		//Debug.Log("Delivery time for " + Contents.Sum(c => c.Value) + " is " + CalcDeliveryTime());
 		BuyingOptions.SetActive(false);
 		PlayButton.SetActive(false);
-		ProgressBar.gameObject.SetActive(true);
+		SetProgressBarActive(true);
 		ProgressBar.Reset();
 		ProgressBar.TotalTime = CalcDeliveryTime();
 		ProgressBar.Paused = false;
 		Deliver(Contents);
+	}
+
+	void SetProgressBarActive(bool act)
+	{
+		ProgressBarPanel.SetActive(act);
 	}
 
 	public void BuyItem(GameObject go)
@@ -156,7 +163,7 @@ public class DeliveryTruck : MarioObject
 		DeliverNowPanel.gameObject.SetActive(false);
 		BuyingOptions.SetActive(false);
 		PlayButton.SetActive(false);
-		ProgressBar.gameObject.SetActive(false);
+		SetProgressBarActive(false);
 
 		GatherIngredientButtons();
 
@@ -307,7 +314,7 @@ public class DeliveryTruck : MarioObject
 		}
 
 		PlayButton.SetActive(true);
-		ProgressBar.gameObject.SetActive(false);
+		SetProgressBarActive(false);
 
 		TurnTimerOn(false);
 
@@ -339,7 +346,7 @@ public class DeliveryTruck : MarioObject
 		if (!Ready)
 			return;
 
-		ProgressBar.gameObject.SetActive(false);
+		SetProgressBarActive(false);
 		PlayButton.SetActive(true);
 	}
 

@@ -111,6 +111,12 @@ public class Cake : Pickup
 		if (_droppedTimer < 0)
 		{
 			Debug.Log("Cake '" + Type + "' has fallen for too long, destroying");
+			if (World.CurrentArea == World.FactoryArea)
+			{
+				CurrentLevel.DestroyCake(this);
+				return;
+			}
+
 			Player.DroppedCake(this);
 			CurrentLevel.DestroyCake(this);
 			if (CurrentLevel.NoMoreCakes)

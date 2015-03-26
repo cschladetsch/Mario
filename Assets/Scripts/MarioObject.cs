@@ -8,7 +8,7 @@ using UnityEngine;
 public class MarioObject : MonoBehaviour
 {
 	/// <summary>
-	/// If false, this game object will not be updated via Update() method
+	/// If false, this game object will not be updated Tick() method
 	/// </summary>
 	public bool Paused;
 
@@ -19,7 +19,7 @@ public class MarioObject : MonoBehaviour
 	{
 		get
 		{
-			if (_world != null) 
+			if (_world != null)
 				return _world;
 
 			Awake();
@@ -31,7 +31,10 @@ public class MarioObject : MonoBehaviour
 
 	private World _world;
 
-	protected IKernel Kernel { get { return World.Kernel; } }
+	protected IKernel Kernel
+	{
+		get { return World.Kernel; }
+	}
 
 	public Player Player
 	{
@@ -83,6 +86,9 @@ public class MarioObject : MonoBehaviour
 		{
 			FindObjectOfType<World>().Awaken();
 			_world = World.Instance;
+			Construct();
+			Start();
+			return;
 		}
 
 		_world.Awaken();
@@ -120,13 +126,6 @@ public class MarioObject : MonoBehaviour
 
 	private void Update()
 	{
-		//// WHAT THE FUCK: why is Update() called twice on MarioObjects?
-		//var frameCount = UnityEngine.Time.frameCount;
-		//Debug.Log("MarioObject.Update: " + name + ", " + frameCount + ", " + _updateFrame + ", " + gameObject.GetInstanceID());
-		//if (frameCount == _updateFrame && _updateFrame > 0)
-		//	return;
-
-		// use real-time
 		var now = DateTime.Now;
 		var delta = now - _lastTime;
 		RealDeltaTime = (float) delta.TotalSeconds;
@@ -146,7 +145,7 @@ public class MarioObject : MonoBehaviour
 
 			BeforeFirstUpdate();
 
-			return;
+			//return;
 		}
 
 		Tick();

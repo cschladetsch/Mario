@@ -120,11 +120,11 @@ public class DeliveryTruck : MarioObject
 		if (Pulling)
 			return;
 
-		if (Contents.Sum(c => c.Value) == 6)
-		{
-			//Debug.Log("Currently limited to 6 items max");
-			return;
-		}
+		//if (Contents.Sum(c => c.Value) == 6)
+		//{
+		//	//Debug.Log("Currently limited to 6 items max");
+		//	return;
+		//}
 
 		var button = go.GetComponent<IngredientButtton>();
 		var type = button.Type;
@@ -249,7 +249,7 @@ public class DeliveryTruck : MarioObject
 
 	private void RefundItems()
 	{
-		Debug.Log("RefundItems: " + _buttons.Count);
+		//Debug.Log("RefundItems: " + _buttons.Count);
 		if (_buttons.Count == 0)
 			GatherIngredientButtons();
 
@@ -258,7 +258,7 @@ public class DeliveryTruck : MarioObject
 			if (b.Amount == 0)
 				continue;
 
-			Debug.Log("Refunding " + b.Type + "x" + b.Amount + " for " + World.GetInfo(b.Type).Buy + " each");
+			//Debug.Log("Refunding " + b.Type + "x" + b.Amount + " for " + World.GetInfo(b.Type).Buy + " each");
 			Player.Gold += b.Amount*World.GetInfo(b.Type).Buy;
 
 			b.SetAmount(0);
@@ -269,7 +269,7 @@ public class DeliveryTruck : MarioObject
 	{
 		base.Tick();
 
-		DeliverText.text = string.Format("{0}$ to Deliver", (int)CalcDeliveryCost());
+		DeliverText.text = string.Format("{0}$ to Deliver", (int) CalcDeliveryCost());
 
 		UpdateDeliveryButton();
 
@@ -292,8 +292,8 @@ public class DeliveryTruck : MarioObject
 		}
 
 		var fullCost = sum*DeliverNowCostFraction;
-		var percent = (1.0f - ProgressBar.PercentFinished)*3;	// 0 -> 2, 1 -> 0
-		return Mathf.Max(2, (int)(percent*fullCost));
+		var percent = (1.0f - ProgressBar.PercentFinished)*3; // 0 -> 2, 1 -> 0
+		return Mathf.Max(2, (int) (percent*fullCost));
 	}
 
 	public void CompleteDeliveryToFactory()

@@ -231,8 +231,8 @@ MonoBehaviour:
   SellingTime: 50
   Buy: 3
   Sell: 3
-  MinSpawnRate: 4
-  MaxSpawnRate: 5
+  MinSpawnRate: 6
+  MaxSpawnRate: 8
 --- !u!1 &21418166
 GameObject:
   m_ObjectHideFlags: 0
@@ -1636,8 +1636,8 @@ MonoBehaviour:
   SellingTime: 6
   Buy: 2
   Sell: 2
-  MinSpawnRate: 3
-  MaxSpawnRate: 5
+  MinSpawnRate: 5
+  MaxSpawnRate: 6
 --- !u!1 &235168230
 GameObject:
   m_ObjectHideFlags: 0
@@ -7815,6 +7815,14 @@ Prefab:
     - target: {fileID: 451582, guid: a9010a222b23ab4478a555bddd8441f6, type: 2}
       propertyPath: m_RootOrder
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11492482, guid: a9010a222b23ab4478a555bddd8441f6, type: 2}
+      propertyPath: MinSpawnRate
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 11492482, guid: a9010a222b23ab4478a555bddd8441f6, type: 2}
+      propertyPath: MaxSpawnRate
+      value: 8
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: a9010a222b23ab4478a555bddd8441f6, type: 2}
@@ -15926,6 +15934,14 @@ Prefab:
     - target: {fileID: 451582, guid: 22cafc471ac8d4440932a49b1cc9b593, type: 2}
       propertyPath: m_RootOrder
       value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 11492482, guid: 22cafc471ac8d4440932a49b1cc9b593, type: 2}
+      propertyPath: MinSpawnRate
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 11492482, guid: 22cafc471ac8d4440932a49b1cc9b593, type: 2}
+      propertyPath: MaxSpawnRate
+      value: 6
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 22cafc471ac8d4440932a49b1cc9b593, type: 2}

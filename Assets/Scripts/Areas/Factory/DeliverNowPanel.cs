@@ -31,8 +31,6 @@ public class DeliverNowPanel : MarioObject
 	/// How much it would cost to immediately deliver the truck`
 	/// </summary>
 	/// <returns></returns>
-	
-
 	private void OnDestroy()
 	{
 		//Debug.Log("DeliverNowPanel.Destroy");

@@ -61,7 +61,7 @@ public class ItemAnimation : MarioObject
 		const float scale = 0.15f;
 		var size = Mathf.Min(Screen.width*scale, Screen.height*scale);
 		rc.sizeDelta = new Vector2(size, size);
-		
+
 		item.transform.SetParent(World.Canvas.transform);
 
 		var start = args.From.transform.position;

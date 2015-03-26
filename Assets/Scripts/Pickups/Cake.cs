@@ -88,7 +88,7 @@ public class Cake : Pickup
 
 			var x = radius*(Mathf.Cos(angle));
 			var y = radius*(Mathf.Sin(angle));
-			transform.position = startPos + new Vector3(x,y  + radius,0);
+			transform.position = startPos + new Vector3(x, y + radius, 0);
 			yield return 0;
 		}
 

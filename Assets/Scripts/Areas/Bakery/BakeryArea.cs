@@ -73,10 +73,11 @@ public class BakeryArea : AreaBase
 		//Debug.Log("Bakery.ItemSold: " + type);
 
 		// TODO: add the resulting generator to a Group, so they can all be disabled when moving to factory area
-		_animators.Add(ItemAnimation.Animate(type, SellingProductsPanel.GetProduct(type), Canvas.PlayerGold.gameObject, SoldItemTravelTime));
+		_animators.Add(ItemAnimation.Animate(type, SellingProductsPanel.GetProduct(type), Canvas.PlayerGold.gameObject,
+			SoldItemTravelTime));
 	}
 
-	readonly List<IGenerator> _animators = new List<IGenerator>(); 
+	private readonly List<IGenerator> _animators = new List<IGenerator>();
 
 	public override void EnterArea()
 	{

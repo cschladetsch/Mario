@@ -334,7 +334,7 @@ public class World : MonoBehaviour
 
 		--_beginLevelAfterThisManyUpdates;
 
-		if (_beginLevelAfterThisManyUpdates != 0) 
+		if (_beginLevelAfterThisManyUpdates != 0)
 			return true;
 
 		BeginConveyorLevel();

@@ -48,6 +48,7 @@ public class ProgressBar : MarioObject
 	}
 
 	public delegate void EndedHandler(ProgressBar pb);
+
 	public event EndedHandler Ended;
 
 	protected override void Begin()

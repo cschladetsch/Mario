@@ -15,7 +15,7 @@ namespace MakeArchive
 
 			// TODO: Get from file system
 			var project = "Mario";
-			var name = string.Format("{1}-{0:yy-dd-mm-HH}.zip", now, project);
+			var name = string.Format("{1}-{0:yy-dd-MM-HH}.zip", now, project);
 			var path = "..\\Builds\\" + name;
 			if (File.Exists(path))
 			{

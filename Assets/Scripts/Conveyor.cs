@@ -26,8 +26,10 @@ public class Conveyor : MarioObject
 
 	public decimal NumCakes
 	{
-		get { return Contents.Sum(c => Cake.Is(c.Type) ? 1 : 0); }
+		get { return Contents.Sum(c => Cake.IsCake(c.Type) ? 1 : 0); }
 	}
+
+	public int Number;
 
 	/// <summary>
 	/// The cakes on this conveyor
@@ -52,7 +54,7 @@ public class Conveyor : MarioObject
 	/// <param name="pos">where to add it, normalised to the length of the conveyor</param>
 	public void AddItem(Pickup item, float pos)
 	{
-		//Debug.Log("AddItem " + item.name);
+		//Debug.Log("AddItem " + item.Type + " to " + name);
 		item.Reset();
 		item.Position = pos;
 		item.Conveyor = this;

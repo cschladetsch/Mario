@@ -70,6 +70,7 @@ public class Level : MarioObject
 			if (Conveyors.Any(c => c.NumCakes > 0))
 				return false;
 
+			//Debug.Log("Inv.Count=" + Inventory.Count + ", NumCakesRemaining: " + NumCakesRemaining);
 			return NumCakesRemaining == 0;
 		}
 	}
@@ -79,7 +80,7 @@ public class Level : MarioObject
 	/// </summary>
 	public int NumCakesRemaining
 	{
-		get { return Inventory.Sum(c => (c.Key == IngredientType.Bomb || c.Key == IngredientType.ExtraLife) ? 0 : c.Value); }
+		get { return Inventory.Sum(c => Cake.IsCake(c.Key) ? c.Value : 0); }
 	}
 
 	public bool NothingToSpawn
@@ -89,7 +90,7 @@ public class Level : MarioObject
 
 	public int SpawnsRemaining
 	{
-		get { return _spawners.Sum(s => Cake.Is(s.Type) ? s.SpawnsLeft : 0); }
+		get { return _spawners.Sum(s => Cake.IsCake(s.Type) ? s.SpawnsLeft : 0); }
 	}
 
 	/// <summary>
@@ -124,7 +125,7 @@ public class Level : MarioObject
 
 	public void BeginLevel()
 	{
-		Debug.Log("CurrentLevel.BeginLevel");
+		//Debug.Log("CurrentLevel.BeginLevel");
 
 		_characters = FindObjectsOfType<Character>();
 		PauseCharacters(true);
@@ -198,7 +199,7 @@ public class Level : MarioObject
 			return;
 		}
 
-		//Debug.Log("AddCake: prefab=" + spawnInfo.Prefab.name + "@" + UnityEngine.Time.frameCount);
+		Debug.Log("AddCake: prefab=" + spawnInfo.Prefab.name + "@" + UnityEngine.Time.frameCount);
 		if (!spawnInfo.CanSpawn())
 		{
 			Debug.Log("Spawner " + spawnInfo.Type + " cannot spawn");
@@ -270,10 +271,12 @@ public class Level : MarioObject
 		_conveyors = root.GetComponentsInChildren<Conveyor>().ToList();
 		_conveyors.Sort((a, b) => String.Compare(a.name, b.name, StringComparison.Ordinal));
 
+		var num = 0;
 		foreach (var c in _conveyors)
 		{
 			c.Reset();
 			c.Speed = ConveyorSpeed;
+			c.Number = num++;
 		}
 	}
 
@@ -327,7 +330,7 @@ public class Level : MarioObject
 	private void LateUpdate()
 	{
 		//Debug.Log("Level.LateUpdate: Paused " + Paused + " NoMoreCakes: "+ NoMoreCakes);
-		if (Paused)
+		if (Paused || World.CurrentLevel == null)
 			return;
 
 		if (!NoMoreCakes)
@@ -352,9 +355,11 @@ public class Level : MarioObject
 
 	private void UpdateSpawners()
 	{
+		//Debug.Log("UpdateSpawners");
+
 		if (_spawners == null)
 		{
-			Debug.Log("UpdateSpawners: No spawners");
+			Debug.Log("UpdateSpawners: Null spawners");
 			return;
 		}
 
@@ -372,7 +377,9 @@ public class Level : MarioObject
 
 		var options = _spawners.Where(sp => sp.CouldSpawn() && Inventory[sp.Type] > 0).ToList();
 		if (options.Count == 0)
+		{
 			return;
+		}
 
 		AddCake(SelectRandomWeighted(options));
 	}
@@ -518,9 +525,13 @@ public class Level : MarioObject
 		return _conveyors[_conveyors.Count - 1];
 	}
 
-	public void AddIngredients(Dictionary<IngredientType, int> contents)
+	/// <summary>
+	/// Start the level with the given inventory
+	/// </summary>
+	/// <param name="contents"></param>
+	public void StartLevel(Dictionary<IngredientType, int> contents)
 	{
-		//Debug.Log("Level.AddIngredients");
+		//Debug.Log("Level.StartLevel");
 
 		if (contents.Sum(c => c.Value) == 0)
 		{
@@ -552,7 +563,7 @@ public class Level : MarioObject
 
 		// TODO
 		//Inventory[IngredientType.Bomb] = 2;
-		//Inventory[IngredientType.ExtraLife] = 1;
+		Inventory[IngredientType.ExtraLife] = 1;
 
 		AddSpawners(Inventory);
 	}
@@ -588,5 +599,14 @@ public class Level : MarioObject
 		{
 			Truck.StartEmptying();
 		}
+	}
+
+	public Conveyor GetNextConveyor(Conveyor conv)
+	{
+		if (conv == null)
+			return null;
+
+		var n = conv.Number + 1;
+		return n >= _conveyors.Count ? null : _conveyors[n];
 	}
 }

@@ -109,19 +109,6 @@ public class Truck : MarioObject
 			{
 				return;
 			}
-
-			//foreach (var c in World.CurrentLevel.Conveyors)
-			//{
-			//	if (c.NumCakes > 0)
-			//	{
-			//		Debug.Log(c.name + " has " + c.NumCakes);
-			//		foreach (var k in c.Contents)
-			//		{
-			//			Debug.Log(k.Type + " is cake: " + Cake.Is(k.Type));
-			//		}
-			//		return;
-			//	}
-			//}
 		}
 
 		if (_cakes.Count > 0)

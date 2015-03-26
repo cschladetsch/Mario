@@ -200,18 +200,14 @@ public class Player : MarioObject
 		if (Dead || GodMode)
 			return;
 
-		if (pickup is Cake)
-		{
-			//Debug.Log("Dropped a " + pickup.name);
+		if (!Cake.IsCake(pickup.Type)) 
+			return;
 
-			if (OnCakeDropped != null)
-				OnCakeDropped(this);
+		//Debug.Log("Dropped a " + pickup.name);
+		if (OnCakeDropped != null)
+			OnCakeDropped(this);
 
-			LoseLife();
-
-			if (CurrentLevel.NoMoreCakes)
-				CurrentLevel.Truck.StartEmptying();
-		}
+		LoseLife();
 	}
 
 	private void LoseLife()
@@ -268,7 +264,7 @@ public class Player : MarioObject
 
 	public void AddLife()
 	{
-		Debug.Log("Player.AddLife");
+		//Debug.Log("Player.AddLife");
 
 		++Lives;
 

@@ -320,7 +320,7 @@ public class DeliveryTruck : MarioObject
 
 		var cp = Contents.ToDictionary(kv => kv.Key, kv => kv.Value);
 		World.ChangeArea(AreaType.Factory);
-		World.CurrentLevel.AddIngredients(cp);
+		World.CurrentLevel.StartLevel(cp);
 
 		Ready = false;
 

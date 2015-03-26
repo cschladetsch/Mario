@@ -84,7 +84,7 @@ public class Pickup : MarioObject
 
 	public void Reset()
 	{
-		if (Dropped)
+		if (Cake.IsCake(Type) && Dropped)
 			return;
 
 		//_dropped = false;
@@ -191,7 +191,7 @@ public class Pickup : MarioObject
 
 	protected void Remove()
 	{
-		Debug.Log("Obj " + name + " destroyed");
+		//Debug.Log("Obj " + name + " destroyed");
 		Conveyor.RemoveItem(this);
 
 		Destroy(gameObject);

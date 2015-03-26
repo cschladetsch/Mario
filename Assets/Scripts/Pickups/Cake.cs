@@ -44,7 +44,7 @@ public class Cake : Pickup
 		if (!gameObject.activeSelf)
 			return false;
 
-		if (Cake.Is(Type))
+		//if (IsCake(Type))
 			conv.RemoveItem(this);
 
 		if (next)
@@ -54,19 +54,23 @@ public class Cake : Pickup
 		}
 
 		// no next conveyor, add to truck
-		Truck.AddCake(this);
+		if (IsCake(Type))
+			Truck.AddCake(this);
+		else
+			Drop();
 
 		return true;
 	}
 
 	public float TransitionTime = 3;
 
-	private IEnumerator TransitionCake(IGenerator self, Conveyor from, Conveyor to)
+	public IEnumerator TransitionCake(IGenerator self, Conveyor from, Conveyor to)
 	{
 		// we got destroyed when we got picked up at end of conveyor
 		if (!gameObject)
 			yield break;
 
+		//Debug.Log("TransitionCake: " + Type + ": " + from.name + " to " + to.name);
 		if (from == World.CurrentLevel.GetConveyor(0))
 		{
 			// TODO: animate straight across
@@ -107,21 +111,26 @@ public class Cake : Pickup
 			return;
 		}
 
-		_droppedTimer -= GameDeltaTime;
-		if (_droppedTimer < 0)
-		{
-			Debug.Log("Cake '" + Type + "' has fallen for too long, destroying");
-			if (World.CurrentArea == World.FactoryArea)
-			{
-				CurrentLevel.DestroyCake(this);
-				return;
-			}
+		UpdateDropped();
+	}
 
-			Player.DroppedCake(this);
+	private void UpdateDropped()
+	{
+		_droppedTimer -= GameDeltaTime;
+		if (!(_droppedTimer < 0)) 
+			return;
+
+		//Debug.Log("Cake '" + Type + "' has fallen for too long, destroying");
+		if (World.CurrentArea == World.FactoryArea)
+		{
 			CurrentLevel.DestroyCake(this);
-			if (CurrentLevel.NoMoreCakes)
-				Truck.StartEmptying();
+			return;
 		}
+
+		Player.DroppedCake(this);
+		CurrentLevel.DestroyCake(this);
+		if (CurrentLevel.NoMoreCakes)
+			Truck.StartEmptying();
 	}
 
 	/// <summary>
@@ -157,7 +166,7 @@ public class Cake : Pickup
 	}
 #endif
 
-	public static bool Is(IngredientType type)
+	public static bool IsCake(IngredientType type)
 	{
 		return type != IngredientType.Bomb && type != IngredientType.ExtraLife;
 	}

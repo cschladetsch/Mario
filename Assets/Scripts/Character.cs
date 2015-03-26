@@ -149,7 +149,7 @@ public class Character : MarioObject
 				continue;
 
 			var dist = Mathf.Abs(transform.position.x - item.transform.position.x);
-			if (dist > 4)
+			if (dist > 2)
 				continue;
 
 			item.CharacterHit(this, conv, next);

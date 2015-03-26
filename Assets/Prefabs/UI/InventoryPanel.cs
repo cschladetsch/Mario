@@ -44,17 +44,8 @@ public class InventoryPanel : MarioObject
 		}
 
 		Counts.Remove(IngredientType.None);
-
-		//foreach (var c in Counts)
-		//{
-		//	Debug.Log(string.Format("{0} = {1}", c.Key, c.Value.name));
-		//}
 	}
 
-	protected override void Tick()
-	{
-		base.Tick();
-	}
 
 	public void UpdateDisplay(Dictionary<IngredientType, int> contents, bool add)
 	{

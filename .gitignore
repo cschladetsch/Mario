@@ -8,3 +8,6 @@ obj/
 *.sln
 Temp/
 Assets/.reuniter_data
+Archive/
+Builds-Old/
+Tools/Source/MakeArchive/bin/

@@ -1676,7 +1676,8 @@ MonoBehaviour:
   ConveyorSpeed: .159999996
   SpeedLevel: 0
   OverallSpeed: 1
-  _spawners: []
+  MaxBombs: 3
+  MaxExtraLives: 1
   ToTruck: 0
 --- !u!4 &235168232
 Transform:

@@ -123,7 +123,7 @@ public class World : MonoBehaviour
 
 	private void GatherIngredients()
 	{
-		Debug.Log("World.GatherIngredients");
+		//Debug.Log("World.GatherIngredients");
 
 		foreach (Transform tr in IngredientDetails.transform)
 		{

@@ -250,7 +250,13 @@ public class DeliveryTruck : MarioObject
 	{
 		if (DeliverNowPanel.gameObject.activeSelf)
 		{
-			Debug.Log("Not canceling!");
+			//Debug.Log("Not canceling!");
+			return;
+		}
+
+		if (ProgressBarPanel.activeSelf)
+		{
+			//Debug.Log("Not canceling!");
 			return;
 		}
 

@@ -530,7 +530,7 @@ public class Level : MarioObject
 		sp.Type = type;
 
 		// load prefabs to make ingredients from resources path
-		var path = string.Format("{0}", type);
+		var path = string.Format("Scene/Prop_{0}", type);
 		var ob = Resources.Load(path);
 		if (ob == null)
 		{

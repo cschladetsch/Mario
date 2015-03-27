@@ -1,3 +1,5 @@
-This folder contains all the prefabs for the visuals for each ingredient.
+Images folder contains UI images for all items.
 
-There should be a matching prefab in the Prefabs/IngredientInfos folder.
+Scene folder contains Game-Objects for each item, incuding correct script etc.
+
+

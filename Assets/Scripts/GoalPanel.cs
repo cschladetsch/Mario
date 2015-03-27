@@ -53,8 +53,8 @@ public class GoalPanel : MarioObject
 
 	private void GatherPrefabsForIngredientDisplay()
 	{
-		_prefabs[IngredientType.CupCake] = (GameObject) Resources.Load("Images/CupcakeImage");
-		_prefabs[IngredientType.MintIceCream] = (GameObject) Resources.Load("Images/MintIceCreamImage");
+		_prefabs[IngredientType.CupCake] = (GameObject)Resources.Load("Images/UI_Icon_CupCake");
+		_prefabs[IngredientType.MintIceCream] = (GameObject) Resources.Load("Images/UI_Icon_MintIceCreamImage");
 	}
 
 	public void SetGoal(StageGoal goal)

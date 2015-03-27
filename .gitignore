@@ -1,5 +1,6 @@
 Builds/
 Library/
+Archive/
 *.csproj
 obj/
 *.unityproj

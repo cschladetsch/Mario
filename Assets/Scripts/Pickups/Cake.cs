@@ -45,7 +45,7 @@ public class Cake : Pickup
 			return false;
 
 		//if (IsCake(Type))
-			conv.RemoveItem(this);
+		conv.RemoveItem(this);
 
 		if (next)
 		{
@@ -118,7 +118,7 @@ public class Cake : Pickup
 	private void UpdateDropped()
 	{
 		_droppedTimer -= GameDeltaTime;
-		if (!(_droppedTimer < 0)) 
+		if (!(_droppedTimer < 0))
 			return;
 
 		//Debug.Log("Cake '" + Type + "' has fallen for too long, destroying");

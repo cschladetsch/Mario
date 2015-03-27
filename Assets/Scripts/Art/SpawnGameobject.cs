@@ -31,7 +31,7 @@ public class SpawnGameobject : MonoBehaviour
 		Spawn();
 	}
 
-	// Spawn new object on and replace locator
+	// Spawn new object on and replace locater
 	public void Spawn()
 	{
 		if (_srcPrefab == null)
@@ -49,6 +49,8 @@ public class SpawnGameobject : MonoBehaviour
 			Debug.LogWarning("Failed to spawn prefab from " + _srcPrefab.name);
 			return;
 		}
+
+		//Debug.Log("Spawning a " + _srcPrefab);
 
 		Instance.name = _srcPrefab.name.ToString();
 

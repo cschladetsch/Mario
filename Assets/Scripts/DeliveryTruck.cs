@@ -117,7 +117,7 @@ public class DeliveryTruck : MarioObject
 		Deliver(Contents);
 	}
 
-	void SetProgressBarActive(bool act)
+	private void SetProgressBarActive(bool act)
 	{
 		ProgressBarPanel.SetActive(act);
 	}

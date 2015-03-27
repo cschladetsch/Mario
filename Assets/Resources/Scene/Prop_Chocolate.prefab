@@ -39,8 +39,6 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 448726}
-  - 33: {fileID: 3348726}
-  - 23: {fileID: 2348726}
   - 50: {fileID: 5048726}
   - 61: {fileID: 6148726}
   - 114: {fileID: 11448726}
@@ -89,33 +87,6 @@ Transform:
   - {fileID: 448724}
   m_Father: {fileID: 0}
   m_RootOrder: 0
---- !u!23 &2348726
-Renderer:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 148726}
-  m_Enabled: 0
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
-  m_LightmapIndex: 255
-  m_LightmapTilingOffset: {x: 1, y: 1, z: 0, w: 0}
-  m_Materials:
-  - {fileID: 2100000, guid: 34157b90bc72c764897cc914058ed1c6, type: 2}
-  m_SubsetIndices: 
-  m_StaticBatchRoot: {fileID: 0}
-  m_UseLightProbes: 0
-  m_LightProbeAnchor: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_SortingLayerID: 0
-  m_SortingOrder: 0
---- !u!33 &3348726
-MeshFilter:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 148726}
-  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!50 &5048726
 Rigidbody2D:
   m_ObjectHideFlags: 1

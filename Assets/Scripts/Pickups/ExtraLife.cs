@@ -18,5 +18,4 @@ public class ExtraLife : AutoMoveItemBase
 
 		return false;
 	}
-
 }

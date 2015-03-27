@@ -166,8 +166,8 @@ public class Player : MarioObject
 		if (Left)
 			return;
 
-		Left = transform.FindChild("CharacterLeft").GetComponent<Character>();
-		Right = transform.FindChild("CharacterRight").GetComponent<Character>();
+		Left = transform.FindChild("Prop_CharacterLeft").GetComponent<Character>();
+		Right = transform.FindChild("Prop_CharacterRight").GetComponent<Character>();
 	}
 
 	private void UpdateDebugKeys()
@@ -200,7 +200,7 @@ public class Player : MarioObject
 		if (Dead || GodMode)
 			return;
 
-		if (!Cake.IsCake(pickup.Type)) 
+		if (!Cake.IsCake(pickup.Type))
 			return;
 
 		//Debug.Log("Dropped a " + pickup.name);

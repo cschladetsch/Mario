@@ -65,7 +65,7 @@ GameObject:
   - 114: {fileID: 11497618}
   - 114: {fileID: 11497614}
   m_Layer: 5
-  m_Name: UI_Prop_VanIngredientButton
+  m_Name: UI_VanIngredientButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

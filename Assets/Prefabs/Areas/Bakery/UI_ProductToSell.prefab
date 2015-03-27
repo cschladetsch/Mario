@@ -46,7 +46,7 @@ GameObject:
   - 114: {fileID: 11402704}
   - 114: {fileID: 11402706}
   m_Layer: 0
-  m_Name: UI_Prop_ProductToSell
+  m_Name: UI_ProductToSell
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

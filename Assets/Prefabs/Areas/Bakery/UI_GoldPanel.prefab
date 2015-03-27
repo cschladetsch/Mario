@@ -28,7 +28,7 @@ GameObject:
   - 222: {fileID: 22243054}
   - 114: {fileID: 11443052}
   m_Layer: 5
-  m_Name: UI_Prop_GoldPanel
+  m_Name: UI_GoldPanel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

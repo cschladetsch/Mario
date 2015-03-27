@@ -8,7 +8,11 @@ using UnityEngine.UI;
 /// </summary>
 public class DeliveryTruck : MarioObject
 {
+	public DeliverNowPanel DeliverNowPanel;
+
 	public Button DeliveryButton;
+
+	public float DeliverNowCostFraction = 0.4f;
 
 	/// <summary>
 	/// True if truck has been delivered
@@ -27,15 +31,17 @@ public class DeliveryTruck : MarioObject
 
 	public Button Button;
 
-	//public Button TimerButtton;
-
 	public GameObject BuyingOptions;
 
 	public GameObject PlayButton;
 
 	public Text PlayButtonText;
 
+	public Text DeliverText;
+
 	public ProgressBar ProgressBar;
+
+	public GameObject ProgressBarPanel;
 
 	private readonly List<IngredientButtton> _buttons = new List<IngredientButtton>();
 
@@ -43,9 +49,16 @@ public class DeliveryTruck : MarioObject
 
 	private bool _delivering;
 
-	private Dictionary<IngredientType, int> _contents;
+	internal Dictionary<IngredientType, int> Contents;
 
-	public bool Delivering { get { return _delivering; } }
+	private MakeGlow _glow;
+
+	public bool Delivering
+	{
+		get { return _delivering; }
+	}
+
+	public bool Pulling;
 
 	private void UpdateDisplay()
 	{
@@ -57,20 +70,34 @@ public class DeliveryTruck : MarioObject
 
 	public void VanButtonPressed()
 	{
+		if (_glow.enabled)
+		{
+			_glow.enabled = false;
+			GetComponent<Image>().color = Color.white;
+		}
+
 		if (Ready)
 			PlayButtonPressed();
 
 		if (_delivering)
+		{
+			ShowDeliverNowPanel();
 			return;
+		}
 
 		GatherIngredientButtons();
 		BuyingOptions.SetActive(true);
 	}
 
+	private void ShowDeliverNowPanel()
+	{
+		DeliverNowPanel.UpdateDisplayTex();
+		DeliverNowPanel.gameObject.SetActive(true);
+	}
+
 	public void PlayButtonPressed()
 	{
-		//Debug.Log("PlayButtonPressed" + "");
-		Complete();
+		CompleteDeliveryToFactory();
 	}
 
 	/// <summary>
@@ -78,57 +105,73 @@ public class DeliveryTruck : MarioObject
 	/// </summary>
 	public void OrderButtonPressed()
 	{
+		ProgressBar.Reset();
+
+		//Debug.Log("Delivery time for " + Contents.Sum(c => c.Value) + " is " + CalcDeliveryTime());
 		BuyingOptions.SetActive(false);
 		PlayButton.SetActive(false);
-		ProgressBar.gameObject.SetActive(true);
+		SetProgressBarActive(true);
 		ProgressBar.Reset();
-		ProgressBar.TotalTime = DeliveryTime;
+		ProgressBar.TotalTime = CalcDeliveryTime();
 		ProgressBar.Paused = false;
-		Deliver(_contents);
+		Deliver(Contents);
+	}
+
+	void SetProgressBarActive(bool act)
+	{
+		ProgressBarPanel.SetActive(act);
 	}
 
 	public void BuyItem(GameObject go)
 	{
-		if (_contents.Sum(c => c.Value) == 6)
-		{
-			Debug.Log("Currently limited to 6 items max");
+		if (Pulling)
 			return;
-		}
+
+		//if (Contents.Sum(c => c.Value) == 6)
+		//{
+		//	//Debug.Log("Currently limited to 6 items max");
+		//	return;
+		//}
 
 		var button = go.GetComponent<IngredientButtton>();
 		var type = button.Type;
-		//if (World.GoalIndex == 0 && (type == IngredientType.Mint || type == IngredientType.Chocolate))
-		//	return;
 
 		var info = World.IngredientInfo[type];
 		if (Player.Gold < info.Buy)
 			return;
 
+		AddAnimation(type, go);
 		button.AddAmount(1);
-		//if (!_contents.ContainsKey(type))
-		//{
-		//	Debug.LogError("Shop doesn't have entry for " + type);
-		//	return;
-		//}
 
-		_contents[type]++;
+		Contents[type]++;
 		Player.Gold -= info.Buy;
 		UpdateDisplay();
 	}
 
+	private void AddAnimation(IngredientType type, GameObject dest)
+	{
+		var end = dest;
+		ItemAnimation.Animate(type, Canvas.PlayerGold.gameObject, end, 2);
+	}
+
 	protected override void Begin()
 	{
+		_glow = GetComponent<MakeGlow>();
+
 		base.Begin();
 
+		DeliverNowPanel.gameObject.SetActive(false);
 		BuyingOptions.SetActive(false);
 		PlayButton.SetActive(false);
-		ProgressBar.gameObject.SetActive(false);
+		SetProgressBarActive(false);
 
 		GatherIngredientButtons();
 
-		_contents = IngredientItem.CreateIngredientDict<int>();
+		Contents = IngredientItem.CreateIngredientDict<int>();
 
 		UpdateDisplay();
+
+		ProgressBar.TotalTime = CalcDeliveryTime();
 	}
 
 	/// <summary>
@@ -141,15 +184,12 @@ public class DeliveryTruck : MarioObject
 		foreach (Transform tr in BuyingOptions.transform)
 		{
 			var ing = tr.GetComponent<IngredientButtton>();
-			if (ing != null)
-			{
-				_buttons.Add(ing);
-				ing.SetAmount(0);
-				ing.SetCost(World.IngredientInfo[ing.Type].Buy);
+			if (ing == null)
+				continue;
 
-				//if (World.GoalIndex == 0 && (ing.Type == IngredientType.Mint || ing.Type == IngredientType.Chocolate))
-				//	ing.gameObject.GetComponent<Button>().interactable = false;
-			}
+			_buttons.Add(ing);
+			ing.SetAmount(0);
+			ing.SetCost(World.IngredientInfo[ing.Type].Buy);
 		}
 	}
 
@@ -158,16 +198,25 @@ public class DeliveryTruck : MarioObject
 		if (TestForSkip(contents))
 			return;
 
-		_deliveryTimer = DeliveryTime;
+		_deliveryTimer = CalcDeliveryTime();
 		_delivering = true;
 
 		PlayButton.gameObject.SetActive(false);
 
-		_contents = new Dictionary<IngredientType, int>();
+		Contents = new Dictionary<IngredientType, int>();
 		foreach (var kv in contents)
-			_contents.Add(kv.Key, kv.Value);
+			Contents.Add(kv.Key, kv.Value);
 
 		Ready = false;
+	}
+
+	private float CalcDeliveryTime()
+	{
+		//if (World.GodMode)
+		//	return 1;
+
+		//return DeliveryTime + Contents.Sum(c => c.Value);
+		return DeliveryTime;
 	}
 
 	protected override void BeforeFirstUpdate()
@@ -199,87 +248,104 @@ public class DeliveryTruck : MarioObject
 
 	public void CancelOrdering()
 	{
+		if (DeliverNowPanel.gameObject.activeSelf)
+		{
+			//Debug.Log("Not canceling!");
+			return;
+		}
+
+		if (ProgressBarPanel.activeSelf)
+		{
+			//Debug.Log("Not canceling!");
+			return;
+		}
+
 		BuyingOptions.SetActive(false);
-		_contents = IngredientItem.CreateIngredientDict<int>();
 		RefundItems();
+		Contents = IngredientItem.CreateIngredientDict<int>();
 		UpdateDisplay();
 	}
 
 	private void RefundItems()
 	{
+		Debug.Log("RefundItems: " + _buttons.Count);
+		if (_buttons.Count == 0)
+			GatherIngredientButtons();
+
 		foreach (var b in _buttons)
 		{
 			if (b.Amount == 0)
-				return;
-			//Debug.Log(World.GetInfo(b.Type).Sell + " " + Time.frameCount);
-			Player.Gold += b.Amount*World.GetInfo(b.Type).Sell;
+				continue;
+
+			Debug.Log("Refunding " + b.Type + "x" + b.Amount + " for " + World.GetInfo(b.Type).Buy + " each");
+			Player.Gold += b.Amount*World.GetInfo(b.Type).Buy;
+
 			b.SetAmount(0);
 		}
 	}
 
 	protected override void Tick()
 	{
-		//var canDeliver = World.BuyingAreaUi.HasAnything;
-
-		//TimerButtton.interactable = canDeliver;
-		//Button.interactable = canDeliver;
-
 		base.Tick();
 
-		UpdateTimer();
+		DeliverText.text = string.Format("{0}$ to Deliver", (int) CalcDeliveryCost());
+
+		UpdateDeliveryButton();
 
 		UpdateDelivering();
-
-		DeliveryButton.interactable = _contents.Sum(c => c.Value) > 0;
 	}
 
-	//private void UpdatePressed()
-	//{
-	//	Debug.Log("UpdatePressed: ready=" + Ready);
-	//	if (!Ready)
-	//		return;
-
-	//	var mouse = Input.GetMouseButtonDown(0);
-	//	Debug.Log("mouse: " + mouse);
-	//	if (!mouse)
-	//		return;
-
-	//	var hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector2.zero);
-	//	Debug.Log("collider: " + hit.collider);
-	//	if (hit.collider == null)
-	//		return;
-
-	//	Complete();
-	//}
-
-	public void Complete()
+	private void UpdateDeliveryButton()
 	{
-		//Debug.LogWarning("DeliveryTruck.Complete");
+		DeliveryButton.interactable = Contents.Sum(c => c.Value) > 0;
+	}
 
-		if (!Ready)
-			return;
+	public int CalcDeliveryCost()
+	{
+		var sum = 0;
+		foreach (var kv in Contents)
+		{
+			var item = kv.Key;
+			var count = kv.Value;
+			sum += World.GetInfo(item).Buy*count;
+		}
+
+		var fullCost = sum*DeliverNowCostFraction;
+		var percent = (1.0f - ProgressBar.PercentFinished)*3; // 0 -> 2, 1 -> 0
+		return Mathf.Max(2, (int) (percent*fullCost));
+	}
+
+	public void CompleteDeliveryToFactory()
+	{
+		var sum = Contents.Sum(c => c.Value);
+		//Debug.LogWarning("DeliveryTruck.CompleteDeliveryToFactory: " + sum);
+		if (sum == 0)
+		{
+			Debug.LogError("No delivery truck contents??");
+			Reset();
+		}
 
 		PlayButton.SetActive(true);
-		ProgressBar.gameObject.SetActive(false);
+		SetProgressBarActive(false);
 
 		TurnTimerOn(false);
 
+		var cp = Contents.ToDictionary(kv => kv.Key, kv => kv.Value);
 		World.ChangeArea(AreaType.Factory);
-		World.CurrentLevel.AddIngredients(_contents);
+		World.CurrentLevel.StartLevel(cp);
 
 		Ready = false;
 
-		_contents = IngredientItem.CreateIngredientDict<int>();
+		Contents = IngredientItem.CreateIngredientDict<int>();
 
 		_delivering = false;
-		_deliveryTimer = DeliveryTime;
+		_deliveryTimer = CalcDeliveryTime();
 
 		ResetTruck();
 	}
 
 	private void TurnTimerOn(bool on)
 	{
-		//Canvas.CarTimer.transform.parent.gameObject.SetActive(on);
 	}
 
 	private void UpdateDelivering()
@@ -292,18 +358,8 @@ public class DeliveryTruck : MarioObject
 		if (!Ready)
 			return;
 
-		ProgressBar.gameObject.SetActive(false);
+		SetProgressBarActive(false);
 		PlayButton.SetActive(true);
-	}
-
-	private void UpdateTimer()
-	{
-		if (!_delivering)
-			return;
-
-		//var text = string.Format("{0:0.0}s", _deliveryTimer);
-		//PlayButtonText.text = text;
-		//PlayButtonText.color = Color.black;
 	}
 
 	private void ResetTruck()
@@ -313,31 +369,38 @@ public class DeliveryTruck : MarioObject
 		Ready = false;
 		_delivering = false;
 		PlayButton.SetActive(false);
-		
-
-		// MON
-		//Canvas.CarTimer.text = string.Format("{0:0.0}s", DeliveryTime);
 	}
 
 	public void ShowBuyingPanel(bool show)
 	{
-		Debug.Log("ShowBuyingPanel: " + show);
 		BuyingOptions.SetActive(show);
 	}
 
 	public void BuyItem(IngredientItem item)
 	{
-		foreach (var b in _buttons)
+		foreach (var b in _buttons.Where(b => b.Type == item.Type))
 		{
-			if (b.Type == item.Type)
-			{
-				BuyItem(b.gameObject);
-			}
+			BuyItem(b.gameObject);
 		}
 	}
 
 	public bool HasItems(IngredientType type, int num)
 	{
 		return _buttons.Where(b => b.Type == type).Any(b => b.Amount >= num);
+	}
+
+	public void Deliver()
+	{
+		ProgressBar.Reset();
+		Deliver(Contents);
+	}
+
+	public void Reset()
+	{
+		//Debug.Log("DeliveryTruck.Reset");
+		Contents = IngredientItem.CreateIngredientDict<int>();
+		_delivering = false;
+		Pulling = false;
+		ProgressBar.Reset();
 	}
 }

@@ -1,21 +1,22 @@
-﻿/// <summary>
+﻿using UnityEngine;
+
+/// <summary>
 /// A Pickup that adds an extra life to the player
 /// </summary>
-public class ExtraLife : Pickup
+public class ExtraLife : AutoMoveItemBase
 {
-	public override void CharacterHit(Character character, Conveyor conv, Conveyor next)
+	public override bool CharacterHit(Character character, Conveyor conv, Conveyor next)
 	{
-		base.CharacterHit(character, conv, next);
+		Player.AddLife();
+
+		conv.RemoveItem(this);
+
+		// TODO: doesn't work because character is in scene-space and LivesRemainingText is in canvas
+		//ItemAnimation.Animate(IngredientType.ExtraLife, character.gameObject, Player.LivesRemainingText.gameObject, 1);
 
 		Remove();
 
-		FindObjectOfType<Player>().AddLife();
+		return false;
 	}
 
-	protected override void StartDropped(bool moveRight)
-	{
-		base.StartDropped(moveRight);
-
-		Remove();
-	}
 }

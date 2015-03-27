@@ -1,4 +1,5 @@
 Builds/
+Builds-Old/
 Library/
 Archive/
 *.csproj
@@ -9,3 +10,4 @@ obj/
 *.sln
 Temp/
 Assets/.reuniter_data
+Tools/Source/MakeArchive/bin/

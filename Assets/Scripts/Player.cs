@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using System.Net.Mime;
-using Flow;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -33,10 +29,10 @@ public class Player : MarioObject
 	/// </summary>
 	public GameObject CharacterRightPrefab;
 
-	/// <summary>
-	/// The control (input) system
-	/// </summary>
-	public Control Control;
+	///// <summary>
+	///// The control (input) system
+	///// </summary>
+	//public Control Control;
 
 	/// <summary>
 	/// Where to store particle systems
@@ -66,27 +62,16 @@ public class Player : MarioObject
 	/// </summary>
 	public Dictionary<IngredientType, int> Inventory = new Dictionary<IngredientType, int>();
 
-	///// <summary>
-	///// The completed products - they may be sold directly, or used to make better products
-	///// </summary>
-	//public List<Product> Products = new List<Product>();
-
-	///// <summary>
-	///// What is currently on sale
-	///// </summary>
-	//public List<Product> SellingProducts = new List<Product>(); 
-
 	public delegate void CollisionHandler(Collision2D other);
 
 	public delegate void TriggerHandler(Collider2D other);
 
 	public delegate void PlayerEventHandler(Player player);
-	public delegate void PlayerDroppedPickupHandler(Player player, Pickup pickup);
 
 	public CollisionHandler OnCollision;
 	public TriggerHandler OnTrigger;
 	public PlayerEventHandler OnDied;
-	public PlayerDroppedPickupHandler OnCakeDropped;
+	public PlayerEventHandler OnCakeDropped;
 
 	/// <summary>
 	/// The left character
@@ -99,20 +84,34 @@ public class Player : MarioObject
 	public Character Right;
 
 	/// <summary>
+	/// Cached access to the UI
+	/// </summary>
+	private UiCanvas _canvas;
+
+	/// <summary>
 	/// When a cake is dropped or you hit a bomb, you lose a life. 0 lives = game over
 	/// </summary>
 	public int Lives = 3;
 
-	private ProductsPanelScript _products;
+	//private ProductsPanelScript _products;
 
-	public Dictionary<IngredientType, int> SoldItems;
+	private Dictionary<IngredientType, int> _sold;
 
 	protected override void Begin()
 	{
 		base.Begin();
 
-		_products = FindObjectOfType<ProductsPanelScript>();
-		SoldItems = IngredientItem.CreateIngredientDict<int>();
+		//_products = FindObjectOfType<ProductsPanelScript>();
+
+		_sold = IngredientItem.CreateIngredientDict<int>();
+
+		if (World.GodMode)
+		{
+			Player.Inventory[IngredientType.Cherry] = 99;
+			Player.Inventory[IngredientType.Muffin] = 99;
+			Player.Inventory[IngredientType.Mint] = 99;
+			Player.Inventory[IngredientType.Chocolate] = 99;
+		}
 	}
 
 	public void ShowCharacters(bool show)
@@ -120,20 +119,24 @@ public class Player : MarioObject
 		if (!Left)
 			return;
 
-		AreaBase.ToggleVisuals(Left.gameObject, show);
-		AreaBase.ToggleVisuals(Right.gameObject, show);
+		AreaBase.SetVisual(Left.gameObject, show);
+		AreaBase.SetVisual(Right.gameObject, show);
 	}
 
 	protected override void Construct()
 	{
-		Control = GetComponent<Control>();
+		//Debug.Log("Player.Construct");
+
+		//Control = GetComponent<Control>();
+		_canvas = FindObjectOfType<UiCanvas>();
 
 		PrepareEmptyInventory();
 	}
 
 	private void PrepareEmptyInventory()
 	{
-		Inventory = IngredientItem.CreateIngredientDict<int>();
+		foreach (var e in Enum.GetValues(typeof (IngredientType)))
+			Inventory.Add((IngredientType) e, 0);
 	}
 
 	protected override void BeforeFirstUpdate()
@@ -148,52 +151,31 @@ public class Player : MarioObject
 	{
 		base.Tick();
 
-		UpdateSellingProgressBar();
+		// TODO: not test this every frame!
+
 
 		GetCharacters();
 
 #if !FINAL
 		UpdateDebugKeys();
 #endif
-
-		UpdateSellItem();
 	}
 
 	private void GetCharacters()
 	{
-		if (Left) 
+		if (Left)
 			return;
 
-		Left = transform.FindChild("CharacterLeft").GetComponent<Character>();
-		Right = transform.FindChild("CharacterRight").GetComponent<Character>();
-	}
-
-	private void UpdateSellingProgressBar()
-	{
-		var any = Inventory[IngredientType.CupCake] > 0 || Inventory[IngredientType.MintIceCream] > 0;
-		var bar = _products.SellProgressBar;
-		if (!any && !bar.Paused)
-		{
-			bar.Reset();
-		}
-
-		if (any && bar.Paused || (!_lastAny && any))
-		{
-			bar.Reset();
-			bar.Paused = false;
-
-			SellingTimer = SellingInterval;
-
-			// TODO: Use Recipe.SellingTime
-			bar.TotalTime = Player.SellingInterval;
-		}
-
-		_lastAny = any;
+		Left = transform.FindChild("Prop_CharacterLeft").GetComponent<Character>();
+		Right = transform.FindChild("Prop_CharacterRight").GetComponent<Character>();
 	}
 
 	private void UpdateDebugKeys()
 	{
 #if DEBUG
+		if (!Input.GetKeyDown(KeyCode.LeftShift))
+			return;
+
 		if (Input.GetKeyDown(KeyCode.Space))
 		{
 			FindObjectOfType<World>().TogglePause();
@@ -213,26 +195,19 @@ public class Player : MarioObject
 #endif
 	}
 
-	List<Product> CalcPossibleProducts()
-	{
-		return null;
-	}
-
 	public void DroppedCake(Pickup pickup)
 	{
-		Debug.Log("Dropped cake");
 		if (Dead || GodMode)
 			return;
 
-		if (pickup is Cake)
-		{
-			//Debug.Log("Dropped a " + pickup.name);
+		if (!Cake.IsCake(pickup.Type)) 
+			return;
 
-			if (OnCakeDropped != null)
-				OnCakeDropped(this, pickup);
+		//Debug.Log("Dropped a " + pickup.name);
+		if (OnCakeDropped != null)
+			OnCakeDropped(this);
 
-			LoseLife();
-		}
+		LoseLife();
 	}
 
 	private void LoseLife()
@@ -243,111 +218,29 @@ public class Player : MarioObject
 		UpdateUi();
 	}
 
-	public float SellingInterval = 3;
-
-	public float SellingTimer;
-
-	private void UpdateSellItem()
-	{
-		SellingTimer -= (float)RealDeltaTime;
-
-		var selling = SellingTimer <= 0;
-		while (selling)
-		{
-			SellItem();
-			SellingTimer += SellingInterval;
-
-			if (SellingTimer > 0)
-			{
-				selling = false;
-				SellingTimer = SellingInterval;
-			}
-		}
-	}
-
-	private void SellItem()
-	{
-		IngredientType[] types = { IngredientType.MintIceCream, IngredientType.CupCake };
-
-		var canSell = false;
-		foreach (var ty in types)
-		{
-			if (Inventory[ty] > 0)
-			{
-				canSell = true;
-				break;
-			}
-		}
-
-		if (!canSell)
-			return;
-		
-		while (true)
-		{
-			var index0 = UnityEngine.Random.Range(0, types.Length);
-			var type = types[index0];
-
-			if (Inventory[type] <= 0)
-				continue;
-
-			SellItem(type);
-
-			break;
-		}
-	}
-
-	private void SellItem(IngredientType type)
-	{
-		if (Inventory[type] == 0)
-			return;
-
-		var info = World.IngredientInfo[type];
-		Gold += info.Sell;
-		Inventory[type]--;
-		//Debug.Log("SOLD a " + type + " for " + info.Sell + "$" + UnityEngine.Time.frameCount);
-		SoldItems[type]++;
-
-		var p = FindObjectOfType<ProductsPanelScript>();
-		if (p)
-			p.SellProgressBar.Reset();
-		
-		UpdateUi();
-
-		if (GoalReached())
-			World.NextGoal();
-	}
-
-	//IEnumerator MoveSoldItem(IGenerator self, IngredientType type)
-	//{
-	//	//var info = World.GetInfo(type);
-	//	//var image = info.Image;
-	//	//var sprite = new UI.Sprite();
-	//	//sprite.
-	//}
-
 	private void Died()
 	{
-		Debug.Log("Played lost factory level by dropping too many cakes");
 		World.Pause(true);
 
-		if (World.CurrentLevel.NoMoreCakes)
-		{
-			World.CurrentLevel.Truck.StartEmptying();
-			return;
-		}
+		Canvas.GameOverPanel.gameObject.SetActive(true);
 
-		//var score = int.Parse(LivesRemainingText.text);
-		//if (SaveGame.UpdateHighScore(score))
-		//	_canvas.ShowHighScore(score);
-		//else
-		//	_canvas.ShowTapToStart();
+		if (!_canvas.Score)
+			return;
+
+		var score = int.Parse(_canvas.Score.text);
+
+		if (SaveGame.UpdateHighScore(score))
+			_canvas.ShowHighScore(score);
+		else
+			_canvas.ShowTapToStart();
 	}
 
-	private void UpdateUi()
+	public void UpdateUi()
 	{
 		World.Canvas.UpdateGoldAmount();
-		World.GoalPanel.UpdateUi();
+		World.Canvas.GoalPanel.GetComponent<GoalPanel>().UpdateUi();
 		World.CookingAreaUi.InventoryPanel.UpdateDisplay(Inventory, false);
+		World.CookingAreaUi.ProductsPanel.UpdateUi();
 
 		LivesRemainingText.text = Lives.ToString();
 	}
@@ -355,17 +248,25 @@ public class Player : MarioObject
 	public void Reset()
 	{
 		Lives = 3;
+		Gold = 5;
+
+		Inventory = IngredientItem.CreateIngredientDict<int>();
+		foreach (var cooker in World.BakeryArea.gameObject.GetComponentsInChildren<Cooker>())
+			cooker.Reset();
 
 		UpdateUi();
 	}
 
 	public void BombHit(Bomb bomb)
 	{
+		Debug.Log("Player hit bomb");
 		LoseLife();
 	}
 
 	public void AddLife()
 	{
+		//Debug.Log("Player.AddLife");
+
 		++Lives;
 
 		UpdateUi();
@@ -375,9 +276,6 @@ public class Player : MarioObject
 	{
 		//Debug.Log("Player.CookedItem: " + type);
 		Inventory[type] += count;
-
-		World.Canvas.GoalPanel.Cooked(type, count);
-
 		UpdateUi();
 	}
 
@@ -385,15 +283,16 @@ public class Player : MarioObject
 	/// Check if we have reached current goal
 	/// </summary>
 	/// <returns></returns>
-	private bool GoalReached()
+	public bool GoalReached()
 	{
+		//Debug.Log("Player.GoalReached?");
 		// make a dictionary mapping type to number required
 		var dict = IngredientItem.CreateIngredientDict<int>();
 		foreach (var type in CurrentGoal.Ingredients)
 			dict[type]++;
 
 		// check that we sold enough of the things
-		foreach (var kv in SoldItems)
+		foreach (var kv in _sold)
 		{
 			if (!dict.ContainsKey(kv.Key))
 				continue;
@@ -408,23 +307,74 @@ public class Player : MarioObject
 
 		// reset sold for next goal
 		foreach (var kv in dict)
-			SoldItems[kv.Key] = 0;
+			_sold[kv.Key] = 0;
 
 		return true;
-
 	}
 
 	public void SetGoal(StageGoal goal)
 	{
-		Debug.Log("Player.SetGoal: " + goal.Name);
-
 		CurrentGoal = goal;
-		World.GoalPanel.Refresh();
 	}
 
 	public void AddCake(Cake cake)
 	{
-		Inventory[cake.Type]++;
+		AddCake(cake.Type);
+		UpdateUi();
+	}
+
+	public bool RemoveItem(IngredientType type)
+	{
+		if (Inventory[type] == 0)
+			return false;
+
+		Inventory[type]--;
+
+		foreach (var panel in FindObjectsOfType<InventoryPanel>())
+			panel.UpdateDisplay(Inventory, false);
+
+		return true;
+	}
+
+	public int GetItemCount(IngredientType type)
+	{
+		return Inventory[type];
+	}
+
+	public bool HasItem(IngredientType type)
+	{
+		return Inventory[type] > 0;
+	}
+
+	public void SoldItem(IngredientInfo info)
+	{
+		if (Inventory[info.Type] == 0)
+			return;
+
+		//Debug.Log("Sold a " + info.Type + " @" + Time.frameCount);
+		Gold += info.Sell;
+		_sold[info.Type]++;
+		Inventory[info.Type]--;
+
+		UpdateUi();
+	}
+
+	public void RemoveGold(int sum)
+	{
+		Gold -= sum;
+		UpdateUi();
+	}
+
+	public void AddCake(IngredientType type)
+	{
+		Inventory[type]++;
+		UpdateUi();
+	}
+
+	public void AddGold(int amount)
+	{
+		//Debug.Log("Player added " + amount + " gold");
+		Gold += amount;
 		UpdateUi();
 	}
 }

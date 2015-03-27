@@ -43,7 +43,7 @@ GameObject:
   - 50: {fileID: 5000000}
   - 61: {fileID: 6100000}
   m_Layer: 10
-  m_Name: ExtraLife
+  m_Name: Pickup_ExtraLife
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -124,6 +124,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33ff3ff82c077e241a120508af627c50, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Paused: 0
+  Type: 0
   Position: 0
   HangTime: 4
   Moved: 0
@@ -131,6 +133,9 @@ MonoBehaviour:
   _hangTimer: 0
   _dropped: 0
   _droppedTimer: 0
+  CostText: {fileID: 0}
+  Delivered: 0
+  TransitionTime: 3
 --- !u!212 &21200000
 SpriteRenderer:
   m_ObjectHideFlags: 1

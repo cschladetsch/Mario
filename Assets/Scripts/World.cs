@@ -169,7 +169,7 @@ public class World : MonoBehaviour
 				continue;
 			}
 
-			var name = area.name.Replace("(Clone)", "") + "UI";
+			var name = string.Format("UI_{0}", area.name.Replace("(Clone)", ""));
 			var child = Canvas.transform.FindChild(name);
 			if (child == null)
 			{

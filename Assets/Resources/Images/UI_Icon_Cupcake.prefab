@@ -12,7 +12,7 @@ GameObject:
   - 114: {fileID: 11400000}
   - 114: {fileID: 11438476}
   m_Layer: 5
-  m_Name: CupcakeImage
+  m_Name: UI_Icon_Cupcake
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

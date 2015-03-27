@@ -10,7 +10,7 @@ GameObject:
   - 4: {fileID: 437128}
   - 114: {fileID: 11437128}
   m_Layer: 0
-  m_Name: MintIceCream
+  m_Name: Recipe_MintIceCream
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
